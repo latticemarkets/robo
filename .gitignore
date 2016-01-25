@@ -1,6 +1,10 @@
 
 # Created by https://www.gitignore.io/api/sx,intellij
 
+### App specific ###
+
+public/dist
+
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 
@@ -86,3 +90,18 @@ node_modules
 
 # Optional REPL history
 .node_repl_history
+
+
+### Bower ###
+bower_components
+.bower-cache
+.bower-registry
+.bower-tmp
+
+
+### grunt ###
+# Grunt usually compiles files inside this directory
+dist/
+
+# Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
+.tmp/
