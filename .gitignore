@@ -132,3 +132,22 @@ dist/
 
 # Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
 .tmp/
+
+
+### PlayFramework ###
+# Ignore Play! working directory #
+bin/
+/db
+.eclipse
+/lib/
+/logs/
+/modules
+/project/target
+/project/project
+/target
+tmp/
+test-result
+server.pid
+*.eml
+/dist/
+.cache

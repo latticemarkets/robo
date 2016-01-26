@@ -23,6 +23,11 @@
                 controller: "LandpageController",
                 controllerAs: 'vm'
             })
+            .when('/signup', {
+                templateUrl: "app/signup/signup.html",
+                controller: "SignupController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 
