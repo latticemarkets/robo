@@ -45,14 +45,6 @@ module.exports = function(grunt) {
                 dest: "public/dist/dist.css"
             }
         },
-        copy: {
-            main: {
-                files: [
-                    {expand: true, cwd: 'public/', src: ['fonts/*.ttf'], dest: 'public/dist/', filter: 'isFile'},
-                    {expand: true, cwd: 'public/', src: ['img/**'], dest: 'public/dist/'}
-                ]
-            }
-        },
         watch: {
             dev: {
                 files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html' ],
@@ -72,6 +64,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'copy', 'concat']);
+    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat']);
     grunt.registerTask('dev', ['build', 'watch']);
 };
