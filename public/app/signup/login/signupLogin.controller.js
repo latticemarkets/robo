@@ -70,7 +70,7 @@
             if (allConditionsSatisfied()) {
                 $cookieStore.put('signup.email', vm.email);
                 $cookieStore.put('signup.password', vm.password);
-                $location.path('signup/termsAndConditions');
+                $location.path('/signup/termsAndConditions');
             }
         };
     }

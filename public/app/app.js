@@ -33,6 +33,11 @@
                 controller: "SignupTermAndCoController",
                 controllerAs: 'vm'
             })
+            .when('/signup/reasonInvestment', {
+                templateUrl: "assets/app/signup/reasonInvestment/reasonInvestment.html",
+                controller: "SignupReasonInvestmentController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 

@@ -30,8 +30,21 @@
             var password = $cookieStore.get('signup.password');
 
             if (!(email && password)) {
-                $location.path('signup');
+                goBackToLoginRegistration();
             }
         })();
+
+        vm.cancel = function() {
+            goBackToLoginRegistration();
+        };
+
+        vm.submit = function() {
+            $cookieStore.put('signup.terms', 'true');
+            $location.path('/signup/reasonInvestment');
+        };
+
+        function goBackToLoginRegistration() {
+            $location.path('/signup/signup');
+        }
     }
 })();

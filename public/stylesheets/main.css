@@ -2120,7 +2120,11 @@ div .signup .intro-text {
     padding-top: 30px;
     padding-bottom: 50px;
 }
-div .signup .intro-text .intro-heading {
+div .signup .intro-conditions {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+div .signup .intro-heading {
     font-family: PTSans, sans-serif;
     font-size: 15px;
     font-weight: 200;
@@ -2228,4 +2232,13 @@ div .signup .outro-text .outro-heading {
 .conditions {
     margin-top: 30px;
     margin-bottom: 40px;
+}
+div .conditions .well {
+    background-color: rgba(245, 245, 245, 0.4);
+}
+div .conditions .condition {
+    margin-bottom: 10px;
+}
+div .reasons {
+    margin-bottom: 10px;
 }
