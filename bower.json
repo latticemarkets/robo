@@ -1,0 +1,23 @@
+{
+  "name": "robo",
+  "description": "PDX Robo",
+  "main": "index.js",
+  "authors": [
+    "(c) PDX Technology"
+  ],
+  "license": "Unpublished",
+  "moduleType": [
+    "es6"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  }
+}
