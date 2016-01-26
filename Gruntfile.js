@@ -11,6 +11,15 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        concat: {
+            options: {
+                separator: ';'
+            },
+            dist: {
+                src: ['public/app/app.js', 'public/app/**/*.js'],
+                dest: 'public/dist/app.js'
+            }
+        },
         bower_concat: {
             all: {
                 dest: 'public/dist/bower.js'
@@ -46,12 +55,13 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-concat-css');
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'copy']);
+    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'copy', 'concat']);
     grunt.registerTask('dev', ['build']);
 };
