@@ -16,11 +16,11 @@
 
     angular
         .module('app')
-        .controller('SignupP2pCredentialsController', SignupP2pCredentialsController);
+        .controller('SignupPersonalInfosController', SignupPersonalInfosController);
 
-    SignupP2pCredentialsController.$inject = ['$cookieStore', '$location'];
+    SignupPersonalInfosController.$inject = ['$location', '$cookieStore'];
 
-    function SignupP2pCredentialsController($cookieStore, $location) {
+    function SignupPersonalInfosController($location, $cookieStore) {
         var vm = this;
 
         (function() {
@@ -32,16 +32,18 @@
             var timeline = $cookieStore.get('signup.timeline');
             var dirthday = $cookieStore.get('signup.birthday');
             var platform = $cookieStore.get('signup.platform');
+            var accountId = $cookieStore.get('signup.accountId');
+            var apiKey = $cookieStore.get('signup.apiKey');
 
-            if (!(email && password && terms && reason && income && timeline && dirthday && platform)) {
-                $location.path('/signup/p2pPlatform');
+            if (!(email && password && terms && reason && income && timeline && dirthday && platform && accountId && apiKey)) {
+                $location.path('/signup/p2pCredentials');
             }
 
             vm.platform = platform;
         })();
 
         function allConditionsSatisfied() { // TODO : build Regex to check API key and account ID
-            return !!(vm.accountId !== undefined && vm.apiKey !== undefined);
+            return !!(vm.firstName !== undefined && vm.lastName !== undefined);
         }
 
         vm.disableSubmitButton = function() {
@@ -50,9 +52,9 @@
 
         vm.submit = function() {
             if (allConditionsSatisfied()) {
-                $cookieStore.put('signup.accountId', vm.accountId);
-                $cookieStore.put('signup.apiKey', vm.apiKey);
-                $location.path('/signup/personalInfos');
+                $cookieStore.put('signup.firstName', vm.firstName);
+                $cookieStore.put('signup.lastName', vm.lastName);
+                alert('hourra !');
             }
         };
     }

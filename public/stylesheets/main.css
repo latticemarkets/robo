@@ -2180,6 +2180,14 @@ div .signup .form-control.user {
     background: white url(/assets/img/icons/user.png) no-repeat 20px center;
     padding-left: 60px;
 }
+div .signup .form-control.last_name {
+    background: white url(/assets/img/icons/last_name.png) no-repeat 20px center;
+    padding-left: 60px;
+}
+div .signup .form-control.first_name {
+    background: white url(/assets/img/icons/first_name.png) no-repeat 20px center;
+    padding-left: 60px;
+}
 div .signup .btn.primary-button {
     width: 100%;
     height: 58px;

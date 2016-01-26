@@ -63,6 +63,11 @@
                 controller: "SignupP2pCredentialsController",
                 controllerAs: 'vm'
             })
+            .when('/signup/personalInfos', {
+                templateUrl: "assets/app/signup/personalInfos/personalInfos.html",
+                controller: "SignupPersonalInfosController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 
