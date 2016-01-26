@@ -16,13 +16,17 @@
 
     angular
         .module('app')
-        .controller('SignupController', SignupController);
+        .controller('SignupLoginController', SignupLoginController);
 
-    SignupController.$inject = [];
+    SignupLoginController.$inject = ['$location'];
 
-    function SignupController() {
+    function SignupLoginController($location) {
         var vm = this;
 
+        vm.pageClass = 'signup-login blue';
 
+        vm.submit = function() {
+            $location.path('signup/termsAndConditions');
+        };
     }
 })();

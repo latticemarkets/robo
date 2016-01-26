@@ -11,7 +11,7 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies', 'ngResource'])
+        .module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ngAnimate'])
         .config(config)
         .run(run);
 
@@ -24,8 +24,13 @@
                 controllerAs: 'vm'
             })
             .when('/signup', {
-                templateUrl: "assets/app/signup/signup.html",
-                controller: "SignupController",
+                templateUrl: "assets/app/signup/login/signupLogin.html",
+                controller: "SignupLoginController",
+                controllerAs: 'vm'
+            })
+            .when('/signup/termsAndConditions', {
+                templateUrl: "assets/app/signup/termAndCo/signupTermAndCo.html",
+                controller: "SignupTermAndCoController",
                 controllerAs: 'vm'
             })
             .otherwise({ redirectTo: '/' });
