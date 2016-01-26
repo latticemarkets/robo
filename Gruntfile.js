@@ -52,6 +52,15 @@ module.exports = function(grunt) {
                     {expand: true, cwd: 'public/', src: ['img/**'], dest: 'public/dist/'}
                 ]
             }
+        },
+        watch: {
+            dev: {
+                files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html' ],
+                tasks: [ 'build' ],
+                options: {
+                    atBegin: true
+                }
+            }
         }
     });
 
@@ -60,8 +69,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-concat-css');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', ['build']);
     grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'copy', 'concat']);
-    grunt.registerTask('dev', ['build']);
+    grunt.registerTask('dev', ['build', 'watch']);
 };
