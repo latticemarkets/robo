@@ -23,6 +23,8 @@
     function SignupYearlyIncomeController($location, $cookieStore) {
         var vm = this;
 
+        vm.pageClass = 'signup-login blue';
+
         (function() {
             var email = $cookieStore.get('signup.email');
             var password = $cookieStore.get('signup.password');

@@ -23,7 +23,7 @@
     function SignupTermAndCoController($location, $cookieStore) {
         var vm = this;
 
-        vm.pageClass = 'signup-termAndCo blue';
+        vm.pageClass = 'signup-login blue';
 
         (function() {
             var email = $cookieStore.get('signup.email');

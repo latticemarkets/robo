@@ -23,6 +23,8 @@
     function SignupP2pCredentialsController($cookieStore, $location) {
         var vm = this;
 
+        vm.pageClass = 'signup-login blue';
+
         (function() {
             var email = $cookieStore.get('signup.email');
             var password = $cookieStore.get('signup.password');
@@ -32,12 +34,14 @@
             var timeline = $cookieStore.get('signup.timeline');
             var dirthday = $cookieStore.get('signup.birthday');
             var platform = $cookieStore.get('signup.platform');
+            var extension = $cookieStore.get('signup.extension');
 
             if (!(email && password && terms && reason && income && timeline && dirthday && platform)) {
                 $location.path('/signup/p2pPlatform');
             }
 
             vm.platform = platform;
+            vm.extension = extension;
         })();
 
         function allConditionsSatisfied() { // TODO : build Regex to check API key and account ID

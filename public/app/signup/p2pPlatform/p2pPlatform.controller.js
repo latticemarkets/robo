@@ -23,6 +23,8 @@
     function SignupP2pPlatformController($location, $cookieStore) {
         var vm = this;
 
+        vm.pageClass = 'signup-login blue';
+
         (function() {
             var email = $cookieStore.get('signup.email');
             var password = $cookieStore.get('signup.password');
@@ -38,7 +40,9 @@
         })();
 
         vm.submit = function(platform) {
-            $cookieStore.put('signup.platform', platform);
+            var split = platform.split('.');
+            $cookieStore.put('signup.platform', split[0]);
+            $cookieStore.put('signup.extension', split[1]);
             $location.path('/signup/p2pCredentials');
         };
     }
