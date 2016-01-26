@@ -47,7 +47,7 @@ module.exports = function(grunt) {
         },
         watch: {
             dev: {
-                files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html' ],
+                files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.whtml', 'public/stylesheets/*.css' ],
                 tasks: [ 'build' ],
                 options: {
                     atBegin: true
