@@ -2166,6 +2166,7 @@ div .signup .form-control  {
     box-shadow: none;
     font-family: 'Avenir Next', AvenirNextLTW01-Regular, sans-serif;
     font-size: 20px;
+    padding-left: 60px;
 }
 div .signup .form-control.email {
     background: white url(/assets/img/icons/email.png) no-repeat 20px center;
@@ -2241,4 +2242,25 @@ div .conditions .condition {
 }
 div .reasons {
     margin-bottom: 10px;
+}
+div .reasons .reason {
+    margin-bottom: -5px;
+    width: 100%;
+    font-size: 20px;
+    text-align: left;
+}
+div .reasons .reason .record {
+    margin-right: 10px;
+}
+div .signup .intro-second {
+    font-size: 23px;
+}
+div .signup .form-inline .form-group .form-control.birthday {
+    padding-left: 0;
+    padding-right: 0;
+}
+div .signup .form-inline .birthday {
+    margin-top: 20px;
+    margin-right: 15px;
+    margin-left: 15px;
 }

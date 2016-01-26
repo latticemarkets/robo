@@ -16,25 +16,26 @@
 
     angular
         .module('app')
-        .controller('SignupReasonInvestmentController', SignupReasonInvestmentController);
+        .controller('SignupYearlyIncomeController', SignupYearlyIncomeController);
 
-    SignupReasonInvestmentController.$inject = ['$location', '$cookieStore'];
+    SignupYearlyIncomeController.$inject = ['$location', '$cookieStore'];
 
-    function SignupReasonInvestmentController($location, $cookieStore) {
+    function SignupYearlyIncomeController($location, $cookieStore) {
         var vm = this;
 
         (function() {
             var email = $cookieStore.get('signup.email');
             var password = $cookieStore.get('signup.password');
             var terms = $cookieStore.get('signup.terms');
-            if (!(email && password && terms)) {
-                $location.path('/signup/termsAndConditions');
+            var reason = $cookieStore.get('signup.reason');
+            if (!(email && password && terms && reason)) {
+                $location.path('/signup/reasonInvestment');
             }
         })();
 
-        vm.submit = function(reason) {
-            $cookieStore.put('signup.reason', reason);
-            $location.path('/signup/yearlyIncome');
+        vm.submit = function(income) {
+            $cookieStore.put('signup.income', income);
+            $location.path('/signup/timeline');
         };
     }
 })();

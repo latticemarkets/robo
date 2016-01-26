@@ -38,6 +38,21 @@
                 controller: "SignupReasonInvestmentController",
                 controllerAs: 'vm'
             })
+            .when('/signup/yearlyIncome', {
+                templateUrl: "assets/app/signup/yearlyIncome/yearlyIncome.html",
+                controller: "SignupYearlyIncomeController",
+                controllerAs: 'vm'
+            })
+            .when('/signup/timeline', {
+                templateUrl: "assets/app/signup/timeline/timeline.html",
+                controller: "SignupTimelineController",
+                controllerAs: 'vm'
+            })
+            .when('/signup/birthday', {
+                templateUrl: "assets/app/signup/birthday/birthday.html",
+                controller: "SignupBirthdayController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 
