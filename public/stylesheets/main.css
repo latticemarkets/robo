@@ -2264,3 +2264,8 @@ div .signup .form-inline .birthday {
     margin-right: 15px;
     margin-left: 15px;
 }
+div .signup .platforms {
+    width: 200px;
+    height: 200px;
+    background-color: white;
+}

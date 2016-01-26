@@ -53,6 +53,11 @@
                 controller: "SignupBirthdayController",
                 controllerAs: 'vm'
             })
+            .when('/signup/p2pPlatform', {
+                templateUrl: "assets/app/signup/p2pPlatform/p2pPlatform.html",
+                controller: "SignupP2pPlatformController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 
