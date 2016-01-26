@@ -16,7 +16,7 @@
 
     angular
         .module('app')
-        .controller(SignupController, 'SignupController');
+        .controller('SignupController', SignupController);
 
     SignupController.$inject = [];
 
