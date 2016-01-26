@@ -41,12 +41,8 @@
 
         function allConditionsSatisfied() {
             var month = isNumeric(vm.month) && vm.month > 0 && vm.month <= 12;
-            console.log(month);
             var day = isNumeric(vm.day) && vm.day > 0 && vm.day <= 31;
-            console.log(day);
             var year = isNumeric(vm.year) && vm.year > 1900 && vm.year < (new Date().getFullYear() - 18);
-            console.log(year);
-            console.log(vm.year < (new Date().getFullYear - 18));
             return month && day && year;
         }
 
