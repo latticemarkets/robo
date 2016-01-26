@@ -2173,7 +2173,11 @@ div .signup .form-control.email {
     padding-left: 60px;
 }
 div .signup .form-control.password {
-    background: white url(/assets/img/icons/email.png) no-repeat 20px center;
+    background: white url(/assets/img/icons/password.png) no-repeat 20px center;
+    padding-left: 60px;
+}
+div .signup .form-control.user {
+    background: white url(/assets/img/icons/user.png) no-repeat 20px center;
     padding-left: 60px;
 }
 div .signup .btn.primary-button {
@@ -2268,4 +2272,7 @@ div .signup .platforms {
     width: 200px;
     height: 200px;
     background-color: white;
+}
+div .signup .platform {
+    margin-bottom: 20px;
 }

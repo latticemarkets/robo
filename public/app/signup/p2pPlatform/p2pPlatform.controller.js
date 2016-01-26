@@ -39,7 +39,7 @@
 
         vm.submit = function(platform) {
             $cookieStore.put('signup.platform', platform);
-            $location.path('/signup/p2pLogin');
+            $location.path('/signup/p2pCredentials');
         };
     }
 })();
