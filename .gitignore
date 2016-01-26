@@ -4,6 +4,9 @@
 ### App specific ###
 
 public/dist
+public/fonts/glyphicons-halflings-regular.ttf
+public/fonts/glyphicons-halflings-regular.woff
+public/fonts/glyphicons-halflings-regular.woff2
 
 ### OSX ###
 .DS_Store

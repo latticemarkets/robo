@@ -2222,3 +2222,10 @@ div .signup .outro-text .outro-heading {
 .signup-login.ng-leave {
     animation: slideOutLeft 0.5s both ease-in;
 }
+.tick {
+    padding-right: 10px;
+}
+.conditions {
+    margin-top: 30px;
+    margin-bottom: 40px;
+}

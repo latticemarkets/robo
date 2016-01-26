@@ -53,6 +53,22 @@ module.exports = function(grunt) {
                     atBegin: true
                 }
             }
+        },
+        bowercopy: {
+            options: {
+                runBower: false,
+                srcPrefix: 'bower_components'
+            },
+            bootstrap: {
+                options: {
+                    destPrefix: 'public/fonts'
+                },
+                files: {
+                    'glyphicons-halflings-regular.ttf': 'bootstrap/dist/fonts/glyphicons-halflings-regular.ttf',
+                    'glyphicons-halflings-regular.woff': 'bootstrap/dist/fonts/glyphicons-halflings-regular.woff',
+                    'glyphicons-halflings-regular.woff2': 'bootstrap/dist/fonts/glyphicons-halflings-regular.woff2'
+                }
+            }
         }
     });
 
@@ -62,8 +78,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-concat-css');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-bowercopy');
 
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat']);
+    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat', 'bowercopy']);
     grunt.registerTask('dev', ['build', 'watch']);
 };

@@ -18,12 +18,19 @@
         <div class="signup row">
             <form class="col-md-4 col-md-offset-4">
                 <div class="form-group">
-                    <input type="email" class="form-control email" id="email" placeholder="Email Address">
+                    <input type="email" class="form-control email" id="email" placeholder="Email Address" data-ng-model="vm.email">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control password" id="password" placeholder="Password">
+                    <input type="password" class="form-control password" id="password" placeholder="Password" data-ng-model="vm.password">
                 </div>
-                <button class="btn primary-button" data-ng-click="vm.submit()">Submit</button>
+                <div class="row text-left conditions">
+                    <div><span class="glyphicon {{ vm.tickBox(vm.emailPattern) }} tick"></span>Valid email address</div>
+                    <div><span class="glyphicon {{ vm.tickBox(vm.passwordPattern.charLength) }} tick"></span>Your password has at least 8 characters</div>
+                    <div><span class="glyphicon {{ vm.tickBox(vm.passwordPattern.lowercase) }} tick"></span>Your password has at least 1 lowercase letter</div>
+                    <div><span class="glyphicon {{ vm.tickBox(vm.passwordPattern.uppercase) }} tick"></span>Your password has at least 1 capital letter</div>
+                    <div><span class="glyphicon {{ vm.tickBox(vm.passwordPattern.special) }} tick"></span>Your password has at least 1 number or special character</div>
+                </div>
+                <button class="btn primary-button" data-ng-click="vm.submit()" data-ng-disabled="vm.disableSubmitButton()">Submit</button>
             </form>
         </div>
         <div class="signup outro-text">
