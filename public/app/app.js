@@ -19,12 +19,12 @@
     function config($routeProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: "app/landpage/landpage.html",
+                templateUrl: "assets/app/landpage/landpage.html",
                 controller: "LandpageController",
                 controllerAs: 'vm'
             })
             .when('/signup', {
-                templateUrl: "app/signup/signup.html",
+                templateUrl: "assets/app/signup/signup.html",
                 controller: "SignupController",
                 controllerAs: 'vm'
             })
