@@ -18,9 +18,9 @@
         .module('app')
         .controller('SignupLoginController', SignupLoginController);
 
-    SignupLoginController.$inject = ['$location'];
+    SignupLoginController.$inject = ['$location', '$cookieStore'];
 
-    function SignupLoginController($location) {
+    function SignupLoginController($location, $cookieStore) {
         var vm = this;
 
         vm.pageClass = 'signup-login blue';
@@ -53,21 +53,21 @@
             return condition() ? 'glyphicon-ok' : 'glyphicon-remove';
         };
 
-        function checkAllConditions() {
+        function allConditionsSatisfied() {
             var email = vm.emailPattern();
             var charLength = vm.passwordPattern.charLength();
             var lowercase = vm.passwordPattern.lowercase();
             var uppercase = vm.passwordPattern.uppercase();
             var special = vm.passwordPattern.special();
-            return !(email && charLength && lowercase && uppercase && special);
+            return email && charLength && lowercase && uppercase && special;
         }
 
         vm.disableSubmitButton = function() {
-            return checkAllConditions();
+            return !allConditionsSatisfied();
         };
 
         vm.submit = function() {
-            if (checkAllConditions()) {
+            if (allConditionsSatisfied()) {
                 $cookieStore.put('signup.email', vm.email);
                 $cookieStore.put('signup.password', vm.password);
                 $location.path('signup/termsAndConditions');

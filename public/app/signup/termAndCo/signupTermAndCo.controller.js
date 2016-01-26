@@ -18,11 +18,20 @@
         .module('app')
         .controller('SignupTermAndCoController', SignupTermAndCoController);
 
-    SignupTermAndCoController.$inject = [];
+    SignupTermAndCoController.$inject = ['$location', '$cookieStore'];
 
-    function SignupTermAndCoController() {
+    function SignupTermAndCoController($location, $cookieStore) {
         var vm = this;
 
         vm.pageClass = 'signup-termAndCo blue';
+
+        (function() {
+            var email = $cookieStore.get('signup.email');
+            var password = $cookieStore.get('signup.password');
+
+            if (!(email && password)) {
+                $location.path('signup');
+            }
+        })();
     }
 })();
