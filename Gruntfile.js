@@ -40,6 +40,7 @@ module.exports = function(grunt) {
             all: {
                 src: [
                     "bower_components/bootstrap/dist/css/bootstrap.min.css",
+                    "bower_components/font-awesome/css/font-awesome.min.css",
                     "public/stylesheets/main.css"
                 ],
                 dest: "public/dist/dist.css"
@@ -67,6 +68,16 @@ module.exports = function(grunt) {
                     'glyphicons-halflings-regular.ttf': 'bootstrap/dist/fonts/glyphicons-halflings-regular.ttf',
                     'glyphicons-halflings-regular.woff': 'bootstrap/dist/fonts/glyphicons-halflings-regular.woff',
                     'glyphicons-halflings-regular.woff2': 'bootstrap/dist/fonts/glyphicons-halflings-regular.woff2'
+                }
+            },
+            fontawesome: {
+                options: {
+                    destPrefix: 'public/fonts'
+                },
+                files: {
+                    'fontawesome-webfont.woff': 'font-awesome/fonts/fontawesome-webfont.woff',
+                    'fontawesome-webfont.woff2': 'font-awesome/fonts/fontawesome-webfont.woff2',
+                    'fontawesome-webfont.ttf': 'font-awesome/fonts/fontawesome-webfont.ttf'
                 }
             }
         }
