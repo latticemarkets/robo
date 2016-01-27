@@ -66,8 +66,11 @@
         vm.submit = function() {
             if (allConditionsSatisfied()) {
                 UserService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, vm.firstName, vm.lastName,
-                    function(response) { alert("hourra ! " + response.data.token); },
-                    function() { alert("pas cool ..."); }
+                    function(response) {
+                        $cookieStore.put('token', response.data.token);
+                        $location.path('/signup/registered');
+                    },
+                    function() { alert("Something went wrong ..."); }
                 );
             }
         };

@@ -68,6 +68,11 @@
                 controller: "SignupPersonalInfosController",
                 controllerAs: 'vm'
             })
+            .when('/signup/registered', {
+                templateUrl: "assets/app/signup/registered/registered.html",
+                controller: "SignupRegisteredController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 
