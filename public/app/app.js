@@ -29,7 +29,7 @@
                 controllerAs: 'vm'
             })
             .when('/signup/termsAndConditions', {
-                templateUrl: "assets/app/signup/termAndCo/signupTermAndCo.html",
+                templateUrl: "assets/app/signup/termAndCo/termAndCo.html",
                 controller: "SignupTermAndCoController",
                 controllerAs: 'vm'
             })

@@ -2254,10 +2254,12 @@ div .signup .outro-text .outro-heading {
     margin-bottom: 40px;
 }
 div .conditions .well {
-    background-color: rgba(245, 245, 245, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, .25);
 }
 div .conditions .condition {
     margin-bottom: 10px;
+    color: white;
 }
 div .reasons {
     margin-bottom: 10px;
