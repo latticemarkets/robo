@@ -2281,14 +2281,14 @@ div .reasons .reason .record {
 div .signup .intro-second {
     font-size: 23px;
 }
-div .signup .form-inline .form-group .form-control.birthday {
-    padding-left: 0;
-    padding-right: 0;
-}
 div .signup .form-inline .birthday {
     margin-top: 20px;
     margin-right: 15px;
     margin-left: 15px;
+}
+div .signup .form-inline .birthday.candle {
+    background: white url(/assets/img/icons/birthday.png) no-repeat 20px center;
+    padding-left: 35px;
 }
 div .signup .platforms {
     width: 200px;
