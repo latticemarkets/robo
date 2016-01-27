@@ -2168,6 +2168,13 @@ div .signup .form-control  {
     font-size: 20px;
     padding-left: 60px;
 }
+div .signup .form-control:focus {
+    -webkit-box-shadow: 0 0 0 2px #455362;
+    -moz-box-shadow: 0 0 0 2px #455362;
+    -ms-box-shadow: 0 0 0 2px #455362;
+    -o-box-shadow: 0 0 0 2px #455362;
+    box-shadow: 0 0 0 2px #455362;
+}
 div .signup .form-control.email {
     background: white url(/assets/img/icons/email.png) no-repeat 20px center;
     padding-left: 60px;
