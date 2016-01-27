@@ -44,7 +44,7 @@
         };
 
         function goBackToLoginRegistration() {
-            $location.path('/signup/signup');
+            $location.path('/signup');
         }
     }
 })();

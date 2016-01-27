@@ -224,7 +224,7 @@ body.modal-open {
     background: #f8f8f8;
 }
 .header-buttons {
-    margin: 20px auto 100px auto;
+    margin: 20px auto 10px auto;
 }
 .primary-button {
     min-width: 150px;
