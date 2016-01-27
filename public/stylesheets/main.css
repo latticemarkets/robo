@@ -2303,3 +2303,6 @@ div .signup .platforms {
 div .signup .platform {
     margin-bottom: 20px;
 }
+div .signup .platform {
+    margin-right: 20px;
+}
