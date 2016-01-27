@@ -2,9 +2,10 @@
   "name": "robo",
   "version": "1.0.0",
   "description": "PDX Robo",
-  "main": "index.js",
+  "main": "app/app.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "postinstall": "grunt"
   },
   "author": "(c) PDX Technology",
   "license": "Unpublished",
