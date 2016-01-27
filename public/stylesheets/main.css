@@ -2264,6 +2264,8 @@ div .conditions .well {
 div .conditions .condition {
     margin-bottom: 10px;
     color: white;
+    font-family: 'Avenir Next', AvenirNextLTW01-Regular, sans-serif;
+    font-size: 14px;
 }
 div .reasons {
     margin-bottom: 10px;
