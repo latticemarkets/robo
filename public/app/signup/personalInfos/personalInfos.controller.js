@@ -18,26 +18,37 @@
         .module('app')
         .controller('SignupPersonalInfosController', SignupPersonalInfosController);
 
-    SignupPersonalInfosController.$inject = ['$location', '$cookieStore'];
+    SignupPersonalInfosController.$inject = ['$location', '$cookieStore', 'UserService'];
 
-    function SignupPersonalInfosController($location, $cookieStore) {
+    function SignupPersonalInfosController($location, $cookieStore, UserService) {
         var vm = this;
+
+        var email,
+            password,
+            terms,
+            reason,
+            income,
+            timeline,
+            birthday,
+            platform,
+            accountId,
+            apiKey;
 
         vm.pageClass = 'signup-login blue';
 
         (function() {
-            var email = $cookieStore.get('signup.email');
-            var password = $cookieStore.get('signup.password');
-            var terms = $cookieStore.get('signup.terms');
-            var reason = $cookieStore.get('signup.reason');
-            var income = $cookieStore.get('signup.income');
-            var timeline = $cookieStore.get('signup.timeline');
-            var dirthday = $cookieStore.get('signup.birthday');
-            var platform = $cookieStore.get('signup.platform');
-            var accountId = $cookieStore.get('signup.accountId');
-            var apiKey = $cookieStore.get('signup.apiKey');
+            email = $cookieStore.get('signup.email');
+            password = $cookieStore.get('signup.password');
+            terms = $cookieStore.get('signup.terms');
+            reason = $cookieStore.get('signup.reason');
+            income = $cookieStore.get('signup.income');
+            timeline = $cookieStore.get('signup.timeline');
+            birthday = $cookieStore.get('signup.birthday');
+            platform = $cookieStore.get('signup.platform');
+            accountId = $cookieStore.get('signup.accountId');
+            apiKey = $cookieStore.get('signup.apiKey');
 
-            if (!(email && password && terms && reason && income && timeline && dirthday && platform && accountId && apiKey)) {
+            if (!(email && password && terms && reason && income && timeline && birthday && platform && accountId && apiKey)) {
                 $location.path('/signup/p2pCredentials');
             }
 
@@ -54,9 +65,10 @@
 
         vm.submit = function() {
             if (allConditionsSatisfied()) {
-                $cookieStore.put('signup.firstName', vm.firstName);
-                $cookieStore.put('signup.lastName', vm.lastName);
-                alert('hourra !');
+                UserService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, vm.firstName, vm.lastName,
+                    function(response) { alert("hourra ! " + response.data.token); },
+                    function() { alert("pas cool ..."); }
+                );
             }
         };
     }

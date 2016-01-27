@@ -32,11 +32,11 @@
             var reason = $cookieStore.get('signup.reason');
             var income = $cookieStore.get('signup.income');
             var timeline = $cookieStore.get('signup.timeline');
-            var dirthday = $cookieStore.get('signup.birthday');
+            var birthday = $cookieStore.get('signup.birthday');
             var platform = $cookieStore.get('signup.platform');
             var extension = $cookieStore.get('signup.extension');
 
-            if (!(email && password && terms && reason && income && timeline && dirthday && platform)) {
+            if (!(email && password && terms && reason && income && timeline && birthday && platform)) {
                 $location.path('/signup/p2pPlatform');
             }
 

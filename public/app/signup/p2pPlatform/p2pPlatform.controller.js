@@ -32,9 +32,9 @@
             var reason = $cookieStore.get('signup.reason');
             var income = $cookieStore.get('signup.income');
             var timeline = $cookieStore.get('signup.timeline');
-            var dirthday = $cookieStore.get('signup.birthday');
+            var birthday = $cookieStore.get('signup.birthday');
 
-            if (!(email && password && terms && reason && income && timeline && dirthday)) {
+            if (!(email && password && terms && reason && income && timeline && birthday)) {
                 $location.path('/signup/birthday');
             }
         })();
