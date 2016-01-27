@@ -224,7 +224,7 @@ body.modal-open {
     background: #f8f8f8;
 }
 .header-buttons {
-    margin: 60px auto 100px auto;
+    margin: 20px auto 100px auto;
 }
 .primary-button {
     min-width: 150px;
@@ -2251,7 +2251,7 @@ div .signup .outro-text .outro-heading {
 }
 .conditions {
     margin-top: 30px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 div .conditions .well {
     max-height: 300px;
