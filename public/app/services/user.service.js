@@ -25,7 +25,7 @@
         function register(email, password, terms, reason, income, timeline, birthday, platform, accountId, firstName, lastName, apiKey, successCallback, errorCallback) {
             $http
                 .post('/api/register', {
-                    email: email,
+                    _id: email,
                     password: password,
                     terms: terms,
                     reason: reason,

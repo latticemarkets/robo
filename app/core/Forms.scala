@@ -20,7 +20,7 @@ import play.api.data.Forms._
 object Forms {
   def loginForm = Form(
     mapping (
-      "email" -> email,
+      "_id" -> email,
       "password" -> nonEmptyText,
       "terms" -> nonEmptyText,
       "reason" -> nonEmptyText,

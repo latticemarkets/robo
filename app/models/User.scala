@@ -10,7 +10,7 @@ package models
 
 import java.util.Date
 
-import core.{Hash, DbUtil}
+import core.{DbUtil, Hash}
 import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.json._
 import play.modules.reactivemongo.json.collection.JSONCollection
@@ -23,7 +23,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
   */
 
 case class User(
-               email: String,
+               _id: String,
                password: String,
                terms: String,
                reason: String,
@@ -47,12 +47,12 @@ object User {
 
   val usersTable: JSONCollection = DbUtil.db.collection(collectionName)
 
-  def findByEmail(email: String) = usersTable.find(Json.obj("email" -> email)).one[User]
+  def findByEmail(email: String) = usersTable.find(Json.obj("_id" -> email)).one[User]
 
-  def store(user: User) = {
+  def store(user: User) = { // Todo : handle the case where primary key is violated
     for {
       result <- usersTable.insert(Json.toJson(user.withEncryptedPassword).as[JsObject])
-      newUser <- findByEmail(user.email) if result.ok
+      newUser <- findByEmail(user._id) if result.ok
     }
       yield newUser
   }
