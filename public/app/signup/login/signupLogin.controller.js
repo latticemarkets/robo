@@ -37,7 +37,7 @@
             },
             lowercase: function() {
                 var regex = /^(?=.*[a-z]).+$/;
-                return regex.test(vm.password);
+                return regex.test(vm.password) && vm.password !== undefined;
             },
             uppercase: function() {
                 var regex = /^(?=.*[A-Z]).+$/;
