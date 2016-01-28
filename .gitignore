@@ -11,6 +11,14 @@ public/fonts/fontawesome-webfont.ttf
 public/fonts/fontawesome-webfont.woff
 public/fonts/fontawesome-webfont.woff2
 
+### Jasmine ###
+/_SpecRunner.html
+
+### Tests ###
+/tests/front/unit/tests.jsx
+/tests/front/unit/tests.js
+/tests/front/unit/tests.js.map
+
 ### OSX ###
 .DS_Store
 .AppleDouble

@@ -18,6 +18,10 @@ module.exports = function(grunt) {
             dist: {
                 src: ['public/utils/register.js', 'public/app/app.js', 'public/app/**/*.js'],
                 dest: 'public/dist/app.jsx'
+            },
+            test: {
+                src: ['tests/front/unit/**/*.spec.js'],
+                dest: 'tests/front/unit/tests.jsx'
             }
         },
         bower_concat: {
@@ -51,6 +55,13 @@ module.exports = function(grunt) {
             dev: {
                 files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'public/stylesheets/*.css' ],
                 tasks: [ 'build' ]
+            },
+            test: {
+                files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'tests/front/unit/**/*.spec.js' ],
+                tasks: [ 'test' ],
+                options: {
+                    atBegin: true
+                }
             }
         },
         bowercopy: {
@@ -94,6 +105,17 @@ module.exports = function(grunt) {
                 files: {
                     'public/dist/app.js': 'public/dist/app.jsx'
                 }
+            },
+            test: {
+                files: {
+                    'tests/front/unit/tests.js': 'tests/front/unit/tests.jsx'
+                }
+            }
+        },
+        jasmine : {
+            src : ['public/dist/bower.js', 'public/dist/app.js'],
+            options: {
+                specs : 'tests/front/unit/tests.js'
             }
         }
     });
@@ -107,8 +129,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-bowercopy');
     grunt.loadNpmTasks('grunt-babel');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
 
     grunt.registerTask('default', ['build']);
     grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat', 'bowercopy', 'jshint', 'babel']);
-    grunt.registerTask('dev', ['build', 'watch']);
+    grunt.registerTask('test', ['build', 'concat:test', 'babel:test', 'jasmine']);
+    grunt.registerTask('test-dev', ['build', 'watch:test']);
+    grunt.registerTask('dev', ['build', 'watch:dev']);
 };
