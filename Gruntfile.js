@@ -80,7 +80,10 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-            all: [ 'Gruntfile.js', 'public/app/*.js', 'public/app/**/*.js' ]
+            all: [ 'Gruntfile.js', 'public/app/*.js', 'public/app/**/*.js' ],
+            options: {
+                "esnext": true
+            }
         },
         babel: {
             options: {
