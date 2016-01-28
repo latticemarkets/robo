@@ -63,6 +63,16 @@
                     userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, vm.firstName, vm.lastName,
                         response => {
                             $cookieStore.put('token', response.data.token);
+                            $cookieStore.remove('signup.email');
+                            $cookieStore.remove('signup.password');
+                            $cookieStore.remove('signup.terms');
+                            $cookieStore.remove('signup.reason');
+                            $cookieStore.remove('signup.income');
+                            $cookieStore.remove('signup.timeline');
+                            $cookieStore.remove('signup.birthday');
+                            $cookieStore.remove('signup.platform');
+                            $cookieStore.remove('signup.accountId');
+                            $cookieStore.remove('signup.apiKey');
                             $location.path('/signup/registered');
                         },
                         response => {
