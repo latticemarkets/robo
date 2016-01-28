@@ -49,10 +49,7 @@ module.exports = function(grunt) {
         watch: {
             dev: {
                 files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'public/stylesheets/*.css' ],
-                tasks: [ 'build' ],
-                options: {
-                    atBegin: true
-                }
+                tasks: [ 'build' ]
             }
         },
         bowercopy: {
@@ -80,6 +77,9 @@ module.exports = function(grunt) {
                     'fontawesome-webfont.ttf': 'font-awesome/fonts/fontawesome-webfont.ttf'
                 }
             }
+        },
+        jshint: {
+            all: [ 'Gruntfile.js', 'public/app/*.js', 'public/app/**/*.js' ]
         }
     });
 
@@ -90,8 +90,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-bowercopy');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat', 'bowercopy']);
+    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat', 'bowercopy', 'jshint']);
     grunt.registerTask('dev', ['build', 'watch']);
 };

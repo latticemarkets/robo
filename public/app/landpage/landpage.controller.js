@@ -12,9 +12,10 @@
     * Created on 26/01/2016
     */
 
-"use strict";
 
 (function() {
+    "use strict";
+
     angular
         .module('app')
         .controller('LandpageController', LandpageController);
