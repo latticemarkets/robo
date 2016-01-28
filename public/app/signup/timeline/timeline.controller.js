@@ -14,31 +14,32 @@
 (function() {
     'use strict';
 
+    class SignupTimelineController {
+        constructor($location, $cookieStore) {
+            const vm = this;
+
+            vm.pageClass = 'signup-login blue';
+
+            (() => {
+                const email = $cookieStore.get('signup.email');
+                const password = $cookieStore.get('signup.password');
+                const terms = $cookieStore.get('signup.terms');
+                const reason = $cookieStore.get('signup.reason');
+                const income = $cookieStore.get('signup.income');
+
+                if (!(email && password && terms && reason && income)) {
+                    $location.path('/signup/yearlyIncome');
+                }
+            })();
+
+            vm.submit = timeline => {
+                $cookieStore.put('signup.timeline', timeline);
+                $location.path('/signup/birthday');
+            };
+        }
+    }
+
     angular
         .module('app')
         .controller('SignupTimelineController', SignupTimelineController);
-
-    SignupTimelineController.$inject = ['$location', '$cookieStore'];
-
-    function SignupTimelineController($location, $cookieStore) {
-        var vm = this;
-
-        vm.pageClass = 'signup-login blue';
-
-        (function() {
-            var email = $cookieStore.get('signup.email');
-            var password = $cookieStore.get('signup.password');
-            var terms = $cookieStore.get('signup.terms');
-            var reason = $cookieStore.get('signup.reason');
-            var income = $cookieStore.get('signup.income');
-            if (!(email && password && terms && reason && income)) {
-                $location.path('/signup/yearlyIncome');
-            }
-        })();
-
-        vm.submit = function(timeline) {
-            $cookieStore.put('signup.timeline', timeline);
-            $location.path('/signup/birthday');
-        };
-    }
 })();

@@ -14,30 +14,31 @@
 (function() {
     'use strict';
 
+    class SignupYearlyIncomeController {
+        constructor($location, $cookieStore) {
+            const vm = this;
+
+            vm.pageClass = 'signup-login blue';
+
+            (() => {
+                const email = $cookieStore.get('signup.email');
+                const password = $cookieStore.get('signup.password');
+                const terms = $cookieStore.get('signup.terms');
+                const reason = $cookieStore.get('signup.reason');
+
+                if (!(email && password && terms && reason)) {
+                    $location.path('/signup/reasonInvestment');
+                }
+            })();
+
+            vm.submit = income => {
+                $cookieStore.put('signup.income', income);
+                $location.path('/signup/timeline');
+            };
+        }
+    }
+
     angular
         .module('app')
         .controller('SignupYearlyIncomeController', SignupYearlyIncomeController);
-
-    SignupYearlyIncomeController.$inject = ['$location', '$cookieStore'];
-
-    function SignupYearlyIncomeController($location, $cookieStore) {
-        var vm = this;
-
-        vm.pageClass = 'signup-login blue';
-
-        (function() {
-            var email = $cookieStore.get('signup.email');
-            var password = $cookieStore.get('signup.password');
-            var terms = $cookieStore.get('signup.terms');
-            var reason = $cookieStore.get('signup.reason');
-            if (!(email && password && terms && reason)) {
-                $location.path('/signup/reasonInvestment');
-            }
-        })();
-
-        vm.submit = function(income) {
-            $cookieStore.put('signup.income', income);
-            $location.path('/signup/timeline');
-        };
-    }
 })();

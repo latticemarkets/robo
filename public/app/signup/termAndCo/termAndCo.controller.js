@@ -14,37 +14,37 @@
 (function() {
     'use strict';
 
+    class SignupTermAndCoController {
+        constructor($location, $cookieStore) {
+            const vm = this;
+
+            vm.pageClass = 'signup-login blue';
+
+            (() => {
+                const email = $cookieStore.get('signup.email');
+                const password = $cookieStore.get('signup.password');
+
+                if (!(email && password)) {
+                    goBackToLoginRegistration();
+                }
+            })();
+
+            vm.cancel = () => {
+                goBackToLoginRegistration();
+            };
+
+            vm.submit = () => {
+                $cookieStore.put('signup.terms', 'true');
+                $location.path('/signup/reasonInvestment');
+            };
+
+            function goBackToLoginRegistration() {
+                $location.path('/signup');
+            }
+        }
+    }
+
     angular
         .module('app')
         .controller('SignupTermAndCoController', SignupTermAndCoController);
-
-    SignupTermAndCoController.$inject = ['$location', '$cookieStore'];
-
-    function SignupTermAndCoController($location, $cookieStore) {
-        var vm = this;
-
-        vm.pageClass = 'signup-login blue';
-
-        (function() {
-            var email = $cookieStore.get('signup.email');
-            var password = $cookieStore.get('signup.password');
-
-            if (!(email && password)) {
-                goBackToLoginRegistration();
-            }
-        })();
-
-        vm.cancel = function() {
-            goBackToLoginRegistration();
-        };
-
-        vm.submit = function() {
-            $cookieStore.put('signup.terms', 'true');
-            $location.path('/signup/reasonInvestment');
-        };
-
-        function goBackToLoginRegistration() {
-            $location.path('/signup');
-        }
-    }
 })();

@@ -14,11 +14,20 @@
 (function() {
     'use strict';
 
+    class NotificationService {
+        constructor(toastr) {
+            this.toastr = toastr;
+        }
+
+        error(message) {
+            this.toastr.error(message, 'Error');
+        }
+    }
+
     angular
         .module('app')
-        .factory('NotificationService', NotificationService)
-        .config(function(toastrConfig) {
-            angular.extend(toastrConfig, {
+        .service('NotificationService', NotificationService)
+        .config((toastrConfig) => angular.extend(toastrConfig, {
                 "closeButton": true,
                 "debug": false,
                 "progressBar": true,
@@ -33,18 +42,6 @@
                 "hideEasing": "linear",
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
-            });
-        });
-
-    NotificationService.$inject = ['toastr'];
-
-    function NotificationService(toastr) {
-        var error = function(message) {
-            toastr.error(message, 'Error');
-        };
-
-        return {
-            error: error
-        };
-    }
+            })
+        );
 })();

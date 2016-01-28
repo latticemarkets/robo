@@ -14,16 +14,13 @@
 (function() {
     'use strict';
 
-    angular
-        .module('app')
-        .factory('UserService', UserService);
+    class UserService {
+        constructor($http) {
+            this.$http = $http;
+        }
 
-    UserService.$inject = ['$http'];
-
-    function UserService($http) {
-
-        var register = function(email, password, terms, reason, income, timeline, birthday, platform, accountId, firstName, lastName, apiKey, successCallback, errorCallback) {
-            $http
+        register(email, password, terms, reason, income, timeline, birthday, platform, accountId, firstName, lastName, apiKey, successCallback, errorCallback) {
+            this.$http
                 .post('/api/register', {
                     _id: email,
                     password: password,
@@ -39,17 +36,16 @@
                     apiKey: apiKey
                 })
                 .then(successCallback, errorCallback);
-        };
+        }
 
-        var login = function(email, password, successCallback, errorCallback) {
-            $http
+        login(email, password, successCallback, errorCallback) {
+            this.$http
                 .post('/api/login', { email: email, password: password })
                 .then(successCallback, errorCallback);
-        };
-
-        return {
-            register: register,
-            login: login
-        };
+        }
     }
+
+    angular
+        .module('app')
+        .service('UserService', UserService);
 })();

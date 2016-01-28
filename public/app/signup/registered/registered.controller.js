@@ -14,15 +14,13 @@
 (function() {
     'use strict';
 
+    class SignupRegisteredController {
+        constructor() {
+            const vm = this;
+        }
+    }
+
     angular
         .module('app')
         .controller('SignupRegisteredController', SignupRegisteredController);
-
-    SignupRegisteredController.$inject = [];
-
-    function SignupRegisteredController() {
-        var vm = this;
-
-
-    }
 })();

@@ -14,29 +14,29 @@
 (function() {
     'use strict';
 
+    class SignupReasonInvestmentController {
+        constructor($location, $cookieStore) {
+            const vm = this;
+
+            vm.pageClass = 'signup-login blue';
+
+            (() => {
+                const email = $cookieStore.get('signup.email');
+                const password = $cookieStore.get('signup.password');
+                const terms = $cookieStore.get('signup.terms');
+                if (!(email && password && terms)) {
+                    $location.path('/signup/termsAndConditions');
+                }
+            })();
+
+            vm.submit = reason => {
+                $cookieStore.put('signup.reason', reason);
+                $location.path('/signup/yearlyIncome');
+            };
+        }
+    }
+
     angular
         .module('app')
         .controller('SignupReasonInvestmentController', SignupReasonInvestmentController);
-
-    SignupReasonInvestmentController.$inject = ['$location', '$cookieStore'];
-
-    function SignupReasonInvestmentController($location, $cookieStore) {
-        var vm = this;
-
-        vm.pageClass = 'signup-login blue';
-
-        (function() {
-            var email = $cookieStore.get('signup.email');
-            var password = $cookieStore.get('signup.password');
-            var terms = $cookieStore.get('signup.terms');
-            if (!(email && password && terms)) {
-                $location.path('/signup/termsAndConditions');
-            }
-        })();
-
-        vm.submit = function(reason) {
-            $cookieStore.put('signup.reason', reason);
-            $location.path('/signup/yearlyIncome');
-        };
-    }
 })();

@@ -14,67 +14,67 @@
 (function() {
     'use strict';
 
+    class SignupPersonalInfosController {
+        constructor($location, $cookieStore, UserService, NotificationService) {
+            const vm = this;
+
+            let email,
+                password,
+                terms,
+                reason,
+                income,
+                timeline,
+                birthday,
+                platform,
+                accountId,
+                apiKey;
+
+            vm.pageClass = 'signup-login blue';
+
+            (() => {
+                email = $cookieStore.get('signup.email');
+                password = $cookieStore.get('signup.password');
+                terms = $cookieStore.get('signup.terms');
+                reason = $cookieStore.get('signup.reason');
+                income = $cookieStore.get('signup.income');
+                timeline = $cookieStore.get('signup.timeline');
+                birthday = $cookieStore.get('signup.birthday');
+                platform = $cookieStore.get('signup.platform');
+                accountId = $cookieStore.get('signup.accountId');
+                apiKey = $cookieStore.get('signup.apiKey');
+
+                if (!(email && password && terms && reason && income && timeline && birthday && platform && accountId && apiKey)) {
+                    $location.path('/signup/p2pCredentials');
+                }
+
+                vm.platform = platform;
+            })();
+
+            function allConditionsSatisfied() { // TODO : build Regex to check API key and account ID
+                return !!(vm.firstName !== undefined && vm.lastName !== undefined);
+            }
+
+            vm.disableSubmitButton = () => {
+                return !allConditionsSatisfied();
+            };
+
+            vm.submit = () => {
+                if (allConditionsSatisfied()) {
+                    UserService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, vm.firstName, vm.lastName,
+                        response => {
+                            $cookieStore.put('token', response.data.token);
+                            $location.path('/signup/registered');
+                        },
+                        response => {
+                            NotificationService.error(response.data);
+                        }
+                    );
+                }
+            };
+        }
+    }
+
     angular
         .module('app')
         .controller('SignupPersonalInfosController', SignupPersonalInfosController);
-
-    SignupPersonalInfosController.$inject = ['$location', '$cookieStore', 'UserService', 'NotificationService'];
-
-    function SignupPersonalInfosController($location, $cookieStore, UserService, NotificationService) {
-        var vm = this;
-
-        var email,
-            password,
-            terms,
-            reason,
-            income,
-            timeline,
-            birthday,
-            platform,
-            accountId,
-            apiKey;
-
-        vm.pageClass = 'signup-login blue';
-
-        (function() {
-            email = $cookieStore.get('signup.email');
-            password = $cookieStore.get('signup.password');
-            terms = $cookieStore.get('signup.terms');
-            reason = $cookieStore.get('signup.reason');
-            income = $cookieStore.get('signup.income');
-            timeline = $cookieStore.get('signup.timeline');
-            birthday = $cookieStore.get('signup.birthday');
-            platform = $cookieStore.get('signup.platform');
-            accountId = $cookieStore.get('signup.accountId');
-            apiKey = $cookieStore.get('signup.apiKey');
-
-            if (!(email && password && terms && reason && income && timeline && birthday && platform && accountId && apiKey)) {
-                $location.path('/signup/p2pCredentials');
-            }
-
-            vm.platform = platform;
-        })();
-
-        function allConditionsSatisfied() { // TODO : build Regex to check API key and account ID
-            return !!(vm.firstName !== undefined && vm.lastName !== undefined);
-        }
-
-        vm.disableSubmitButton = function() {
-            return !allConditionsSatisfied();
-        };
-
-        vm.submit = function() {
-            if (allConditionsSatisfied()) {
-                UserService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, vm.firstName, vm.lastName,
-                    function(response) {
-                        $cookieStore.put('token', response.data.token);
-                        $location.path('/signup/registered');
-                    },
-                    function(response) {
-                        NotificationService.error(response.data);
-                    }
-                );
-            }
-        };
-    }
 })();

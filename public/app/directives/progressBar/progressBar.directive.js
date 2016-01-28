@@ -11,12 +11,8 @@
 * Created on 27/01/2016
 */
 
-(function () {
+(() => {
     'use strict';
-
-    angular
-        .module('app')
-        .directive('myProgressBar', progressBar);
 
     progressBar.$inject = [];
 
@@ -34,4 +30,8 @@
             }
         };
     }
+
+    angular
+        .module('app')
+        .directive('myProgressBar', progressBar);
 })();

@@ -16,13 +16,13 @@
 (function() {
     "use strict";
 
+    class LandpageController {
+        constructor() {
+            const vm = this;
+        }
+    }
+
     angular
         .module('app')
         .controller('LandpageController', LandpageController);
-
-    LandpageController.$inject = [];
-
-    function LandpageController() {
-        var vm = this;
-    }
 })();

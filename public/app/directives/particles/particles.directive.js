@@ -11,7 +11,7 @@
 * Created on 27/01/2016
 */
 
-(function () {
+(() => {
     'use strict';
 
     angular
@@ -21,8 +21,8 @@
             restrict: 'E',
             replace: true,
             template: '<div class="particleJs" id="particleJs"></div>',
-            link: function() {
-                $timeout(function() {
+            link() {
+                $timeout(() => {
                     $window.particlesJS('particleJs', {
                         "particles": {
                             "number": {
