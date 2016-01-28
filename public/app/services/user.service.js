@@ -43,6 +43,12 @@
                 .post('/api/login', { email: email, password: password })
                 .then(successCallback, errorCallback);
         }
+
+        isEmailUsed(email, successCallback, errorCallback) {
+            this.$http
+                .get(`/api/user/${email}`)
+                .then(successCallback, errorCallback);
+        }
     }
 
     angular

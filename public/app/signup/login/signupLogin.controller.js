@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupLoginController {
-        constructor($location, $cookieStore) {
+        constructor($location, $cookieStore, UserService, NotificationService) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
@@ -63,11 +63,26 @@
 
             vm.submit = function() {
                 if (allConditionsSatisfied()) {
-                    $cookieStore.put('signup.email', vm.email);
-                    $cookieStore.put('signup.password', vm.password);
-                    $location.path('/signup/termsAndConditions');
+                    UserService.isEmailUsed(
+                        vm.email,
+                        response => {
+                            if (response.data.ok) {
+                                $cookieStore.put('signup.email', vm.email);
+                                $cookieStore.put('signup.password', vm.password);
+                                $location.path('/signup/termsAndConditions');
+                            }
+                            else {
+                                displayError();
+                            }
+                        },
+                        () => { displayError(); }
+                    );
                 }
             };
+
+            function displayError() {
+                NotificationService.error("This email is already used.");
+            }
         }
     }
 

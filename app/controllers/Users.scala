@@ -52,4 +52,11 @@ class Users extends Controller {
       }
     )
   }
+
+  def isUsed(email: String) = Action.async {
+    User.findByEmail(email) map {
+      case None => Ok(Json.obj("ok" -> true))
+      case Some(user) => Ok(Json.obj("ok" -> false))
+    }
+  }
 }
