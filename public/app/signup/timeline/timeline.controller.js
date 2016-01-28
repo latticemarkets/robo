@@ -28,7 +28,7 @@
                 const income = $cookieStore.get('signup.income');
 
                 if (!(email && password && terms && reason && income)) {
-                    $location.path('/signup/yearlyIncome');
+                    $location.path('/signup');
                 }
             })();
 

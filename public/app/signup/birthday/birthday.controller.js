@@ -28,7 +28,7 @@
                 const income = $cookieStore.get('signup.income');
                 const timeline = $cookieStore.get('signup.timeline');
                 if (!(email && password && terms && reason && income && timeline)) {
-                    $location.path('/signup/timeline');
+                    $location.path('/signup');
                 }
             })();
 
@@ -50,7 +50,7 @@
             vm.submit = () => {
                 if (allConditionsSatisfied()) {
                     $cookieStore.put('signup.birthday', new Date(`${vm.month}/${vm.day}/${vm.year}`).toLocaleDateString());
-                    $location.path('/signup/p2pPlatform');
+                    $location.path('/signup');
                 }
             };
         }

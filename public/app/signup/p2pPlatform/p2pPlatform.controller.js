@@ -30,7 +30,7 @@
                 const birthday = $cookieStore.get('signup.birthday');
 
                 if (!(email && password && terms && reason && income && timeline && birthday)) {
-                    $location.path('/signup/birthday');
+                    $location.path('/signup');
                 }
             })();
 

@@ -32,7 +32,7 @@
                 const extension = $cookieStore.get('signup.extension');
 
                 if (!(email && password && terms && reason && income && timeline && birthday && platform)) {
-                    $location.path('/signup/p2pPlatform');
+                    $location.path('/signup');
                 }
 
                 vm.platform = platform;
@@ -51,7 +51,7 @@
                 if (allConditionsSatisfied()) {
                     $cookieStore.put('signup.accountId', vm.accountId);
                     $cookieStore.put('signup.apiKey', vm.apiKey);
-                    $location.path('/signup/personalInfos');
+                    $location.path('/signup');
                 }
             };
         }

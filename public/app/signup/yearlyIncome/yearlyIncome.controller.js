@@ -33,7 +33,7 @@
 
             vm.submit = income => {
                 $cookieStore.put('signup.income', income);
-                $location.path('/signup/timeline');
+                $location.path('/signup');
             };
         }
     }

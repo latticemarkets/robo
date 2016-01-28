@@ -44,7 +44,7 @@
                 apiKey = $cookieStore.get('signup.apiKey');
 
                 if (!(email && password && terms && reason && income && timeline && birthday && platform && accountId && apiKey)) {
-                    $location.path('/signup/p2pCredentials');
+                    $location.path('/signup');
                 }
 
                 vm.platform = platform;

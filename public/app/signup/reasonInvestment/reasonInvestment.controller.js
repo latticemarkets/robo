@@ -25,7 +25,7 @@
                 const password = $cookieStore.get('signup.password');
                 const terms = $cookieStore.get('signup.terms');
                 if (!(email && password && terms)) {
-                    $location.path('/signup/termsAndConditions');
+                    $location.path('/signup');
                 }
             })();
 
