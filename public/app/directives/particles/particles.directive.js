@@ -23,6 +23,11 @@
             template: '<div class="particleJs" id="particleJs"></div>',
             link() {
                 $timeout(() => {
+                    if ($window.pJSDom.length > 0) {
+                        $window.pJSDom[0].pJS.fn.vendors.destroypJS();
+                        $window.pJSDom = [];
+                    }
+
                     $window.particlesJS('particleJs', {
                         "particles": {
                             "number": {
@@ -132,7 +137,7 @@
                             }
                         }
                     });
-                }, 510);
+                }, 800);
             }
         };
     }]);
