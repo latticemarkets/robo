@@ -18,9 +18,9 @@
         .module('app')
         .controller('SignupPersonalInfosController', SignupPersonalInfosController);
 
-    SignupPersonalInfosController.$inject = ['$location', '$cookieStore', 'UserService'];
+    SignupPersonalInfosController.$inject = ['$location', '$cookieStore', 'UserService', 'NotificationService'];
 
-    function SignupPersonalInfosController($location, $cookieStore, UserService) {
+    function SignupPersonalInfosController($location, $cookieStore, UserService, NotificationService) {
         var vm = this;
 
         var email,
@@ -70,7 +70,9 @@
                         $cookieStore.put('token', response.data.token);
                         $location.path('/signup/registered');
                     },
-                    function() { alert("Something went wrong ..."); }
+                    function(response) {
+                        NotificationService.error(response.data);
+                    }
                 );
             }
         };

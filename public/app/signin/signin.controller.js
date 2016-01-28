@@ -42,8 +42,8 @@
                     $cookieStore.put('token', response.data.token);
                     $location.path('/dashboard');
                 },
-                function() {
-                    NotificationService.error();
+                function(response) {
+                    NotificationService.error(response.data);
                 });
             }
         };

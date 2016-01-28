@@ -39,8 +39,8 @@
     NotificationService.$inject = ['toastr'];
 
     function NotificationService(toastr) {
-        var error = function() {
-            toastr.error('Wrong email / password.', 'Error');
+        var error = function(message) {
+            toastr.error(message, 'Error');
         };
 
         return {
