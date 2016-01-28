@@ -18,9 +18,9 @@
         .module('app')
         .directive('progressBar', progressBar);
 
-    progressBar.$inject = ['$timeout'];
+    progressBar.$inject = [];
 
-    function progressBar($timeout) {
+    function progressBar() {
         return {
             replace: true,
             restrict: 'E',
