@@ -2151,7 +2151,6 @@ div .signup .form-control  {
     -o-appearance: none;
     appearance: none;
     height: 58px;
-    padding: 0 20px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -2165,7 +2164,7 @@ div .signup .form-control  {
     box-shadow: none;
     font-family: 'Avenir Next', AvenirNextLTW01-Regular, sans-serif;
     font-size: 20px;
-    padding-left: 60px;
+    padding: 0 20px 0 60px;
 }
 div .signup .form-control:focus {
     -webkit-box-shadow: 0 0 0 2px #455362;
@@ -2274,6 +2273,7 @@ div .reasons .reason {
     width: 100%;
     font-size: 20px;
     text-align: left;
+    text-transform: capitalize;
 }
 div .reasons .reason .record {
     margin-right: 10px;
@@ -2307,4 +2307,17 @@ div .signup .platform {
 div .signup .choosed-platform {
     height: 204px;
     float: right;
+}
+.particleJs {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+#progressbar {
+    background-color: #455362 !important;
 }

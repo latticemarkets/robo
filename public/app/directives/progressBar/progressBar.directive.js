@@ -18,9 +18,9 @@
         .module('app')
         .directive('progressBar', progressBar);
 
-    progressBar.$inject = [];
+    progressBar.$inject = ['$timeout'];
 
-    function progressBar() {
+    function progressBar($timeout) {
         return {
             replace: true,
             restrict: 'E',
@@ -28,7 +28,7 @@
                 stepNo: '=',
                 stepTotal: '='
             },
-            template: '<div class="progress"> <div class="progress-bar" role="progressbar" aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ value }}%;"> </div> </div>',
+            template: '<div class="progress"> <div class="progress-bar" id="progressbar" role="progressbar" aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ value }}%;"> </div> </div>',
             link: function(scope) {
                 scope.value = (scope.stepNo / scope.stepTotal) * 100;
             }
