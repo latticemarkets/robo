@@ -8,7 +8,7 @@
 
 package controllers
 
-import core.Forms
+import core.{Hash, Forms}
 import models.User
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -24,12 +24,31 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class Users extends Controller {
 
   def register = Action.async { implicit request =>
-    Forms.loginForm.bindFromRequest.fold(
+    Forms.registerForm.bindFromRequest.fold(
       formWithErrors => {
         Future.successful( BadRequest("Wrong data sent.") )
       },
       providedInfos => {
         User.store(providedInfos) map (optUser => optUser.map(user => Ok(Json.obj("token" -> user.token))).getOrElse(BadRequest("An error occurred when inserting data")))
+      }
+    )
+  }
+
+  def login = Action.async { implicit request =>
+    Forms.loginForm.bindFromRequest.fold(
+      formWithErrors => {
+        Future.successful( BadRequest("Wrong data sent.") )
+      },
+      login => {
+        User.findByEmail(login.email) map (optUser => optUser map (user =>
+          if (Hash.checkPassword(login.password, user.password)) {
+            Ok(Json.obj("token" -> user.token))
+          }
+          else {
+            BadRequest("Wrong password")
+          }
+        ) getOrElse BadRequest("Wrong email")
+        )
       }
     )
   }

@@ -18,7 +18,7 @@ import play.api.data.Forms._
   */
 
 object Forms {
-  def loginForm = Form(
+  def registerForm = Form(
     mapping (
       "_id" -> email,
       "password" -> nonEmptyText,
@@ -34,5 +34,12 @@ object Forms {
       "lastName" -> nonEmptyText,
       "token" -> ignored(Hash.createToken)
     )(User.apply)(User.unapply)
+  )
+
+  def loginForm = Form(
+    mapping(
+      "email" -> email,
+      "password" -> nonEmptyText
+    )(Login.apply)(Login.unapply)
   )
 }

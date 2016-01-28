@@ -40,6 +40,11 @@ case class User(
   def withEncryptedPassword: User = this.copy(password = Hash.createPassword(this.password))
 }
 
+case class Login(
+                email: String,
+                password: String
+                )
+
 object User {
   val collectionName = "user"
 

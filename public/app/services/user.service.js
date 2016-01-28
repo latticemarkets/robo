@@ -22,7 +22,7 @@
 
     function UserService($http) {
 
-        function register(email, password, terms, reason, income, timeline, birthday, platform, accountId, firstName, lastName, apiKey, successCallback, errorCallback) {
+        var register = function(email, password, terms, reason, income, timeline, birthday, platform, accountId, firstName, lastName, apiKey, successCallback, errorCallback) {
             $http
                 .post('/api/register', {
                     _id: email,
@@ -39,10 +39,17 @@
                     apiKey: apiKey
                 })
                 .then(successCallback, errorCallback);
-        }
+        };
+
+        var login = function(email, password, successCallback, errorCallback) {
+            $http
+                .post('/api/login', { email: email, password: password })
+                .then(successCallback, errorCallback);
+        };
 
         return {
-            register: register
+            register: register,
+            login: login
         };
     }
 })();

@@ -23,6 +23,11 @@
                 controller: "LandpageController",
                 controllerAs: 'vm'
             })
+            .when('/signin', {
+                templateUrl: "assets/app/signin/signin.html",
+                controller: "SignInController",
+                controllerAs: 'vm'
+            })
             .when('/signup', {
                 templateUrl: "assets/app/signup/login/signupLogin.html",
                 controller: "SignupLoginController",
