@@ -16,7 +16,7 @@
 
     angular
         .module('app')
-        .directive('progressBar', progressBar);
+        .directive('myProgressBar', progressBar);
 
     progressBar.$inject = [];
 

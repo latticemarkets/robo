@@ -18,9 +18,9 @@
         .module('app')
         .controller('SignInController', SignInController);
 
-    SignInController.$inject = ['UserService', '$cookieStore', '$location'];
+    SignInController.$inject = ['UserService', '$cookieStore', '$location', 'NotificationService'];
 
-    function SignInController(UserService, $cookieStore, $location) {
+    function SignInController(UserService, $cookieStore, $location, NotificationService) {
         var vm = this;
 
         function allConditionsSatisfied() {
@@ -43,7 +43,7 @@
                     $location.path('/dashboard');
                 },
                 function() {
-                    alert('oups !');
+                    NotificationService.error();
                 });
             }
         };
