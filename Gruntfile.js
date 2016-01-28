@@ -17,7 +17,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 src: ['public/app/app.js', 'public/app/**/*.js'],
-                dest: 'public/dist/app.js'
+                dest: 'public/dist/app.jsx'
             }
         },
         bower_concat: {
@@ -81,6 +81,17 @@ module.exports = function(grunt) {
         },
         jshint: {
             all: [ 'Gruntfile.js', 'public/app/*.js', 'public/app/**/*.js' ]
+        },
+        babel: {
+            options: {
+                sourceMap: true,
+                presets: ['es2015']
+            },
+            dist: {
+                files: {
+                    'public/dist/app.js': 'public/dist/app.jsx'
+                }
+            }
         }
     });
 
@@ -91,9 +102,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-bowercopy');
+    grunt.loadNpmTasks('grunt-babel');
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat', 'bowercopy', 'jshint']);
+    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat', 'bowercopy', 'jshint', 'babel']);
     grunt.registerTask('dev', ['build', 'watch']);
 };
