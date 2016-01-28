@@ -2318,6 +2318,6 @@ div .signup .choosed-platform {
     left: 0;
     z-index: -1;
 }
-.progress-bar-grey {
-    background-color: #273140 !important;
+#progressbar {
+    background-color: #455362 !important;
 }

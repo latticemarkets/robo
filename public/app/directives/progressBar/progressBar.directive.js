@@ -31,11 +31,6 @@
             template: '<div class="progress"> <div class="progress-bar" id="progressbar" role="progressbar" aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ value }}%;"> </div> </div>',
             link: function(scope) {
                 scope.value = (scope.stepNo / scope.stepTotal) * 100;
-                $timeout(function() {
-                    scope.$apply(function() {
-                        $('#progressbar').addClass("progress-bar-grey");
-                    });
-                });
             }
         };
     }
