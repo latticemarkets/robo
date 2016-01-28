@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupLoginController {
-        constructor($location, $cookieStore, UserService, NotificationService) {
+        constructor($location, $cookieStore, userService, notificationService) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
@@ -63,7 +63,7 @@
 
             vm.submit = function() {
                 if (allConditionsSatisfied()) {
-                    UserService.isEmailUsed(
+                    userService.isEmailUsed(
                         vm.email,
                         response => {
                             if (response.data.ok) {
@@ -81,7 +81,7 @@
             };
 
             function displayError() {
-                NotificationService.error("This email is already used.");
+                notificationService.error("This email is already used.");
             }
         }
     }

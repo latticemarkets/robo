@@ -50,7 +50,7 @@
             vm.submit = () => {
                 if (allConditionsSatisfied()) {
                     $cookieStore.put('signup.birthday', new Date(`${vm.month}/${vm.day}/${vm.year}`).toLocaleDateString());
-                    $location.path('/signup');
+                    $location.path('/signup/p2pPlatform');
                 }
             };
         }

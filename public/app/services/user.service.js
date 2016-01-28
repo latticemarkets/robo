@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    class UserService {
+    class userService {
         constructor($http) {
             this.$http = $http;
         }
@@ -53,5 +53,5 @@
 
     angular
         .module('app')
-        .service('UserService', UserService);
+        .service('userService', userService);
 })();

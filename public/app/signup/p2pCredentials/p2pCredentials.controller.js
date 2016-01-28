@@ -51,7 +51,7 @@
                 if (allConditionsSatisfied()) {
                     $cookieStore.put('signup.accountId', vm.accountId);
                     $cookieStore.put('signup.apiKey', vm.apiKey);
-                    $location.path('/signup');
+                    $location.path('/signup/personalInfos');
                 }
             };
         }

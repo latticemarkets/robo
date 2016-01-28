@@ -27,13 +27,13 @@
                 const reason = $cookieStore.get('signup.reason');
 
                 if (!(email && password && terms && reason)) {
-                    $location.path('/signup/reasonInvestment');
+                    $location.path('/signup');
                 }
             })();
 
             vm.submit = income => {
                 $cookieStore.put('signup.income', income);
-                $location.path('/signup');
+                $location.path('/signup/timeline');
             };
         }
     }

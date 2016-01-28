@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    class NotificationService {
+    class notificationService {
         constructor(toastr) {
             this.toastr = toastr;
         }
@@ -26,7 +26,7 @@
 
     angular
         .module('app')
-        .service('NotificationService', NotificationService)
+        .service('notificationService', notificationService)
         .config((toastrConfig) => angular.extend(toastrConfig, {
                 "closeButton": true,
                 "debug": false,
