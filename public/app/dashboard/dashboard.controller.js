@@ -15,10 +15,9 @@
     'use strict';
 
     class DashboardController {
-        constructor() {
+        constructor(cssInjector) {
             var vm = this;
-
-
+            cssInjector.add("assets/stylesheets/homer_style.css");
         }
     }
 

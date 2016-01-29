@@ -15,8 +15,10 @@
     'use strict';
 
     class SignupRegisteredController {
-        constructor() {
+        constructor($timeout, $location) {
             const vm = this;
+
+            $timeout(() => $location.path('/dashboard'), 5000);
         }
     }
 
