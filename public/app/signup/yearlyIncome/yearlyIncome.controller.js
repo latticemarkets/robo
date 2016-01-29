@@ -20,6 +20,14 @@
 
             vm.pageClass = 'signup-login blue';
 
+            vm.incomeRanges = {
+                '-25': 'Less than $25,000',
+                '25-50': '$25,000 - $50,000',
+                '50-100': '$50,000 - $100,000',
+                '100-250': '$100,000 - $250,000',
+                '+250': '$250,000+'
+            };
+
             (() => {
                 const email = $cookieStore.get('signup.email');
                 const password = $cookieStore.get('signup.password');
@@ -32,8 +40,10 @@
             })();
 
             vm.submit = income => {
-                $cookieStore.put('signup.income', income);
-                $location.path('/signup/timeline');
+                if (Object.keys(vm.incomeRanges).indexOf(income) >= 0) {
+                    $cookieStore.put('signup.income', income);
+                    $location.path('/signup/timeline');
+                }
             };
         }
     }
