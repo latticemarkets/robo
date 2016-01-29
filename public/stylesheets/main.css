@@ -2164,7 +2164,6 @@ div .signup .form-control  {
     box-shadow: none;
     font-family: 'Avenir Next', AvenirNextLTW01-Regular, sans-serif;
     font-size: 20px;
-    padding: 0 20px 0 60px;
 }
 div .signup .form-control:focus {
     -webkit-box-shadow: 0 0 0 2px #455362;
