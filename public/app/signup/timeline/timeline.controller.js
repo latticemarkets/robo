@@ -20,6 +20,14 @@
 
             vm.pageClass = 'signup-login blue';
 
+            vm.timelines = {
+                '-5': 'Less than 5 years',
+                '5-10': '5 - 10 years',
+                '10-15': '10 - 15 years',
+                '15-25': '15 - 25 years',
+                '+25': '25+ years'
+            };
+
             (() => {
                 const email = $cookieStore.get('signup.email');
                 const password = $cookieStore.get('signup.password');
@@ -33,8 +41,10 @@
             })();
 
             vm.submit = timeline => {
-                $cookieStore.put('signup.timeline', timeline);
-                $location.path('/signup/birthday');
+                if (Object.keys(vm.timelines).indexOf(timeline) >= 0) {
+                    $cookieStore.put('signup.timeline', timeline);
+                    $location.path('/signup/birthday');
+                }
             };
         }
     }
