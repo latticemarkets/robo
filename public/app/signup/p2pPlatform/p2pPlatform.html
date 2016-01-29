@@ -9,11 +9,7 @@
             <h1 class="intro-lead-in">Link your P2P Platform.</h1>
         </div>
         <div class="signup row">
-            <img width="150px" src="assets/img/platforms/lendingClub.png" class="img-rounded platform" data-ng-click="vm.submit('lendingClub.png')"/>
-            <img width="150px" src="assets/img/platforms/prosper.png" class="img-rounded platform" data-ng-click="vm.submit('prosper.png')"/>
-            <img width="150px" src="assets/img/platforms/bondora.png" class="img-rounded platform" data-ng-click="vm.submit('bondora.png')"/>
-            <img width="150px" src="assets/img/platforms/ratesetter.jpg" class="img-rounded platform" data-ng-click="vm.submit('ratesetter.jpg')"/>
-            <img width="150px" src="assets/img/platforms/fundingCircle.jpeg" class="img-rounded platform" data-ng-click="vm.submit('fundingCircle.jpeg')"/>
+            <img width="150px" src="assets/img/platforms/{{ platform }}.{{ extension }}" class="img-rounded platform" data-ng-click="vm.submit(platform)" data-ng-repeat="(platform, extension) in vm.platforms">
         </div>
     </div>
 </div>

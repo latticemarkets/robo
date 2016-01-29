@@ -20,6 +20,14 @@
 
             vm.pageClass = 'signup-login blue';
 
+            vm.platforms = {
+                'lendingClub': 'png',
+                'prosper': 'png',
+                'bondora': 'png',
+                'ratesetter': 'jpg',
+                'fundingCircle': 'jpeg'
+            };
+
             (() => {
                 const email = $cookieStore.get('signup.email');
                 const password = $cookieStore.get('signup.password');
@@ -35,10 +43,11 @@
             })();
 
             vm.submit = platform => {
-                const split = platform.split('.');
-                $cookieStore.put('signup.platform', split[0]);
-                $cookieStore.put('signup.extension', split[1]);
-                $location.path('/signup/p2pCredentials');
+                if (Object.keys(vm.platforms).indexOf(platform) >= 0) {
+                    $cookieStore.put('signup.platform', platform);
+                    $cookieStore.put('signup.extension', vm.platforms[platform]);
+                    $location.path('/signup/p2pCredentials');
+                }
             };
         }
     }
