@@ -72,17 +72,13 @@
                                 $location.path('/signup/termsAndConditions');
                             }
                             else {
-                                displayError();
+                                notificationService.error("This email is already used.");
                             }
                         },
-                        () => { displayError(); }
+                        response => notificationService.error(response.data)
                     );
                 }
             };
-
-            function displayError() {
-                notificationService.error("This email is already used.");
-            }
         }
     }
 
