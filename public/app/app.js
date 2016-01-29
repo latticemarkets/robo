@@ -11,7 +11,7 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ngAnimate', 'toastr'])
+        .module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ngAnimate', 'toastr', 'ui.bootstrap'])
         .config(config)
         .run(run);
 
