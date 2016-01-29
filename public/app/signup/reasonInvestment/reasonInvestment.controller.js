@@ -20,6 +20,14 @@
 
             vm.pageClass = 'signup-login blue';
 
+            vm.reasons = {
+                longterm: 'Long-term investment',
+                shortterm: 'Short-term investment',
+                majorpurchase: 'Major purchase',
+                children: 'Children',
+                general: 'General'
+            };
+
             (() => {
                 const email = $cookieStore.get('signup.email');
                 const password = $cookieStore.get('signup.password');
@@ -30,8 +38,10 @@
             })();
 
             vm.submit = reason => {
-                $cookieStore.put('signup.reason', reason);
-                $location.path('/signup/yearlyIncome');
+                if (Object.keys(vm.reasons).indexOf(reason) >= 0) {
+                    $cookieStore.put('signup.reason', reason);
+                    $location.path('/signup/yearlyIncome');
+                }
             };
         }
     }
