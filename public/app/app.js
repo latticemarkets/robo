@@ -78,6 +78,11 @@
                 controller: "SignupRegisteredController",
                 controllerAs: 'vm'
             })
+            .when('/dashboard', {
+                templateUrl: "assets/app/dashboard/dashboard.html",
+                controller: "DashboardController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 
