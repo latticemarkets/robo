@@ -15,7 +15,7 @@
     'use strict';
 
     class SignInController {
-        constructor(userService, $cookieStore, $location, notificationService) {
+        constructor(userService, $location, notificationService, authenticationService) {
             const vm = this;
 
             function allConditionsSatisfied() {
@@ -34,7 +34,7 @@
                 if (allConditionsSatisfied()) {
                     userService.login(vm.email, vm.password,
                     response => {
-                        $cookieStore.put('token', response.data.token);
+                        authenticationService.authenticate(response.data.token, vm.email);
                         $location.path('/dashboard');
                     },
                     response => {

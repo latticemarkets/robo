@@ -16,7 +16,8 @@ describe('SignupPersonalInfosController', () => {
         $cookieStore,
         $location,
         userService,
-        notificationService;
+        notificationService,
+        authenticationService;
 
     beforeEach(() => {
         module('app');
@@ -25,6 +26,7 @@ describe('SignupPersonalInfosController', () => {
         $location = jasmine.createSpyObj('$location', ['path']);
         userService = jasmine.createSpyObj('userService', ['register']);
         notificationService = jasmine.createSpyObj('notificationService', ['error']);
+        authenticationService = jasmine.createSpyObj('authenticationService', ['authenticate']);
     });
 
     beforeEach(inject(($controller) => {
@@ -32,7 +34,8 @@ describe('SignupPersonalInfosController', () => {
             $cookieStore : $cookieStore,
             $location : $location,
             userService: userService,
-            notificationService: notificationService
+            notificationService: notificationService,
+            authenticationService: authenticationService
         });
     }));
 
@@ -147,8 +150,8 @@ describe('SignupPersonalInfosController', () => {
                     personalInfosController.submit();
                 });
 
-                it('should add token to cookies', () => {
-                    expect($cookieStore.put).toHaveBeenCalledWith('token', token);
+                it('should authenticate the user', () => {
+                    expect(authenticationService.authenticate).toHaveBeenCalled();
                 });
 
                 it('should remove cookies used in registering process', () => {

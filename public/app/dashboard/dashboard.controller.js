@@ -15,9 +15,14 @@
     'use strict';
 
     class DashboardController {
-        constructor(cssInjector) {
+        constructor(cssInjector, authenticationService, $location) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
+
+            vm.logout = () => {
+                authenticationService.logout();
+                $location.path('/');
+            };
         }
     }
 

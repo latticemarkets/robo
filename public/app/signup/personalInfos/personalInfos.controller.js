@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupPersonalInfosController {
-        constructor($location, $cookieStore, userService, notificationService) {
+        constructor($location, $cookieStore, userService, notificationService, authenticationService) {
             const vm = this;
 
             let email,
@@ -62,7 +62,7 @@
                 if (allConditionsSatisfied()) {
                     userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, vm.firstName, vm.lastName,
                         response => {
-                            $cookieStore.put('token', response.data.token);
+                            authenticationService.authenticate(response.data.token, email);
                             $cookieStore.remove('signup.email');
                             $cookieStore.remove('signup.password');
                             $cookieStore.remove('signup.terms');
