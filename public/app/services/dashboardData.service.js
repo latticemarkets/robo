@@ -26,6 +26,14 @@
         allocatedCapital(callback) {
             return this.$http.get('/api/dashboard/capital/allocated').then(callback);
         }
+
+        averageMaturity(callback) {
+            return this.$http.get('/api/dashboard/averageMaturity').then(callback);
+        }
+
+        averageIntRate(callback) {
+            return this.$http.get('/api/dashboard/averageIntRate').then(callback);
+        }
     }
 
     angular

@@ -48,6 +48,32 @@ describe('dashboardDataService', () => {
         });
     });
 
+
+    describe('averageMaturity', () => {
+        beforeEach(() => {
+            _$httpBackend.when('GET', '/api/dashboard/averageMaturity').respond();
+            _dashboardDataService.averageMaturity(() => {});
+        });
+
+        it('should call averageMaturity API', () => {
+            _$httpBackend.expectGET('/api/dashboard/averageMaturity');
+            expect(_$httpBackend.flush).not.toThrow();
+        });
+    });
+
+
+    describe('averageIntRate', () => {
+        beforeEach(() => {
+            _$httpBackend.when('GET', '/api/dashboard/averageIntRate').respond();
+            _dashboardDataService.averageIntRate(() => {});
+        });
+
+        it('should call averageIntRatel API', () => {
+            _$httpBackend.expectGET('/api/dashboard/averageIntRate');
+            expect(_$httpBackend.flush).not.toThrow();
+        });
+    });
+
     afterEach(() => {
         _$httpBackend.verifyNoOutstandingExpectation();
         _$httpBackend.verifyNoOutstandingRequest();

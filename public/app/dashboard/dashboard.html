@@ -96,13 +96,13 @@
                                 </div>
                                 <div>
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-title">
-                                        10 Months
+                                        {{ vm.averageMaturity }}
                                     </h1>
                                     <small>Average maturity</small>
                                 </div>
                                 <div>
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-title">
-                                        12 %
+                                        {{ vm.averageIntRate | percent : 2 }}
                                     </h1>
                                     <small>Average interest rate</small>
                                 </div>
