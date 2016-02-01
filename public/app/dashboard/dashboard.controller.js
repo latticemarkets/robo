@@ -29,6 +29,7 @@
             function initData() {
                 dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
                 dashboardDataService.allocatedCapital(response => vm.allocatedCapital = response.data.allocatedCapital);
+                vm.lastUpdate = new Date();
             }
         }
     }
