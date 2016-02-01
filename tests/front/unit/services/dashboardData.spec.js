@@ -74,6 +74,32 @@ describe('dashboardDataService', () => {
         });
     });
 
+
+    describe('expectedReturns', () => {
+        beforeEach(() => {
+            _$httpBackend.when('GET', '/api/dashboard/expectedReturns').respond();
+            _dashboardDataService.expectedReturns(() => {});
+        });
+
+        it('should call expectedReturns API', () => {
+            _$httpBackend.expectGET('/api/dashboard/expectedReturns');
+            expect(_$httpBackend.flush).not.toThrow();
+        });
+    });
+
+
+    describe('lastLoanMaturity', () => {
+        beforeEach(() => {
+            _$httpBackend.when('GET', '/api/dashboard/lastLoanMaturity').respond();
+            _dashboardDataService.lastLoanMaturity(() => {});
+        });
+
+        it('should call lastLoanMaturity API', () => {
+            _$httpBackend.expectGET('/api/dashboard/lastLoanMaturity');
+            expect(_$httpBackend.flush).not.toThrow();
+        });
+    });
+
     afterEach(() => {
         _$httpBackend.verifyNoOutstandingExpectation();
         _$httpBackend.verifyNoOutstandingRequest();

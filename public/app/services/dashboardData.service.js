@@ -34,6 +34,14 @@
         averageIntRate(callback) {
             return this.$http.get('/api/dashboard/averageIntRate').then(callback);
         }
+
+        expectedReturns(callback) {
+            return this.$http.get('/api/dashboard/expectedReturns').then(callback);
+        }
+
+        lastLoanMaturity(callback) {
+            return this.$http.get('/api/dashboard/lastLoanMaturity').then(callback);
+        }
     }
 
     angular

@@ -32,6 +32,8 @@
                 vm.lastUpdate = new Date();
                 dashboardDataService.averageMaturity(response => vm.averageMaturity = moment(response.data.averageMaturity).fromNow());
                 dashboardDataService.averageIntRate(response => vm.averageIntRate = response.data.averageIntRate);
+                dashboardDataService.expectedReturns(response => vm.expectedReturns = response.data.expectedReturns);
+                dashboardDataService.lastLoanMaturity(response => vm.lastLoanMaturity = moment(response.data.lastLoanMaturity).fromNow());
                 userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.username = `${response.data.firstName} ${response.data.lastName}`);
             }
         }
