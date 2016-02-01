@@ -79,6 +79,14 @@ class Users extends Controller {
     Ok(Json.obj("averageIntRate" -> 0.12))
   }
 
+  def expectedReturns() = HasToken {
+    Ok(Json.obj("expectedReturns" -> 34000))
+  }
+
+  def lastLoanMaturity() = HasToken {
+    Ok(Json.obj("lastLoanMaturity" -> LocalDate.parse("2018-01-07")))
+  }
+
   def userData(email: String) = HasToken.async {
     User.findByEmail(email) map (user => Ok(Json.toJson(user)))
   }
