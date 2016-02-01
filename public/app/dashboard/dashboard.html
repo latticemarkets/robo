@@ -68,17 +68,20 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3 text-center">
-                                <div class="small">
-                                    <i class="fa fa-bolt"></i> Page views
+                                <div class="medium">
+                                    <i class="fa fa-bolt"></i> Your capital
                                 </div>
                                 <div>
                                     <h1 class="font-extra-bold m-t-xl m-b-xs">
-                                        226,802
+                                        {{ vm.availableCapital | currency }}
                                     </h1>
-                                    <small>Page views in last month</small>
+                                    <small>Available for investment</small>
                                 </div>
-                                <div class="small m-t-xl">
-                                    <i class="fa fa-clock-o"></i> Data from January
+                                <div>
+                                    <h1 class="font-extra-bold m-t-xl m-b-xs">
+                                        {{ vm.allocatedCapital | currency }}
+                                    </h1>
+                                    <small>Allocated on investments</small>
                                 </div>
                             </div>
                             <div class="col-md-6">

@@ -59,4 +59,12 @@ class Users extends Controller {
       case Some(user) => Ok(Json.obj("ok" -> false))
     }
   }
+
+  def availableCapital() = Action {
+    Ok(Json.obj("availableCapital" -> 200000))
+  }
+
+  def allocatedCapital() = Action {
+    Ok(Json.obj("allocatedCapital" -> 300000))
+  }
 }
