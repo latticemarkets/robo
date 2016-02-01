@@ -30,7 +30,7 @@
                 dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
                 dashboardDataService.allocatedCapital(response => vm.allocatedCapital = response.data.allocatedCapital);
                 vm.lastUpdate = new Date();
-                dashboardDataService.averageMaturity(response => vm.averageMaturity = response.data.averageMaturity);
+                dashboardDataService.averageMaturity(response => vm.averageMaturity = moment(response.data.averageMaturity).fromNow());
                 dashboardDataService.averageIntRate(response => vm.averageIntRate = response.data.averageIntRate);
                 userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.username = `${response.data.firstName} ${response.data.lastName}`);
             }
