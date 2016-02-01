@@ -26,7 +26,7 @@ describe('DashboardController', () => {
         authenticationService = jasmine.createSpyObj('authenticationService', ['logout', 'getCurrentUsersEmail']);
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
         dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital']);
-        userService = jasmine.createSpyObj('userService', ['userInformations']);
+        userService = jasmine.createSpyObj('userService', ['userData']);
     });
 
     let availableCapital;
@@ -45,7 +45,7 @@ describe('DashboardController', () => {
     beforeEach(() => {
         firstName = "Arthur";
         lastName = "Guinness";
-        userService.userInformations.and.callFake((currentUserEmail, callback) => callback({data: { firstName: firstName, lastName: lastName } }));
+        userService.userData.and.callFake((currentUserEmail, callback) => callback({data: { firstName: firstName, lastName: lastName } }));
     });
 
     beforeEach(inject(($controller) => {
@@ -94,7 +94,7 @@ describe('DashboardController', () => {
         });
 
         it('should load user names from API', () => {
-            expect(userService.userInformations).toHaveBeenCalled();
+            expect(userService.userData).toHaveBeenCalled();
             expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
             expect(dashboardController.username).toBe(`${firstName} ${lastName}`);
         });

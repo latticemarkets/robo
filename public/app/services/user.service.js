@@ -50,7 +50,7 @@
                 .then(successCallback, errorCallback);
         }
 
-        userInformations(email, callback) {
+        userData(email, callback) {
             this.$http.get(`/api/user/infos/${email}`).then(callback);
         }
     }

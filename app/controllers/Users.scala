@@ -69,7 +69,7 @@ class Users extends Controller {
     Ok(Json.obj("allocatedCapital" -> 300000))
   }
 
-  def userInformations(email: String) = HasToken.async {
+  def userData(email: String) = HasToken.async {
     User.findByEmail(email) map (user => Ok(Json.toJson(user)))
   }
 }
