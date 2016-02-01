@@ -27,12 +27,14 @@
                 token: token
             };
             this.$cookieStore.put('globals', this.$rootScope.globals);
-            this.$http.defaults.headers.common['X-TOKEN'] = this.$rootScope.globals.currentUser.token;
+            this.$http.defaults.headers.common['X-TOKEN'] = this.$rootScope.globals.currentUser.token; // jshint ignore:line
+            this.$http.defaults.headers.common['USER'] = this.$rootScope.globals.currentUser.email; // jshint ignore:line
         }
 
         logout() {
             this.$rootScope.globals = {};
-            this.$http.defaults.headers.common['X-TOKEN'] = "";
+            this.$http.defaults.headers.common['X-TOKEN'] = ""; // jshint ignore:line
+            this.$http.defaults.headers.common['USER'] = ""; // jshint ignore:line
             this.$cookieStore.remove('globals');
         }
     }

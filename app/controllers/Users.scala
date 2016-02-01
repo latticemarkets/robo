@@ -8,6 +8,7 @@
 
 package controllers
 
+import controllers.Security.HasToken
 import core.{Hash, Forms}
 import models.User
 import play.api.libs.json.Json
@@ -60,11 +61,11 @@ class Users extends Controller {
     }
   }
 
-  def availableCapital() = Action {
+  def availableCapital() = HasToken {
     Ok(Json.obj("availableCapital" -> 200000))
   }
 
-  def allocatedCapital() = Action {
+  def allocatedCapital() = HasToken {
     Ok(Json.obj("allocatedCapital" -> 300000))
   }
 }
