@@ -15,7 +15,7 @@
     'use strict';
 
     class DashboardController {
-        constructor(cssInjector, authenticationService, $location, dashboardDataService) {
+        constructor(cssInjector, authenticationService, $location, dashboardDataService, userService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -30,6 +30,7 @@
                 dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
                 dashboardDataService.allocatedCapital(response => vm.allocatedCapital = response.data.allocatedCapital);
                 vm.lastUpdate = new Date();
+                userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.username = `${response.data.firstName} ${response.data.lastName}`);
             }
         }
     }

@@ -8,6 +8,7 @@ GET     /                                       controllers.Application.index
 POST    /api/register                           controllers.Users.register
 POST    /api/login                              controllers.Users.login
 GET     /api/user/:email                        controllers.Users.isUsed(email)
+GET     /api/user/infos/:email                  controllers.Users.userData(email)
 
 GET     /api/dashboard/capital/available        controllers.Users.availableCapital
 GET     /api/dashboard/capital/allocated        controllers.Users.allocatedCapital
