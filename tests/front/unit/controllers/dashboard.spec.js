@@ -15,7 +15,8 @@ describe('DashboardController', () => {
     let dashboardController,
         cssInjector,
         authenticationService,
-        $location;
+        $location,
+        dashboardDataService;
 
     beforeEach(() => {
         module('app');
@@ -23,13 +24,15 @@ describe('DashboardController', () => {
         $location = jasmine.createSpyObj('$location', ['path']);
         authenticationService = jasmine.createSpyObj('authenticationService', ['logout']);
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
+        dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital']);
     });
 
     beforeEach(inject(($controller) => {
         dashboardController = $controller('DashboardController', {
             $location : $location,
             authenticationService: authenticationService,
-            cssInjector: cssInjector
+            cssInjector: cssInjector,
+            dashboardDataService: dashboardDataService
         });
     }));
 
@@ -50,6 +53,20 @@ describe('DashboardController', () => {
 
         it('should redirect the user to the landpage', () => {
             expect($location.path).toHaveBeenCalledWith('/');
+        });
+    });
+
+    describe('data initialisation', () => {
+        it('should load available capital from API', () => {
+            expect(dashboardDataService.availableCapital).toHaveBeenCalled();
+        });
+
+        it('should load allocated capital from API', () => {
+            expect(dashboardDataService.allocatedCapital).toHaveBeenCalled();
+        });
+
+        it('should set the current date', () => {
+            expect(dashboardController.lastUpdate).not.toBeUndefined();
         });
     });
 });
