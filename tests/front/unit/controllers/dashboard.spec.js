@@ -29,6 +29,25 @@ describe('DashboardController', () => {
         userService = jasmine.createSpyObj('userService', ['userInformations']);
     });
 
+    let availableCapital;
+    beforeEach(() => {
+        availableCapital = 1000;
+        dashboardDataService.availableCapital.and.callFake(callback => callback({data: { availableCapital: availableCapital } }));
+    });
+
+    let allocatedCapital;
+    beforeEach(() => {
+        allocatedCapital = 2000;
+        dashboardDataService.allocatedCapital.and.callFake(callback => callback({data: { allocatedCapital: allocatedCapital } }));
+    });
+
+    let firstName, lastName;
+    beforeEach(() => {
+        firstName = "Arthur";
+        lastName = "Guinness";
+        userService.userInformations.and.callFake((currentUserEmail, callback) => callback({data: { firstName: firstName, lastName: lastName } }));
+    });
+
     beforeEach(inject(($controller) => {
         dashboardController = $controller('DashboardController', {
             $location : $location,
@@ -62,10 +81,12 @@ describe('DashboardController', () => {
     describe('data initialisation', () => {
         it('should load available capital from API', () => {
             expect(dashboardDataService.availableCapital).toHaveBeenCalled();
+            expect(dashboardController.availableCapital).toBe(availableCapital);
         });
 
         it('should load allocated capital from API', () => {
             expect(dashboardDataService.allocatedCapital).toHaveBeenCalled();
+            expect(dashboardController.allocatedCapital).toBe(allocatedCapital);
         });
 
         it('should set the current date', () => {
@@ -75,6 +96,7 @@ describe('DashboardController', () => {
         it('should load user names from API', () => {
             expect(userService.userInformations).toHaveBeenCalled();
             expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
+            expect(dashboardController.username).toBe(`${firstName} ${lastName}`);
         });
     });
 });
