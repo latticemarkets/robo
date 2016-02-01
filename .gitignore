@@ -165,3 +165,6 @@ server.pid
 *.eml
 /dist/
 .cache
+/.cache-main
+/.classpath
+/.project
