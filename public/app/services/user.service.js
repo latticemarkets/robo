@@ -49,10 +49,6 @@
                 .get(`/api/user/${email}`)
                 .then(successCallback, errorCallback);
         }
-
-        userData(email, callback) {
-            this.$http.get(`/api/user/infos/${email}`).then(callback);
-        }
     }
 
     angular

@@ -116,8 +116,7 @@ module.exports = function(grunt) {
         jasmine : {
             src : ['public/dist/bower.js', 'public/dist/app.js'],
             options: {
-                specs : 'tests/front/unit/tests.js',
-                summary: true
+                specs : 'tests/front/unit/tests.js'
             }
         }
     });

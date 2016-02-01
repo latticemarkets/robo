@@ -127,15 +127,4 @@ describe('userService', () => {
             _$httpBackend.verifyNoOutstandingRequest();
         });
     });
-
-    describe('userInformations', () => {
-        let email;
-
-        beforeEach(() => {
-            email = "email";
-
-            _$httpBackend.when('GET', `/api/user/infos/${email}`).respond();
-            _userService.userInformations(email);
-        });
-    });
 });

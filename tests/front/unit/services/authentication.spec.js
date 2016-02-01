@@ -87,17 +87,4 @@ describe('authenticationService', () => {
             expect(_$cookieStore.remove).toHaveBeenCalledWith('globals');
         });
     });
-
-    describe('getCurrentUsersEmail', () => {
-        let email;
-
-        beforeEach(() => {
-            email = "email";
-            $rootScope.globals = { currentUser : { email: email } };
-        });
-
-        it('should return the current user\'s email', () => {
-            expect(_authenticationService.getCurrentUsersEmail()).toBe(email);
-        });
-    });
 });

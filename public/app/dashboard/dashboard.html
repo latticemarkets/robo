@@ -22,11 +22,12 @@
             </a>
 
             <div class="stats-label text-color">
+                <span class="font-extra-bold font-uppercase">Robert Razer</span>
+
                 <div class="dropdown" uib-dropdown on-toggle="toggled(open)">
                     <a class="dropdown-toggle" uib-dropdown-toggle>
-                        <span class="font-extra-bold font-uppercase">{{ vm.username }} <b class="caret"></b></span>
+                        <small class="text-muted">Founder of App <b class="caret"></b></small>
                     </a>
-
                     <ul uib-dropdown-menu role="menu" aria-labelledby="single-button" class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a href="contacts.html">Contacts</a></li>
                         <li><a href="profile.html">Profile</a></li>
@@ -35,6 +36,7 @@
                         <li><a data-ng-click="vm.logout()">Logout</a></li>
                     </ul>
                 </div>
+
 
                 <div id="sparkline1" class="small-chart m-t-sm"></div>
                 <div>

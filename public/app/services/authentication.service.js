@@ -37,10 +37,6 @@
             this.$http.defaults.headers.common['USER'] = ""; // jshint ignore:line
             this.$cookieStore.remove('globals');
         }
-
-        getCurrentUsersEmail() {
-            return this.$rootScope.globals.currentUser.email;
-        }
     }
 
     angular
