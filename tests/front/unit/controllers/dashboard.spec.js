@@ -16,15 +16,17 @@ describe('DashboardController', () => {
         cssInjector,
         authenticationService,
         $location,
-        dashboardDataService;
+        dashboardDataService,
+        userService;
 
     beforeEach(() => {
         module('app');
 
         $location = jasmine.createSpyObj('$location', ['path']);
-        authenticationService = jasmine.createSpyObj('authenticationService', ['logout']);
+        authenticationService = jasmine.createSpyObj('authenticationService', ['logout', 'getCurrentUsersEmail']);
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
         dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital']);
+        userService = jasmine.createSpyObj('userService', ['userInformations']);
     });
 
     beforeEach(inject(($controller) => {
@@ -32,7 +34,8 @@ describe('DashboardController', () => {
             $location : $location,
             authenticationService: authenticationService,
             cssInjector: cssInjector,
-            dashboardDataService: dashboardDataService
+            dashboardDataService: dashboardDataService,
+            userService: userService
         });
     }));
 
@@ -67,6 +70,11 @@ describe('DashboardController', () => {
 
         it('should set the current date', () => {
             expect(dashboardController.lastUpdate).not.toBeUndefined();
+        });
+
+        it('should load user names from API', () => {
+            expect(userService.userInformations).toHaveBeenCalled();
+            expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
         });
     });
 });
