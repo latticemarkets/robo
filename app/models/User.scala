@@ -16,6 +16,7 @@ import play.modules.reactivemongo.json._
 import play.modules.reactivemongo.json.collection.JSONCollection
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 /**
   * @author : julienderay
@@ -46,6 +47,7 @@ case class Login(
                 )
 
 object User {
+
   val collectionName = "user"
 
   implicit val accountSummaryFormat = Json.format[User]
@@ -60,5 +62,10 @@ object User {
       newUser <- findByEmail(user._id) if result.ok
     }
       yield newUser
+  }
+
+  def getByToken(token: String): Future[Option[User]] = {
+    val query = Json.obj("token" -> token)
+    usersTable.find(query).one[User]
   }
 }

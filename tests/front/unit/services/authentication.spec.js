@@ -57,6 +57,10 @@ describe('authenticationService', () => {
             expect($http.defaults.headers.common['X-TOKEN']).toBe(token);
         });
 
+        it('should sets the email as default http header', () => {
+            expect($http.defaults.headers.common['USER']).toBe(email);
+        });
+
         it('should store the user\'s credentials in a cookie', () => {
             expect(_$cookieStore.put).toHaveBeenCalledWith('globals', { currentUser: { email: email, token: token } });
         });
@@ -73,6 +77,10 @@ describe('authenticationService', () => {
 
         it('should remove the token from default http headers', () => {
             expect($http.defaults.headers.common['X-TOKEN']).toBe('');
+        });
+
+        it('should remove the email from default http headers', () => {
+            expect($http.defaults.headers.common['USER']).toBe('');
         });
 
         it('should remove the user\'s credentials from the cookies', () => {

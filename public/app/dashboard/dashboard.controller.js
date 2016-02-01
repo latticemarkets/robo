@@ -15,14 +15,22 @@
     'use strict';
 
     class DashboardController {
-        constructor(cssInjector, authenticationService, $location) {
+        constructor(cssInjector, authenticationService, $location, dashboardDataService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
+
+            initData();
 
             vm.logout = () => {
                 authenticationService.logout();
                 $location.path('/');
             };
+
+            function initData() {
+                dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
+                dashboardDataService.allocatedCapital(response => vm.allocatedCapital = response.data.allocatedCapital);
+                vm.lastUpdate = new Date();
+            }
         }
     }
 

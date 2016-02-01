@@ -109,6 +109,7 @@
 
         if ($rootScope.globals.currentUser && !authorizedPage()) {
             $http.defaults.headers.common['X-TOKEN'] = $rootScope.globals.currentUser.token; // jshint ignore:line
+            $http.defaults.headers.common['USER'] = $rootScope.globals.currentUser.email; // jshint ignore:line
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
