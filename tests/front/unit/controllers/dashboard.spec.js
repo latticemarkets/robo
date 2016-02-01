@@ -25,7 +25,7 @@ describe('DashboardController', () => {
         $location = jasmine.createSpyObj('$location', ['path']);
         authenticationService = jasmine.createSpyObj('authenticationService', ['logout', 'getCurrentUsersEmail']);
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
-        dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital']);
+        dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital', 'averageMaturity', 'averageIntRate']);
         userService = jasmine.createSpyObj('userService', ['userData']);
     });
 
@@ -91,6 +91,14 @@ describe('DashboardController', () => {
 
         it('should set the current date', () => {
             expect(dashboardController.lastUpdate).not.toBeUndefined();
+        });
+
+        it('should load average maturity from API', () => {
+            expect(dashboardDataService.averageMaturity).toHaveBeenCalled();
+        });
+
+        it('should load average interest rate from API', () => {
+            expect(dashboardDataService.averageIntRate).toHaveBeenCalled();
         });
 
         it('should load user names from API', () => {

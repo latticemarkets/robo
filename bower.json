@@ -31,6 +31,7 @@
     "angular-toastr": "~1.7.0",
     "angular-mocks": "~1.4.9",
     "animate.css": "https://github.com/daneden/animate.css.git#~3.2.0",
-    "angular-css-injector": "https://github.com/Yappli/angular-css-injector"
+    "angular-css-injector": "https://github.com/Yappli/angular-css-injector",
+    "moment": "^2.11.1"
   }
 }

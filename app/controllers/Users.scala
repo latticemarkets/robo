@@ -8,14 +8,16 @@
 
 package controllers
 
+import java.time.LocalDate
+
 import controllers.Security.HasToken
-import core.{Hash, Forms}
+import core.{Forms, Hash}
 import models.User
 import play.api.libs.json.Json
 import play.api.mvc._
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 /**
   * @author : julienderay
@@ -67,6 +69,14 @@ class Users extends Controller {
 
   def allocatedCapital() = HasToken {
     Ok(Json.obj("allocatedCapital" -> 300000))
+  }
+
+  def averageMaturity() = HasToken {
+    Ok(Json.obj("averageMaturity" -> LocalDate.parse("2016-05-11")))
+  }
+
+  def averageIntRate() = HasToken {
+    Ok(Json.obj("averageIntRate" -> 0.12))
   }
 
   def userData(email: String) = HasToken.async {

@@ -2320,3 +2320,9 @@ div .signup .choosed-platform {
 #progressbar {
     background-color: #455362 !important;
 }
+/*------------------------
+ * DASHBOARD
+ *----------------------*/
+h1.fat-title {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
