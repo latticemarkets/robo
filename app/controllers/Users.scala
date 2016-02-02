@@ -43,14 +43,14 @@ class Users extends Controller {
         Future.successful( BadRequest("Wrong data sent.") )
       },
       login => {
-        User.findByEmail(login.email) map (optUser => optUser map (user =>
+        User.findByEmail(login.email) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(login.password, user.password)) {
-            Ok(Json.obj("token" -> user.token))
+            User.generateAndStoreNewToken(user) map (user => Ok(Json.obj("token" -> user.token)))
           }
           else {
-            BadRequest("Wrong password")
+            Future.successful( BadRequest("Wrong password") )
           }
-        ) getOrElse BadRequest("Wrong email")
+        ) getOrElse Future.successful( BadRequest("Wrong email") )
         )
       }
     )

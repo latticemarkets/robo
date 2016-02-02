@@ -68,4 +68,12 @@ object User {
     val query = Json.obj("token" -> token)
     usersTable.find(query).one[User]
   }
+
+  def generateAndStoreNewToken(user: User): Future[User] = {
+    val updatedUser: User = user.copy(token = Hash.createToken)
+    val selector = Json.obj("_id" -> updatedUser._id)
+    val modifier = Json.toJson(updatedUser).as[JsObject]
+
+    usersTable.update(selector, modifier) map(_ => updatedUser)
+  }
 }
