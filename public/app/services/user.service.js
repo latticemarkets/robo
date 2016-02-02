@@ -15,8 +15,9 @@
     'use strict';
 
     class userService {
-        constructor($http) {
+        constructor($http, notificationService) {
             this.$http = $http;
+            this.notificationService = notificationService;
         }
 
         register(email, password, terms, reason, income, timeline, birthday, platform, accountId, firstName, lastName, apiKey, successCallback, errorCallback) {
@@ -38,10 +39,10 @@
                 .then(successCallback, errorCallback);
         }
 
-        login(email, password, successCallback, errorCallback) {
+        login(email, password, successCallback) {
             this.$http
                 .post('/api/login', { email: email, password: password })
-                .then(successCallback, errorCallback);
+                .then(successCallback, this.notificationService.apiError());
         }
 
         isEmailUsed(email, successCallback, errorCallback) {
@@ -51,7 +52,7 @@
         }
 
         userData(email, callback) {
-            this.$http.get(`/api/user/infos/${email}`).then(callback);
+            this.$http.get(`/api/user/infos/${email}`).then(callback, this.notificationService.apiError());
         }
     }
 

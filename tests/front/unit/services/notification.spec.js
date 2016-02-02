@@ -13,22 +13,32 @@
 
 describe('notificationService', () => {
     let _toastr,
-        _notificationService;
+        _notificationService,
+        _$location,
+        _$timeout;
 
     beforeEach(() => {
         module('app');
+
         module($provide => {
             $provide.service('toastr', () => {
                 return {
                     error: jasmine.createSpy('error')
                 };
             });
+            $provide.service('$location', () => {
+                return {
+                    path: jasmine.createSpy('$location')
+                };
+            });
         });
     });
 
-    beforeEach(inject((notificationService, toastr) => {
+    beforeEach(inject((notificationService, toastr, $location, $timeout) => {
         _notificationService = notificationService;
         _toastr = toastr;
+        _$location = $location;
+        _$timeout = $timeout;
     }));
 
     describe('error', () => {
@@ -42,6 +52,52 @@ describe('notificationService', () => {
 
         it('should call toastr error', () => {
             expect(_toastr.error).toHaveBeenCalledWith(message, 'Error');
+        });
+    });
+
+    describe('apiError', () => {
+        let callback;
+
+        beforeEach(() => {
+            callback = _notificationService.apiError();
+        });
+
+        let errorMessage;
+        describe('status 400', () => {
+            errorMessage = "error message";
+
+            beforeEach(() => {
+                callback({status: 400, data: errorMessage});
+            });
+
+            it('should display notification error containing the message of the response', () => {
+                expect(_toastr.error).toHaveBeenCalledWith(errorMessage, 'Bad request');
+            });
+        });
+
+        describe('status 401', () => {
+            beforeEach(() => {
+                callback({status: 401});
+                _$timeout.flush();
+            });
+
+            it('should display a notification error', () => {
+                expect(_toastr.error).toHaveBeenCalled();
+            });
+
+            it('should redirect the user on the landpage', () => {
+                expect(_$location.path).toHaveBeenCalledWith('/');
+            });
+        });
+
+        describe('other error status', () => {
+            beforeEach(() => {
+                callback({status: 500});
+            });
+
+            it('should display a notification error', () => {
+                expect(_toastr.error).toHaveBeenCalled();
+            });
         });
     });
 });

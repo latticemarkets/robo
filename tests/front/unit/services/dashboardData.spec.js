@@ -13,10 +13,22 @@
 
 describe('dashboardDataService', () => {
     let _$httpBackend,
-        _dashboardDataService;
+        _dashboardDataService,
+        errorCallback;
 
     beforeEach(() => {
         module('app');
+    });
+
+    beforeEach(() => {
+        errorCallback = jasmine.createSpy('errorCallback');
+        module($provide => {
+            $provide.service('notificationService', () => {
+                return {
+                    apiError: () => errorCallback
+                };
+            });
+        });
     });
 
     beforeEach(inject((dashboardDataService, $httpBackend) => {
@@ -25,78 +37,168 @@ describe('dashboardDataService', () => {
     }));
 
     describe('availableCapital', () => {
-        beforeEach(() => {
-            _$httpBackend.when('GET', '/api/dashboard/capital/available').respond();
-            _dashboardDataService.availableCapital(() => {});
+        describe('responds 200', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/capital/available').respond();
+                _dashboardDataService.availableCapital(() => {});
+            });
+
+            it('should call availableCapital API', () => {
+                _$httpBackend.expectGET('/api/dashboard/capital/available');
+                expect(_$httpBackend.flush).not.toThrow();
+            });
         });
 
-        it('should call availableCapital API', () => {
-            _$httpBackend.expectGET('/api/dashboard/capital/available');
-            expect(_$httpBackend.flush).not.toThrow();
+        describe('responds an error', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/capital/available').respond(400);
+                _dashboardDataService.availableCapital(() => {});
+            });
+
+            it('should call availableCapital API', () => {
+                _$httpBackend.expectGET('/api/dashboard/capital/available');
+                expect(_$httpBackend.flush).not.toThrow();
+                expect(errorCallback).toHaveBeenCalled();
+            });
         });
     });
 
     describe('allocatedCapital', () => {
-        beforeEach(() => {
-            _$httpBackend.when('GET', '/api/dashboard/capital/allocated').respond();
-            _dashboardDataService.allocatedCapital(() => {});
+        describe('responds 200', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/capital/allocated').respond();
+                _dashboardDataService.allocatedCapital(() => {});
+            });
+
+            it('should call allocatedCapital API', () => {
+                _$httpBackend.expectGET('/api/dashboard/capital/allocated');
+                expect(_$httpBackend.flush).not.toThrow();
+            });
         });
 
-        it('should call allocatedCapital API', () => {
-            _$httpBackend.expectGET('/api/dashboard/capital/allocated');
-            expect(_$httpBackend.flush).not.toThrow();
+        describe('responds an error', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/capital/allocated').respond(400);
+                _dashboardDataService.allocatedCapital(() => {});
+            });
+
+            it('should call allocatedCapital API', () => {
+                _$httpBackend.expectGET('/api/dashboard/capital/allocated');
+                expect(_$httpBackend.flush).not.toThrow();
+                expect(errorCallback).toHaveBeenCalled();
+            });
         });
     });
 
 
     describe('averageMaturity', () => {
-        beforeEach(() => {
-            _$httpBackend.when('GET', '/api/dashboard/averageMaturity').respond();
-            _dashboardDataService.averageMaturity(() => {});
+        describe('responds 200', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/averageMaturity').respond();
+                _dashboardDataService.averageMaturity(() => {});
+            });
+
+            it('should call averageMaturity API', () => {
+                _$httpBackend.expectGET('/api/dashboard/averageMaturity');
+                expect(_$httpBackend.flush).not.toThrow();
+            });
         });
 
-        it('should call averageMaturity API', () => {
-            _$httpBackend.expectGET('/api/dashboard/averageMaturity');
-            expect(_$httpBackend.flush).not.toThrow();
+        describe('responds an error', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/averageMaturity').respond(400);
+                _dashboardDataService.averageMaturity(() => {});
+            });
+
+            it('should call averageMaturity API', () => {
+                _$httpBackend.expectGET('/api/dashboard/averageMaturity');
+                expect(_$httpBackend.flush).not.toThrow();
+                expect(errorCallback).toHaveBeenCalled();
+            });
         });
     });
 
 
     describe('averageIntRate', () => {
-        beforeEach(() => {
-            _$httpBackend.when('GET', '/api/dashboard/averageIntRate').respond();
-            _dashboardDataService.averageIntRate(() => {});
+        describe('responds 200', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/averageIntRate').respond();
+                _dashboardDataService.averageIntRate(() => {});
+            });
+
+            it('should call averageIntRatel API', () => {
+                _$httpBackend.expectGET('/api/dashboard/averageIntRate');
+                expect(_$httpBackend.flush).not.toThrow();
+            });
         });
 
-        it('should call averageIntRatel API', () => {
-            _$httpBackend.expectGET('/api/dashboard/averageIntRate');
-            expect(_$httpBackend.flush).not.toThrow();
+        describe('responds an error', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/averageIntRate').respond(400);
+                _dashboardDataService.averageIntRate(() => {});
+            });
+
+            it('should call averageIntRatel API', () => {
+                _$httpBackend.expectGET('/api/dashboard/averageIntRate');
+                expect(_$httpBackend.flush).not.toThrow();
+                expect(errorCallback).toHaveBeenCalled();
+            });
         });
     });
 
 
     describe('expectedReturns', () => {
-        beforeEach(() => {
-            _$httpBackend.when('GET', '/api/dashboard/expectedReturns').respond();
-            _dashboardDataService.expectedReturns(() => {});
+        describe('responds 200', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/expectedReturns').respond();
+                _dashboardDataService.expectedReturns(() => {});
+            });
+
+            it('should call expectedReturns API', () => {
+                _$httpBackend.expectGET('/api/dashboard/expectedReturns');
+                expect(_$httpBackend.flush).not.toThrow();
+            });
         });
 
-        it('should call expectedReturns API', () => {
-            _$httpBackend.expectGET('/api/dashboard/expectedReturns');
-            expect(_$httpBackend.flush).not.toThrow();
+        describe('responds an error', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/expectedReturns').respond(400);
+                _dashboardDataService.expectedReturns(() => {});
+            });
+
+            it('should call expectedReturns API', () => {
+                _$httpBackend.expectGET('/api/dashboard/expectedReturns');
+                expect(_$httpBackend.flush).not.toThrow();
+                expect(errorCallback).toHaveBeenCalled();
+            });
         });
     });
 
 
     describe('lastLoanMaturity', () => {
-        beforeEach(() => {
-            _$httpBackend.when('GET', '/api/dashboard/lastLoanMaturity').respond();
-            _dashboardDataService.lastLoanMaturity(() => {});
+        describe('responds 200', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/lastLoanMaturity').respond();
+                _dashboardDataService.lastLoanMaturity(() => {});
+            });
+
+            it('should call lastLoanMaturity API', () => {
+                _$httpBackend.expectGET('/api/dashboard/lastLoanMaturity');
+                expect(_$httpBackend.flush).not.toThrow();
+            });
         });
 
-        it('should call lastLoanMaturity API', () => {
-            _$httpBackend.expectGET('/api/dashboard/lastLoanMaturity');
-            expect(_$httpBackend.flush).not.toThrow();
+        describe('responds an error', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/lastLoanMaturity').respond(400);
+                _dashboardDataService.lastLoanMaturity(() => {});
+            });
+
+            it('should call lastLoanMaturity API', () => {
+                _$httpBackend.expectGET('/api/dashboard/lastLoanMaturity');
+                expect(_$httpBackend.flush).not.toThrow();
+                expect(errorCallback).toHaveBeenCalled();
+            });
         });
     });
 
