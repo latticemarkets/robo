@@ -80,7 +80,7 @@ object LendingClubSampler {
     override def run {
       val pacificTime = ZonedDateTime.now.withZoneSameInstant(ZoneId.of("America/Los_Angeles")).toLocalTime
       println(s"pacific time is: $pacificTime")
-      val loans = LendingClubConnectionImpl.availableLoans
+      val loans = availableLoans
       writeToFile(pacificTime, loans.toString)
       println("finished")
       val delay = findDelay(pacificTime)
@@ -97,13 +97,22 @@ object LendingClubSampler {
       .headers((LendingClubConfig.AuthorisationHeader, ApiKey)).asString.body
   }
 
-  private def main(args: Array[String]): Unit = {
+   def main(args: Array[String]): Unit = {
     sys.ShutdownHookThread {
       println("exiting")
       pw.close
       out.close
     }
 
+    println("APPLICATION IS STARTING NOW - MAKE SURE YOU ARE CONNECTED PROPERLY!!!!!!!!!!!!!!!!")
+    Thread.sleep(10000)
+    
+    println("NO, SERIOUSLY, I'M STARTING NOW!")
+    Thread.sleep(2000)
+    
+    println("LAST CHANCE!")
+    Thread.sleep(1000)
+    
     val future = scheduler.submit(task)
     future.get
   }
