@@ -15,32 +15,33 @@
     'use strict';
 
     class dashboardDataService {
-        constructor($http) {
+        constructor($http, notificationService) {
             this.$http = $http;
+            this.notificationService = notificationService;
         }
 
         availableCapital(callback) {
-            return this.$http.get('/api/dashboard/capital/available').then(callback);
+            return this.$http.get('/api/dashboard/capital/available').then(callback, this.notificationService.apiError());
         }
 
         allocatedCapital(callback) {
-            return this.$http.get('/api/dashboard/capital/allocated').then(callback);
+            return this.$http.get('/api/dashboard/capital/allocated').then(callback, this.notificationService.apiError());
         }
 
         averageMaturity(callback) {
-            return this.$http.get('/api/dashboard/averageMaturity').then(callback);
+            return this.$http.get('/api/dashboard/averageMaturity').then(callback, this.notificationService.apiError());
         }
 
         averageIntRate(callback) {
-            return this.$http.get('/api/dashboard/averageIntRate').then(callback);
+            return this.$http.get('/api/dashboard/averageIntRate').then(callback, this.notificationService.apiError());
         }
 
         expectedReturns(callback) {
-            return this.$http.get('/api/dashboard/expectedReturns').then(callback);
+            return this.$http.get('/api/dashboard/expectedReturns').then(callback, this.notificationService.apiError());
         }
 
         lastLoanMaturity(callback) {
-            return this.$http.get('/api/dashboard/lastLoanMaturity').then(callback);
+            return this.$http.get('/api/dashboard/lastLoanMaturity').then(callback, this.notificationService.apiError());
         }
     }
 

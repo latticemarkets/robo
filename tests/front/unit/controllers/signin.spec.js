@@ -18,16 +18,14 @@ describe('SignInController', () => {
         userService,
         $cookieStore,
         $location,
-        notificationService,
         authenticationService;
 
     beforeEach(() => {
         module('app');
-        userService = jasmine.createSpyObj('userService', ['login']);
 
+        userService = jasmine.createSpyObj('userService', ['login']);
         $cookieStore = jasmine.createSpyObj('$cookieStore', ['put']);
         $location = jasmine.createSpyObj('$location', ['path']);
-        notificationService = jasmine.createSpyObj('notificationService', ['error']);
         authenticationService = jasmine.createSpyObj('authenticationService', ['authenticate']);
     });
 
@@ -36,7 +34,6 @@ describe('SignInController', () => {
             userService: userService,
             $cookieStore : $cookieStore,
             $location : $location,
-            notificationService: notificationService,
             authenticationService: authenticationService
         });
     }));
@@ -71,36 +68,6 @@ describe('SignInController', () => {
 
             it('should go to the dashboard', () => {
                 expect($location.path).toHaveBeenCalledWith('/dashboard');
-            });
-
-            it('should not call the error notification', () => {
-                expect(notificationService.error).not.toHaveBeenCalled();
-            });
-
-        });
-
-        describe('error callback', () => {
-            let message;
-
-            beforeEach(() => {
-                message = jasmine.any(String);
-
-                userService.login.and.callFake((email, password, success, error) => {
-                    error({ data: message });
-                });
-                signInController.submit();
-            });
-
-            it('should not add any cookie', () => {
-                expect($cookieStore.put).not.toHaveBeenCalled();
-            });
-
-            it('should not change location', () => {
-                expect($location.path).not.toHaveBeenCalled();
-            });
-
-            it('should display a error notification', () => {
-                expect(notificationService.error).toHaveBeenCalledWith(message);
             });
         });
     });

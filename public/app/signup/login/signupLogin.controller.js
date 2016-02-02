@@ -75,7 +75,7 @@
                                 notificationService.error("This email is already used.");
                             }
                         },
-                        response => notificationService.error(response.data)
+                        notificationService.apiError()
                     );
                 }
             };
