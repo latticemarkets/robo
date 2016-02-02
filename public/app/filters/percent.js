@@ -8,21 +8,13 @@
 
 /**
 * @author : julienderay
-* Created on 27/01/2016
+* Created on 01/02/2016
 */
 
-(function() {
+(() => {
     'use strict';
-
-    class SignupRegisteredController {
-        constructor($timeout, $location) {
-            const vm = this;
-
-            $timeout(() => $location.path('/dashboard'), 5000);
-        }
-    }
 
     angular
         .module('app')
-        .controller('SignupRegisteredController', SignupRegisteredController);
+        .filter('percent', ['$filter', $filter => (input, decimals) => $filter('number')(input * 100, decimals) + ' %']);
 })();

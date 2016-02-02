@@ -11,7 +11,7 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ngAnimate', 'toastr', 'ui.bootstrap'])
+        .module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ngAnimate', 'toastr', 'ui.bootstrap', 'angular.css.injector'])
         .config(config)
         .run(run);
 
@@ -78,10 +78,46 @@
                 controller: "SignupRegisteredController",
                 controllerAs: 'vm'
             })
+            .when('/dashboard', {
+                templateUrl: "assets/app/dashboard/dashboard.html",
+                controller: "DashboardController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 
     run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
     function run($rootScope, $location, $cookieStore, $http) {
+        $rootScope.globals = $cookieStore.get('globals') || {};
+
+        function authorizedPage() {
+            return $.inArray($location.path(),
+                ['',
+                '/',
+                '/signup',
+                '/signup/termsAndConditions',
+                '/signup/reasonInvestment',
+                '/signup/yearlyIncome',
+                '/signup/timeline',
+                '/signup/birthday',
+                '/signup/p2pPlatform',
+                '/signup/p2pCredentials',
+                '/signup/personalInfos',
+                '/signup/registered',
+                '/signin']
+            ) > -1; }
+
+        if ($rootScope.globals.currentUser && !authorizedPage()) {
+            $http.defaults.headers.common['X-TOKEN'] = $rootScope.globals.currentUser.token; // jshint ignore:line
+            $http.defaults.headers.common['USER'] = $rootScope.globals.currentUser.email; // jshint ignore:line
+        }
+
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // redirect to login page if not logged in and trying to access a restricted page
+            var loggedIn = $rootScope.globals.currentUser;
+            if (!authorizedPage() && (!loggedIn || loggedIn === undefined)) {
+                $location.path('/');
+            }
+        });
     }
 })();

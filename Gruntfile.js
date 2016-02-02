@@ -46,6 +46,7 @@ module.exports = function(grunt) {
                     "bower_components/bootstrap/dist/css/bootstrap.min.css",
                     "bower_components/font-awesome/css/font-awesome.min.css",
                     "bower_components/angular-toastr/dist/angular-toastr.css",
+                    "bower_components/animate.css/animate.min.css",
                     "public/stylesheets/main.css"
                 ],
                 dest: "public/dist/dist.css"
@@ -115,7 +116,8 @@ module.exports = function(grunt) {
         jasmine : {
             src : ['public/dist/bower.js', 'public/dist/app.js'],
             options: {
-                specs : 'tests/front/unit/tests.js'
+                specs : 'tests/front/unit/tests.js',
+                summary: true
             }
         }
     });

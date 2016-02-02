@@ -29,6 +29,9 @@
     "font-awesome": "~4.5.0",
     "particles.js": "~2.0.0",
     "angular-toastr": "~1.7.0",
-    "angular-mocks": "~1.4.9"
+    "angular-mocks": "~1.4.9",
+    "animate.css": "https://github.com/daneden/animate.css.git#~3.2.0",
+    "angular-css-injector": "https://github.com/Yappli/angular-css-injector",
+    "moment": "^2.11.1"
   }
 }

@@ -16,7 +16,8 @@ describe('SignupLoginController', () => {
         userService,
         $cookieStore,
         $location,
-        notificationService;
+        notificationService,
+        notificationCallbackError;
 
     beforeEach(() => {
         module('app');
@@ -24,7 +25,12 @@ describe('SignupLoginController', () => {
         userService = jasmine.createSpyObj('userService', ['isEmailUsed']);
         $cookieStore = jasmine.createSpyObj('$cookieStore', ['put']);
         $location = jasmine.createSpyObj('$location', ['path']);
-        notificationService = jasmine.createSpyObj('notificationService', ['error']);
+
+        notificationCallbackError = jasmine.createSpy('notificationCallbackError');
+        notificationService = {
+            error: jasmine.createSpy('error'),
+            apiError: () => notificationCallbackError
+        };
     });
 
     beforeEach(inject(($controller) => {
@@ -92,16 +98,15 @@ describe('SignupLoginController', () => {
         });
 
         describe('error returned', () => {
-            var serverErrorMessage;
+            var serverErrorObj;
             beforeEach(() => {
-                serverErrorMessage = jasmine.any(String);
-                userService.isEmailUsed.and.callFake((email, success, error) => error({ data: serverErrorMessage }));
+                serverErrorObj = { data: jasmine.any(String) };
+                userService.isEmailUsed.and.callFake((email, success, error) => error(serverErrorObj));
                 signUpController.submit();
             });
 
             it('should display an error this the message from the server', () => {
-                expect(notificationService.error).toHaveBeenCalledWith(serverErrorMessage);
-                expect(notificationService.error).toHaveBeenCalled();
+                expect(notificationCallbackError).toHaveBeenCalledWith(serverErrorObj);
             });
 
             it('should not add anything to cookies', () => {

@@ -8,13 +8,16 @@
 
 package controllers
 
-import core.{Hash, Forms}
+import java.time.LocalDate
+
+import controllers.Security.HasToken
+import core.{Forms, Hash}
 import models.User
 import play.api.libs.json.Json
 import play.api.mvc._
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 /**
   * @author : julienderay
@@ -58,5 +61,33 @@ class Users extends Controller {
       case None => Ok(Json.obj("ok" -> true))
       case Some(user) => Ok(Json.obj("ok" -> false))
     }
+  }
+
+  def availableCapital() = HasToken {
+    Ok(Json.obj("availableCapital" -> 200000))
+  }
+
+  def allocatedCapital() = HasToken {
+    Ok(Json.obj("allocatedCapital" -> 300000))
+  }
+
+  def averageMaturity() = HasToken {
+    Ok(Json.obj("averageMaturity" -> LocalDate.parse("2016-05-11")))
+  }
+
+  def averageIntRate() = HasToken {
+    Ok(Json.obj("averageIntRate" -> 0.12))
+  }
+
+  def expectedReturns() = HasToken {
+    Ok(Json.obj("expectedReturns" -> 34000))
+  }
+
+  def lastLoanMaturity() = HasToken {
+    Ok(Json.obj("lastLoanMaturity" -> LocalDate.parse("2018-01-07")))
+  }
+
+  def userData(email: String) = HasToken.async {
+    User.findByEmail(email) map (user => Ok(Json.toJson(user)))
   }
 }
