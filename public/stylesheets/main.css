@@ -2097,7 +2097,7 @@ footer {
 /*-----------------------------------------------------------------*/
 
 .blue {
-    background-color: #1080f2;
+    /*background-color: #1080f2;*/
     color: #fff;
     /* Set rules to fill background */
     min-height: 100%;
