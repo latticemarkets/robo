@@ -52,8 +52,8 @@ object LendingClubSampler {
     override def run {
     	val pacificTime = ZonedDateTime.now.withZoneSameInstant(ZoneId.of("America/Los_Angeles")).toLocalTime
       println(s"pacific time is: $pacificTime")
-      val loans=LendingClubConnectionImpl.availableLoans
-      
+      val loans=availableLoans
+      println(loans)
       val delay = findDelay(pacificTime)
       if (delay > 0) {
         println(s"going to sleep for $delay seconds")
@@ -68,7 +68,7 @@ object LendingClubSampler {
   
   def availableLoans: String = {
     Http(LoanListingUrl)
-      .headers((LendingClubConfig.ApiKeyHeader, ApiKey)).asString.body
+      .headers((LendingClubConfig.AuthorisationHeader, ApiKey)).asString.body
   }
 
   def main(args: Array[String]): Unit = {
