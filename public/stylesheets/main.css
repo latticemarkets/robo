@@ -2323,7 +2323,7 @@ div .signup .choosed-platform {
 /*------------------------
  * DASHBOARD
  *----------------------*/
-h1.fat-title {
+.fat-font {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .text-blue {

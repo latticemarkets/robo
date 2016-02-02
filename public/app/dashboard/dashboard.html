@@ -71,13 +71,13 @@
                                     <i class="fa fa-bolt"></i> Your capital
                                 </div>
                                 <div>
-                                    <h1 class="font-extra-bold m-t-xl m-b-xs fat-title">
+                                    <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
                                         {{ vm.availableCapital | currency }}
                                     </h1>
                                     <small>Available for investment</small>
                                 </div>
                                 <div>
-                                    <h1 class="font-extra-bold m-t-xl m-b-xs fat-title">
+                                    <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
                                         {{ vm.allocatedCapital | currency }}
                                     </h1>
                                     <small>Allocated on investments</small>
@@ -96,13 +96,13 @@
                                     <i class="fa fa-clock-o"></i> Your metrics
                                 </div>
                                 <div>
-                                    <h1 class="font-extra-bold m-t-xl m-b-xs fat-title">
+                                    <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
                                         {{ vm.averageMaturity }}
                                     </h1>
                                     <small>Average maturity</small>
                                 </div>
                                 <div>
-                                    <h1 class="font-extra-bold m-t-xl m-b-xs fat-title">
+                                    <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
                                         {{ vm.averageIntRate | percent : 2 }}
                                     </h1>
                                     <small>Average interest rate</small>
@@ -120,14 +120,14 @@
             <div class="col-lg-3">
                 <div class="hpanel">
                     <div class="panel-body text-center h-200">
-                        <i class="fa fa-money fa-4x text-blue"></i>
+                        <i class="fa fa-dot-circle-o fa-4x text-blue"></i>
 
-                        <h1 class="m-xs">{{ vm.expectedReturns | currency }}</h1>
+                        <h1 class="m-xs font-extra-bold fat-font"><compare-numbers compare="vm.currentRoiRate" to="vm.expectedRoiRate">{{ vm.currentRoiRate | percent : 2 }}</compare-numbers></h1>
 
                         <h3 class="font-extra-bold no-margins text-blue">
-                            Expected Returns
+                            Strategy performance
                         </h3>
-                        <small>{{ vm.lastLoanMaturity }}</small>
+                        <small>Current goal : {{ vm.expectedRoiRate | percent : 2 }}</small>
                     </div>
                 </div>
             </div>

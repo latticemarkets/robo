@@ -174,7 +174,6 @@ describe('dashboardDataService', () => {
         });
     });
 
-
     describe('lastLoanMaturity', () => {
         describe('responds 200', () => {
             beforeEach(() => {
@@ -196,6 +195,60 @@ describe('dashboardDataService', () => {
 
             it('should call lastLoanMaturity API', () => {
                 _$httpBackend.expectGET('/api/dashboard/lastLoanMaturity');
+                expect(_$httpBackend.flush).not.toThrow();
+                expect(errorCallback).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('currentRoiRate', () => {
+        describe('responds 200', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/currentRoiRate').respond();
+                _dashboardDataService.currentRoiRate(() => {});
+            });
+
+            it('should call currentRoiRate API', () => {
+                _$httpBackend.expectGET('/api/dashboard/currentRoiRate');
+                expect(_$httpBackend.flush).not.toThrow();
+            });
+        });
+
+        describe('responds an error', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/currentRoiRate').respond(400);
+                _dashboardDataService.currentRoiRate(() => {});
+            });
+
+            it('should call currentRoiRate API', () => {
+                _$httpBackend.expectGET('/api/dashboard/currentRoiRate');
+                expect(_$httpBackend.flush).not.toThrow();
+                expect(errorCallback).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('expectedRoiRate', () => {
+        describe('responds 200', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/expectedRoiRate').respond();
+                _dashboardDataService.expectedRoiRate(() => {});
+            });
+
+            it('should call expectedRoiRate API', () => {
+                _$httpBackend.expectGET('/api/dashboard/expectedRoiRate');
+                expect(_$httpBackend.flush).not.toThrow();
+            });
+        });
+
+        describe('responds an error', () => {
+            beforeEach(() => {
+                _$httpBackend.when('GET', '/api/dashboard/expectedRoiRate').respond(400);
+                _dashboardDataService.expectedRoiRate(() => {});
+            });
+
+            it('should call expectedRoiRate API', () => {
+                _$httpBackend.expectGET('/api/dashboard/expectedRoiRate');
                 expect(_$httpBackend.flush).not.toThrow();
                 expect(errorCallback).toHaveBeenCalled();
             });
