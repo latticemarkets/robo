@@ -55,6 +55,9 @@
                                 format: d3.format(",%")
                             }
                         }
+                    },
+                    point: {
+                        r: 10
                     }
                 });
 
