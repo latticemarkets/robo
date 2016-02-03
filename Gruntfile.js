@@ -46,6 +46,7 @@ module.exports = function(grunt) {
                     "bower_components/bootstrap/dist/css/bootstrap.min.css",
                     "bower_components/font-awesome/css/font-awesome.min.css",
                     "bower_components/angular-toastr/dist/angular-toastr.css",
+                    "bower_components/c3/c3.min.css",
                     "bower_components/animate.css/animate.min.css",
                     "public/stylesheets/main.css"
                 ],
