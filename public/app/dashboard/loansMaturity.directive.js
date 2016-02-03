@@ -18,9 +18,9 @@
         .module('app')
         .directive('loansMaturity', loansMaturity);
 
-    loansMaturity.$inject = ['notificationService'];
+    loansMaturity.$inject = ['loansMaturityUtilsService', 'notificationService'];
 
-    function loansMaturity(notificationService) {
+    function loansMaturity(loansMaturityUtilsService, notificationService) {
         return {
             replace: true,
             restrict: 'E',
@@ -29,23 +29,16 @@
                 identifier: "@"
             },
             template: '<div id="loansMaturity"></div>',
-            link(scope) {
+            link: scope => {
                 scope.data.then(response => {
-                    const prepared = extractDataForScatterChart(response.data);
-
-                    const xs = prepared
-                            .filter(axis => !axis[0].endsWith('_x'))
-                            .map(axis => axis[0])
-                            .reduce((xs, originatorName) => {
-                                xs[originatorName] = `${originatorName}_x`;
-                                return xs;
-                            }, {});
+                    scope.prepared = loansMaturityUtilsService.extractDataForScatterChart(response.data);
+                    scope.xs = loansMaturityUtilsService.extractXs(scope.prepared);
 
                     const chart = c3.generate({
                         bindto: `#${scope.identifier}`,
                         data: {
-                            xs: xs,
-                            columns: prepared,
+                            xs: scope.xs,
+                            columns: scope.prepared,
                             type: 'scatter'
                         },
                         axis: {
@@ -72,43 +65,6 @@
                         }
                     });
                 }, notificationService.apiError());
-
-
-                function extractDataForScatterChart(loans) {
-                    let preparedData = {};
-                    const today = moment();
-
-                    loans.forEach(loan => {
-                        const originator = loan.originator;
-                        if (!preparedData[originator]) {
-                            preparedData[originator] = initOriginator(originator);
-                        }
-
-                        var moment2 = moment(loan.maturityDate);
-                        var n = moment2.diff(today, 'months', true);
-                        preparedData[originator].x.push(round2Decimal(n));
-                        preparedData[originator].y.push(loan.intRate);
-                    });
-
-                    let columns = [];
-                    $.map(preparedData, originator => {
-                        columns.push(originator.x);
-                        columns.push(originator.y);
-                    });
-
-                    return columns;
-                }
-
-                function round2Decimal(n) {
-                    return Math.round(n * 100) / 100;
-                }
-
-                function initOriginator(name) {
-                    return {
-                        x: [`${name}_x`],
-                        y: [name]
-                    };
-                }
             }
         };
     }
