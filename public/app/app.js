@@ -13,6 +13,9 @@
     angular
         .module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ngAnimate', 'toastr', 'ui.bootstrap', 'angular.css.injector'])
         .config(config)
+        .config(function(cssInjectorProvider){
+            cssInjectorProvider.setSinglePageMode(true);
+        })
         .run(run);
 
     config.$inject = ['$routeProvider', '$locationProvider'];
