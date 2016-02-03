@@ -15,7 +15,7 @@
     'use strict';
 
     class DashboardController {
-        constructor(cssInjector, authenticationService, $location, dashboardDataService, userService) {
+        constructor(cssInjector, authenticationService, $location, dashboardDataService, userService, loansAcquiredService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -38,7 +38,12 @@
                 dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
                 dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
                 vm.loansMaturityPromise = dashboardDataService.currentLoansPromise();
+                dashboardDataService.loansAcquiredPerDayLastWeek(response => vm.loansAcquiredPerDay = loansAcquiredService.prepareData(response.data));
+                dashboardDataService.loansAcquiredLastWeek(response => vm.loansAcquiredLastWeek = response.data.loansAcquiredLastWeek);
+                dashboardDataService.loansAcquiredToday(response => vm.loansAcquiredToday = response.data.loansAcquiredToday);
             }
+
+            vm.loansAcquiredPerDayOption = loansAcquiredService.barChartOptions;
         }
     }
 

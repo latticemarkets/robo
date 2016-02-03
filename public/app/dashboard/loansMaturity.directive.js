@@ -28,7 +28,7 @@
                 data: "=",
                 identifier: "@"
             },
-            template: '<div id="loansMaturity"></div>',
+            template: '<div id="{{identifier}}"></div>',
             link: scope => {
                 scope.data.then(response => {
                     scope.prepared = loansMaturityUtilsService.extractDataForScatterChart(response.data);

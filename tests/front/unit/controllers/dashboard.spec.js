@@ -17,7 +17,8 @@ describe('DashboardController', () => {
         authenticationService,
         $location,
         dashboardDataService,
-        userService;
+        userService,
+        loansAcquiredService;
 
     beforeEach(() => {
         module('app');
@@ -25,8 +26,9 @@ describe('DashboardController', () => {
         $location = jasmine.createSpyObj('$location', ['path']);
         authenticationService = jasmine.createSpyObj('authenticationService', ['logout', 'getCurrentUsersEmail']);
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
-        dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital', 'averageMaturity', 'averageIntRate', 'expectedReturns', 'lastLoanMaturity', 'currentRoiRate', 'expectedRoiRate', 'currentLoansPromise']);
+        dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital', 'averageMaturity', 'averageIntRate', 'expectedReturns', 'lastLoanMaturity', 'currentRoiRate', 'expectedRoiRate', 'currentLoansPromise', 'loansAcquiredPerDayLastWeek', 'loansAcquiredLastWeek', 'loansAcquiredToday']);
         userService = jasmine.createSpyObj('userService', ['userData']);
+        loansAcquiredService = jasmine.createSpyObj('loansAcquiredService', ['prepare', 'barChartOptions']);
     });
 
     let availableCapital;
@@ -92,7 +94,8 @@ describe('DashboardController', () => {
             authenticationService: authenticationService,
             cssInjector: cssInjector,
             dashboardDataService: dashboardDataService,
-            userService: userService
+            userService: userService,
+            loansAcquiredService: loansAcquiredService
         });
     }));
 

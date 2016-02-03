@@ -124,4 +124,17 @@ class Users extends Controller {
 
     Ok(loans)
   }
+
+  def loansAcquiredPerDayLastWeek() = HasToken {
+    val loans = Json.arr(10, 26, 16, 36, 32, 51, 51)
+    Ok(loans)
+  }
+
+  def loansAcquiredLastWeek() = HasToken {
+    Ok(Json.obj("loansAcquiredLastWeek" -> 748))
+  }
+
+  def loansAcquiredToday() = HasToken {
+    Ok(Json.obj("loansAcquiredToday" -> 4488))
+  }
 }
