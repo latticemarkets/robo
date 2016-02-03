@@ -25,14 +25,15 @@
             replace: true,
             restrict: 'E',
             scope: {
-                data: "="
+                data: "=",
+                identifier: "@"
             },
             template: '<div id="loansMaturity"></div>',
             link(scope) {
                 const values = scope.data.map(originator => extractDataForScatterChart(originator.data, originator.name));
 
                 const chart = c3.generate({
-                    bindto: '#loansMaturity',
+                    bindto: `#${scope.identifier}`,
                     data: {
                         xs: scope.data.reduce((xs, loan) => {
                             xs[loan.name] = `${loan.name}_x`;
