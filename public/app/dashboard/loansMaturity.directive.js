@@ -18,9 +18,9 @@
         .module('app')
         .directive('loansMaturity', loansMaturity);
 
-    loansMaturity.$inject = [];
+    loansMaturity.$inject = ['notificationService'];
 
-    function loansMaturity() {
+    function loansMaturity(notificationService) {
         return {
             replace: true,
             restrict: 'E',
@@ -30,59 +30,82 @@
             },
             template: '<div id="loansMaturity"></div>',
             link(scope) {
-                const values = scope.data.map(originator => extractDataForScatterChart(originator.data, originator.name));
+                scope.data.then(response => {
+                    const prepared = extractDataForScatterChart(response.data);
 
-                const chart = c3.generate({
-                    bindto: `#${scope.identifier}`,
-                    data: {
-                        xs: scope.data.reduce((xs, loan) => {
-                            xs[loan.name] = `${loan.name}_x`;
-                            return xs;
-                        }, {}),
-                        columns: values.reduce((last, current) => last.concat([current.x, current.y]), []),
-                        type: 'scatter'
-                    },
-                    axis: {
-                        x: {
-                            label: 'Months',
-                            tick: {
-                                fit: false
+                    const xs = prepared
+                            .filter(axis => !axis[0].endsWith('_x'))
+                            .map(axis => axis[0])
+                            .reduce((xs, originatorName) => {
+                                xs[originatorName] = `${originatorName}_x`;
+                                return xs;
+                            }, {});
+
+                    const chart = c3.generate({
+                        bindto: `#${scope.identifier}`,
+                        data: {
+                            xs: xs,
+                            columns: prepared,
+                            type: 'scatter'
+                        },
+                        axis: {
+                            x: {
+                                label: 'Months',
+                                tick: {
+                                    fit: false
+                                }
+                            },
+                            y: {
+                                label: 'Interest rate',
+                                tick: {
+                                    format: d3.format(",%")
+                                }
                             }
                         },
-                        y: {
-                            label: 'Interest rate',
-                            tick: {
-                                format: d3.format(",%")
+                        point: {
+                            r: 10
+                        },
+                        tooltip: {
+                            format: {
+                                title: months => `Mature in ${months} months`
                             }
                         }
-                    },
-                    point: {
-                        r: 10
-                    },
-                    tooltip: {
-                        format: {
-                            title: months => `Mature in ${months} months`
-                        }
-                    }
-                });
+                    });
+                }, notificationService.apiError());
 
-                function extractDataForScatterChart(loans, name) {
-                    let xValues = [`${name}_x`],
-                        yValues = [name];
+
+                function extractDataForScatterChart(loans) {
+                    let preparedData = {};
                     const today = moment().startOf('day');
 
                     loans.forEach(loan => {
-                        var monthsFromNow = round2Decimal(moment(loan.maturityDate, 'dd/MM/yyyy').diff(today, 'months', true));
+                        const originator = loan.originator;
+                        if (!preparedData[originator]) {
+                            preparedData[originator] = initOriginator(originator);
+                        }
 
-                        xValues.push(monthsFromNow);
-                        yValues.push(loan.intRate);
+                        preparedData[originator].x.push(round2Decimal(moment(loan.maturityDate, 'dd/MM/yyyy').diff(today, 'months', true)));
+                        preparedData[originator].y.push(loan.intRate);
                     });
 
-                    return { x: xValues, y: yValues};
+                    let columns = [];
+                    $.map(preparedData, originator => {
+                        columns.push(originator.x);
+                        columns.push(originator.y);
+                    });
+
+                    return columns;
                 }
 
                 function round2Decimal(n) {
                     return Math.round(n * 100) / 100;
+                }
+
+                function initOriginator(name) {
+                    return {
+                        x: [`${name}_x`],
+                        y: [name]
+                    };
                 }
             }
         };
