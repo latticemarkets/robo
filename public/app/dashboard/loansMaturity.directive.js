@@ -49,7 +49,10 @@
                             }
                         },
                         y: {
-                            label: 'Interest rate (%)'
+                            label: 'Interest rate',
+                            tick: {
+                                format: d3.format(",%") // ADD
+                            }
                         }
                     }
                 });
@@ -63,7 +66,7 @@
                         var monthsFromNow = moment(loan.maturityDate, 'dd/MM/yyyy').diff(today, 'months', true);
 
                         xValues.push(monthsFromNow);
-                        yValues.push(loan.intRate * 100);
+                        yValues.push(loan.intRate);
                     });
 
                     return { x: xValues, y: yValues};
