@@ -51,7 +51,7 @@
                         y: {
                             label: 'Interest rate',
                             tick: {
-                                format: d3.format(",%") // ADD
+                                format: d3.format(",%")
                             }
                         }
                     }
@@ -63,13 +63,17 @@
                     const today = moment().startOf('day');
 
                     loans.forEach(loan => {
-                        var monthsFromNow = moment(loan.maturityDate, 'dd/MM/yyyy').diff(today, 'months', true);
+                        var monthsFromNow = round2Decimal(moment(loan.maturityDate, 'dd/MM/yyyy').diff(today, 'months', true));
 
                         xValues.push(monthsFromNow);
                         yValues.push(loan.intRate);
                     });
 
                     return { x: xValues, y: yValues};
+                }
+
+                function round2Decimal(n) {
+                    return Math.round(n * 100) / 100;
                 }
             }
         };
