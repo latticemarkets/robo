@@ -52,6 +52,18 @@
             return this.$http.get('/api/dashboard/expectedRoiRate').then(callback, this.notificationService.apiError());
         }
 
+        loansAcquiredPerDayLastWeek(callback) {
+            return this.$http.get('/api/dashboard/loansAcquiredPerDayLastWeek').then(callback, this.notificationService.apiError());
+        }
+
+        loansAcquiredLastWeek(callback) {
+            return this.$http.get('/api/dashboard/loansAcquiredLastWeek').then(callback, this.notificationService.apiError());
+        }
+
+        loansAcquiredToday(callback) {
+            return this.$http.get('/api/dashboard/loansAcquiredToday').then(callback, this.notificationService.apiError());
+        }
+
         currentLoansPromise() {
             return this.$http.get('/api/dashboard/currentLoans');
         }
