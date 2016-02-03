@@ -58,6 +58,11 @@
                     },
                     point: {
                         r: 10
+                    },
+                    tooltip: {
+                        format: {
+                            title: months => `Mature in ${months} months`
+                        }
                     }
                 });
 
