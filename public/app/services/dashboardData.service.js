@@ -51,6 +51,10 @@
         expectedRoiRate(callback) {
             return this.$http.get('/api/dashboard/expectedRoiRate').then(callback, this.notificationService.apiError());
         }
+
+        currentLoansPromise() {
+            return this.$http.get('/api/dashboard/currentLoans');
+        }
     }
 
     angular

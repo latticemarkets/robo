@@ -255,6 +255,18 @@ describe('dashboardDataService', () => {
         });
     });
 
+    describe('loansMaturityPromise', () => {
+        beforeEach(() => {
+            _$httpBackend.when('GET', '/api/dashboard/currentLoans').respond();
+            _dashboardDataService.currentLoansPromise();
+        });
+
+        it('should call loansMaturity API', () => {
+            _$httpBackend.expectGET('/api/dashboard/currentLoans');
+            expect(_$httpBackend.flush).not.toThrow();
+        });
+    });
+
     afterEach(() => {
         _$httpBackend.verifyNoOutstandingExpectation();
         _$httpBackend.verifyNoOutstandingRequest();

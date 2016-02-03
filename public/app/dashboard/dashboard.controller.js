@@ -37,6 +37,7 @@
                 userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.username = `${response.data.firstName} ${response.data.lastName}`);
                 dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
                 dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
+                vm.loansMaturityPromise = dashboardDataService.currentLoansPromise();
             }
         }
     }

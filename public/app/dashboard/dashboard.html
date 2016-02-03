@@ -83,13 +83,11 @@
                                     <small>Allocated on investments</small>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 loansMaturity">
                                 <div class="text-center small">
-                                    <i class="fa fa-laptop"></i> Active users in current month (December)
+                                    <i class="fa fa-laptop"></i> Loans maturity
                                 </div>
-                                <div class="flot-chart" style="height: 160px">
-                                    <div class="flot-chart-content" id="flot-line-chart"></div>
-                                </div>
+                                <loans-maturity data="vm.loansMaturityPromise" identifier="loansMaturity"></loans-maturity>
                             </div>
                             <div class="col-md-3 text-center">
                                 <div class="small">
