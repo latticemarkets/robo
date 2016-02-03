@@ -76,7 +76,7 @@
 
                 function extractDataForScatterChart(loans) {
                     let preparedData = {};
-                    const today = moment().startOf('day');
+                    const today = moment();
 
                     loans.forEach(loan => {
                         const originator = loan.originator;
@@ -84,7 +84,9 @@
                             preparedData[originator] = initOriginator(originator);
                         }
 
-                        preparedData[originator].x.push(round2Decimal(moment(loan.maturityDate, 'dd/MM/yyyy').diff(today, 'months', true)));
+                        var moment2 = moment(loan.maturityDate);
+                        var n = moment2.diff(today, 'months', true);
+                        preparedData[originator].x.push(round2Decimal(n));
                         preparedData[originator].y.push(loan.intRate);
                     });
 
