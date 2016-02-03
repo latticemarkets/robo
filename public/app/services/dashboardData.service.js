@@ -43,6 +43,14 @@
         lastLoanMaturity(callback) {
             return this.$http.get('/api/dashboard/lastLoanMaturity').then(callback, this.notificationService.apiError());
         }
+
+        currentRoiRate(callback) {
+            return this.$http.get('/api/dashboard/currentRoiRate').then(callback, this.notificationService.apiError());
+        }
+
+        expectedRoiRate(callback) {
+            return this.$http.get('/api/dashboard/expectedRoiRate').then(callback, this.notificationService.apiError());
+        }
     }
 
     angular

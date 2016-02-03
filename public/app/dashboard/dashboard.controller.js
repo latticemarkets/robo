@@ -35,6 +35,8 @@
                 dashboardDataService.expectedReturns(response => vm.expectedReturns = response.data.expectedReturns);
                 dashboardDataService.lastLoanMaturity(response => vm.lastLoanMaturity = moment(response.data.lastLoanMaturity).fromNow());
                 userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.username = `${response.data.firstName} ${response.data.lastName}`);
+                dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
+                dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
             }
         }
     }
