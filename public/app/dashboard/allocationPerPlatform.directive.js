@@ -34,7 +34,7 @@
                     const chart = c3.generate({
                         bindto: "#allocation-pie",
                         data: {
-                            columns: response.data.map(allocation => [$filter('titlecase')(allocation.originator), allocation.loansAcquired]),
+                            columns: response.data.map(allocation => [$filter('titlecase')($filter('camelCaseToHuman')(allocation.originator)), allocation.loansAcquired]),
                             type : 'pie'
                         },
                         size: {
