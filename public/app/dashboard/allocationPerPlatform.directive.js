@@ -42,9 +42,7 @@
                             width: 300
                         },
                         tooltip: {
-                            position: function (data, width, height, element) {
-                                return {top: 30, left: 0};
-                            }
+                            position: () => ({top: 30, left: 0})
                         }
                     });
                 }, notificationService.apiError());
