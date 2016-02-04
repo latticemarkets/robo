@@ -20,6 +20,17 @@
             <div class="col-md-4 col-md-offset-4" data-ng-repeat="(key, value) in vm.portfolios">
                 <a data-ng-click="vm.choose(key)" data-ng-class="{'selected-portfolio': vm.isSelected(key)}" class="primary-button portfolio"><span class="fa fa-circle-o record"></span> {{value}}</a>
             </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <button class="btn primary-button" data-ng-click="vm.submit()">Submit</button>
+            </div>
+        </div>
+
+        <div class="signup outro-text">
+            <a href="#/signup" class="outro-heading">You don't an account ?</a>
         </div>
     </div>
 </div>

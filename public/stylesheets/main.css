@@ -2261,6 +2261,9 @@ div .reasons .reason, div .portfolios .portfolio {
 div .reasons .reason .record, div .portfolios .portfolio .record {
     margin-right: 10px;
 }
+.primary-button.portfolio {
+    margin: 0;
+}
 div .portfolios .portfolio.selected-portfolio {
     color: #FFF;
     background: transparent;
