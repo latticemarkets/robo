@@ -41,27 +41,10 @@
                 dashboardDataService.loansAcquiredPerDayLastWeek(response => vm.loansAcquiredPerDay = loansAcquiredService.prepareData(response.data));
                 dashboardDataService.loansAcquiredLastWeek(response => vm.loansAcquiredLastWeek = response.data.loansAcquiredLastWeek);
                 dashboardDataService.loansAcquiredToday(response => vm.loansAcquiredToday = response.data.loansAcquiredToday);
+                vm.platformAllocationPromise = dashboardDataService.platformAllocationPromise();
             }
 
             vm.loansAcquiredPerDayOption = loansAcquiredService.barChartOptions;
-
-            const chart = c3.generate({
-                bindto: "#allocation-pie",
-                data: {
-                    columns: [
-                        ['data1', 30],
-                        ['data2', 120]
-                    ],
-                    type : 'pie',
-                    onclick: function (d, i) { console.log("onclick", d, i); },
-                    onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-                    onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-                },
-                size: {
-                    height: 200,
-                    width: 200
-                }
-            });
         }
     }
 
