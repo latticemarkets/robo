@@ -42,10 +42,10 @@ describe('loansMaturityUtilsService', () => {
 
             it('should prepare the data', () => {
                 expect(result).toEqual([
-                    ["originator1_x", 1, 2],
-                    ["originator1", 0.12, 0.08],
-                    ["originator2_x", 1.45, 2.45],
-                    ["originator2", 0.12, 0.02]
+                    ["Originator1_x", 1, 2],
+                    ["Originator1", 0.12, 0.08],
+                    ["Originator2_x", 1.45, 2.45],
+                    ["Originator2", 0.12, 0.02]
                 ]);
             });
         });
@@ -118,6 +118,16 @@ describe('loansMaturityUtilsService', () => {
 
         it('should work with the whole word', () => {
             expect(loansMaturityUtilsService.endsWith('end', 'end')).toBeTruthy();
+        });
+    });
+
+    describe('fromCamelCaseToTitle', () => {
+        it('should convert camel case to title case', () => {
+            expect(loansMaturityUtilsService.fromCamelCaseToTitle('theOriginator')).toBe('The Originator')
+        });
+
+        it('should ignore small common words', () => {
+            expect(loansMaturityUtilsService.fromCamelCaseToTitle('whatAnOriginator')).toBe('What an Originator')
         });
     });
 });

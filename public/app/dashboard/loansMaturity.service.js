@@ -15,7 +15,8 @@
     'use strict';
 
     class loansMaturityUtilsService {
-        constructor() {
+        constructor($filter) {
+            this.$filter = $filter;
         }
 
         extractDataForScatterChart(loans) {
@@ -23,7 +24,7 @@
             const today = moment();
 
             loans.forEach(loan => {
-                const originator = loan.originator;
+                const originator = this.fromCamelCaseToTitle(loan.originator);
                 if (!preparedData[originator]) {
                     preparedData[originator] = this.initOriginator(originator);
                 }
@@ -51,6 +52,11 @@
                     xs[originatorName] = `${originatorName}_x`;
                     return xs;
                 }, {});
+        }
+
+        fromCamelCaseToTitle(str) {
+            const unCamelCased = this.$filter('camelCaseToHuman')(str);
+            return this.$filter('titlecase')(unCamelCased);
         }
 
         round2Decimal(n) {
