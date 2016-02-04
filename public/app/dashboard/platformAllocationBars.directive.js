@@ -18,9 +18,9 @@
         .module('app')
         .directive('platformAllocationBars', platformAllocationBars);
 
-    platformAllocationBars.$inject = [];
+    platformAllocationBars.$inject = ['$filter'];
 
-    function platformAllocationBars() {
+    function platformAllocationBars($filter) {
         return {
             replace: true,
             restrict: 'E',
@@ -30,7 +30,12 @@
             templateUrl: '/assets/app/dashboard/platformAllocationBars.part.html',
             link(scope) {
                 scope.promise.then(response => {
-                    scope.platformAllocationBars = response.data.map(platform => ({ name: platform.originator, value: platform.loansAcquired }));
+                    scope.platformAllocationBars = response.data.map(platform => {
+                        const unCamelCased = $filter('camelCaseToHuman')(platform.originator);
+                        const titleCased = $filter('titlecase')(unCamelCased);
+                        const withColon = `${titleCased} :`;
+                        return { name: withColon, value: platform.loansAcquired };
+                    });
                     var x = response.data.map(platform => platform.loansAcquired);
                     scope.max = Math.max.apply(Math, x);
                 });
