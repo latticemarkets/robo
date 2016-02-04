@@ -41,6 +41,7 @@
                 dashboardDataService.loansAcquiredPerDayLastWeek(response => vm.loansAcquiredPerDay = loansAcquiredService.prepareData(response.data));
                 dashboardDataService.loansAcquiredLastWeek(response => vm.loansAcquiredLastWeek = response.data.loansAcquiredLastWeek);
                 dashboardDataService.loansAcquiredToday(response => vm.loansAcquiredToday = response.data.loansAcquiredToday);
+                vm.platformAllocationPromise = dashboardDataService.platformAllocationPromise();
             }
 
             vm.loansAcquiredPerDayOption = loansAcquiredService.barChartOptions;

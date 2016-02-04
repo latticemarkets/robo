@@ -35,6 +35,7 @@
     "moment": "^2.11.1",
     "c3": "^0.4.10",
     "angular-flot": "^0.0.16",
-    "Flot": "jquery-flot#^0.8.3"
+    "Flot": "jquery-flot#^0.8.3",
+    "angularjs-camelCase-human": "^0.2.1"
   }
 }

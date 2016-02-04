@@ -67,6 +67,10 @@
         currentLoansPromise() {
             return this.$http.get('/api/dashboard/currentLoans');
         }
+
+        platformAllocationPromise() {
+            return this.$http.get('/api/dashboard/platformAllocation');
+        }
     }
 
     angular

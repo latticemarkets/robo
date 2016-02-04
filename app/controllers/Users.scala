@@ -137,4 +137,14 @@ class Users extends Controller {
   def loansAcquiredToday() = HasToken {
     Ok(Json.obj("loansAcquiredToday" -> 4488))
   }
+
+  def platformAllocation() = HasToken {
+    Ok(Json.arr(
+      Json.obj("originator" -> "lendingClub", "loansAcquired" -> 245),
+      Json.obj("originator" -> "prosper", "loansAcquired" -> 18),
+      Json.obj("originator" -> "bondora", "loansAcquired" -> 59),
+      Json.obj("originator" -> "ratesetter", "loansAcquired" -> 195),
+      Json.obj("originator" -> "fundingCircle", "loansAcquired" -> 90)
+    ))
+  }
 }
