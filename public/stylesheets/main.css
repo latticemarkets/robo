@@ -2201,6 +2201,9 @@ div .signup .btn.primary-button {
 div .signup .outro-text {
     padding-top: 30px;
 }
+div .signup .outro-text p {
+    color: #FFFFFF;
+}
 div .signup .outro-text .outro-heading {
     font-family: PTSans, sans-serif;
     font-size: 13px;
@@ -2209,6 +2212,19 @@ div .signup .outro-text .outro-heading {
     display: block;
     color: white;
 }
+div .signup .outro-text .outro-heading-large {
+    font-family: PTSans, sans-serif;
+    font-size: 13px;
+    font-weight: 200;
+    line-height: 15px;
+    display: block;
+    color: white;
+    margin-bottom: 30px;
+}
+/* slide in from the right */
+@keyframes slideInRight {
+    from 	{ transform: translateX(100%); }
+    to 		{ transform: translateX(0); }
 
 @-webkit-keyframes slide {
     100% { left: 0; }
