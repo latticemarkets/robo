@@ -348,6 +348,18 @@ describe('dashboardDataService', () => {
         });
     });
 
+    describe('platformAllocationPromise', () => {
+        beforeEach(() => {
+            _$httpBackend.when('GET', '/api/dashboard/platformAllocation').respond();
+            _dashboardDataService.platformAllocationPromise();
+        });
+
+        it('should call platformAllocation API', () => {
+            _$httpBackend.expectGET('/api/dashboard/platformAllocation');
+            expect(_$httpBackend.flush).not.toThrow();
+        });
+    });
+
     afterEach(() => {
         _$httpBackend.verifyNoOutstandingExpectation();
         _$httpBackend.verifyNoOutstandingRequest();

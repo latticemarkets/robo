@@ -18,9 +18,9 @@
         .module('app')
         .directive('platformAllocation', loansMaturity);
 
-    loansMaturity.$inject = ['notificationService', '$filter'];
+    loansMaturity.$inject = ['notificationService', 'allocationPerPlatformService'];
 
-    function loansMaturity(notificationService, $filter) {
+    function loansMaturity(notificationService, allocationPerPlatformService) {
         return {
             replace: true,
             restrict: 'E',
@@ -34,7 +34,7 @@
                     const chart = c3.generate({
                         bindto: "#allocation-pie",
                         data: {
-                            columns: response.data.map(allocation => [$filter('titlecase')($filter('camelCaseToHuman')(allocation.originator)), allocation.loansAcquired]),
+                            columns: allocationPerPlatformService.prepareData(response.data),
                             type : 'pie'
                         },
                         size: {
