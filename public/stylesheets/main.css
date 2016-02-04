@@ -2248,18 +2248,22 @@ div .conditions .condition {
     font-family: 'Avenir Next', AvenirNextLTW01-Regular, sans-serif;
     font-size: 14px;
 }
-div .reasons {
+div .reasons, .portfolios {
     margin-bottom: 10px;
 }
-div .reasons .reason {
+div .reasons .reason, div .portfolios .portfolio {
     margin-bottom: -5px;
     width: 100%;
     font-size: 20px;
     text-align: left;
     text-transform: capitalize;
 }
-div .reasons .reason .record {
+div .reasons .reason .record, div .portfolios .portfolio .record {
     margin-right: 10px;
+}
+div .portfolios .portfolio.selected-portfolio {
+    color: #FFF;
+    background: transparent;
 }
 div .signup .intro-second {
     font-size: 23px;

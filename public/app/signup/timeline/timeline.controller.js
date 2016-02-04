@@ -46,7 +46,7 @@
             vm.submit = timeline => {
                 if (Object.keys(vm.timelines).indexOf(timeline) >= 0) {
                     $cookieStore.put('signup.timeline', timeline);
-                    $location.path('/signup/birthday');
+                    $location.path('/signup/portfolio');
                 }
             };
         }

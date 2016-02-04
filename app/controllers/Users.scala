@@ -176,6 +176,10 @@ class Users extends Controller {
     ))
   }
 
+  def portfolioSuggestion() = Action {
+    Ok(Json.obj("portfolio" -> "moderate"))
+  }
+
   def updatePassword() = HasToken.async { implicit request =>
     Forms.updatePasswordForm.bindFromRequest.fold(
       formWithErrors => {
