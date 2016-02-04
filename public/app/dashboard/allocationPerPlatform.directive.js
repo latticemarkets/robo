@@ -18,9 +18,9 @@
         .module('app')
         .directive('platformAllocation', loansMaturity);
 
-    loansMaturity.$inject = ['notificationService'];
+    loansMaturity.$inject = ['notificationService', '$filter'];
 
-    function loansMaturity(notificationService) {
+    function loansMaturity(notificationService, $filter) {
         return {
             replace: true,
             restrict: 'E',
@@ -34,7 +34,7 @@
                     const chart = c3.generate({
                         bindto: "#allocation-pie",
                         data: {
-                            columns: response.data.map(allocation => [allocation.originator, allocation.loansAcquired]),
+                            columns: response.data.map(allocation => [$filter('titlecase')(allocation.originator), allocation.loansAcquired]),
                             type : 'pie'
                         },
                         size: {
