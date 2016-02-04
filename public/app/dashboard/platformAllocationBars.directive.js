@@ -31,7 +31,8 @@
             link(scope) {
                 scope.promise.then(response => {
                     scope.platformAllocationBars = response.data.map(platform => ({ name: platform.originator, value: platform.loansAcquired }));
-                    scope.max = Math.max(response.data.map(platform => platform.loansAcquired));
+                    var x = response.data.map(platform => platform.loansAcquired);
+                    scope.max = Math.max.apply(Math, x);
                 });
             }
         };
