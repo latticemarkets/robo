@@ -39,7 +39,7 @@
                         },
                         size: {
                             height: 200,
-                            width: 200
+                            width: 300
                         }
                     });
                 }, notificationService.apiError());
