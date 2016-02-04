@@ -43,6 +43,9 @@
                         },
                         tooltip: {
                             position: () => ({top: 30, left: 0})
+                        },
+                        color: {
+                            pattern: ['#0000CC', '#222BD5', '#4455DD', '#6680E6', '#88AAEE', '#AAD5F7', '#CCFFFF']
                         }
                     });
                 }, notificationService.apiError());
