@@ -30,7 +30,7 @@
                 dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
                 dashboardDataService.allocatedCapital(response => vm.allocatedCapital = response.data.allocatedCapital);
                 vm.lastUpdate = new Date();
-                dashboardDataService.averageMaturity(response => vm.averageMaturity = moment(response.data.averageMaturity).fromNow());
+                dashboardDataService.averageMaturity(response => vm.averageMaturity = moment(response.data.averageMaturity).fromNow(true));
                 dashboardDataService.averageIntRate(response => vm.averageIntRate = response.data.averageIntRate);
                 dashboardDataService.expectedReturns(response => vm.expectedReturns = response.data.expectedReturns);
                 dashboardDataService.lastLoanMaturity(response => vm.lastLoanMaturity = moment(response.data.lastLoanMaturity).fromNow());
@@ -38,9 +38,10 @@
                 dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
                 dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
                 vm.loansMaturityPromise = dashboardDataService.currentLoansPromise();
-                dashboardDataService.loansAcquiredPerDayLastWeek(response => vm.loansAcquiredPerDay = loansAcquiredService.prepareData(response.data));
-                dashboardDataService.loansAcquiredLastWeek(response => vm.loansAcquiredLastWeek = response.data.loansAcquiredLastWeek);
-                dashboardDataService.loansAcquiredToday(response => vm.loansAcquiredToday = response.data.loansAcquiredToday);
+                dashboardDataService.loansAcquiredPerDayLastWeek(response => {
+                    vm.loansAcquiredPerDay = loansAcquiredService.prepareData(response.data);
+                    vm.loansAcquiredLastWeek = response.data.reduce((last, loans) => loans + last, 0);
+                });
                 vm.platformAllocationPromise = dashboardDataService.platformAllocationPromise();
             }
 

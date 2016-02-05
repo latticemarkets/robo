@@ -3,31 +3,22 @@
 <p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<!-- Header -->
-<div id="header">
-    <div class="color-line">
-    </div>
+<!-- Navigation -->
+<aside id="menu">
     <div id="logo" class="light-version">
         <span>
             PDX Robo
         </span>
     </div>
-</div>
-
-<!-- Navigation -->
-<aside id="menu">
     <div id="navigation">
         <div class="profile-picture">
-            <a href="index.html">
-            </a>
-
-            <div class="stats-label text-color">
+            <div class="stats-label text-color menu">
                 <div class="dropdown" uib-dropdown on-toggle="toggled(open)">
                     <a class="dropdown-toggle" uib-dropdown-toggle>
                         <span class="font-extra-bold font-uppercase">{{ vm.username }} <b class="caret"></b></span>
                     </a>
 
-                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button" class="dropdown-menu animated m-t-xs">
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button" class="dropdown-menu m-t-xs">
                         <li><a href="contacts.html">Contacts</a></li>
                         <li><a href="profile.html">Profile</a></li>
                         <li><a href="analytics.html">Analytics</a></li>
@@ -118,11 +109,11 @@
             <div class="col-lg-3">
                 <div class="hpanel">
                     <div class="panel-body text-center h-200">
-                        <i class="fa fa-dot-circle-o fa-4x text-blue"></i>
+                        <i class="fa fa-dot-circle-o fa-4x"></i>
 
                         <h1 class="m-xs font-extra-bold fat-font"><compare-numbers compare="vm.currentRoiRate" to="vm.expectedRoiRate">{{ vm.currentRoiRate | percent : 2 }}</compare-numbers></h1>
 
-                        <h3 class="font-extra-bold no-margins text-blue">
+                        <h3 class="font-extra-bold no-margins">
                             Current Strategy
                         </h3>
                         <small>Current goal : {{ vm.expectedRoiRate | percent : 2 }}</small>
@@ -142,14 +133,14 @@
                         <div class="flot-chart">
                             <flot dataset="vm.loansAcquiredPerDay" options="vm.loansAcquiredPerDayOption" height="80px" width="80%"></flot>
                         </div>
-                        <div class="m-t-xs">
+                        <div class="loans-acquired-per-day-legend">
+                            <div class="pull-left"><small class="stat-label">Monday</small></div>
+                            <div class="pull-right"><small class="stat-label">Sunday</small></div>
+                        </div>
+                        <div class="loans-metrics">
                             <div class="row">
-                                <div class="col-xs-5">
-                                    <small class="stat-label">Today</small>
-                                    <h4>{{ vm.loansAcquiredToday | currency }}</h4>
-                                </div>
-                                <div class="col-xs-7">
-                                    <small class="stat-label">Last week</small>
+                                <div class="text-center">
+                                    <small class="stat-label">This week</small>
                                     <h4>{{ vm.loansAcquiredLastWeek | currency }}</h4>
                                 </div>
                             </div>

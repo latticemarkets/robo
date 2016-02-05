@@ -110,6 +110,24 @@ class Users extends Controller {
       Json.obj("originator" -> "lendingClub", "maturityDate" -> "2016-06-21", "intRate" -> 0.14),
       Json.obj("originator" -> "lendingClub", "maturityDate" -> "2016-07-28", "intRate" -> 0.20),
       Json.obj("originator" -> "lendingClub", "maturityDate" -> "2016-09-04", "intRate" -> 0.06),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2016-11-02", "intRate" -> 0.12),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2016-12-02", "intRate" -> 0.12),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-03-05", "intRate" -> 0.08),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-03-10", "intRate" -> 0.02),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-03-20", "intRate" -> 0.10),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-04-21", "intRate" -> 0.12),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-06-21", "intRate" -> 0.14),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-10-28", "intRate" -> 0.20),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-10-04", "intRate" -> 0.06),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-11-02", "intRate" -> 0.12),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-12-02", "intRate" -> 0.12),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-12-05", "intRate" -> 0.08),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2017-12-10", "intRate" -> 0.02),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2018-02-20", "intRate" -> 0.10),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2018-03-21", "intRate" -> 0.12),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2018-05-21", "intRate" -> 0.14),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2018-05-28", "intRate" -> 0.20),
+      Json.obj("originator" -> "lendingClub", "maturityDate" -> "2018-07-04", "intRate" -> 0.06),
       Json.obj("originator" -> "prosper", "maturityDate" -> "2016-12-11", "intRate" -> 0.04),
       Json.obj("originator" -> "prosper", "maturityDate" -> "2016-03-01", "intRate" -> 0.08),
       Json.obj("originator" -> "prosper", "maturityDate" -> "2016-03-07", "intRate" -> 0.09),
@@ -119,7 +137,25 @@ class Users extends Controller {
       Json.obj("originator" -> "prosper", "maturityDate" -> "2016-10-06", "intRate" -> 0.07),
       Json.obj("originator" -> "prosper", "maturityDate" -> "2016-11-10", "intRate" -> 0.13),
       Json.obj("originator" -> "prosper", "maturityDate" -> "2016-12-20", "intRate" -> 0.04),
-      Json.obj("originator" -> "prosper", "maturityDate" -> "2016-12-23", "intRate" -> 0.0)
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2016-12-11", "intRate" -> 0.04),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-01-01", "intRate" -> 0.08),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-01-07", "intRate" -> 0.09),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-03-18", "intRate" -> 0.04),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-05-14", "intRate" -> 0.05),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-05-27", "intRate" -> 0.19),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-07-06", "intRate" -> 0.07),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-10-10", "intRate" -> 0.13),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-11-20", "intRate" -> 0.04),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-11-11", "intRate" -> 0.04),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-12-01", "intRate" -> 0.08),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2017-12-07", "intRate" -> 0.09),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2018-01-18", "intRate" -> 0.04),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2018-04-14", "intRate" -> 0.05),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2018-05-27", "intRate" -> 0.19),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2018-06-06", "intRate" -> 0.07),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2018-11-10", "intRate" -> 0.13),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2018-12-20", "intRate" -> 0.04),
+      Json.obj("originator" -> "prosper", "maturityDate" -> "2018-12-23", "intRate" -> 0.0)
     )
 
     Ok(loans)
@@ -128,14 +164,6 @@ class Users extends Controller {
   def loansAcquiredPerDayLastWeek() = HasToken {
     val loans = Json.arr(10, 26, 16, 36, 32, 51, 51)
     Ok(loans)
-  }
-
-  def loansAcquiredLastWeek() = HasToken {
-    Ok(Json.obj("loansAcquiredLastWeek" -> 748))
-  }
-
-  def loansAcquiredToday() = HasToken {
-    Ok(Json.obj("loansAcquiredToday" -> 4488))
   }
 
   def platformAllocation() = HasToken {
