@@ -178,11 +178,11 @@ class Users extends Controller {
 
   def riskDiversification() = HasToken {
     Ok(Json.arr(
-      Json.obj("label" -> "A", "value" -> 240),
-      Json.obj("label" -> "B", "value" -> 49),
-      Json.obj("label" -> "C", "value" -> 189),
-      Json.obj("label" -> "D", "value" -> 140),
-      Json.obj("label" -> "E", "value" -> 200)
+      Json.obj("grade" -> "A", "value" -> 240),
+      Json.obj("grade" -> "B", "value" -> 49),
+      Json.obj("grade" -> "C", "value" -> 189),
+      Json.obj("grade" -> "D", "value" -> 140),
+      Json.obj("grade" -> "E", "value" -> 200)
     ))
   }
 }

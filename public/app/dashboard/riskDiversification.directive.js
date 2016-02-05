@@ -18,9 +18,9 @@
         .module('app')
         .directive('riskDiversification', riskDiversification);
 
-    riskDiversification.$inject = ['notificationService', 'c3PieChartService'];
+    riskDiversification.$inject = ['notificationService', 'c3PieChartService', '$filter'];
 
-    function riskDiversification(notificationService, c3PieChartService) {
+    function riskDiversification(notificationService, c3PieChartService, $filter) {
         return {
             replace: true,
             restrict: 'E',
@@ -34,7 +34,7 @@
                     const chart = c3.generate({
                         bindto: `#${scope.identifier}`,
                         data: {
-                            columns: c3PieChartService.prepareData(response.data),
+                            columns: c3PieChartService.prepareRiskDiversificationData(response.data),
                             type : 'donut'
                         },
                         size: {
@@ -42,7 +42,10 @@
                             width: 300
                         },
                         tooltip: {
-                            position: () => ({top: 0, left: 0})
+                            position: () => ({top: 0, left: 0}),
+                            format:{
+                                value: (value, ratio) => `${value} loans | ${$filter('percent')(ratio, 1)}`
+                            }
                         },
                         color: {
                             pattern: c3PieChartService.blueDegraded
