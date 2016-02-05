@@ -36,7 +36,6 @@
     "c3": "^0.4.10",
     "angular-flot": "^0.0.16",
     "Flot": "jquery-flot#^0.8.3",
-    "angularjs-camelCase-human": "^0.2.1",
-    "angular-chart.js": "^0.8.8"
+    "angularjs-camelCase-human": "^0.2.1"
   }
 }
