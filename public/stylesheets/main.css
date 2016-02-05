@@ -2323,6 +2323,13 @@ div .signup .choosed-platform {
 .loans-metrics {
     margin-top: 40px;
 }
-.h-200{
-  height: 250px;
+.h-200 {
+    height: 250px;
+}
+.current-roi-rate {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.loans-acquired-per-day-chart {
+    margin-top: 20px;
 }

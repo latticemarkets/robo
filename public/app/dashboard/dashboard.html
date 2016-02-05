@@ -111,9 +111,9 @@
                     <div class="panel-body text-center h-200">
                         <i class="fa fa-dot-circle-o fa-4x"></i>
 
-                        <h1 class="m-xs font-extra-bold fat-font"><compare-numbers compare="vm.currentRoiRate" to="vm.expectedRoiRate">{{ vm.currentRoiRate | percent : 2 }}</compare-numbers></h1>
+                        <h1 class="font-extra-bold fat-font current-roi-rate"><compare-numbers compare="vm.currentRoiRate" to="vm.expectedRoiRate">{{ vm.currentRoiRate | percent : 2 }}</compare-numbers></h1>
 
-                        <h3 class="font-extra-bold no-margins">
+                        <h3 class="font-extra-bold">
                             Current Strategy
                         </h3>
                         <small>Current goal : {{ vm.expectedRoiRate | percent : 2 }}</small>
@@ -130,7 +130,7 @@
                             <i class="pe-7s-credit fa-4x"></i>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="flot-chart">
+                        <div class="flot-chart loans-acquired-per-day-chart">
                             <flot dataset="vm.loansAcquiredPerDay" options="vm.loansAcquiredPerDayOption" height="80px" width="80%"></flot>
                         </div>
                         <div class="loans-acquired-per-day-legend">
