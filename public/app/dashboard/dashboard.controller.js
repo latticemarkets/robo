@@ -30,7 +30,10 @@
                 dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
                 dashboardDataService.allocatedCapital(response => vm.allocatedCapital = response.data.allocatedCapital);
                 vm.lastUpdate = new Date();
-                dashboardDataService.averageMaturity(response => vm.averageMaturity = moment(response.data.averageMaturity).fromNow());
+                dashboardDataService.averageMaturity(response => {
+                    vm.averageMaturity = moment(response.data.averageMaturity).fromNow(true);
+                    console.log(vm.averageMaturity);
+                });
                 dashboardDataService.averageIntRate(response => vm.averageIntRate = response.data.averageIntRate);
                 dashboardDataService.expectedReturns(response => vm.expectedReturns = response.data.expectedReturns);
                 dashboardDataService.lastLoanMaturity(response => vm.lastLoanMaturity = moment(response.data.lastLoanMaturity).fromNow());
