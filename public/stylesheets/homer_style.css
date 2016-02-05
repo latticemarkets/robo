@@ -2520,8 +2520,8 @@ h6 {
 }
 .stats-title h4 {
   text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 100;
 }
 /* Widths */
 .w-xs {

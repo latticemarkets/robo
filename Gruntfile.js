@@ -48,6 +48,8 @@ module.exports = function(grunt) {
                     "bower_components/angular-toastr/dist/angular-toastr.css",
                     "bower_components/c3/c3.min.css",
                     "bower_components/animate.css/animate.min.css",
+                    "public/fonts/pe-icon-7-stroke/css/helper.css",
+                    "public/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css",
                     "public/stylesheets/main.css"
                 ],
                 dest: "public/dist/dist.css"
