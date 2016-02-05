@@ -109,7 +109,9 @@
             <div class="col-lg-3">
                 <div class="hpanel">
                     <div class="panel-body text-center h-200">
-                        <i class="fa fa-dot-circle-o fa-4x"></i>
+                        <div class="stats-icon pull-right">
+                            <i class="pe-7s-science fa-4x"></i>
+                        </div>
 
                         <h1 class="font-extra-bold fat-font current-roi-rate"><compare-numbers compare="vm.currentRoiRate" to="vm.expectedRoiRate">{{ vm.currentRoiRate | percent : 2 }}</compare-numbers></h1>
 
@@ -127,7 +129,7 @@
                             <h4>Investments this week</h4>
                         </div>
                         <div class="stats-icon pull-right">
-                            <i class="pe-7s-credit fa-4x"></i>
+                            <i class="pe-7s-search fa-4x"></i>
                         </div>
                         <div class="clearfix"></div>
                         <div class="flot-chart loans-acquired-per-day-chart">
@@ -155,7 +157,7 @@
                             <h4>Platform Allocation</h4>
                         </div>
                         <div class="stats-icon pull-right">
-                            <i class="pe-7s-monitor fa-4x"></i>
+                            <i class="pe-7s-cash fa-4x"></i>
                         </div>
                         <div class="text-center">
                             <platform-allocation identifier="allocation-pie" data="vm.platformAllocationPromise"></platform-allocation>
@@ -170,7 +172,7 @@
                             <h4>Risk Diversification</h4>
                         </div>
                         <div class="stats-icon pull-right">
-                            <i class="pe-7s-cash fa-4x"></i>
+                            <i class="pe-7s-portfolio fa-4x"></i>
                         </div>
                         <div class="clearfix"></div>
                         <div>
