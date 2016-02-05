@@ -18,9 +18,9 @@
         .module('app')
         .directive('changePassword', changePassword);
 
-    changePassword.$inject = ['patternCheckerService'];
+    changePassword.$inject = ['patternCheckerService', 'notificationService'];
 
-    function changePassword(patternCheckerService) {
+    function changePassword(patternCheckerService, notificationService) {
         return {
             replace: true,
             restrict: 'E',
@@ -41,8 +41,25 @@
                     return scope.charLengthGreaterThan8() && scope.hasLowercase() && scope.hasUppercase() && scope.hasSpecialChar();
                 }
 
-                scope.disableSubmitButton = () => {
-                    return !allConditionsSatisfied();
+                scope.disableSubmitButton = () => !allConditionsSatisfied();
+
+                scope.submit = () => {
+                    if (allConditionsSatisfied()) {
+                        scope.spinner = true;
+                        userService.updatePassword(
+                            scope.oldPassword,
+                            scope.newPassword,
+                            response => {
+                                if (response.data.ok) {
+                                    scope.spinner = false;
+                                    notificationService.success('Password changed');
+                                }
+                                else {
+                                    notificationService.error('Incorrect old password');
+                                }
+                            }
+                        );
+                    }
                 };
             }
         };
