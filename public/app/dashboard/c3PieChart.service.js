@@ -20,18 +20,18 @@
         }
 
         preparePlatformAllocationData(data) {
-            return data.map(allocation => {
-                const unCamelCased = this.$filter('camelCaseToHuman')(allocation.originator);
-                const titleCased = this.$filter('titlecase')(unCamelCased);
-                return [ titleCased, allocation.loansAcquired ];
-            });
+            return this.prepareData(data, 'originator', 'loansAcquired');
         }
 
         prepareRiskDiversificationData(data) {
-            return data.map(allocation => {
-                const unCamelCased = this.$filter('camelCaseToHuman')(allocation.grade);
+            return this.prepareData(data, 'grade', 'value');
+        }
+
+        prepareData(data, labelsKey, valuesKey) {
+            return data.map(elem => {
+                const unCamelCased = this.$filter('camelCaseToHuman')(elem[labelsKey]);
                 const titleCased = this.$filter('titlecase')(unCamelCased);
-                return [ titleCased, allocation.value ];
+                return [ titleCased, elem[valuesKey] ];
             });
         }
 
