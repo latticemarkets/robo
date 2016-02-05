@@ -42,4 +42,12 @@ object Forms {
       "password" -> nonEmptyText
     )(Login.apply)(Login.unapply)
   )
+
+  def updatePasswordForm = Form(
+    mapping(
+      "email" -> email,
+      "oldPassword" -> nonEmptyText,
+      "newPassword" -> nonEmptyText
+    )(UpdatePassword.apply)(UpdatePassword.unapply)
+  )
 }
