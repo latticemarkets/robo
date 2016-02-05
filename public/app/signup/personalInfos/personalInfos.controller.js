@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupPersonalInfosController {
-        constructor($location, $cookieStore, userService, notificationService, authenticationService) {
+        constructor($location, $cookieStore, userService, notificationService, authenticationService, $timeout) {
             const vm = this;
 
             let email,
@@ -30,6 +30,9 @@
                 apiKey;
 
             vm.pageClass = 'signup-login blue';
+
+            vm.pageNo = 8;
+            $timeout(() => vm.pageNo++, 1000);
 
             (() => {
                 email = $cookieStore.get('signup.email');

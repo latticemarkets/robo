@@ -18,6 +18,9 @@
         constructor($timeout, $location) {
             const vm = this;
 
+            vm.pageNo = 9;
+            $timeout(() => vm.pageNo++, 1000);
+
             $timeout(() => $location.path('/dashboard'), 5000);
         }
     }

@@ -15,10 +15,13 @@
     'use strict';
 
     class SignupP2pCredentialsController {
-        constructor($cookieStore, $location) {
+        constructor($cookieStore, $location, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
+
+            vm.pageNo = 7;
+            $timeout(() => vm.pageNo++, 1000);
 
             (() => {
                 const email = $cookieStore.get('signup.email');

@@ -15,10 +15,13 @@
     'use strict';
 
     class SignupReasonInvestmentController {
-        constructor($location, $cookieStore) {
+        constructor($location, $cookieStore, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
+
+            vm.pageNo = 2;
+            $timeout(() => vm.pageNo++, 1000);
 
             vm.reasons = {
                 longterm: 'Long-term investment',
