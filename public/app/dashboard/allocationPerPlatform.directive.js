@@ -52,6 +52,11 @@
                         },
                         legend:{
                           show: false
+                        },
+                        pie: {
+                            label: {
+                                show: false
+                            }
                         }
                     });
                 }, notificationService.apiError());

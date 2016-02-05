@@ -52,6 +52,11 @@
                         },
                         legend:{
                             show: false
+                        },
+                        donut: {
+                            label: {
+                                show: false
+                            }
                         }
                     });
                 }, notificationService.apiError());
