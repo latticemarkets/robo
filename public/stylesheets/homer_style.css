@@ -1518,7 +1518,7 @@ body {
   float: left;
   left: 0;
   position: absolute;
-  top: 62px;
+  top: 0px;
   transition: all 0.4s ease 0s;
 }
 #wrapper {
@@ -2236,6 +2236,10 @@ body.fullscreen-panel-mode {
 }
 .stats-label {
   line-height: 1.2;
+}
+.stats-label.menu {
+  line-height: 1.2;
+  margin-top: 60px;
 }
 .stats-label small {
   font-size: 80%;
