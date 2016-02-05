@@ -56,8 +56,8 @@
             return this.$http.get('/api/dashboard/loansAcquiredPerDayLastWeek').then(callback, this.notificationService.apiError());
         }
 
-        riskDiversification(callback) {
-            return this.$http.get('/api/dashboard/riskDiversification').then(callback, this.notificationService.apiError());
+        riskDiversificationPromise() {
+            return this.$http.get('/api/dashboard/riskDiversification');
         }
 
         currentLoansPromise() {

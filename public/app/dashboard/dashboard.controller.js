@@ -43,7 +43,7 @@
                     vm.loansAcquiredLastWeek = response.data.reduce((last, loans) => loans + last, 0);
                 });
                 vm.platformAllocationPromise = dashboardDataService.platformAllocationPromise();
-                vm.riskDiversification = dashboardDataService.riskDiversification();
+                vm.riskDiversificationPromise = dashboardDataService.riskDiversificationPromise();
             }
 
             vm.loansAcquiredPerDayOption = loansAcquiredService.barChartOptions;
