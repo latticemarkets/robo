@@ -27,7 +27,7 @@
                         <span class="font-extra-bold font-uppercase">{{ vm.username }} <b class="caret"></b></span>
                     </a>
 
-                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button" class="dropdown-menu animated fadeInRight m-t-xs">
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button" class="dropdown-menu animated m-t-xs">
                         <li><a href="contacts.html">Contacts</a></li>
                         <li><a href="profile.html">Profile</a></li>
                         <li><a href="analytics.html">Analytics</a></li>
@@ -67,39 +67,39 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3 text-center">
-                                <div class="medium">
-                                    <i class="fa fa-bolt"></i> Your capital
+                                <div class="text-center small">
+                                    <i class="fa fa-money"></i> Your capital
                                 </div>
                                 <div>
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-title">
                                         {{ vm.availableCapital | currency }}
                                     </h1>
-                                    <small>Available for investment</small>
+                                    <small>Unallocated Capital</small>
                                 </div>
                                 <div>
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-title">
                                         {{ vm.allocatedCapital | currency }}
                                     </h1>
-                                    <small>Allocated on investments</small>
+                                    <small>Total Invested Capital</small>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="text-center small">
-                                    <i class="fa fa-laptop"></i> Active users in current month (December)
+                                    <i class="fa fa-line-chart"></i> Active users in current month (December)
                                 </div>
                                 <div class="flot-chart" style="height: 160px">
                                     <div class="flot-chart-content" id="flot-line-chart"></div>
                                 </div>
                             </div>
                             <div class="col-md-3 text-center">
-                                <div class="small">
-                                    <i class="fa fa-clock-o"></i> Your metrics
+                                <div class="text-center small">
+                                    <i class="fa fa-tachometer"></i> Your metrics
                                 </div>
                                 <div>
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-title">
                                         {{ vm.averageMaturity }}
                                     </h1>
-                                    <small>Average maturity</small>
+                                    <small>Net Capital Gains</small>
                                 </div>
                                 <div>
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-title">
