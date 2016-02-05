@@ -20,8 +20,6 @@ GET     /api/dashboard/currentRoiRate                   controllers.Users.curren
 GET     /api/dashboard/expectedRoiRate                  controllers.Users.expectedRoiRate
 GET     /api/dashboard/currentLoans                     controllers.Users.currentLoans
 GET     /api/dashboard/loansAcquiredPerDayLastWeek      controllers.Users.loansAcquiredPerDayLastWeek
-GET     /api/dashboard/loansAcquiredLastWeek            controllers.Users.loansAcquiredLastWeek
-GET     /api/dashboard/loansAcquiredToday               controllers.Users.loansAcquiredToday
 GET     /api/dashboard/platformAllocation               controllers.Users.platformAllocation
 
 # Map static resources from the /public folder to the /assets URL path

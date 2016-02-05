@@ -136,7 +136,7 @@ describe('DashboardController', () => {
 
         it('should load average maturity from API', () => {
             expect(dashboardDataService.averageMaturity).toHaveBeenCalled();
-            expect(dashboardController.averageMaturity).toBe("in 2 months");
+            expect(dashboardController.averageMaturity).toBe("2 months");
         });
 
         it('should load average interest rate from API', () => {
