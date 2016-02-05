@@ -11,8 +11,11 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ngAnimate', 'toastr', 'ui.bootstrap', 'angular.css.injector'])
+        .module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ngAnimate', 'toastr', 'ui.bootstrap', 'angular.css.injector', 'angular-flot', 'camelCaseToHuman'])
         .config(config)
+        .config(function(cssInjectorProvider){
+            cssInjectorProvider.setSinglePageMode(true);
+        })
         .run(run);
 
     config.$inject = ['$routeProvider', '$locationProvider'];

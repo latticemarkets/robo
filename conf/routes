@@ -3,19 +3,26 @@
 # ~~~~
 
 # Home page
-GET     /                                       controllers.Application.index
+GET     /                                               controllers.Application.index
 
-POST    /api/register                           controllers.Users.register
-POST    /api/login                              controllers.Users.login
-GET     /api/user/:email                        controllers.Users.isUsed(email)
-GET     /api/user/infos/:email                  controllers.Users.userData(email)
+POST    /api/register                                   controllers.Users.register
+POST    /api/login                                      controllers.Users.login
+GET     /api/user/:email                                controllers.Users.isUsed(email)
+GET     /api/user/infos/:email                          controllers.Users.userData(email)
 
-GET     /api/dashboard/capital/available        controllers.Users.availableCapital
-GET     /api/dashboard/capital/allocated        controllers.Users.allocatedCapital
-GET     /api/dashboard/averageMaturity          controllers.Users.averageMaturity
-GET     /api/dashboard/averageIntRate           controllers.Users.averageIntRate
-GET     /api/dashboard/expectedReturns          controllers.Users.expectedReturns
-GET     /api/dashboard/lastLoanMaturity         controllers.Users.lastLoanMaturity
+GET     /api/dashboard/capital/available                controllers.Users.availableCapital
+GET     /api/dashboard/capital/allocated                controllers.Users.allocatedCapital
+GET     /api/dashboard/averageMaturity                  controllers.Users.averageMaturity
+GET     /api/dashboard/averageIntRate                   controllers.Users.averageIntRate
+GET     /api/dashboard/expectedReturns                  controllers.Users.expectedReturns
+GET     /api/dashboard/lastLoanMaturity                 controllers.Users.lastLoanMaturity
+GET     /api/dashboard/currentRoiRate                   controllers.Users.currentRoiRate
+GET     /api/dashboard/expectedRoiRate                  controllers.Users.expectedRoiRate
+GET     /api/dashboard/currentLoans                     controllers.Users.currentLoans
+GET     /api/dashboard/loansAcquiredPerDayLastWeek      controllers.Users.loansAcquiredPerDayLastWeek
+GET     /api/dashboard/loansAcquiredLastWeek            controllers.Users.loansAcquiredLastWeek
+GET     /api/dashboard/loansAcquiredToday               controllers.Users.loansAcquiredToday
+GET     /api/dashboard/platformAllocation               controllers.Users.platformAllocation
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

@@ -15,10 +15,13 @@
     'use strict';
 
     class SignupP2pPlatformController {
-        constructor($location, $cookieStore) {
+        constructor($location, $cookieStore, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
+
+            vm.pageNo = 6;
+            $timeout(() => vm.pageNo++, 1000);
 
             vm.platforms = {
                 'lendingClub': 'png',

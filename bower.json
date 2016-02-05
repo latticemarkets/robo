@@ -32,6 +32,10 @@
     "angular-mocks": "~1.4.9",
     "animate.css": "https://github.com/daneden/animate.css.git#~3.2.0",
     "angular-css-injector": "https://github.com/Yappli/angular-css-injector",
-    "moment": "^2.11.1"
+    "moment": "^2.11.1",
+    "c3": "^0.4.10",
+    "angular-flot": "^0.0.16",
+    "Flot": "jquery-flot#^0.8.3",
+    "angularjs-camelCase-human": "^0.2.1"
   }
 }

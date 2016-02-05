@@ -15,10 +15,13 @@
     'use strict';
 
     class SignupTimelineController {
-        constructor($location, $cookieStore) {
+        constructor($location, $cookieStore, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
+
+            vm.pageNo = 4;
+            $timeout(() => vm.pageNo++, 1000);
 
             vm.timelines = {
                 '-5': 'Less than 5 years',

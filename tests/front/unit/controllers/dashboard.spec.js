@@ -17,7 +17,8 @@ describe('DashboardController', () => {
         authenticationService,
         $location,
         dashboardDataService,
-        userService;
+        userService,
+        loansAcquiredService;
 
     beforeEach(() => {
         module('app');
@@ -25,8 +26,9 @@ describe('DashboardController', () => {
         $location = jasmine.createSpyObj('$location', ['path']);
         authenticationService = jasmine.createSpyObj('authenticationService', ['logout', 'getCurrentUsersEmail']);
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
-        dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital', 'averageMaturity', 'averageIntRate', 'expectedReturns', 'lastLoanMaturity']);
+        dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital', 'averageMaturity', 'averageIntRate', 'expectedReturns', 'lastLoanMaturity', 'currentRoiRate', 'expectedRoiRate', 'currentLoansPromise', 'loansAcquiredPerDayLastWeek', 'loansAcquiredLastWeek', 'loansAcquiredToday', 'platformAllocationPromise']);
         userService = jasmine.createSpyObj('userService', ['userData']);
+        loansAcquiredService = jasmine.createSpyObj('loansAcquiredService', ['prepare', 'barChartOptions']);
     });
 
     let availableCapital;
@@ -39,6 +41,44 @@ describe('DashboardController', () => {
     beforeEach(() => {
         allocatedCapital = 2000;
         dashboardDataService.allocatedCapital.and.callFake(callback => callback({data: { allocatedCapital: allocatedCapital } }));
+    });
+
+    let averageMaturity;
+    beforeEach(() => {
+        jasmine.clock().mockDate(new Date("2016-08-01"));
+        averageMaturity = "2016-10-11";
+        dashboardDataService.averageMaturity.and.callFake(callback => callback({data: { averageMaturity: averageMaturity } }));
+    });
+
+    let averageIntRate;
+    beforeEach(() => {
+        averageIntRate = 0.12;
+        dashboardDataService.averageIntRate.and.callFake(callback => callback({data: { averageIntRate: averageIntRate } }));
+    });
+
+    let expectedReturns;
+    beforeEach(() => {
+        expectedReturns = 200000;
+        dashboardDataService.expectedReturns.and.callFake(callback => callback({data: { expectedReturns: expectedReturns } }));
+    });
+
+    let lastLoanMaturity;
+    beforeEach(() => {
+        jasmine.clock().mockDate(new Date("2016-08-01"));
+        lastLoanMaturity = "2016-12-01";
+        dashboardDataService.lastLoanMaturity.and.callFake(callback => callback({data: { lastLoanMaturity: lastLoanMaturity } }));
+    });
+
+    let currentRoiRate;
+    beforeEach(() => {
+        currentRoiRate = 0.2;
+        dashboardDataService.currentRoiRate.and.callFake(callback => callback({data: { currentRoiRate: currentRoiRate } }));
+    });
+
+    let expectedRoiRate;
+    beforeEach(() => {
+        expectedRoiRate = 0.3;
+        dashboardDataService.expectedRoiRate.and.callFake(callback => callback({data: { expectedRoiRate: expectedRoiRate } }));
     });
 
     let firstName, lastName;
@@ -54,7 +94,8 @@ describe('DashboardController', () => {
             authenticationService: authenticationService,
             cssInjector: cssInjector,
             dashboardDataService: dashboardDataService,
-            userService: userService
+            userService: userService,
+            loansAcquiredService: loansAcquiredService
         });
     }));
 
@@ -95,24 +136,46 @@ describe('DashboardController', () => {
 
         it('should load average maturity from API', () => {
             expect(dashboardDataService.averageMaturity).toHaveBeenCalled();
+            expect(dashboardController.averageMaturity).toBe("in 2 months");
         });
 
         it('should load average interest rate from API', () => {
             expect(dashboardDataService.averageIntRate).toHaveBeenCalled();
+            expect(dashboardController.averageIntRate).toBe(averageIntRate);
         });
 
         it('should load expected returns rate from API', () => {
             expect(dashboardDataService.expectedReturns).toHaveBeenCalled();
+            expect(dashboardController.expectedReturns).toBe(expectedReturns);
         });
 
         it('should load last loan maturity rate from API', () => {
             expect(dashboardDataService.lastLoanMaturity).toHaveBeenCalled();
+            expect(dashboardController.lastLoanMaturity).toBe("in 4 months");
+        });
+
+        it('should load current roi rate from API', () => {
+            expect(dashboardDataService.currentRoiRate).toHaveBeenCalled();
+            expect(dashboardController.currentRoiRate).toBe(currentRoiRate);
+        });
+
+        it('should load expected roi rate from API', () => {
+            expect(dashboardDataService.expectedRoiRate).toHaveBeenCalled();
+            expect(dashboardController.expectedRoiRate).toBe(expectedRoiRate);
         });
 
         it('should load user names from API', () => {
             expect(userService.userData).toHaveBeenCalled();
             expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
             expect(dashboardController.username).toBe(`${firstName} ${lastName}`);
+        });
+
+        it('should get a promise containing the current loans', () => {
+            expect(dashboardDataService.currentLoansPromise).toHaveBeenCalled();
+        });
+
+        it('should get a promise containing the portfolio allocation', () => {
+            expect(dashboardDataService.platformAllocationPromise).toHaveBeenCalled();
         });
     });
 });

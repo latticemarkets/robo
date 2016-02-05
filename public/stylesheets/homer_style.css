@@ -376,12 +376,12 @@
   border-radius: 2px;
   margin-bottom: 10px;
 }
-.progress-bar {
+/*.progress-bar {
   background-color: #f1f3f6;
   text-align: right;
   padding-right: 10px;
   color: #6a6c6f;
-}
+}*/
 .progress-small,
 .progress-small .progress-bar {
   height: 10px;
@@ -2549,7 +2549,7 @@ h6 {
   height: 100%;
 }
 .stats .flot-chart {
-  height: 60px;
+  height: 80px;
 }
 /* Messages */
 .feed-activity-list .feed-element {

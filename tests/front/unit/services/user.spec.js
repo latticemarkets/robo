@@ -135,7 +135,17 @@ describe('userService', () => {
             email = "email";
 
             _$httpBackend.when('GET', `/api/user/infos/${email}`).respond();
-            _userService.userInformations(email);
+            _userService.userData(email);
+        });
+
+        it('should call the API', () => {
+            _$httpBackend.expectGET(`/api/user/infos/${email}`);
+            expect(_$httpBackend.flush).not.toThrow();
+        });
+
+        afterEach(() => {
+            _$httpBackend.verifyNoOutstandingExpectation();
+            _$httpBackend.verifyNoOutstandingRequest();
         });
     });
 });

@@ -15,7 +15,7 @@
     'use strict';
 
     class DashboardController {
-        constructor(cssInjector, authenticationService, $location, dashboardDataService, userService) {
+        constructor(cssInjector, authenticationService, $location, dashboardDataService, userService, loansAcquiredService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -35,7 +35,16 @@
                 dashboardDataService.expectedReturns(response => vm.expectedReturns = response.data.expectedReturns);
                 dashboardDataService.lastLoanMaturity(response => vm.lastLoanMaturity = moment(response.data.lastLoanMaturity).fromNow());
                 userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.username = `${response.data.firstName} ${response.data.lastName}`);
+                dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
+                dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
+                vm.loansMaturityPromise = dashboardDataService.currentLoansPromise();
+                dashboardDataService.loansAcquiredPerDayLastWeek(response => vm.loansAcquiredPerDay = loansAcquiredService.prepareData(response.data));
+                dashboardDataService.loansAcquiredLastWeek(response => vm.loansAcquiredLastWeek = response.data.loansAcquiredLastWeek);
+                dashboardDataService.loansAcquiredToday(response => vm.loansAcquiredToday = response.data.loansAcquiredToday);
+                vm.platformAllocationPromise = dashboardDataService.platformAllocationPromise();
             }
+
+            vm.loansAcquiredPerDayOption = loansAcquiredService.barChartOptions;
         }
     }
 
