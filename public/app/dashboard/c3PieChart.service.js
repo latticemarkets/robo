@@ -36,7 +36,7 @@
         }
 
         get blueDegraded() {
-            return ['#0000CC', '#222BD5', '#4455DD', '#6680E6', '#88AAEE', '#AAD5F7', '#CCFFFF'];
+            return ['#083D72', '#5AA7F4', '#1181F2', '#2A4E72', '#0D66BF', '#3994F2', '#65AAF2'];
         }
     }
 
