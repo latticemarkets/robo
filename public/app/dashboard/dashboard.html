@@ -133,15 +133,11 @@
                         <div class="flot-chart">
                             <flot dataset="vm.loansAcquiredPerDay" options="vm.loansAcquiredPerDayOption" height="80px" width="80%"></flot>
                         </div>
-                        <div class="m-t-xs">
+                        <div class="loans-metrics">
                             <div class="row">
                                 <div class="col-xs-5">
                                     <small class="stat-label">Today</small>
                                     <h4>{{ vm.loansAcquiredToday | currency }}</h4>
-                                </div>
-                                <div class="col-xs-7">
-                                    <small class="stat-label">Last week</small>
-                                    <h4>{{ vm.loansAcquiredLastWeek | currency }}</h4>
                                 </div>
                             </div>
                         </div>
