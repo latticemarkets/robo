@@ -46,6 +46,9 @@
                         },
                         color: {
                             pattern: c3PieChartService.blueDegraded
+                        },
+                        legend:{
+                            show: false
                         }
                     });
                 }, notificationService.apiError());
