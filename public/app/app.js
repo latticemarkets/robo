@@ -94,6 +94,11 @@
                 controller: "DashboardController",
                 controllerAs: 'vm'
             })
+            .when('/userAccount', {
+                templateUrl: "assets/app/userAccount/userAccount.html",
+                controller: "UserAccountController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 

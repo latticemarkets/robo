@@ -2320,7 +2320,12 @@ div .signup .choosed-platform {
 .platform-allocation-bars {
     margin-top: 20px;
 }
-.loans-metrics {
+/*------------------------
+ * ACCOUNT CONFIGURATION
+ *----------------------*/
+.account-configuration {
+    margin-top: 30px;
+}.loans-metrics {
     margin-top: 40px;
 }
 .h-200 {
