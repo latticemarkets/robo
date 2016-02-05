@@ -44,7 +44,7 @@
                         tooltip: {
                             position: () => ({top: 30, left: 0}),
                             format:{
-                              value: function (value, ratio, id, index){return value;}
+                              value: value => value
                             }
                         },
                         color: {
