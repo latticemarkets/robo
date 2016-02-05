@@ -16,11 +16,11 @@
 
     angular
         .module('app')
-        .directive('platformAllocation', loansMaturity);
+        .directive('riskDiversification', riskDiversification);
 
-    loansMaturity.$inject = ['notificationService', 'c3PieChartService'];
+    riskDiversification.$inject = ['notificationService', 'c3PieChartService'];
 
-    function loansMaturity(notificationService, c3PieChartService) {
+    function riskDiversification(notificationService, c3PieChartService) {
         return {
             replace: true,
             restrict: 'E',
@@ -35,23 +35,17 @@
                         bindto: `#${scope.identifier}`,
                         data: {
                             columns: c3PieChartService.prepareData(response.data),
-                            type : 'pie'
+                            type : 'donut'
                         },
                         size: {
                             height: 200,
                             width: 300
                         },
                         tooltip: {
-                            position: () => ({top: 30, left: 0}),
-                            format:{
-                              value: value => value
-                            }
+                            position: () => ({top: 30, left: 0})
                         },
                         color: {
                             pattern: c3PieChartService.blueDegraded
-                        },
-                        legend:{
-                          show: false
                         }
                     });
                 }, notificationService.apiError());

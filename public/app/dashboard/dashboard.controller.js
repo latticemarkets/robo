@@ -15,7 +15,7 @@
     'use strict';
 
     class DashboardController {
-        constructor(cssInjector, authenticationService, $location, dashboardDataService, userService, loansAcquiredService) {
+        constructor(cssInjector, authenticationService, $location, dashboardDataService, userService, loansAcquiredService, riskDiversificationService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -43,9 +43,17 @@
                     vm.loansAcquiredLastWeek = response.data.reduce((last, loans) => loans + last, 0);
                 });
                 vm.platformAllocationPromise = dashboardDataService.platformAllocationPromise();
+                dashboardDataService.riskDiversification(response => {
+                    const preparedData = riskDiversificationService.prepareData(response.data);
+                    vm.riskDiversificationPolarChar = {
+                        labels: preparedData.labels,
+                        data: preparedData.data
+                    };
+                });
             }
 
             vm.loansAcquiredPerDayOption = loansAcquiredService.barChartOptions;
+            vm.polarChartOptions = riskDiversificationService.polarChartOptions;
         }
     }
 

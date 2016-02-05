@@ -19,7 +19,8 @@
             'ui.bootstrap',
             'angular.css.injector',
             'angular-flot',
-            'camelCaseToHuman'])
+            'camelCaseToHuman',
+            'chart.js'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);

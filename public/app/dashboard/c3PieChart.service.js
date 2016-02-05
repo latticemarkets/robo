@@ -14,7 +14,7 @@
 (() => {
     'use strict';
 
-    class allocationPerPlatformService {
+    class c3PieChartService {
         constructor($filter) {
             this.$filter = $filter;
         }
@@ -26,9 +26,13 @@
                 return [ titleCased, allocation.loansAcquired ];
             });
         }
+
+        get blueDegraded() {
+            return ['#0000CC', '#222BD5', '#4455DD', '#6680E6', '#88AAEE', '#AAD5F7', '#CCFFFF'];
+        }
     }
 
     angular
         .module('app')
-        .service('allocationPerPlatformService', allocationPerPlatformService);
+        .service('c3PieChartService', c3PieChartService);
 })();

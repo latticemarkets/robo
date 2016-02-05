@@ -21,6 +21,7 @@ GET     /api/dashboard/expectedRoiRate                  controllers.Users.expect
 GET     /api/dashboard/currentLoans                     controllers.Users.currentLoans
 GET     /api/dashboard/loansAcquiredPerDayLastWeek      controllers.Users.loansAcquiredPerDayLastWeek
 GET     /api/dashboard/platformAllocation               controllers.Users.platformAllocation
+GET     /api/dashboard/riskDiversification              controllers.Users.riskDiversification
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

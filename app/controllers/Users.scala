@@ -175,4 +175,14 @@ class Users extends Controller {
       Json.obj("originator" -> "fundingCircle", "loansAcquired" -> 90)
     ))
   }
+
+  def riskDiversification() = HasToken {
+    Ok(Json.arr(
+      Json.obj("label" -> "A", "value" -> 240),
+      Json.obj("label" -> "B", "value" -> 49),
+      Json.obj("label" -> "C", "value" -> 189),
+      Json.obj("label" -> "D", "value" -> 140),
+      Json.obj("label" -> "E", "value" -> 200)
+    ))
+  }
 }
