@@ -27,7 +27,7 @@
                         <span class="font-extra-bold font-uppercase">{{ vm.username }} <b class="caret"></b></span>
                     </a>
 
-                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button" class="dropdown-menu animated fadeInRight m-t-xs">
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button" class="dropdown-menu animated m-t-xs">
                         <li><a href="contacts.html">Contacts</a></li>
                         <li><a href="profile.html">Profile</a></li>
                         <li><a href="analytics.html">Analytics</a></li>
@@ -67,8 +67,8 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3 text-center">
-                                <div class="medium">
-                                    <i class="fa fa-bolt"></i> Your capital
+                                <div class="text-center small">
+                                    <i class="fa fa-money"></i> Your Capital
                                 </div>
                                 <div>
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
@@ -85,25 +85,25 @@
                             </div>
                             <div class="col-md-6 loansMaturity">
                                 <div class="text-center small">
-                                    <i class="fa fa-laptop"></i> Loans maturity
+                                    <i class="fa fa-suitcase"></i> Portfolio Diversification
                                 </div>
                                 <loans-maturity data="vm.loansMaturityPromise" identifier="loansMaturity"></loans-maturity>
                             </div>
                             <div class="col-md-3 text-center">
-                                <div class="small">
-                                    <i class="fa fa-clock-o"></i> Your metrics
+                                <div class="text-center small">
+                                    <i class="fa fa-tachometer"></i> Return on Investment
                                 </div>
                                 <div>
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
                                         {{ vm.averageMaturity }}
                                     </h1>
-                                    <small>Average maturity</small>
+                                    <small>Net Capital Gains</small>
                                 </div>
                                 <div>
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
                                         {{ vm.averageIntRate | percent : 2 }}
                                     </h1>
-                                    <small>Average interest rate</small>
+                                    <small>Average Interest Rate</small>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                         <h1 class="m-xs font-extra-bold fat-font"><compare-numbers compare="vm.currentRoiRate" to="vm.expectedRoiRate">{{ vm.currentRoiRate | percent : 2 }}</compare-numbers></h1>
 
                         <h3 class="font-extra-bold no-margins text-blue">
-                            Strategy performance
+                            Current Strategy
                         </h3>
                         <small>Current goal : {{ vm.expectedRoiRate | percent : 2 }}</small>
                     </div>
@@ -133,7 +133,7 @@
                 <div class="hpanel stats">
                     <div class="panel-body h-200">
                         <div class="stats-title pull-left">
-                            <h4>Loans acquired par day</h4>
+                            <h4>Investments this week</h4>
                         </div>
                         <div class="stats-icon pull-right">
                             <i class="pe-7s-credit fa-4x"></i>
@@ -161,7 +161,7 @@
                 <div class="hpanel stats">
                     <div class="panel-body h-200">
                         <div class="stats-title pull-left">
-                            <h4>Total allocation per platform</h4>
+                            <h4>Platform Allocation</h4>
                         </div>
                         <div class="stats-icon pull-right">
                             <i class="pe-7s-monitor fa-4x"></i>
@@ -176,7 +176,7 @@
                 <div class="hpanel stats">
                     <div class="panel-body h-200">
                         <div class="stats-title pull-left">
-                            <h4>Platforms allocation</h4>
+                            <h4>Risk Diversification</h4>
                         </div>
                         <div class="stats-icon pull-right">
                             <i class="pe-7s-cash fa-4x"></i>
@@ -192,7 +192,7 @@
     <!-- Footer-->
     <footer class="footer">
         <span class="pull-right">
-            PDX Technology 2015-2016
+            PDX Technology 2016
         </span>
         PDX Robo
     </footer>
