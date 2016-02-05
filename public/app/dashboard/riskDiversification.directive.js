@@ -42,7 +42,7 @@
                             width: 300
                         },
                         tooltip: {
-                            position: () => ({top: 30, left: 0})
+                            position: () => ({top: 0, left: 0})
                         },
                         color: {
                             pattern: c3PieChartService.blueDegraded
