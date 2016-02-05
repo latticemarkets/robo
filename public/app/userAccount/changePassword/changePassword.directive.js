@@ -18,16 +18,33 @@
         .module('app')
         .directive('changePassword', changePassword);
 
-    changePassword.$inject = [];
+    changePassword.$inject = ['patternCheckerService'];
 
-    function changePassword() {
+    function changePassword(patternCheckerService) {
         return {
             replace: true,
             restrict: 'E',
             scope: {
             },
             templateUrl: '/assets/app/userAccount/changePassword/changePassword.html',
-            controller: 'ChangePasswordController'
+            link(scope) {
+                scope.tickBox = function(condition) {
+                    return condition() ? 'glyphicon-ok' : 'glyphicon-remove';
+                };
+
+                scope.charLengthGreaterThan8 = () => patternCheckerService.charLengthGreaterThan8(scope.newPassword);
+                scope.hasLowercase = () => patternCheckerService.hasLowercase(scope.newPassword);
+                scope.hasUppercase = () => patternCheckerService.hasUppercase(scope.newPassword);
+                scope.hasSpecialChar = () => patternCheckerService.hasSpecialChar(scope.newPassword);
+
+                function allConditionsSatisfied() {
+                    return scope.charLengthGreaterThan8() && scope.hasLowercase() && scope.hasUppercase() && scope.hasSpecialChar();
+                }
+
+                scope.disableSubmitButton = () => {
+                    return !allConditionsSatisfied();
+                };
+            }
         };
     }
 })();
