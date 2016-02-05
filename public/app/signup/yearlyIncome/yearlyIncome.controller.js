@@ -15,10 +15,13 @@
     'use strict';
 
     class SignupYearlyIncomeController {
-        constructor($location, $cookieStore) {
+        constructor($location, $cookieStore, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
+
+            vm.pageNo = 3;
+            $timeout(() => vm.pageNo++, 1000);
 
             vm.incomeRanges = {
                 '-25': 'Less than $25,000',

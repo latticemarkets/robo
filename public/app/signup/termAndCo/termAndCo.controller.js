@@ -21,7 +21,7 @@
             vm.pageClass = 'signup-login blue';
 
             vm.pageNo = 1;
-            $timeout(() => vm.pageNo = 2, 1000);
+            $timeout(() => vm.pageNo++, 1000);
 
             (() => {
                 const email = $cookieStore.get('signup.email');
