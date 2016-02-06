@@ -36,10 +36,9 @@
         }
 
         get blueDegraded() {
-            return ['#083D72', '#5AA7F4', '#1181F2', '#2A4E72', '#0D66BF', '#3994F2', '#65AAF2'];
+            return ['#1181F2', '#248bf3', '#3695f4', '#499ff5', '#5ba8f6', '#6eb2f7', '#93c6f9'];
         }
     }
-
     angular
         .module('app')
         .service('c3PieChartService', c3PieChartService);
