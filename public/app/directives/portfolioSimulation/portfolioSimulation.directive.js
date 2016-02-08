@@ -53,13 +53,20 @@
                             }
                         },
                         axis: {
+                            x: {
+                                label: 'Months'
+                            },
                             y: {
                                 max: 2000,
                                 min: 0,
-                                padding: {top: 0, bottom: 0}
+                                padding: {top: 0, bottom: 0},
+                                label: 'ROI ($)'
                             }
                         },
                         point: {
+                            show: false
+                        },
+                        legend: {
                             show: false
                         }
                     });
