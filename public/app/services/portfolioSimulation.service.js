@@ -30,40 +30,48 @@
         }
 
         simulatedDataFor(portfolio) {
-            function generateValues(j) {
+            function generateMedian(j) {
                 return Array.apply(null, new Array(120)).map((n, x) => x * x / j);
+            }
+
+            function generateMin(j) {
+                return generateMedian(j).map(n => n * 0.9);
+            }
+
+            function generateMax(j) {
+                return generateMedian(j).map(n => n * 1.1);
             }
 
             switch (portfolio) {
                 case 'conservative':
                     return [
-                        ['Max'].concat(generateValues(17)),
-                        ['Simulation'].concat(generateValues(23)),
-                        ['Min'].concat(generateValues(35))
+                        ['Max'].concat(generateMax(23)),
+                        ['Simulation'].concat(generateMedian(23)),
+                        ['Min'].concat(generateMin(23))
                     ];
                 case 'moderateConservative':
                     return [
-                        ['Max'].concat(generateValues(13)),
-                        ['Simulation'].concat(generateValues(20)),
-                        ['Min'].concat(generateValues(32))
+                        ['Max'].concat(generateMax(20)),
+                        ['Simulation'].concat(generateMedian(20)),
+                        ['Min'].concat(generateMin(20))
                     ];
                 case 'moderate':
                     return [
-                        ['Max'].concat(generateValues(10)),
-                        ['Simulation'].concat(generateValues(16)),
-                        ['Min'].concat(generateValues(25))
+                        ['Max'].concat(generateMax(16)),
+                        ['Simulation'].concat(generateMedian(16)),
+                        ['Min'].concat(generateMin(16))
                     ];
                 case 'moderatelyAggressive':
                     return [
-                        ['Max'].concat(generateValues(8)),
-                        ['Simulation'].concat(generateValues(13)),
-                        ['Min'].concat(generateValues(22))
+                        ['Max'].concat(generateMax(13)),
+                        ['Simulation'].concat(generateMedian(13)),
+                        ['Min'].concat(generateMin(13))
                     ];
                 case 'aggressive':
                     return [
-                        ['Max'].concat(generateValues(7)),
-                        ['Simulation'].concat(generateValues(10)),
-                        ['Min'].concat(generateValues(17))
+                        ['Max'].concat(generateMax(10)),
+                        ['Simulation'].concat(generateMedian(10)),
+                        ['Min'].concat(generateMin(10))
                     ];
                 default:
                     return [];
