@@ -20,6 +20,9 @@
 
             vm.pageClass = 'signup-login blue';
 
+            vm.pageNo = 6;
+            $timeout(() => vm.pageNo++, 1000);
+
             vm.portfolios = {
                 conservative: 'Conservative',
                 moderateConservative: 'Moderately Conservative',

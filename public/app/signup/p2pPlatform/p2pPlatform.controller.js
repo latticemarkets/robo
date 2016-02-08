@@ -20,7 +20,7 @@
 
             vm.pageClass = 'signup-login blue';
 
-            vm.pageNo = 6;
+            vm.pageNo = 7;
             $timeout(() => vm.pageNo++, 1000);
 
             vm.platforms = {
