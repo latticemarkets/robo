@@ -54,7 +54,7 @@
                         },
                         axis: {
                             x: {
-                                label: 'Months'
+                                label: 'Years'
                             },
                             y: {
                                 max: 2000,
