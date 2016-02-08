@@ -2123,6 +2123,10 @@ div .signup .intro-conditions {
     padding-top: 30px;
     padding-bottom: 30px;
 }
+div .signup .intro-simulation {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
 div .signup .intro-heading {
     font-family: PTSans, sans-serif;
     font-size: 15px;
@@ -2330,6 +2334,10 @@ div .signup .choosed-platform {
 }
 #progressbar {
     background-color: #455362 !important;
+}
+.portfolio-simulation-chart {
+    background-color: white;
+    margin-bottom: 30px;
 }
 /*------------------------
  * DASHBOARD

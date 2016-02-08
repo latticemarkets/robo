@@ -21,13 +21,15 @@
         }
 
         getPortfolioSuggestion(terms, reason, income, timeline, birthday, callback) {
-            this.$http.get('/api/portfolio/suggestion', {
+            const promise = this.$http.get('/api/portfolio/suggestion', {
                 terms: terms,
                 reason: reason,
                 income: income,
                 timeline: timeline,
                 birthday: birthday
-            }).then(callback, this.notificationService.apiError);
+            });
+            promise.then(callback, this.notificationService.apiError);
+            return promise;
         }
     }
 

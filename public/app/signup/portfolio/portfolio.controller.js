@@ -15,21 +15,13 @@
     'use strict';
 
     class SignupPortfolioController {
-        constructor($location, $cookieStore, portfolioService) {
+        constructor($location, $cookieStore, portfolioService, $timeout, portfolioSimulationService) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
 
             vm.pageNo = 6;
             $timeout(() => vm.pageNo++, 1000);
-
-            vm.portfolios = {
-                conservative: 'Conservative',
-                moderateConservative: 'Moderately Conservative',
-                moderate: 'Moderate',
-                moderatelyAggressive: 'Moderately Aggressive',
-                aggressive: 'Aggressive'
-            };
 
             (() => {
                 const email = $cookieStore.get('signup.email');
@@ -44,9 +36,13 @@
                     $location.path('/signup');
                 }
 
-                vm.chosePortfolio = "";
+                vm.portfolios = portfolioSimulationService.portfolioKeysValues;
 
-                portfolioService.getPortfolioSuggestion(terms, reason, income, timeline, birthday, response => vm.chosePortfolio = response.data.portfolio);
+                vm.chosePortfolioPromise = portfolioService.getPortfolioSuggestion(terms, reason, income, timeline, birthday, response => {
+                    vm.chosePortfolio = response.data.portfolio;
+                    vm.suggestedPortfolio = response.data.portfolio;
+                });
+
             })();
 
             vm.choose = portfolio => {
