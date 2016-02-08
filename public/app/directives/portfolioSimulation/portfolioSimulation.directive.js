@@ -43,17 +43,17 @@
                             columns: [
                                 [dataName].concat(data)
                             ],
-                            type: 'spline'
+                            type: 'area-spline'
                         },
                         axis: {
                             y: {
-                                max: 1000,
+                                max: 2000,
                                 min: 0,
                                 padding: {top: 0, bottom: 0}
                             }
                         },
-                        types: {
-                            [dataName]: 'area-spline'
+                        point: {
+                            show: false
                         }
                     });
                 });

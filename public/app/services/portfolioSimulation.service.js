@@ -30,13 +30,16 @@
         }
 
         simulatedDataFor(portfolio) {
+            var map = Array.apply(null, new Array(120)).map((n, x) => x * x/16);
+            console.log(map);
+
             switch (portfolio) {
                 case 'conservative':
                     return [10, 20, 40, 80, 160, 300];
                 case 'moderateConservative':
                     return [10, 25, 50, 100, 200, 350];
                 case 'moderate':
-                    return [10, 30, 60, 120, 250, 400];
+                    return map;
                 case 'moderatelyAggressive':
                     return [10, 50, 90, 160, 350, 600];
                 case 'aggressive':
