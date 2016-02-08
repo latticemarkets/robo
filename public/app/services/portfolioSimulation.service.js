@@ -34,15 +34,15 @@
                 case 'conservative':
                     return [10, 20, 40, 80, 160, 300];
                 case 'moderateConservative':
-                    return [10, 20, 40, 80, 160, 300];
+                    return [10, 25, 50, 100, 200, 350];
                 case 'moderate':
-                    return [10, 20, 40, 80, 160, 300];
+                    return [10, 30, 60, 120, 250, 400];
                 case 'moderatelyAggressive':
-                    return [10, 20, 40, 80, 160, 300];
+                    return [10, 50, 90, 160, 350, 600];
                 case 'aggressive':
-                    return [10, 20, 40, 80, 160, 300];
+                    return [10, 80, 160, 300, 500, 900];
                 default:
-                    return [10, 20, 40, 80, 160, 300];
+                    return [];
             }
         }
     }

@@ -31,10 +31,12 @@
             },
             template: '<div id="{{identifier}}"></div>',
             link(scope) {
+                let chart;
+
                 scope.promise.then(response => {
                     var data = portfolioSimulationService.simulatedDataFor(response.data.portfolio);
 
-                    const chart = c3.generate({
+                    chart = c3.generate({
                         bindto: `#${scope.identifier}`,
                         data: {
                             columns: [
@@ -43,6 +45,16 @@
                             type: 'spline'
                         }
                     });
+                });
+
+                scope.$watch('portfolio', () => {
+                    if (scope.portfolio) {
+                        chart.load({
+                            columns: [
+                                ['data1'].concat(portfolioSimulationService.simulatedDataFor(scope.portfolio))
+                            ]
+                        });
+                    }
                 });
             }
         };
