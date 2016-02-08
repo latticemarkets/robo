@@ -58,9 +58,9 @@
                 case 'moderate':
                     return generateValues(10);
                 case 'moderatelyAggressive':
-                    return generateValues(13);
+                    return generateValues(11);
                 case 'aggressive':
-                    return generateValues(16);
+                    return generateValues(13);
                 default:
                     return [];
             }
