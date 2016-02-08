@@ -30,20 +30,41 @@
         }
 
         simulatedDataFor(portfolio) {
-            var map = Array.apply(null, new Array(120)).map((n, x) => x * x/16);
-            console.log(map);
+            function generateValues(j) {
+                return Array.apply(null, new Array(120)).map((n, x) => x * x / j);
+            }
 
             switch (portfolio) {
                 case 'conservative':
-                    return [10, 20, 40, 80, 160, 300];
+                    return [
+                        ['Max'].concat(generateValues(17)),
+                        ['Simulation'].concat(generateValues(23)),
+                        ['Min'].concat(generateValues(35))
+                    ];
                 case 'moderateConservative':
-                    return [10, 25, 50, 100, 200, 350];
+                    return [
+                        ['Max'].concat(generateValues(13)),
+                        ['Simulation'].concat(generateValues(20)),
+                        ['Min'].concat(generateValues(32))
+                    ];
                 case 'moderate':
-                    return map;
+                    return [
+                        ['Max'].concat(generateValues(10)),
+                        ['Simulation'].concat(generateValues(16)),
+                        ['Min'].concat(generateValues(25))
+                    ];
                 case 'moderatelyAggressive':
-                    return [10, 50, 90, 160, 350, 600];
+                    return [
+                        ['Max'].concat(generateValues(8)),
+                        ['Simulation'].concat(generateValues(13)),
+                        ['Min'].concat(generateValues(22))
+                    ];
                 case 'aggressive':
-                    return [10, 80, 160, 300, 500, 900];
+                    return [
+                        ['Max'].concat(generateValues(7)),
+                        ['Simulation'].concat(generateValues(10)),
+                        ['Min'].concat(generateValues(17))
+                    ];
                 default:
                     return [];
             }

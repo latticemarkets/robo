@@ -40,10 +40,17 @@
                     chart = c3.generate({
                         bindto: `#${scope.identifier}`,
                         data: {
-                            columns: [
-                                [dataName].concat(data)
-                            ],
-                            type: 'area-spline'
+                            columns: data,
+                            types: {
+                                Max: 'area-spline',
+                                Simulation: 'spline',
+                                Min: 'area-spline'
+                            },
+                            colors: {
+                                Max: 'rgb(215, 232, 248)',
+                                Simulation: 'rgb(120, 178, 235)',
+                                Min: '#fff'
+                            }
                         },
                         axis: {
                             y: {
@@ -61,9 +68,7 @@
                 scope.$watch('portfolio', () => {
                     if (scope.portfolio) {
                         chart.load({
-                            columns: [
-                                [dataName].concat(portfolioSimulationService.simulatedDataFor(scope.portfolio))
-                            ]
+                            columns: portfolioSimulationService.simulatedDataFor(scope.portfolio)
                         });
                     }
                 });

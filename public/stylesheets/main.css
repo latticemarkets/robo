@@ -2339,6 +2339,9 @@ div .signup .choosed-platform {
     background-color: white;
     margin-bottom: 30px;
 }
+.c3-area {
+    opacity:1;
+}
 /*------------------------
  * DASHBOARD
  *----------------------*/
