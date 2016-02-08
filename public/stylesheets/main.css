@@ -2338,6 +2338,9 @@ div .signup .choosed-platform {
 .portfolio-simulation-chart {
     background-color: white;
     margin-bottom: 30px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 .c3-area {
     opacity:1;
