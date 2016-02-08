@@ -2223,9 +2223,13 @@ div .signup .outro-text .outro-heading-large {
 }
 /* slide in from the right */
 @keyframes slideInRight {
-    from 	{ transform: translateX(100%); }
-    to 		{ transform: translateX(0); }
-
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
 @-webkit-keyframes slide {
     100% { left: 0; }
 }
