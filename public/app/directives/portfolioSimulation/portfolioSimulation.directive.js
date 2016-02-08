@@ -43,6 +43,13 @@
                                 ['data1'].concat(data)
                             ],
                             type: 'spline'
+                        },
+                        axis: {
+                            y: {
+                                max: 1000,
+                                min: 0,
+                                padding: {top: 0, bottom: 0}
+                            }
                         }
                     });
                 });
