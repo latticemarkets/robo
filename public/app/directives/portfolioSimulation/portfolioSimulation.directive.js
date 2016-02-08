@@ -62,7 +62,7 @@
                                 max: 2000,
                                 min: 0,
                                 padding: {top: 0, bottom: 0},
-                                label: 'ROI ($)'
+                                label: 'Projected Value ($)'
                             }
                         },
                         point: {
