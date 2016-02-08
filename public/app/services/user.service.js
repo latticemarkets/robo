@@ -54,6 +54,10 @@
         userData(email, callback) {
             this.$http.get(`/api/user/infos/${email}`).then(callback, this.notificationService.apiError());
         }
+
+        updatePassword(email, oldPassword, newPassword, callback) {
+            this.$http.put('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
+        }
     }
 
     angular

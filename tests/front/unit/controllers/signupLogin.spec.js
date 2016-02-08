@@ -12,12 +12,13 @@
 */
 
 describe('SignupLoginController', () => {
-    let signUpController,
+    let signUpLoginController,
         userService,
         $cookieStore,
         $location,
         notificationService,
-        notificationCallbackError;
+        notificationCallbackError,
+        patternCheckerService;
 
     beforeEach(() => {
         module('app');
@@ -25,6 +26,7 @@ describe('SignupLoginController', () => {
         userService = jasmine.createSpyObj('userService', ['isEmailUsed']);
         $cookieStore = jasmine.createSpyObj('$cookieStore', ['put']);
         $location = jasmine.createSpyObj('$location', ['path']);
+        patternCheckerService = jasmine.createSpyObj('patternCheckerService', ['isEmail', 'charLengthGreaterThan8', 'hasLowercase', 'hasUppercase', 'hasSpecialChar']);
 
         notificationCallbackError = jasmine.createSpy('notificationCallbackError');
         notificationService = {
@@ -34,17 +36,18 @@ describe('SignupLoginController', () => {
     });
 
     beforeEach(inject(($controller) => {
-        signUpController = $controller('SignupLoginController', {
+        signUpLoginController = $controller('SignupLoginController', {
             userService: userService,
             $cookieStore : $cookieStore,
             $location : $location,
-            notificationService: notificationService
+            notificationService: notificationService,
+            patternCheckerService: patternCheckerService
         });
     }));
 
     describe('transitions', () => {
         it('should specify the classes used for transition', () => {
-            expect(signUpController.pageClass).toBe('signup-login blue');
+            expect(signUpLoginController.pageClass).toBe('signup-login blue');
         });
     });
 
@@ -53,24 +56,30 @@ describe('SignupLoginController', () => {
 
         beforeEach(() => {
             emailUsedError = 'This email is already used.';
-            signUpController.email = 'well@formed.fr';
-            signUpController.password = 'Str0ngEnough';
+            signUpLoginController.email = 'well@formed.fr';
+            signUpLoginController.password = 'Str0ngEnough';
+
+            patternCheckerService.isEmail.and.callFake(() => true);
+            patternCheckerService.charLengthGreaterThan8.and.callFake(() => true);
+            patternCheckerService.hasLowercase.and.callFake(() => true);
+            patternCheckerService.hasUppercase.and.callFake(() => true);
+            patternCheckerService.hasSpecialChar.and.callFake(() => true);
         });
 
         it('should check if the email is already used', () => {
-            signUpController.submit();
+            signUpLoginController.submit();
             expect(userService.isEmailUsed).toHaveBeenCalled();
         });
 
         describe('email not used', () => {
             beforeEach(() => {
                 userService.isEmailUsed.and.callFake((email, success, error) => success({ data: { ok: true } }));
-                signUpController.submit();
+                signUpLoginController.submit();
             });
 
             it('should add email and password to cookies', () => {
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.email', signUpController.email);
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.password', signUpController.password);
+                expect($cookieStore.put).toHaveBeenCalledWith('signup.email', signUpLoginController.email);
+                expect($cookieStore.put).toHaveBeenCalledWith('signup.password', signUpLoginController.password);
             });
 
             it('should move to terms and conditions page', () => {
@@ -81,7 +90,7 @@ describe('SignupLoginController', () => {
         describe('email used', () => {
             beforeEach(() => {
                 userService.isEmailUsed.and.callFake((email, success, error) => success({ data: { ok: false } }));
-                signUpController.submit();
+                signUpLoginController.submit();
             });
 
             it('should display an error', () => {
@@ -102,7 +111,7 @@ describe('SignupLoginController', () => {
             beforeEach(() => {
                 serverErrorObj = { data: jasmine.any(String) };
                 userService.isEmailUsed.and.callFake((email, success, error) => error(serverErrorObj));
-                signUpController.submit();
+                signUpLoginController.submit();
             });
 
             it('should display an error this the message from the server', () => {
@@ -122,32 +131,84 @@ describe('SignupLoginController', () => {
     describe('submit with wrong parameters', () => {
         describe('good email - weak password', () => {
             beforeEach(() => {
-                signUpController.email = 'well@formed.co.uk';
+                patternCheckerService.isEmail.and.callFake(() => true);
             });
 
-            describe('no special char', () => testWrongPasswordFails('weakPassword'));
-            describe('less than 8 characters', () => testWrongPasswordFails('wea9Pas'));
-            describe('no uppercase', () => testWrongPasswordFails('wea9password'));
-            describe('no lowercase', () => testWrongPasswordFails('WEA9PASSWORD'));
-            describe('empty password', () => testWrongPasswordFails(''));
-
-            function testWrongPasswordFails(password) {
+            describe('no special char', () => {
                 beforeEach(() => {
-                    signUpController.password = password;
-                    signUpController.submit();
+                    patternCheckerService.charLengthGreaterThan8.and.callFake(() => true);
+                    patternCheckerService.hasLowercase.and.callFake(() => true);
+                    patternCheckerService.hasUppercase.and.callFake(() => true);
+                    patternCheckerService.hasSpecialChar.and.callFake(() => false);
                 });
 
                 it('should not submit the form', () => {
+                    signUpLoginController.submit();
                     expect(userService.isEmailUsed).not.toHaveBeenCalled();
                 });
-            }
+            });
+            describe('less than 8 characters', () => {
+                beforeEach(() => {
+                    patternCheckerService.charLengthGreaterThan8.and.callFake(() => false);
+                    patternCheckerService.hasLowercase.and.callFake(() => true);
+                    patternCheckerService.hasUppercase.and.callFake(() => true);
+                    patternCheckerService.hasSpecialChar.and.callFake(() => true);
+                });
+
+                it('should not submit the form', () => {
+                    signUpLoginController.submit();
+                    expect(userService.isEmailUsed).not.toHaveBeenCalled();
+                });
+            });
+            describe('no uppercase', () => {
+                beforeEach(() => {
+                    patternCheckerService.charLengthGreaterThan8.and.callFake(() => true);
+                    patternCheckerService.hasLowercase.and.callFake(() => true);
+                    patternCheckerService.hasUppercase.and.callFake(() => false);
+                    patternCheckerService.hasSpecialChar.and.callFake(() => true);
+                });
+
+                it('should not submit the form', () => {
+                    signUpLoginController.submit();
+                    expect(userService.isEmailUsed).not.toHaveBeenCalled();
+                });
+            });
+            describe('no lowercase', () => {
+                beforeEach(() => {
+                    patternCheckerService.charLengthGreaterThan8.and.callFake(() => true);
+                    patternCheckerService.hasLowercase.and.callFake(() => false);
+                    patternCheckerService.hasUppercase.and.callFake(() => true);
+                    patternCheckerService.hasSpecialChar.and.callFake(() => true);
+                });
+
+                it('should not submit the form', () => {
+                    signUpLoginController.submit();
+                    expect(userService.isEmailUsed).not.toHaveBeenCalled();
+                });
+            });
+            describe('empty password', () => {
+                beforeEach(() => {
+                    patternCheckerService.charLengthGreaterThan8.and.callFake(() => false);
+                    patternCheckerService.hasLowercase.and.callFake(() => true);
+                    patternCheckerService.hasUppercase.and.callFake(() => true);
+                    patternCheckerService.hasSpecialChar.and.callFake(() => true);
+                });
+
+                it('should not submit the form', () => {
+                    signUpLoginController.submit();
+                    expect(userService.isEmailUsed).not.toHaveBeenCalled();
+                });
+            });
         });
 
         describe('bad email - weak password', () => {
             beforeEach(() => {
-                signUpController.email = 'well@formed';
-                signUpController.password = 'w';
-                signUpController.submit();
+                patternCheckerService.isEmail.and.callFake(() => false);
+                patternCheckerService.charLengthGreaterThan8.and.callFake(() => false);
+                patternCheckerService.hasLowercase.and.callFake(() => false);
+                patternCheckerService.hasUppercase.and.callFake(() => true);
+                patternCheckerService.hasSpecialChar.and.callFake(() => true);
+                signUpLoginController.submit();
             });
 
             it('should not submit the form', () => {
@@ -157,93 +218,17 @@ describe('SignupLoginController', () => {
 
         describe('bad email - good password', () => {
             beforeEach(() => {
-                signUpController.password = 'Str0ngPassword';
+                patternCheckerService.isEmail.and.callFake(() => false);
+                patternCheckerService.charLengthGreaterThan8.and.callFake(() => true);
+                patternCheckerService.hasLowercase.and.callFake(() => true);
+                patternCheckerService.hasUppercase.and.callFake(() => true);
+                patternCheckerService.hasSpecialChar.and.callFake(() => true);
+
+                signUpLoginController.submit();
             });
 
-            describe('no domain extension', () => testWrongEmailFails('jack@bower'));
-            describe('no domain', () => testWrongEmailFails('jack@.co.uk'));
-            describe('no prefix', () => testWrongEmailFails('@bower.co.uk'));
-            describe('no @', () => testWrongEmailFails('jackbower.co.uk'));
-
-            function testWrongEmailFails(email) {
-                beforeEach(() => {
-                    signUpController.email = email;
-                    signUpController.submit();
-                });
-
-                it('should not submit the form', () => {
-                    expect(userService.isEmailUsed).not.toHaveBeenCalled();
-                });
-            }
-        });
-    });
-
-    describe('password patterns', () => {
-        describe('charLength', () => {
-            it('should pass', () => {
-                signUpController.password = 'Str0ngPassword';
-                expect(signUpController.passwordPattern.charLength()).toBeTruthy();
-            });
-
-            it('should fail', () => {
-                signUpController.password = 'Str0ng';
-                expect(signUpController.passwordPattern.charLength()).toBeFalsy();
-            });
-        });
-
-        describe('lowercase', () => {
-            it('should pass', () => {
-                signUpController.password = 'password';
-                expect(signUpController.passwordPattern.lowercase()).toBeTruthy();
-            });
-
-            it('should fail', () => {
-                signUpController.password = 'PASSWORD';
-                expect(signUpController.passwordPattern.lowercase()).toBeFalsy();
-            });
-        });
-
-        describe('uppercase', () => {
-            it('should pass', () => {
-                signUpController.password = 'PASSWORD';
-                expect(signUpController.passwordPattern.uppercase()).toBeTruthy();
-            });
-
-            it('should fail', () => {
-                signUpController.password = 'password';
-                expect(signUpController.passwordPattern.uppercase()).toBeFalsy();
-            });
-        });
-
-        describe('special', () => {
-            it('should pass', () => {
-                signUpController.password = '@';
-                expect(signUpController.passwordPattern.special()).toBeTruthy();
-            });
-
-            it('should pass', () => {
-                signUpController.password = '.';
-                expect(signUpController.passwordPattern.special()).toBeTruthy();
-            });
-
-            it('should pass', () => {
-                signUpController.password = '-';
-                expect(signUpController.passwordPattern.special()).toBeTruthy();
-            });
-
-            it('should pass', () => {
-                signUpController.password = '+';
-                expect(signUpController.passwordPattern.special()).toBeTruthy();
-            });
-
-            it('should pass', () => {
-                signUpController.password = ',';
-                expect(signUpController.passwordPattern.special()).toBeTruthy();
-            });
-
-            it('should fail', () => {
-                signUpController.password = 'password';
-                expect(signUpController.passwordPattern.special()).toBeFalsy();
+            it('should not submit the form', () => {
+                expect(userService.isEmailUsed).not.toHaveBeenCalled();
             });
         });
     });
@@ -251,13 +236,13 @@ describe('SignupLoginController', () => {
     describe('tickBox', () => {
         describe('conditions fails', () => {
             it('should return unticked icon', () => {
-                expect(signUpController.tickBox(() => false)).toBe('glyphicon-remove');
+                expect(signUpLoginController.tickBox(() => false)).toBe('glyphicon-remove');
             });
         });
 
         describe('conditions passes', () => {
             it('should return a ticked icon', () => {
-                expect(signUpController.tickBox(() => true)).toBe('glyphicon-ok');
+                expect(signUpLoginController.tickBox(() => true)).toBe('glyphicon-ok');
             });
         });
     });

@@ -46,6 +46,8 @@ case class Login(
                 password: String
                 )
 
+case class UpdatePassword(email: String, oldPassword: String, newPassword: String)
+
 object User {
 
   val collectionName = "user"
@@ -71,9 +73,13 @@ object User {
 
   def generateAndStoreNewToken(user: User): Future[User] = {
     val updatedUser: User = user.copy(token = Hash.createToken)
-    val selector = Json.obj("_id" -> updatedUser._id)
-    val modifier = Json.toJson(updatedUser).as[JsObject]
+    update(updatedUser)
+  }
 
-    usersTable.update(selector, modifier) map(_ => updatedUser)
+  def update(user: User): Future[User] = {
+    val selector = Json.obj("_id" -> user._id)
+    val modifier = Json.toJson(user).as[JsObject]
+
+    usersTable.update(selector, modifier) map(_ => user)
   }
 }

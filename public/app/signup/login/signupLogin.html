@@ -26,11 +26,11 @@
                     <input type="password" class="form-control password" id="password" placeholder="Password" data-ng-model="vm.password">
                 </div>
                 <div class="row text-left conditions">
-                    <div><span class="glyphicon {{ vm.tickBox(vm.emailPattern) }} tick"></span>Valid email address</div>
-                    <div><span class="glyphicon {{ vm.tickBox(vm.passwordPattern.charLength) }} tick"></span>Your password has at least 8 characters</div>
-                    <div><span class="glyphicon {{ vm.tickBox(vm.passwordPattern.lowercase) }} tick"></span>Your password has at least 1 lowercase letter</div>
-                    <div><span class="glyphicon {{ vm.tickBox(vm.passwordPattern.uppercase) }} tick"></span>Your password has at least 1 capital letter</div>
-                    <div><span class="glyphicon {{ vm.tickBox(vm.passwordPattern.special) }} tick"></span>Your password has at least 1 number or special character</div>
+                    <div><span class="glyphicon {{ vm.tickBox(vm.isEmail) }} tick"></span>Valid email address</div>
+                    <div><span class="glyphicon {{ vm.tickBox(vm.charLengthGreaterThan8) }} tick"></span>Your password has at least 8 characters</div>
+                    <div><span class="glyphicon {{ vm.tickBox(vm.hasLowercase) }} tick"></span>Your password has at least 1 lowercase letter</div>
+                    <div><span class="glyphicon {{ vm.tickBox(vm.hasUppercase) }} tick"></span>Your password has at least 1 capital letter</div>
+                    <div><span class="glyphicon {{ vm.tickBox(vm.hasSpecialChar) }} tick"></span>Your password has at least 1 number or special character</div>
                 </div>
                 <button class="btn primary-button" data-ng-click="vm.submit()" data-ng-disabled="vm.disableSubmitButton()">Submit</button>
             </form>

@@ -41,6 +41,10 @@
                 }
             };
         }
+
+        success(message) {
+            this.toastr.success(message, 'Success');
+        }
     }
 
     angular

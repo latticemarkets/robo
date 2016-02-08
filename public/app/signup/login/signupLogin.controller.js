@@ -15,46 +15,24 @@
     'use strict';
 
     class SignupLoginController {
-        constructor($location, $cookieStore, userService, notificationService) {
+        constructor($location, $cookieStore, userService, notificationService, patternCheckerService) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
 
-            vm.emailPattern = () => {
-                const regex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-                return regex.test(vm.email);
-            };
-            vm.passwordPattern = {
-                charLength() {
-                    if (vm.password) {
-                        return vm.password.length >= 8;
-                    }
-                },
-                lowercase() {
-                    const regex = /^(?=.*[a-z]).+$/;
-                    return regex.test(vm.password) && vm.password !== undefined;
-                },
-                uppercase() {
-                    const regex = /^(?=.*[A-Z]).+$/;
-                    return regex.test(vm.password);
-                },
-                special() {
-                    const regex = /^(?=.*[0-9_\W]).+$/;
-                    return regex.test(vm.password);
-                }
-            };
 
             vm.tickBox = function(condition) {
                 return condition() ? 'glyphicon-ok' : 'glyphicon-remove';
             };
 
+            vm.isEmail = () => patternCheckerService.isEmail(vm.email);
+            vm.charLengthGreaterThan8 = () => patternCheckerService.charLengthGreaterThan8(vm.password);
+            vm.hasLowercase = () => patternCheckerService.hasLowercase(vm.password);
+            vm.hasUppercase = () => patternCheckerService.hasUppercase(vm.password);
+            vm.hasSpecialChar = () => patternCheckerService.hasSpecialChar(vm.password);
+
             function allConditionsSatisfied() {
-                const email = vm.emailPattern();
-                const charLength = vm.passwordPattern.charLength();
-                const lowercase = vm.passwordPattern.lowercase();
-                const uppercase = vm.passwordPattern.uppercase();
-                const special = vm.passwordPattern.special();
-                return email && charLength && lowercase && uppercase && special;
+                return vm.isEmail() && vm.charLengthGreaterThan8() && vm.hasLowercase() && vm.hasUppercase() && vm.hasSpecialChar();
             }
 
             vm.disableSubmitButton = () => {

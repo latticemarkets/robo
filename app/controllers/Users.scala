@@ -176,6 +176,26 @@ class Users extends Controller {
     ))
   }
 
+  def updatePassword() = HasToken.async { implicit request =>
+    Forms.updatePasswordForm.bindFromRequest.fold(
+      formWithErrors => {
+        Future.successful( BadRequest("Wrong data sent.") )
+      },
+      infos => {
+        User.findByEmail(infos.email) flatMap (optUser => optUser map (user =>
+          if (Hash.checkPassword(infos.oldPassword, user.password)) {
+            User.update(user.copy(password = Hash.createPassword(infos.newPassword)))
+              .map (user => Ok(""))
+          }
+          else {
+            Future.successful( BadRequest("Old password incorrect") )
+          }
+          ) getOrElse Future.successful( BadRequest("Wrong email") )
+          )
+      }
+    )
+  }
+
   def riskDiversification() = HasToken {
     Ok(Json.arr(
       Json.obj("grade" -> "A", "value" -> 240),

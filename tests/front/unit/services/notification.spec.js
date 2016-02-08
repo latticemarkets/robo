@@ -23,7 +23,8 @@ describe('notificationService', () => {
         module($provide => {
             $provide.service('toastr', () => {
                 return {
-                    error: jasmine.createSpy('error')
+                    error: jasmine.createSpy('error'),
+                    success: jasmine.createSpy('success')
                 };
             });
             $provide.service('$location', () => {
@@ -98,6 +99,21 @@ describe('notificationService', () => {
             it('should display a notification error', () => {
                 expect(_toastr.error).toHaveBeenCalled();
             });
+        });
+    });
+
+    describe('success', () => {
+        let message, title;
+
+        beforeEach(() => {
+            message = 'the message';
+            title = 'Success';
+
+            _notificationService.success(message);
+        });
+
+        it('should display a success notification', () => {
+            expect(_toastr.success).toHaveBeenCalledWith(message, title);
         });
     });
 });
