@@ -31,6 +31,7 @@
             },
             template: '<div id="{{identifier}}"></div>',
             link(scope) {
+                const dataName = 'Simulation';
                 let chart;
 
                 scope.promise.then(response => {
@@ -40,7 +41,7 @@
                         bindto: `#${scope.identifier}`,
                         data: {
                             columns: [
-                                ['data1'].concat(data)
+                                [dataName].concat(data)
                             ],
                             type: 'spline'
                         },
@@ -50,6 +51,9 @@
                                 min: 0,
                                 padding: {top: 0, bottom: 0}
                             }
+                        },
+                        types: {
+                            [dataName]: 'area-spline'
                         }
                     });
                 });
@@ -58,7 +62,7 @@
                     if (scope.portfolio) {
                         chart.load({
                             columns: [
-                                ['data1'].concat(portfolioSimulationService.simulatedDataFor(scope.portfolio))
+                                [dataName].concat(portfolioSimulationService.simulatedDataFor(scope.portfolio))
                             ]
                         });
                     }
