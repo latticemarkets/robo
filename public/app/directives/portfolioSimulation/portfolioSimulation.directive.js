@@ -18,9 +18,9 @@
         .module('app')
         .directive('portfolioSimulation', portfolioSimulation);
 
-    portfolioSimulation.$inject = ['portfolioSimulationService'];
+    portfolioSimulation.$inject = ['portfolioSimulationService', '$filter'];
 
-    function portfolioSimulation(portfolioSimulationService) {
+    function portfolioSimulation(portfolioSimulationService, $filter) {
         return {
             replace: true,
             restrict: 'E',
@@ -30,7 +30,7 @@
                 identifier: '@'
             },
             template: '<div id="{{identifier}}"></div>',
-            link(scope) {
+            link(scope, element) {
                 const dataName = 'Simulation';
                 let chart;
 
@@ -70,6 +70,17 @@
                         },
                         legend: {
                             show: false
+                        },
+                        tooltip: {
+                            format: {
+                                title: x => new Date().getFullYear() + x,
+                                value: value => $filter('currency')(value)
+                            },
+                            position: () => ({top: 25, left: element.width()/2-75}),
+                            contents: d => `<div class="portfolio-simulation-tooltip">
+                                <h4>Projected Value :</h4>
+                                <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">${$filter('currency')(d[1].value)}</h1>
+                                </div>`
                         }
                     });
                 });
