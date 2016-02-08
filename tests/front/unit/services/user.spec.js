@@ -148,4 +148,52 @@ describe('userService', () => {
             _$httpBackend.verifyNoOutstandingRequest();
         });
     });
+
+    describe('userData', () => {
+        let email;
+
+        beforeEach(() => {
+            email = "email@domain.co.uk";
+
+            _$httpBackend.when('GET', '/api/user/infos/email@domain.co.uk').respond();
+
+            _userService.userData(email);
+        });
+
+        it('should call the API', () => {
+            _$httpBackend.expectGET('/api/user/infos/email@domain.co.uk');
+            expect(_$httpBackend.flush).not.toThrow();
+        });
+
+        afterEach(() => {
+            _$httpBackend.verifyNoOutstandingExpectation();
+            _$httpBackend.verifyNoOutstandingRequest();
+        });
+    });
+
+    describe('updatePassword', () => {
+        let email,
+            oldPassword,
+            newPassword;
+
+        beforeEach(() => {
+            email = 'toto@tata.co.uk';
+            oldPassword = '0ldPassword';
+            newPassword = "NewPassw0rd";
+
+            _$httpBackend.when('PUT', '/api/user/password').respond();
+
+            _userService.updatePassword(email, oldPassword, newPassword);
+        });
+
+        it('should should call the API', () => {
+            _$httpBackend.expectPUT('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword });
+            expect(_$httpBackend.flush).not.toThrow();
+        });
+
+        afterEach(() => {
+            _$httpBackend.verifyNoOutstandingExpectation();
+            _$httpBackend.verifyNoOutstandingRequest();
+        });
+    });
 });

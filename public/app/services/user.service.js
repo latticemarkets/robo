@@ -56,7 +56,7 @@
         }
 
         updatePassword(email, oldPassword, newPassword, callback) {
-            this.$http.put(`/api/user/password`, { email: email, oldPassword: oldPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
+            this.$http.put('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
         }
     }
 
