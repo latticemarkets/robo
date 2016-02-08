@@ -54,7 +54,9 @@
                         },
                         axis: {
                             x: {
-                                label: 'Years'
+                                label: 'Years',
+                                type: 'category',
+                                categories: Array.apply(null, new Array(13)).map((n, i) => `Year ${i+1}`)
                             },
                             y: {
                                 max: 2000,
