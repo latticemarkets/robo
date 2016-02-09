@@ -2390,7 +2390,9 @@ div.flot-chart.platform-allocation-chart {
 .loans-acquired-per-day-chart {
     margin-top: 20px;
 }
-/*------------------------
+li.uib-tab > a {
+    background-color: white;
+}/*------------------------
  * RULES
  *----------------------*/
 .project-label {
