@@ -2338,3 +2338,6 @@ div .signup .choosed-platform {
 .loans-acquired-per-day-chart {
     margin-top: 20px;
 }
+li.uib-tab > a {
+    background-color: white;
+}
