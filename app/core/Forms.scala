@@ -27,14 +27,18 @@ object Forms {
       "income" -> nonEmptyText,
       "timeline" -> nonEmptyText,
       "birthday" -> date("mm/dd/yyyy"),
-      "platform" -> nonEmptyText,
-      "accountId" -> nonEmptyText,
-      "apiKey" -> nonEmptyText,
+      "platforms" -> seq(platformForm),
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
       "token" -> ignored(Hash.createToken)
     )(User.apply)(User.unapply)
   )
+
+  def platformForm = mapping(
+      "name" -> nonEmptyText,
+      "accountId" -> nonEmptyText,
+      "apiKey" -> nonEmptyText
+    )(Platform.apply)(Platform.unapply)
 
   def loginForm = Form(
     mapping(

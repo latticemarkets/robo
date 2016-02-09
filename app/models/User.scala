@@ -31,15 +31,19 @@ case class User(
                income: String,
                timeline: String,
                birthday: Date,
-               platform: String,
-               accountId: String,
-               apiKey: String,
+               platform: Seq[Platform],
                firstName: String,
                lastName: String,
                token: String
                ){
   def withEncryptedPassword: User = this.copy(password = Hash.createPassword(this.password))
 }
+
+case class Platform(
+                     name: String,
+                     accountId: String,
+                     apiKey: String
+                   )
 
 case class Login(
                 email: String,
@@ -52,6 +56,7 @@ object User {
 
   val collectionName = "user"
 
+  implicit val platformFormat = Json.format[Platform]
   implicit val accountSummaryFormat = Json.format[User]
 
   val usersTable: JSONCollection = DbUtil.db.collection(collectionName)
