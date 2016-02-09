@@ -20,8 +20,12 @@ module.exports = function(grunt) {
                 dest: 'public/dist/app.jsx'
             },
             test: {
-                src: ['tests/front/unit/**/*.spec.js'],
-                dest: 'tests/front/unit/tests.jsx'
+                files: {
+                    'tests/front/unit/controllers.jsx': ['tests/front/unit/controllers/*.js'],
+                    'tests/front/unit/directives.jsx': ['tests/front/unit/directives/*.js'],
+                    'tests/front/unit/filters.jsx': ['tests/front/unit/filters/*.js'],
+                    'tests/front/unit/services.jsx': ['tests/front/unit/services/*.js']
+                }
             }
         },
         bower_concat: {
@@ -102,7 +106,6 @@ module.exports = function(grunt) {
         },
         babel: {
             options: {
-                sourceMap: true,
                 presets: ['es2015']
             },
             dist: {
@@ -112,14 +115,17 @@ module.exports = function(grunt) {
             },
             test: {
                 files: {
-                    'tests/front/unit/tests.js': 'tests/front/unit/tests.jsx'
+                    'tests/front/unit/controllers.js': 'tests/front/unit/controllers.jsx',
+                    'tests/front/unit/directives.js' : 'tests/front/unit/directives.jsx',
+                    'tests/front/unit/filters.js' : 'tests/front/unit/filters.jsx',
+                    'tests/front/unit/services.js' : 'tests/front/unit/services.jsx'
                 }
             }
         },
         jasmine : {
             src : ['public/dist/bower.js', 'public/dist/app.js'],
             options: {
-                specs : 'tests/front/unit/tests.js',
+                specs : 'tests/front/unit/*.js',
                 summary: true
             }
         }
