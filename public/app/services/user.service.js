@@ -22,7 +22,7 @@
 
         register(email, password, terms, reason, income, timeline, birthday, platform, accountId, firstName, lastName, apiKey, successCallback, errorCallback) {
             this.$http
-                .post('/api/register', {
+                .post('/api/register', angular.toJson({
                     _id: email,
                     password: password,
                     terms: terms,
@@ -30,12 +30,10 @@
                     income: income,
                     timeline: timeline,
                     birthday: birthday,
-                    platform: platform,
-                    accountId: accountId,
+                    platforms: [{ name: platform, accountId: accountId, apiKey: apiKey}],
                     firstName: firstName,
-                    lastName: lastName,
-                    apiKey: apiKey
-                })
+                    lastName: lastName
+                }))
                 .then(successCallback, errorCallback);
         }
 
