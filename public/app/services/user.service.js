@@ -50,7 +50,9 @@
         }
 
         userData(email, callback) {
-            this.$http.get(`/api/user/infos/${email}`).then(callback, this.notificationService.apiError());
+            const promise = this.$http.get(`/api/user/infos/${email}`);
+            promise.then(callback, this.notificationService.apiError());
+            return promise;
         }
 
         updatePassword(email, oldPassword, newPassword, callback) {
