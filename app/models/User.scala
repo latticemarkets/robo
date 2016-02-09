@@ -31,7 +31,7 @@ case class User(
                income: String,
                timeline: String,
                birthday: Date,
-               platform: Seq[Platform],
+               platforms: Seq[Platform],
                firstName: String,
                lastName: String,
                token: String
@@ -51,6 +51,10 @@ case class Login(
                 )
 
 case class UpdatePassword(email: String, oldPassword: String, newPassword: String)
+
+case class UpdatePlatforms(email: String, platforms: Seq[Platform])
+
+case class UpdatePersonalData(firstName: String, lastName: String, birthday: Date)
 
 object User {
 
