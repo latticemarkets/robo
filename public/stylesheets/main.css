@@ -2358,6 +2358,9 @@ div .portfolio-simulation-chart .portfolio-simulation-tooltip {
 .c3-area {
     opacity:1;
 }
+.simulation label, .simulation label.active, .simulation label:hover, .simulation label.active:hover {
+    color: #1080f2;
+}
 /*------------------------
  * DASHBOARD
  *----------------------*/
