@@ -16,8 +16,8 @@
             },
             templateUrl: '/assets/app/userAccount/p2pPlatform/p2pPlatform.html',
             link(scope){
-              scope.platforms = ['Lending Club', 'prosper','bondora', 'ratesetter', 'fundingCircle'];
-
+              scope.platforms = ['Lending Club', 'Prosper','Bondora', 'Ratesetter', 'FundingCircle'];
+              scope.accountId = accountId.platforms;
               scope.submit = () => {
                       scope.spinner = true;
                       userService.updatePlatform(
