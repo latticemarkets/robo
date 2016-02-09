@@ -13,6 +13,7 @@ import java.time.LocalDate
 import controllers.Security.HasToken
 import core.{Forms, Hash}
 import models.User
+import play.api.data
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -96,7 +97,7 @@ class Users extends Controller {
   }
 
   def userData(email: String) = HasToken.async {
-    User.findByEmail(email) map (user => Ok(Json.toJson(user)))
+    User.findByEmail(email) map ( _.map (user => Ok(Json.toJson(user))) getOrElse BadRequest("Wrong data sent."))
   }
 
   def currentLoans() = HasToken {
@@ -208,5 +209,16 @@ class Users extends Controller {
       Json.obj("grade" -> "D", "value" -> 140),
       Json.obj("grade" -> "E", "value" -> 200)
     ))
+  }
+
+  def updatePlatforms() = HasToken.async { implicit request =>
+    Forms.updatePlatforms.bindFromRequest.fold(
+      formWithErrors => Future.successful( BadRequest("Wring data sent") ),
+      data => {
+        User.findByEmail(data.email) flatMap (_.map (user => {
+          User.update(user.copy(platforms = data.platforms)) map (user => Ok(""))
+        }) getOrElse Future.successful( BadRequest("Wrong data sent") ))
+      }
+    )
   }
 }

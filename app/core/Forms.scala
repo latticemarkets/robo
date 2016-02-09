@@ -27,14 +27,14 @@ object Forms {
       "income" -> nonEmptyText,
       "timeline" -> nonEmptyText,
       "birthday" -> date("mm/dd/yyyy"),
-      "platforms" -> seq(platformForm),
+      "platforms" -> seq(platformMapping),
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
       "token" -> ignored(Hash.createToken)
     )(User.apply)(User.unapply)
   )
 
-  def platformForm = mapping(
+  def platformMapping = mapping(
       "name" -> nonEmptyText,
       "accountId" -> nonEmptyText,
       "apiKey" -> nonEmptyText
@@ -53,5 +53,20 @@ object Forms {
       "oldPassword" -> nonEmptyText,
       "newPassword" -> nonEmptyText
     )(UpdatePassword.apply)(UpdatePassword.unapply)
+  )
+
+  def updatePlatforms = Form(
+    mapping(
+      "email" -> email,
+      "platforms" -> seq(platformMapping)
+    )(UpdatePlatforms.apply)(UpdatePlatforms.unapply)
+  )
+
+  def updatePersonalData = Form(
+    mapping(
+      "firstName" -> nonEmptyText,
+      "lastName" -> nonEmptyText,
+      "birthday" -> date("mm/dd/yyyy")
+    )(UpdatePersonalData.apply)(UpdatePersonalData.unapply)
   )
 }
