@@ -12,25 +12,38 @@
             replace: true,
             restrict: 'E',
             scope: {
-              platforms: '@'
+                userPromise: '='
             },
             templateUrl: '/assets/app/userAccount/p2pPlatform/p2pPlatform.html',
             link(scope){
-              scope.platforms = ['Lending Club', 'Prosper','Bondora', 'Ratesetter', 'FundingCircle'];
-              scope.accountId = accountId.platforms;
-              scope.submit = () => {
+                const platforms = ['lendingClub', 'prosper', 'bondora', 'ratesetter', 'fundingCircle'];
+
+                scope.userPromise.then(response => {
+                    scope.platforms = platforms.map(platform => ({ name: platform, accountId: '', apiKey: '' }));
+                    response.data.platforms.forEach(platform => {
+                        scope.platforms.some(scopePlatform => {
+                            if (scopePlatform.name == platform.name) {
+                                scopePlatform.accountId = platform.accountId;
+                                scopePlatform.apiKey = platform.apiKey;
+                                return true;
+                            }
+                        });
+                    });
+                });
+
+                scope.submit = () => {
                       scope.spinner = true;
                       userService.updatePlatform(
                           scope.accountId,
                           scope.apiKey,
-                          response => {
+                          () => {
                                   scope.spinner = false;
                                   notificationService.success('Account ID and API key added');
                           }
                       );
-              };
-              }
-            };
+                };
+            }
+        };
 
-        }
+    }
 })();
