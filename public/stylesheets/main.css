@@ -2123,6 +2123,10 @@ div .signup .intro-conditions {
     padding-top: 30px;
     padding-bottom: 30px;
 }
+div .signup .intro-simulation {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
 div .signup .intro-heading {
     font-family: PTSans, sans-serif;
     font-size: 15px;
@@ -2201,6 +2205,9 @@ div .signup .btn.primary-button {
 div .signup .outro-text {
     padding-top: 30px;
 }
+div .signup .outro-text p {
+    color: #FFFFFF;
+}
 div .signup .outro-text .outro-heading {
     font-family: PTSans, sans-serif;
     font-size: 13px;
@@ -2209,7 +2216,24 @@ div .signup .outro-text .outro-heading {
     display: block;
     color: white;
 }
-
+div .signup .outro-text .outro-heading-large {
+    font-family: PTSans, sans-serif;
+    font-size: 13px;
+    font-weight: 200;
+    line-height: 15px;
+    display: block;
+    color: white;
+    margin-bottom: 30px;
+}
+/* slide in from the right */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
 @-webkit-keyframes slide {
     100% { left: 0; }
 }
@@ -2248,18 +2272,25 @@ div .conditions .condition {
     font-family: 'Avenir Next', AvenirNextLTW01-Regular, sans-serif;
     font-size: 14px;
 }
-div .reasons {
+div .reasons, .portfolios {
     margin-bottom: 10px;
 }
-div .reasons .reason {
+div .reasons .reason, div .portfolios .portfolio {
     margin-bottom: -5px;
     width: 100%;
     font-size: 20px;
     text-align: left;
     text-transform: capitalize;
 }
-div .reasons .reason .record {
+div .reasons .reason .record, div .portfolios .portfolio .record {
     margin-right: 10px;
+}
+.primary-button.portfolio {
+    margin: 0;
+}
+div .portfolios .portfolio.selected-portfolio {
+    color: #FFF;
+    background: transparent;
 }
 div .signup .intro-second {
     font-size: 23px;
@@ -2303,6 +2334,32 @@ div .signup .choosed-platform {
 }
 #progressbar {
     background-color: #455362 !important;
+}
+.portfolio-simulation-chart {
+    background-color: white;
+    margin-bottom: 30px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    opacity: 0.9;
+    color: #232323;
+}
+div .portfolio-simulation-chart .portfolio-simulation-tooltip {
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    opacity: 1;
+    border-color: #0f0f0f;
+    border-width: 10px;
+}
+.c3-area {
+    opacity:1;
+}
+.simulation label, .simulation label.active, .simulation label:hover, .simulation label.active:hover {
+    color: #1080f2;
 }
 /*------------------------
  * DASHBOARD

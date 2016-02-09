@@ -294,7 +294,7 @@ describe('SignupBirthdayController', () => {
             });
 
             it('should go to P2P platform page', () => {
-                expect($location.path).toHaveBeenCalledWith('/signup/p2pPlatform');
+                expect($location.path).toHaveBeenCalledWith('/signup/portfolio');
             });
         });
     });

@@ -14,22 +14,14 @@
 (function() {
     'use strict';
 
-    class SignupP2pPlatformController {
-        constructor($location, $cookieStore, $timeout) {
+    class SignupPortfolioController {
+        constructor($location, $cookieStore, portfolioService, $timeout, portfolioSimulationService) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
 
-            vm.pageNo = 7;
+            vm.pageNo = 6;
             $timeout(() => vm.pageNo++, 1000);
-
-            vm.platforms = {
-                'lendingClub': 'png',
-                'prosper': 'png',
-                'bondora': 'png',
-                'ratesetter': 'jpg',
-                'fundingCircle': 'jpeg'
-            };
 
             (() => {
                 const email = $cookieStore.get('signup.email');
@@ -43,13 +35,26 @@
                 if (!(email && password && terms && reason && income && timeline && birthday)) {
                     $location.path('/signup');
                 }
+
+                vm.portfolios = portfolioSimulationService.portfolioKeysValues;
+
+                vm.chosePortfolioPromise = portfolioService.getPortfolioSuggestion(terms, reason, income, timeline, birthday, response => {
+                    vm.chosePortfolio = response.data.portfolio;
+                    vm.suggestedPortfolio = response.data.portfolio;
+                });
+
             })();
 
-            vm.submit = platform => {
-                if (Object.keys(vm.platforms).indexOf(platform) >= 0) {
-                    $cookieStore.put('signup.platform', platform);
-                    $cookieStore.put('signup.extension', vm.platforms[platform]);
-                    $location.path('/signup/p2pCredentials');
+            vm.choose = portfolio => {
+                vm.chosePortfolio = portfolio;
+            };
+
+            vm.isSelected = portfolio => vm.chosePortfolio == portfolio;
+
+            vm.submit = () => {
+                if (vm.chosePortfolio) {
+                    $cookieStore.put('signup.portfolio', vm.chosePortfolio);
+                    $location.path('/signup/p2pPlatform');
                 }
             };
         }
@@ -57,5 +62,5 @@
 
     angular
         .module('app')
-        .controller('SignupP2pPlatformController', SignupP2pPlatformController);
+        .controller('SignupPortfolioController', SignupPortfolioController);
 })();
