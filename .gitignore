@@ -1,6 +1,3 @@
-
-# Created by https://www.gitignore.io/api/sx,intellij
-
 ### App specific ###
 
 public/dist
@@ -15,9 +12,14 @@ public/fonts/fontawesome-webfont.woff2
 /_SpecRunner.html
 
 ### Tests ###
-/tests/front/unit/tests.jsx
-/tests/front/unit/tests.js
-/tests/front/unit/tests.js.map
+/tests/front/unit/controllers.js
+/tests/front/unit/filters.jsx
+/tests/front/unit/services.js
+/tests/front/unit/services.jsx
+/tests/front/unit/directives.jsx
+/tests/front/unit/filters.js
+/tests/front/unit/directives.js
+/tests/front/unit/controllers.jsx
 
 ### OSX ###
 .DS_Store
