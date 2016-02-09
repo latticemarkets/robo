@@ -188,7 +188,7 @@ section {
     background-color: #1080f2;
     border-radius: 2px;
     color: white;
-    font-family: PTSans;
+    font-family: PTSans, sans-serif;
     font-size: 14px;
     font-weight: 700;
     text-transform: uppercase;
@@ -2099,18 +2099,14 @@ footer {
 .blue {
     background-color: #1080f2;
     color: #fff;
-    /* Set rules to fill background */
+    max-height: 100%;
     min-height: 100%;
-    min-width: 1024px;
-
-    /* Set up proportionate scaling */
     width: 100%;
     height: auto;
-
-    /* Set up positioning */
     position: fixed;
     top: 0;
     left: 0;
+    overflow-y: auto;
 }
 div .signup {
     text-align: center;
@@ -2318,9 +2314,9 @@ div .signup .platform {
     margin-bottom: 20px;
     margin-right: 20px;
 }
-div .signup .choosed-platform {
-    height: 204px;
-    float: right;
+div .signup .chose-platform {
+    width: 100%;
+    margin-bottom: 15px;
 }
 .particleJs {
     background-color: transparent;

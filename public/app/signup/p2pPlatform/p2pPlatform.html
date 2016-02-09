@@ -1,15 +1,17 @@
 <div class="blue">
     <uib-progressbar value="vm.pageNo" max="11"></uib-progressbar>
-    <particles></particles>
-    <div class="signup">
-        <div class="signup intro-logo">
-            <img src="assets/img/logos/pdx-logo-white-small.png" width="60px"/>
-        </div>
-        <div class="signup intro-text">
-            <h1 class="intro-lead-in">Link your P2P Platform.</h1>
-        </div>
-        <div class="signup row">
-            <img width="150px" src="assets/img/platforms/{{ platform }}.{{ extension }}" class="img-rounded platform" data-ng-click="vm.submit(platform)" data-ng-repeat="(platform, extension) in vm.platforms">
+    <div class="container-fluid">
+        <particles></particles>
+        <div class="signup">
+            <div class="signup intro-logo">
+                <img src="assets/img/logos/pdx-logo-white-small.png" width="60px"/>
+            </div>
+            <div class="signup intro-text">
+                <h1 class="intro-lead-in">Link your P2P Platform.</h1>
+            </div>
+            <div class="signup row">
+                <img width="150px" src="assets/img/platforms/{{ platform }}.{{ extension }}" class="img-rounded platform" data-ng-click="vm.submit(platform)" data-ng-repeat="(platform, extension) in vm.platforms">
+            </div>
         </div>
     </div>
 </div>
