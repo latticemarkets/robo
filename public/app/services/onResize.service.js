@@ -16,16 +16,24 @@
 
     class onResizeService {
         constructor() {
-            this.callbackPool = {};
-            window.onresize = () => $.map(this.callbackPool, (callback => callback()));
+            this.theCallbackPool = {};
+            window.onresize = this.runCallbacks();
+        }
+
+        runCallbacks() {
+            return () => $.map(this.theCallbackPool, (callback => callback()));
+        }
+
+        get callbackPool() {
+            return this.theCallbackPool;
         }
 
         addOnResizeCallback(callback, id) {
-            this.callbackPool[id] = callback;
+            this.theCallbackPool[id] = callback;
         }
 
         removeOnResizeCallback(id) {
-            delete this.callbackPool[id];
+            delete this.theCallbackPool[id];
         }
     }
 
