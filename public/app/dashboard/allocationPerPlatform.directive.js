@@ -28,7 +28,7 @@
                 identifier: "@"
             },
             link: (scope, elem) => {
-                let onResizeCallbackId;
+                const onResizeCallbackId = 'loansMaturity';
                 const options = flotChartService.pieChartOptions;
 
                 scope.data.then(response => {
@@ -39,10 +39,10 @@
                         $.plot(elem, data, options);
                     }, 500);
 
-                    onResizeCallbackId = onResizeService.addOnResizeCallback(() => {
+                    onResizeService.addOnResizeCallback(() => {
                         setComputedDimensions();
                         $.plot(elem, data, options);
-                    });
+                    }, onResizeCallbackId);
                 });
 
                 scope.$on('$destroy', function() {

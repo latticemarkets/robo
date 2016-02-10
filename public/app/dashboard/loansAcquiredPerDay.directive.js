@@ -27,7 +27,7 @@
                 promise: '='
             },
             link (scope, elem) {
-                let onResizeCallbackId;
+                const onResizeCallbackId = 'loansAcquiredPerDay';
 
                 scope.promise.then(response => {
                     const data = flotChartService.prepareDataLoansAcquiredPerDay(response.data);
@@ -38,10 +38,10 @@
                         $.plot(elem, data, options);
                     }, 500);
 
-                    onResizeCallbackId = onResizeService.addOnResizeCallback(() => {
+                    onResizeService.addOnResizeCallback(() => {
                         setComputedDimensions();
                         $.plot(elem, data, options);
-                    });
+                    }, onResizeCallbackId);
 
                     scope.$on('$destroy', function() {
                         onResizeService.removeOnResizeCallback(onResizeCallbackId);
