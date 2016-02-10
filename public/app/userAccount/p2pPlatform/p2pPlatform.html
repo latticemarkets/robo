@@ -1,7 +1,6 @@
 <div class="signup account-configuration">
-<div>
   <uib-tabset>
-      <uib-tab ng-repeat="platform in platforms" heading="{{platform.name}}">
+      <uib-tab ng-repeat="platform in platforms" heading="{{ platform.name | titleCase }}">
         <form>
         <div class="form-group">
             <input type="text" class="form-control user" id="accountId" placeholder="Account Id" data-ng-model="platform.accountId">
@@ -13,5 +12,4 @@
       <button class="btn primary-button" data-ng-click="submit()" data-ng-disabled="disableSubmitButton()">Submit</button>
       </uib-tab>
   </uib-tabset>
-</div>
 </div>
