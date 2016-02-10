@@ -73,6 +73,39 @@
             };
         }
 
+        get donutChartOptions() {
+            const formatter = value => {
+                const unCamelCased = this.$filter('camelCaseToHuman')(value);
+                return this.$filter('titlecase')(unCamelCased);
+            };
+
+            return {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 3/4,
+                            formatter: formatter,
+                            background: {
+                                color: "#fff",
+                                opacity: 0.5
+                            }
+                        },
+                        innerRadius: 0.7
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            };
+        }
+
+        prepareDataRiskDiversification(riskDiversification) {
+            return riskDiversification.map((grade, i) => ({ label: grade.grade, data: grade.value, color: this.blueDegraded[i] }));
+        }
+
         prepareDataLoansAcquiredPerDay(loansAcquiredPerDay) {
             return [
                 {

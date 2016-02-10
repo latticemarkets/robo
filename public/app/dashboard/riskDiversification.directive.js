@@ -18,48 +18,42 @@
         .module('app')
         .directive('riskDiversification', riskDiversification);
 
-    riskDiversification.$inject = ['notificationService', 'c3PieChartService', '$filter'];
+    riskDiversification.$inject = ['flotChartService', '$timeout', 'onResizeService'];
 
-    function riskDiversification(notificationService, c3PieChartService, $filter) {
+    function riskDiversification(flotChartService, $timeout, onResizeService) {
         return {
-            replace: true,
-            restrict: 'E',
+            restrict: 'A',
             scope: {
                 data: "=",
                 identifier: "@"
             },
-            template: '<div id="{{identifier}}"></div>',
-            link: scope => {
+            link: (scope, elem) => {
+                let onResizeCallbackId;
+                const options = flotChartService.donutChartOptions;
+
                 scope.data.then(response => {
-                    const chart = c3.generate({
-                        bindto: `#${scope.identifier}`,
-                        data: {
-                            columns: c3PieChartService.prepareRiskDiversificationData(response.data),
-                            type : 'donut'
-                        },
-                        size: {
-                            height: 200,
-                            width: 300
-                        },
-                        tooltip: {
-                            position: () => ({top: 0, left: 0}),
-                            format:{
-                                value: (value, ratio) => `${value} loans | ${$filter('percent')(ratio, 1)}`
-                            }
-                        },
-                        color: {
-                            pattern: c3PieChartService.blueDegraded
-                        },
-                        legend:{
-                            show: false
-                        },
-                        donut: {
-                            label: {
-                                show: false
-                            }
-                        }
+                    const data = flotChartService.prepareDataRiskDiversification(response.data);
+
+                    $timeout(() => {
+                        setComputedDimensions();
+                        $.plot(elem, data, options);
+                    }, 500);
+
+                    onResizeCallbackId = onResizeService.addOnResizeCallback(() => {
+                        setComputedDimensions();
+                        $.plot(elem, data, options);
                     });
-                }, notificationService.apiError());
+                });
+
+                scope.$on('$destroy', function() {
+                    onResizeService.removeOnResizeCallback(onResizeCallbackId);
+                });
+
+                function setComputedDimensions() {
+                    const parentDir = elem.parent();
+                    const style = `width:${parentDir.width()}px;height:180px`;
+                    elem.attr('style', style);
+                }
             }
         };
     }
