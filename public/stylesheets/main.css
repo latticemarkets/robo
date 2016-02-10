@@ -2370,8 +2370,8 @@ div .portfolio-simulation-chart .portfolio-simulation-tooltip {
     padding-right: 5%;
     margin-bottom: 10px;
 }
-.platform-allocation-bars {
-    margin-top: 20px;
+div.flot-chart.platform-allocation-chart {
+    margin-top: 40px;
 }
 /*------------------------
  * ACCOUNT CONFIGURATION

@@ -2547,6 +2547,7 @@ h6 {
   display: block;
   height: 300px;
   position: relative;
+  margin-top: 20px;
 }
 .flot-chart-content {
   width: 100%;

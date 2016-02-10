@@ -18,28 +18,34 @@
         .module('app')
         .directive('loansAcquiredPerDay', loansAcquiredPerDay);
 
-    loansAcquiredPerDay.$inject = ['loansAcquiredService', '$timeout'];
+    loansAcquiredPerDay.$inject = ['flotChartService', '$timeout', 'onResizeService'];
 
-    function loansAcquiredPerDay(loansAcquiredService, $timeout) {
+    function loansAcquiredPerDay(flotChartService, $timeout, onResizeService) {
         return {
             restrict: 'A',
             scope: {
                 promise: '='
             },
             link (scope, elem) {
+                let onResizeCallbackId;
+
                 scope.promise.then(response => {
-                    const data = loansAcquiredService.prepareData(response.data);
-                    const options = loansAcquiredService.barChartOptions;
+                    const data = flotChartService.prepareDataLoansAcquiredPerDay(response.data);
+                    const options = flotChartService.barChartOptions;
 
                     $timeout(() => {
                         setComputedDimensions();
                         $.plot(elem, data, options);
                     }, 500);
 
-                    window.onresize = () => {
+                    onResizeCallbackId = onResizeService.addOnResizeCallback(() => {
                         setComputedDimensions();
                         $.plot(elem, data, options);
-                    };
+                    });
+
+                    scope.$on('$destroy', function() {
+                        onResizeService.removeOnResizeCallback(onResizeCallbackId);
+                    });
                 });
 
                 function setComputedDimensions() {

@@ -15,7 +15,7 @@
     'use strict';
 
     class DashboardController {
-        constructor(cssInjector, authenticationService, $location, dashboardDataService, userService, loansAcquiredService) {
+        constructor(cssInjector, authenticationService, $location, dashboardDataService, userService, flotChartService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -45,7 +45,7 @@
                 vm.riskDiversificationPromise = dashboardDataService.riskDiversificationPromise();
             }
 
-            vm.loansAcquiredPerDayOption = loansAcquiredService.barChartOptions;
+            vm.loansAcquiredPerDayOption = flotChartService.barChartOptions;
         }
     }
 
