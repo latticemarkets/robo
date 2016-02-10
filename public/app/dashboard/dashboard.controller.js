@@ -38,8 +38,7 @@
                 dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
                 dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
                 vm.loansMaturityPromise = dashboardDataService.currentLoansPromise();
-                dashboardDataService.loansAcquiredPerDayLastWeek(response => {
-                    vm.loansAcquiredPerDay = loansAcquiredService.prepareData(response.data);
+                vm.loansAcquiredPerDayPromise = dashboardDataService.loansAcquiredPerDayLastWeek(response => {
                     vm.loansAcquiredLastWeek = response.data.reduce((last, loans) => loans + last, 0);
                 });
                 vm.platformAllocationPromise = dashboardDataService.platformAllocationPromise();
