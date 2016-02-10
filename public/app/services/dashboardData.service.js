@@ -53,7 +53,9 @@
         }
 
         loansAcquiredPerDayLastWeek(callback) {
-            return this.$http.get('/api/dashboard/loansAcquiredPerDayLastWeek').then(callback, this.notificationService.apiError());
+            const promise = this.$http.get('/api/dashboard/loansAcquiredPerDayLastWeek');
+            promise.then(callback, this.notificationService.apiError());
+            return promise;
         }
 
         riskDiversificationPromise() {

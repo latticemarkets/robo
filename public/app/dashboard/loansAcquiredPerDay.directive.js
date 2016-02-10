@@ -8,7 +8,7 @@
 
 /**
 * @author : julienderay
-* Created on 03/02/2016
+* Created on 10/02/2016
 */
 
 (() => {
@@ -16,23 +16,22 @@
 
     angular
         .module('app')
-        .directive('riskDiversification', riskDiversification);
+        .directive('loansAcquiredPerDay', loansAcquiredPerDay);
 
-    riskDiversification.$inject = ['flotChartService', '$timeout', 'onResizeService'];
+    loansAcquiredPerDay.$inject = ['flotChartService', '$timeout', 'onResizeService'];
 
-    function riskDiversification(flotChartService, $timeout, onResizeService) {
+    function loansAcquiredPerDay(flotChartService, $timeout, onResizeService) {
         return {
             restrict: 'A',
             scope: {
-                data: "=",
-                identifier: "@"
+                promise: '='
             },
-            link: (scope, elem) => {
-                const onResizeCallbackId = 'riskDiversification';
-                const options = flotChartService.donutChartOptions;
+            link (scope, elem) {
+                const onResizeCallbackId = 'loansAcquiredPerDay';
 
-                scope.data.then(response => {
-                    const data = flotChartService.prepareDataRiskDiversification(response.data);
+                scope.promise.then(response => {
+                    const data = flotChartService.prepareDataLoansAcquiredPerDay(response.data);
+                    const options = flotChartService.barChartOptions;
 
                     $timeout(() => {
                         setComputedDimensions();
@@ -43,15 +42,15 @@
                         setComputedDimensions();
                         $.plot(elem, data, options);
                     }, onResizeCallbackId);
-                });
 
-                scope.$on('$destroy', function() {
-                    onResizeService.removeOnResizeCallback(onResizeCallbackId);
+                    scope.$on('$destroy', function() {
+                        onResizeService.removeOnResizeCallback(onResizeCallbackId);
+                    });
                 });
 
                 function setComputedDimensions() {
                     const parentDir = elem.parent();
-                    const style = `width:${parentDir.width()}px;height:180px`;
+                    const style = `width:${parentDir.width()}px;height:80px`;
                     elem.attr('style', style);
                 }
             }

@@ -16,50 +16,44 @@
 
     angular
         .module('app')
-        .directive('platformAllocation', loansMaturity);
+        .directive('platformAllocation', platformAllocation);
 
-    loansMaturity.$inject = ['notificationService', 'c3PieChartService', '$filter'];
+    platformAllocation.$inject = ['flotChartService', '$timeout', 'onResizeService'];
 
-    function loansMaturity(notificationService, c3PieChartService, $filter) {
+    function platformAllocation(flotChartService, $timeout, onResizeService) {
         return {
-            replace: true,
-            restrict: 'E',
+            restrict: 'A',
             scope: {
                 data: "=",
                 identifier: "@"
             },
-            template: '<div id="{{identifier}}"></div>',
-            link: scope => {
+            link: (scope, elem) => {
+                const onResizeCallbackId = 'platformAllocation';
+                const options = flotChartService.pieChartOptions;
+
                 scope.data.then(response => {
-                    const chart = c3.generate({
-                        bindto: `#${scope.identifier}`,
-                        data: {
-                            columns: c3PieChartService.preparePlatformAllocationData(response.data),
-                            type : 'pie'
-                        },
-                        size: {
-                            height: 200,
-                            width: 300
-                        },
-                        tooltip: {
-                            position: () => ({top: 30, left: 0}),
-                            format:{
-                              value: (value, ratio) => `${value} loans | ${$filter('percent')(ratio, 1)}`
-                            }
-                        },
-                        color: {
-                            pattern: c3PieChartService.blueDegraded
-                        },
-                        legend:{
-                          show: false
-                        },
-                        pie: {
-                            label: {
-                                show: false
-                            }
-                        }
-                    });
-                }, notificationService.apiError());
+                    const data = flotChartService.prepareDataPlatformAllocation(response.data);
+
+                    $timeout(() => {
+                        setComputedDimensions();
+                        $.plot(elem, data, options);
+                    }, 500);
+
+                    onResizeService.addOnResizeCallback(() => {
+                        setComputedDimensions();
+                        $.plot(elem, data, options);
+                    }, onResizeCallbackId);
+                });
+
+                scope.$on('$destroy', function() {
+                    onResizeService.removeOnResizeCallback(onResizeCallbackId);
+                });
+
+                function setComputedDimensions() {
+                    const parentDir = elem.parent();
+                    const style = `width:${parentDir.width()}px;height:200px`;
+                    elem.attr('style', style);
+                }
             }
         };
     }

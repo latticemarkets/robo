@@ -30,7 +30,10 @@ module.exports = function(grunt) {
         },
         bower_concat: {
             all: {
-                dest: 'public/dist/bower.js'
+                dest: 'public/dist/bower.js',
+                mainFiles: {
+                    Flot: ['jquery.flot.js', 'jquery.flot.pie.js']
+                }
             }
         },
         bower: {
