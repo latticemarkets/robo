@@ -18,9 +18,9 @@
         .module('app')
         .directive('loansMaturity', loansMaturity);
 
-    loansMaturity.$inject = ['loansMaturityUtilsService', 'notificationService', '$timeout'];
+    loansMaturity.$inject = ['loansMaturityUtilsService', 'notificationService', '$timeout', 'onResizeService'];
 
-    function loansMaturity(loansMaturityUtilsService, notificationService, $timeout) {
+    function loansMaturity(loansMaturityUtilsService, notificationService, $timeout, onResizeService) {
         return {
             replace: true,
             restrict: 'E',
@@ -30,6 +30,7 @@
             },
             template: '<div id="{{identifier}}"></div>',
             link: (scope, elem) => {
+                const onResizeCallbackId = "loansMaturity";
                 const parentDir = elem.parent();
 
                 scope.data.then(response => {
@@ -37,8 +38,21 @@
                     const xs = loansMaturityUtilsService.extractXs(preparedData);
 
                     $timeout(() => {
-                        c3.generate(loansMaturityUtilsService.chartOptions(scope.identifier, preparedData, xs, parentDir.width()));
+                        generateScatterChart();
                     }, 500);
+
+                    onResizeService.addOnResizeCallback(() => {
+                        generateScatterChart();
+                    }, onResizeCallbackId);
+
+                    scope.$on('$destroy', function() {
+                        onResizeService.removeOnResizeCallback(onResizeCallbackId);
+                    });
+
+                    function generateScatterChart() {
+                        c3.generate(loansMaturityUtilsService.chartOptions(scope.identifier, preparedData, xs, parentDir.width()));
+                    }
+
                 }, notificationService.apiError());
             }
         };

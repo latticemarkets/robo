@@ -16,11 +16,11 @@
 
     angular
         .module('app')
-        .directive('platformAllocation', loansMaturity);
+        .directive('platformAllocation', platformAllocation);
 
-    loansMaturity.$inject = ['flotChartService', '$timeout', 'onResizeService'];
+    platformAllocation.$inject = ['flotChartService', '$timeout', 'onResizeService'];
 
-    function loansMaturity(flotChartService, $timeout, onResizeService) {
+    function platformAllocation(flotChartService, $timeout, onResizeService) {
         return {
             restrict: 'A',
             scope: {
@@ -28,7 +28,7 @@
                 identifier: "@"
             },
             link: (scope, elem) => {
-                const onResizeCallbackId = 'loansMaturity';
+                const onResizeCallbackId = 'platformAllocation';
                 const options = flotChartService.pieChartOptions;
 
                 scope.data.then(response => {
