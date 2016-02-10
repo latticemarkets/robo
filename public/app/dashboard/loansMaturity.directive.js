@@ -18,9 +18,9 @@
         .module('app')
         .directive('loansMaturity', loansMaturity);
 
-    loansMaturity.$inject = ['loansMaturityUtilsService', 'notificationService'];
+    loansMaturity.$inject = ['loansMaturityUtilsService', 'notificationService', '$timeout'];
 
-    function loansMaturity(loansMaturityUtilsService, notificationService) {
+    function loansMaturity(loansMaturityUtilsService, notificationService, $timeout) {
         return {
             replace: true,
             restrict: 'E',
@@ -29,41 +29,16 @@
                 identifier: "@"
             },
             template: '<div id="{{identifier}}"></div>',
-            link: scope => {
-                scope.data.then(response => {
-                    scope.prepared = loansMaturityUtilsService.extractDataForScatterChart(response.data);
-                    scope.xs = loansMaturityUtilsService.extractXs(scope.prepared);
+            link: (scope, elem) => {
+                const parentDir = elem.parent();
 
-                    const chart = c3.generate({
-                        bindto: `#${scope.identifier}`,
-                        data: {
-                            xs: scope.xs,
-                            columns: scope.prepared,
-                            type: 'scatter'
-                        },
-                        axis: {
-                            x: {
-                                label: 'Months',
-                                tick: {
-                                    fit: false
-                                }
-                            },
-                            y: {
-                                label: 'Interest rate',
-                                tick: {
-                                    format: d3.format(",%")
-                                }
-                            }
-                        },
-                        point: {
-                            r: 10
-                        },
-                        tooltip: {
-                            format: {
-                                title: months => `Mature in ${months} months`
-                            }
-                        }
-                    });
+                scope.data.then(response => {
+                    const preparedData = loansMaturityUtilsService.extractDataForScatterChart(response.data);
+                    const xs = loansMaturityUtilsService.extractXs(preparedData);
+
+                    $timeout(() => {
+                        c3.generate(loansMaturityUtilsService.chartOptions(scope.identifier, preparedData, xs, parentDir.width()));
+                    }, 500);
                 }, notificationService.apiError());
             }
         };

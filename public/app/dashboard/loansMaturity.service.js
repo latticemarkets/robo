@@ -19,6 +19,42 @@
             this.$filter = $filter;
         }
 
+        chartOptions(identifier, preparedData, xs, width) {
+            return {
+                bindto: `#${identifier}`,
+                data: {
+                    xs: xs,
+                    columns: preparedData,
+                    type: 'scatter'
+                },
+                axis: {
+                    x: {
+                        label: 'Months',
+                        tick: {
+                            fit: false
+                        }
+                    },
+                    y: {
+                        label: 'Interest rate',
+                        tick: {
+                            format: d3.format(",%")
+                        }
+                    }
+                },
+                point: {
+                    r: 10
+                },
+                tooltip: {
+                    format: {
+                        title: months => `Mature in ${months} months`
+                    }
+                },
+                size: {
+                    width: width
+                }
+            };
+        }
+
         extractDataForScatterChart(loans) {
             let preparedData = {};
             const today = moment();
