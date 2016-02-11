@@ -2390,3 +2390,9 @@ div.flot-chart.platform-allocation-chart {
 .loans-acquired-per-day-chart {
     margin-top: 20px;
 }
+/*------------------------
+ * RULES
+ *----------------------*/
+.project-label {
+    font-weight: 600;
+}

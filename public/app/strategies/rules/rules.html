@@ -11,8 +11,48 @@
 <div id="wrapper">
     <div class="content">
         <div class="row">
-            <div class="col-sm-3 platform-strategy" data-ng-repeat="platform in vm.platforms">
+            <div class="col-sm-8 col-sm-offset-2" data-ng-repeat="rule in vm.rules">
+                <div class="hpanel hblue">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <h4>#{{ $index + 1 }} {{ rule.name | titlecase }}</h4>
 
+                                <div class="row m-t-md">
+                                    <div class="col-sm-3">
+                                        <div class="project-label font-uppercase">Estimated Return</div>
+                                        <small>{{ rule.expectedReturn.percent | percent : 2 }} ± {{ rule.expectedReturn.margin | percent : 2 }}</small>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="project-label font-uppercase">Loans available per week</div>
+                                        <small>{{ rule.loansAvailablePerWeek }}</small>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="project-label font-uppercase">$ available per week</div>
+                                        <small>{{ rule.moneyAvailablePerWeek | currency }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 project-info">
+                                <div class="project-action m-t-md">
+                                    <div class="btn-group">
+                                        <button class="btn btn-xs btn-default"> Edit</button>
+                                        <button class="btn btn-xs btn-default"> Pause</button>
+                                        <button class="btn btn-xs btn-default"> Delete</button>
+                                    </div>
+                                </div>
+                                <div class="project-value">
+                                    <h2 class="text-info">
+                                        {{ rule.expectedReturn.value | currency }}
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        Based on <b>{{ rule.criteria.length }}</b> {{ rule.criteria.length > 1 ? 'criteria' : 'criterion' }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
