@@ -60,6 +60,13 @@
                 }
                 return false;
             };
+
+            vm.someAlreadyAdded = () => Object.keys(vm.platforms).some(platform => vm.alreadyAdded(platform));
+
+            vm.skip = () => {
+                $cookieStore.put('signup.platforms', platforms);
+                $location.path('/signup/personalInfos');
+            };
         }
     }
 
