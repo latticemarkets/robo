@@ -27,6 +27,10 @@
                 'fundingCircle': 'jpeg'
             };
         }
+
+        platforms() {
+            return ['lendingClub', 'prosper', 'bondora', 'ratesetter', 'fundingCircle'];
+        }
     }
 
     angular

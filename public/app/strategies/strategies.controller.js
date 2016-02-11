@@ -31,11 +31,15 @@
                     rules: [
                         {
                             name: 'aggressive rule #1',
-                            expectedReturn: 1200
+                            expectedReturn: {
+                                value: 1200
+                            }
                         },
                         {
                             name: 'aggressive rule #2',
-                            expectedReturn: 4800
+                            expectedReturn: {
+                                value: 4800
+                            }
                         }
                     ]
                 },
@@ -47,11 +51,15 @@
                     rules: [
                         {
                             name: 'moderate rule #1',
-                            expectedReturn: 3400
+                            expectedReturn: {
+                                value: 3400
+                            }
                         },
                         {
                             name: 'moderate rule #2',
-                            expectedReturn: 1600
+                            expectedReturn: {
+                                value: 1600
+                            }
                         }
                     ]
                 }
@@ -60,7 +68,7 @@
 
             vm.platformsImgExtensions = constantsService.platformsImgExtensions;
 
-            vm.totalExpected = platform => platform.rules.reduce((prev, rule) => rule.expectedReturn + prev, 0);
+            vm.totalExpected = platform => platform.rules.reduce((prev, rule) => rule.expectedReturn.value + prev, 0);
             vm.fromCamelCaseToTitle = str => $filter('titlecase')($filter('camelCaseToHuman')(str));
         }
     }

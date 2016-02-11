@@ -34,7 +34,7 @@ describe('StrategiesController', () => {
 
     describe('totalExpect', () => {
         it('should return the sum of all expected returns', () => {
-            const input = {rules: [{expectedReturn: 1200}, {expectedReturn: 4800}]};
+            const input = {rules: [{expectedReturn: { value: 1200 } }, {expectedReturn: { value: 4800 } }]};
             const result = strategiesController.totalExpected(input);
             expect(result).toBe(6000);
         });

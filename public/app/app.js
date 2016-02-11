@@ -109,6 +109,11 @@
                 controller: "StrategiesController",
                 controllerAs: 'vm'
             })
+            .when('/strategies/rules/:platform', {
+                templateUrl: "assets/app/strategies/rules/rules.html",
+                controller: "RulesController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 
