@@ -18,10 +18,17 @@
         constructor($location, $cookieStore, $timeout, constantsService) {
             const vm = this;
 
-            vm.pageClass = 'signup-login blue';
+            const platforms = $cookieStore.get('signup.platforms');
 
-            vm.pageNo = 6;
-            $timeout(() => vm.pageNo++, 1000);
+            if (platforms) {
+                vm.pageNo = 7;
+            }
+            else {
+                vm.pageNo = 6;
+                $timeout(() => vm.pageNo++, 1000);
+            }
+
+            vm.pageClass = 'signup-login blue';
 
             vm.platforms = constantsService.platformsImgExtensions;
 
@@ -48,7 +55,6 @@
             };
 
             vm.alreadyAdded = platformName => {
-                const platforms = $cookieStore.get('signup.platforms');
                 if (platforms) {
                     return platforms.some(addedPlatform => addedPlatform.name == platformName);
                 }
