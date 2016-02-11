@@ -2351,6 +2351,9 @@ div .signup .chose-platform {
 button.btn.primary-button.button-inverse.border-button {
     border: 2px solid #fff;
 }
+img.ticked {
+    -webkit-filter: grayscale(1);
+}
 /*------------------------
  * DASHBOARD
  *----------------------*/

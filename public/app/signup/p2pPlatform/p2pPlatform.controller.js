@@ -40,11 +40,19 @@
             })();
 
             vm.submit = platform => {
-                if (Object.keys(vm.platforms).indexOf(platform) >= 0) {
+                if (Object.keys(vm.platforms).indexOf(platform) >= 0 && !vm.alreadyAdded(platform)) {
                     $cookieStore.put('signup.platform', platform);
                     $cookieStore.put('signup.extension', vm.platforms[platform]);
                     $location.path('/signup/p2pCredentials');
                 }
+            };
+
+            vm.alreadyAdded = platformName => {
+                const platforms = $cookieStore.get('signup.platforms');
+                if (platforms) {
+                    return platforms.some(addedPlatform => addedPlatform.name == platformName);
+                }
+                return false;
             };
         }
     }

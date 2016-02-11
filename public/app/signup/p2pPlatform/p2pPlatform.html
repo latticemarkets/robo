@@ -10,7 +10,7 @@
                 <h1 class="intro-lead-in">Link your P2P Platform.</h1>
             </div>
             <div class="signup row">
-                <img width="150px" src="assets/img/platforms/{{ platform }}.{{ extension }}" class="img-rounded platform" data-ng-click="vm.submit(platform)" data-ng-repeat="(platform, extension) in vm.platforms">
+                <img width="150px" src="assets/img/platforms/{{ platform }}.{{ extension }}" class="img-rounded platform" data-ng-class="{ticked: vm.alreadyAdded(platform)}" data-ng-click="vm.submit(platform)" data-ng-repeat="(platform, extension) in vm.platforms">
             </div>
         </div>
     </div>
