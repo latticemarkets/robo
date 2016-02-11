@@ -1,0 +1,44 @@
+<aside id="menu">
+    <div id="logo" class="light-version">
+        <span>
+            PDX Robo
+        </span>
+    </div>
+    <div id="navigation">
+        <div class="profile-picture">
+            <div class="stats-label text-color menu">
+                <div class="dropdown" uib-dropdown on-toggle="toggled(open)">
+                    <a class="dropdown-toggle" uib-dropdown-toggle>
+                        <span class="font-extra-bold font-uppercase">{{ username }} <b class="caret"></b></span>
+                    </a>
+
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button" class="dropdown-menu m-t-xs">
+                        <li><a href="contacts.html">Contacts</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                        <li><a href="analytics.html">Analytics</a></li>
+                        <li class="divider"></li>
+                        <li><a data-ng-click="logout()">Logout</a></li>
+                    </ul>
+                </div>
+
+                <div id="sparkline1" class="small-chart m-t-sm"></div>
+                <div class="stats-label">
+                    <h4 class="text-center">Account Value</h4>
+                </div>
+                <h4 class="font-extra-bold m-b-xs text-blue">
+                    {{ expectedReturns | currency }}
+                </h4>
+                <small class="text-muted">{{ lastLoanMaturity }}</small>
+            </div>
+        </div>
+
+        <ul class="nav" id="side-menu">
+            <li class="active">
+                <a href="/#/dashboard"> <span class="nav-label">Dashboard</span> </a>
+            </li>
+            <li>
+                <a href="/#/strategies"> <span class="nav-label">Strategies</span> </a>
+            </li>
+        </ul>
+    </div>
+</aside>

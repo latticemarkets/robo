@@ -104,6 +104,11 @@
                 controller: "UserAccountController",
                 controllerAs: 'vm'
             })
+            .when('/strategies', {
+                templateUrl: "assets/app/strategies/strategies.html",
+                controller: "StrategiesController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 

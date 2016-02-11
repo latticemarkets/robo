@@ -105,20 +105,6 @@ describe('DashboardController', () => {
         });
     });
 
-    describe('logout', () => {
-        beforeEach(() => {
-            dashboardController.logout();
-        });
-
-        it('should call the authentication service to clear the user\'s credentials', () => {
-            expect(authenticationService.logout).toHaveBeenCalled();
-        });
-
-        it('should redirect the user to the landpage', () => {
-            expect($location.path).toHaveBeenCalledWith('/');
-        });
-    });
-
     describe('data initialisation', () => {
         it('should load available capital from API', () => {
             expect(dashboardDataService.availableCapital).toHaveBeenCalled();
@@ -144,16 +130,6 @@ describe('DashboardController', () => {
             expect(dashboardController.averageIntRate).toBe(averageIntRate);
         });
 
-        it('should load expected returns rate from API', () => {
-            expect(dashboardDataService.expectedReturns).toHaveBeenCalled();
-            expect(dashboardController.expectedReturns).toBe(expectedReturns);
-        });
-
-        it('should load last loan maturity rate from API', () => {
-            expect(dashboardDataService.lastLoanMaturity).toHaveBeenCalled();
-            expect(dashboardController.lastLoanMaturity).toBe("in 4 months");
-        });
-
         it('should load current roi rate from API', () => {
             expect(dashboardDataService.currentRoiRate).toHaveBeenCalled();
             expect(dashboardController.currentRoiRate).toBe(currentRoiRate);
@@ -162,12 +138,6 @@ describe('DashboardController', () => {
         it('should load expected roi rate from API', () => {
             expect(dashboardDataService.expectedRoiRate).toHaveBeenCalled();
             expect(dashboardController.expectedRoiRate).toBe(expectedRoiRate);
-        });
-
-        it('should load user names from API', () => {
-            expect(userService.userData).toHaveBeenCalled();
-            expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
-            expect(dashboardController.username).toBe(`${firstName} ${lastName}`);
         });
 
         it('should get a promise containing the current loans', () => {
