@@ -51,12 +51,29 @@
             };
 
             vm.submit = () => {
-                if (allConditionsSatisfied()) {
-                    $cookieStore.put('signup.accountId', vm.accountId);
-                    $cookieStore.put('signup.apiKey', vm.apiKey);
-                    $location.path('/signup/personalInfos');
-                }
+                submit('/signup/personalInfos');
             };
+
+            vm.add = () => {
+                submit('/signup/p2pPlatform');
+            };
+
+            function submit(uri) {
+                if (allConditionsSatisfied()) {
+                    const platform = {name: vm.platform, apiKey: vm.apiKey, accountId: vm.accountId};
+                    const platforms = $cookieStore.get('signup.platforms');
+
+                    if (platforms) {
+                        platforms.push(platform);
+                        $cookieStore.put('signup.platforms', platforms);
+                    }
+                    else {
+                        $cookieStore.put('signup.platforms', [platform]);
+                    }
+
+                    $location.path(uri);
+                }
+            }
         }
     }
 
