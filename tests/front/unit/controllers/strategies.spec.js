@@ -31,4 +31,17 @@ describe('StrategiesController', () => {
             expect(cssInjector.add).toHaveBeenCalledWith('assets/stylesheets/homer_style.css');
         });
     });
+
+    describe('totalExpect', () => {
+        it('should return the sum of all expected returns', () => {
+            const input = {rules: [{expectedReturn: 1200}, {expectedReturn: 4800}]};
+            const result = strategiesController.totalExpected(input);
+            expect(result).toBe(6000);
+        });
+
+        it('should return 0 if there is no rule', () => {
+            const result = strategiesController.totalExpected({rules: []});
+            expect(result).toBe(0);
+        });
+    });
 });

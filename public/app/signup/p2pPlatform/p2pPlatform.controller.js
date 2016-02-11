@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupP2pPlatformController {
-        constructor($location, $cookieStore, $timeout) {
+        constructor($location, $cookieStore, $timeout, constantsService) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
@@ -23,13 +23,7 @@
             vm.pageNo = 7;
             $timeout(() => vm.pageNo++, 1000);
 
-            vm.platforms = {
-                'lendingClub': 'png',
-                'prosper': 'png',
-                'bondora': 'png',
-                'ratesetter': 'jpg',
-                'fundingCircle': 'jpeg'
-            };
+            vm.platforms = constantsService.platformsImgExtensions;
 
             (() => {
                 const email = $cookieStore.get('signup.email');

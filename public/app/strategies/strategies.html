@@ -1,9 +1,32 @@
 <sidebar></sidebar>
 
 <div id="wrapper">
-    <div class="content animate-panel">
+    <div class="content">
         <div class="row">
+            <div class="col-sm-3 platform-strategy" data-ng-repeat="platform in vm.platforms">
+                <div class="hpanel plan-box hblue active">
+                    <div class="panel-heading hbuilt text-center">
+                        <h4 class="font-bold">{{ vm.fromCamelCaseToTitle(platform.name) }}</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p class="text-muted text-center">
+                            Current Strategy : <u>{{ vm.fromCamelCaseToTitle(platform.strategy) }}</u>
+                        </p>
 
+                        <div class="text-center">
+                            <img width="150px" src="assets/img/platforms/{{ platform.name }}.{{ vm.platformsImgExtensions[platform.name] }}" class="img-rounded platform">
+                        </div>
+
+                        <h3 class="font-bold text-center">
+                            {{ vm.totalExpected(platform) }}
+                        </h3>
+
+                        <div class="text-center">
+                            <a href="#" class="btn btn-info btn-sm m-t-xs">Edit Strategy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
