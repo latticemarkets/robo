@@ -15,16 +15,11 @@
     'use strict';
 
     class DashboardController {
-        constructor(cssInjector, authenticationService, $location, dashboardDataService, userService, flotChartService) {
+        constructor(cssInjector, dashboardDataService, flotChartService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
             initData();
-
-            vm.logout = () => {
-                authenticationService.logout();
-                $location.path('/');
-            };
 
             function initData() {
                 dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
@@ -32,9 +27,6 @@
                 vm.lastUpdate = new Date();
                 dashboardDataService.averageMaturity(response => vm.averageMaturity = moment(response.data.averageMaturity).fromNow(true));
                 dashboardDataService.averageIntRate(response => vm.averageIntRate = response.data.averageIntRate);
-                dashboardDataService.expectedReturns(response => vm.expectedReturns = response.data.expectedReturns);
-                dashboardDataService.lastLoanMaturity(response => vm.lastLoanMaturity = moment(response.data.lastLoanMaturity).fromNow());
-                userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.username = `${response.data.firstName} ${response.data.lastName}`);
                 dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
                 dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
                 vm.loansMaturityPromise = dashboardDataService.currentLoansPromise();
