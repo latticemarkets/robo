@@ -41,7 +41,8 @@
                         {
                             name: 'Expected Return'
                         }
-                    ]
+                    ],
+                    pause: false
                 },
                 {
                     name: 'naive rule',
@@ -56,12 +57,13 @@
                         {
                             name: 'Max. Debt / Income'
                         }
-                    ]
+                    ],
+                    pause: false
                 }
             ];
             // ----
 
-
+            vm.pause = rule => rule.pause = !rule.pause;
         }
     }
 
