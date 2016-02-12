@@ -248,18 +248,20 @@ describe('userService', () => {
     });
 
     describe('destroyUser', () => {
-        let email;
+        let email,
+            password;
 
         beforeEach(() => {
             email = 'toto@tata.co.uk';
+            password = 'passW0rd';
 
             _$httpBackend.when('POST', '/api/user/destroy').respond();
 
-            _userService.destroyUser(email);
+            _userService.destroyUser(email, password);
         });
 
         it('should should call the API', () => {
-            _$httpBackend.expectPOST('/api/user/destroy', { email: email });
+            _$httpBackend.expectPOST('/api/user/destroy', { email: email, password: password });
             expect(_$httpBackend.flush).not.toThrow();
         });
 
