@@ -25,7 +25,7 @@
             this.toastr.error(message, 'Error');
         }
 
-        apiError() {
+        apiError(callback) {
             return response => {
                 switch(response.status) {
                     case 400:
@@ -38,6 +38,9 @@
                     default:
                         this.toastr.error('The server returned an unknown error.', 'Server error');
                         break;
+                }
+                if (callback) {
+                    callback();
                 }
             };
         }

@@ -15,14 +15,14 @@
     'use strict';
         
     class rulesService {
-        constructor($http, $timeout) {
+        constructor($http, $timeout, notificationService) {
             this.$http = $http;
             this.$timeout = $timeout;
+            this.notificationService = notificationService;
         }
         
-        updateRules(rules, callback) {
-            //this.$http.put('/api/user/rules/', { rules: rules }).then(callback, notificationService.apiError());
-            this.$timeout(() => callback(), 1000);
+        updateRules(rules, email, platform, callback, callbackError) {
+            this.$http.put('/api/user/rules', { rules: rules, email: email, platform: platform }).then(callback, this.notificationService.apiError(callbackError));
         }
     }
     
