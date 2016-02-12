@@ -26,7 +26,7 @@ object Forms {
       "reason" -> nonEmptyText,
       "income" -> nonEmptyText,
       "timeline" -> nonEmptyText,
-      "birthday" -> date("mm/dd/yyyy"),
+      "birthday" -> date("MM/dd/yyyy"),
       "platforms" -> seq(platformMapping),
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
@@ -67,7 +67,7 @@ object Forms {
       "email" -> email,
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
-      "birthday" -> date("mm/dd/yyyy")
+      "birthday" -> date("MM/dd/yyyy")
     )(UpdatePersonalData.apply)(UpdatePersonalData.unapply)
   )
 

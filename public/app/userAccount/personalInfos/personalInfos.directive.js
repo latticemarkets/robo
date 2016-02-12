@@ -40,8 +40,8 @@
                   scope.date = new Date(scope.timeStamp);
                   scope.year = scope.date.getFullYear();
                   scope.day = scope.date.getDate();
-                  const month = scope.date.getMinutes();
-                  scope.month = scope.availableOptions[month - 1];
+                  const month = scope.date.getMonth();
+                  scope.month = scope.availableOptions[month];
               });
 
               function isNumeric(n) {
