@@ -65,6 +65,7 @@ object Forms {
   def updatePersonalData = Form(
     mapping(
       "email" -> email,
+      "email" -> nonEmptyText,
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
       "birthday" -> date("mm/dd/yyyy")

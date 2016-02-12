@@ -37,8 +37,7 @@
                       scope.spinner = true;
                       userService.updatePlatforms(
                           authenticationService.getCurrentUsersEmail(),
-                          scope.platforms = scope.platforms.sort(platform => platform.apiKey.length === 0),
-                          alert(scope.platforms),
+                          scope.platforms,
                           () => {
                                   scope.spinner = false;
                                   notificationService.success('Account ID and API key added');

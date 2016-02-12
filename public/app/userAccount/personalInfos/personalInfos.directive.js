@@ -16,6 +16,7 @@
             },
             templateUrl: '/assets/app/userAccount/personalInfos/personalInfos.html',
             link(scope){
+
               scope.data = {
                 availableOptions : [{id:'1', name: 'January'},
                             {id:'2', name: 'February'},
@@ -46,6 +47,7 @@
 
               scope.submit = () => {
                     scope.spinner = true;
+
                     userService.updatePersonalData(
                         authenticationService.getCurrentUsersEmail(),
                         scope.firstName,
