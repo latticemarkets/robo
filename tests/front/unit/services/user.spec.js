@@ -55,7 +55,7 @@ describe('userService', () => {
 
             _$httpBackend.when('POST', '/api/register').respond();
 
-            _userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, firstName, lastName, apiKey);
+            _userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, firstName, lastName);
         });
 
         it('should call the API', () => {
@@ -67,11 +67,9 @@ describe('userService', () => {
                 income: income,
                 timeline: timeline,
                 birthday: birthday,
-                platform: platform,
-                accountId: accountId,
+                platforms: [{name:'platform',accountId:'accountId',apiKey:'apiKey'}],
                 firstName: firstName,
-                lastName: lastName,
-                apiKey: apiKey
+                lastName: lastName
             });
             expect(_$httpBackend.flush).not.toThrow();
         });
