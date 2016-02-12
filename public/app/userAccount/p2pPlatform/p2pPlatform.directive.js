@@ -16,7 +16,7 @@
                 userPromise: '='
             },
             templateUrl: '/assets/app/userAccount/p2pPlatform/p2pPlatform.html',
-            link(scope){
+            link(scope) {
                 const platforms = constantsService.platforms();
 
                 scope.userPromise.then(response => {
@@ -34,15 +34,21 @@
                 });
 
                 scope.submit = () => {
-                      scope.spinner = true;
-                      userService.updatePlatforms(
-                          authenticationService.getCurrentUsersEmail(),
-                          scope.platforms.filter(platform => platform.apiKey.length > 0),
-                          () => {
-                                  scope.spinner = false;
-                                  notificationService.success('Account ID and API key added');
-                          }
-                      );
+                    const filledPlatforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
+                    if (filledPlatforms.length > 0) {
+                        scope.spinner = true;
+                        userService.updatePlatforms(
+                            authenticationService.getCurrentUsersEmail(),
+                            scope.platforms.filter(platform => platform.apiKey.length > 0),
+                            () => {
+                                scope.spinner = false;
+                                notificationService.success('Account ID and API key added');
+                            }
+                        );
+                    }
+                    else {
+                        notificationService.error('You have to link at least one platform');
+                    }
                 };
             }
         };
