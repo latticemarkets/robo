@@ -45,7 +45,21 @@
 
               });
 
+              function isNumeric(n) {
+                  return !isNaN(parseFloat(n)) && isFinite(n) || n === null;
+              }
+
+              function allConditionsSatisfied() {
+                  const month = isNumeric(scope.month) && scope.month > 0 && scope.month <= 12;
+                  const day = isNumeric(scope.day) && scope.day > 0 && scope.day <= 31;
+                  const year = isNumeric(scope.year) && scope.year > 1900 && scope.year < (new Date().getFullYear() - 18);
+                  return month && day && year;
+              }
+
+              scope.disableSubmitButton = () => !allConditionsSatisfied();
+
               scope.submit = () => {
+                if (allConditionsSatisfied()) {
                     scope.spinner = true;
                     userService.updatePersonalData(
                         authenticationService.getCurrentUsersEmail(),
@@ -57,6 +71,7 @@
                                 notificationService.success('Personal infos changed');
                         }
                     );
+                  }
               };
 
             }
