@@ -15,7 +15,7 @@
     'use strict';
 
     class RulesController {
-        constructor($routeParams, constantsService, $location, cssInjector, rulesService) {
+        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -25,43 +25,7 @@
                 $location.path('/strategies');
             }
 
-            // Mock
-            //userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.rules = response.data.platforms[platform]);
-            vm.rules = [
-                {
-                    name: 'aggressive rule',
-                    expectedReturn: {
-                        value: 1200,
-                        percent: 0.13,
-                        margin: 0.04
-                    },
-                    loansAvailablePerWeek: 4390,
-                    moneyAvailablePerWeek: 149800,
-                    criteria: [
-                        {
-                            name: 'Expected Return'
-                        }
-                    ],
-                    pause: false
-                },
-                {
-                    name: 'naive rule',
-                    expectedReturn: {
-                        value: 800,
-                        percent: 0.04,
-                        margin: 0.06
-                    },
-                    loansAvailablePerWeek: 780,
-                    moneyAvailablePerWeek: 4590,
-                    criteria: [
-                        {
-                            name: 'Max. Debt / Income'
-                        }
-                    ],
-                    pause: false
-                }
-            ];
-            // ----
+            userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.rules = response.data.platforms[platform]);
 
             vm.pause = rule => {
                 vm.spinner = true;

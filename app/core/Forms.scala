@@ -37,7 +37,9 @@ object Forms {
   def platformMapping = mapping(
       "name" -> nonEmptyText,
       "accountId" -> nonEmptyText,
-      "apiKey" -> nonEmptyText
+      "apiKey" -> nonEmptyText,
+      "strategy" -> nonEmptyText,
+      "rules" -> seq(ruleMapping)
     )(Platform.apply)(Platform.unapply)
 
   def loginForm = Form(
@@ -81,8 +83,9 @@ object Forms {
   def updateRules = Form(
     mapping(
       "email" -> email,
-      "rules" -> seq(ruleMapping)
-    )(Rules.apply)(Rules.unapply)
+      "rules" -> seq(ruleMapping),
+      "platform" -> nonEmptyText
+    )(UpdateRules.apply)(UpdateRules.unapply)
   )
 
   def ruleMapping = mapping(

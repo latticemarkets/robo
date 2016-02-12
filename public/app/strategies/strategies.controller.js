@@ -20,51 +20,7 @@
 
             cssInjector.add("assets/stylesheets/homer_style.css");
 
-            // Mock
-            //userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.platforms = response.data.platforms);
-            vm.platforms = [
-                {
-                    name: 'ratesetter',
-                    apiKey: 'fkldjf-dgfsfgsgq-fdssdf-fsgsfg',
-                    accountId: '7867469834093',
-                    strategy: 'aggressive',
-                    rules: [
-                        {
-                            name: 'aggressive rule #1',
-                            expectedReturn: {
-                                value: 1200
-                            }
-                        },
-                        {
-                            name: 'aggressive rule #2',
-                            expectedReturn: {
-                                value: 4800
-                            }
-                        }
-                    ]
-                },
-                {
-                    name: 'fundingCircle',
-                    apiKey: 'kjdhfsg-gfdgdsfg-sfqgfsg-sgfgfsg',
-                    accountId: '86897638974637',
-                    strategy: 'moderate',
-                    rules: [
-                        {
-                            name: 'moderate rule #1',
-                            expectedReturn: {
-                                value: 3400
-                            }
-                        },
-                        {
-                            name: 'moderate rule #2',
-                            expectedReturn: {
-                                value: 1600
-                            }
-                        }
-                    ]
-                }
-            ];
-            // ----
+            userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.platforms = response.data.platforms);
 
             vm.platformsImgExtensions = constantsService.platformsImgExtensions;
 
