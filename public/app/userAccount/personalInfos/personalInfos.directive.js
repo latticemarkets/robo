@@ -47,7 +47,6 @@
 
               scope.submit = () => {
                     scope.spinner = true;
-
                     userService.updatePersonalData(
                         authenticationService.getCurrentUsersEmail(),
                         scope.firstName,
