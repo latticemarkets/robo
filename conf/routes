@@ -12,6 +12,7 @@ PUT     /api/user/p2pPlatforms                          controllers.Users.update
 PUT     /api/user/personalData                          controllers.Users.updatePersonalData
 GET     /api/user/:email                                controllers.Users.isUsed(email)
 GET     /api/user/infos/:email                          controllers.Users.userData(email)
+POST    /api/user/destroy                               controllers.Users.destroyAccount
 
 GET     /api/dashboard/capital/available                controllers.Users.availableCapital
 GET     /api/dashboard/capital/allocated                controllers.Users.allocatedCapital

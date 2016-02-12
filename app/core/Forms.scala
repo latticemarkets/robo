@@ -70,4 +70,8 @@ object Forms {
       "birthday" -> date("mm/dd/yyyy")
     )(UpdatePersonalData.apply)(UpdatePersonalData.unapply)
   )
+
+  def emailForm = Form(
+    mapping("email" -> email)(Email.apply)(Email.unapply)
+  )
 }

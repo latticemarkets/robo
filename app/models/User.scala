@@ -56,6 +56,8 @@ case class UpdatePlatforms(email: String, platforms: Seq[Platform])
 
 case class UpdatePersonalData(email: String, firstName: String, lastName: String, birthday: Date)
 
+case class Email(email: String)
+
 object User {
 
   val collectionName = "user"
@@ -91,4 +93,6 @@ object User {
 
     usersTable.update(selector, modifier) map(_ => user)
   }
+
+  def delete(email: String): Future[Boolean] = usersTable.remove(Json.obj("_id" -> email)) map (_.ok)
 }
