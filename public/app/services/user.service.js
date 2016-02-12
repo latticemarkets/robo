@@ -20,9 +20,9 @@
             this.notificationService = notificationService;
         }
 
-        register(email, password, terms, reason, income, timeline, birthday, platform, accountId, firstName, lastName, apiKey, successCallback, errorCallback) {
+        register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, firstName, lastName, successCallback, errorCallback) {
             this.$http
-                .post('/api/register', {
+                .post('/api/register', angular.toJson({
                     _id: email,
                     password: password,
                     terms: terms,
@@ -30,12 +30,10 @@
                     income: income,
                     timeline: timeline,
                     birthday: birthday,
-                    platform: platform,
-                    accountId: accountId,
+                    platforms: [{ name: platform, accountId: accountId, apiKey: apiKey}],
                     firstName: firstName,
-                    lastName: lastName,
-                    apiKey: apiKey
-                })
+                    lastName: lastName
+                }))
                 .then(successCallback, errorCallback);
         }
 
@@ -52,11 +50,25 @@
         }
 
         userData(email, callback) {
-            this.$http.get(`/api/user/infos/${email}`).then(callback, this.notificationService.apiError());
+            const promise = this.$http.get(`/api/user/infos/${email}`);
+            promise.then(callback, this.notificationService.apiError());
+            return promise;
         }
 
         updatePassword(email, oldPassword, newPassword, callback) {
             this.$http.put('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
+        }
+
+        updatePlatforms(email, platforms, callback){
+            this.$http.put('/api/user/p2pPlatforms', { email: email, platforms: platforms}).then(callback, this.notificationService.apiError());
+        }
+
+        updatePersonalData(email, firstName, lastName, birthday, callback) {
+            this.$http.put('/api/user/personalData', { email: email, firstName: firstName, lastName: lastName, birthday: birthday }).then(callback, this.notificationService.apiError());
+        }
+
+        destroyUser(email, password, callback) {
+            this.$http.post('/api/user/destroy', { email: email, password: password }).then(callback, this.notificationService.apiError());
         }
     }
 

@@ -31,15 +31,19 @@ case class User(
                income: String,
                timeline: String,
                birthday: Date,
-               platform: String,
-               accountId: String,
-               apiKey: String,
+               platforms: Seq[Platform],
                firstName: String,
                lastName: String,
                token: String
                ){
   def withEncryptedPassword: User = this.copy(password = Hash.createPassword(this.password))
 }
+
+case class Platform(
+                     name: String,
+                     accountId: String,
+                     apiKey: String
+                   )
 
 case class Login(
                 email: String,
@@ -48,10 +52,17 @@ case class Login(
 
 case class UpdatePassword(email: String, oldPassword: String, newPassword: String)
 
+case class UpdatePlatforms(email: String, platforms: Seq[Platform])
+
+case class UpdatePersonalData(email: String, firstName: String, lastName: String, birthday: Date)
+
+case class DestroyAccount(email: String, password: String)
+
 object User {
 
   val collectionName = "user"
 
+  implicit val platformFormat = Json.format[Platform]
   implicit val accountSummaryFormat = Json.format[User]
 
   val usersTable: JSONCollection = DbUtil.db.collection(collectionName)
@@ -82,4 +93,6 @@ object User {
 
     usersTable.update(selector, modifier) map(_ => user)
   }
+
+  def delete(email: String): Future[Boolean] = usersTable.remove(Json.obj("_id" -> email)) map (_.ok)
 }

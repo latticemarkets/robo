@@ -1,0 +1,15 @@
+<div class="signup account-configuration">
+  <uib-tabset>
+      <uib-tab ng-repeat="platform in platforms" heading="{{ platform.name | camelCaseToHuman | titlecase }}">
+        <form>
+        <div class="form-group">
+            <input type="text" class="form-control user" id="accountId" placeholder="Account Id" data-ng-model="platform.accountId">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control password" id="apiKey" placeholder="API Key" data-ng-model="platform.apiKey">
+        </div>
+      </form>
+      <button class="btn primary-button" data-ng-click="submit()" data-ng-disabled="disableSubmitButton()">Submit</button>
+      </uib-tab>
+  </uib-tabset>
+</div>

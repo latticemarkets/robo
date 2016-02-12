@@ -19,7 +19,8 @@
             'ui.bootstrap',
             'angular.css.injector',
             'angular-flot',
-            'camelCaseToHuman'])
+            'camelCaseToHuman',
+            'oitozero.ngSweetAlert'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);

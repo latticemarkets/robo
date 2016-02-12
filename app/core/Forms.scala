@@ -26,15 +26,19 @@ object Forms {
       "reason" -> nonEmptyText,
       "income" -> nonEmptyText,
       "timeline" -> nonEmptyText,
-      "birthday" -> date("mm/dd/yyyy"),
-      "platform" -> nonEmptyText,
-      "accountId" -> nonEmptyText,
-      "apiKey" -> nonEmptyText,
+      "birthday" -> date("MM/dd/yyyy"),
+      "platforms" -> seq(platformMapping),
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
       "token" -> ignored(Hash.createToken)
     )(User.apply)(User.unapply)
   )
+
+  def platformMapping = mapping(
+      "name" -> nonEmptyText,
+      "accountId" -> nonEmptyText,
+      "apiKey" -> nonEmptyText
+    )(Platform.apply)(Platform.unapply)
 
   def loginForm = Form(
     mapping(
@@ -49,5 +53,28 @@ object Forms {
       "oldPassword" -> nonEmptyText,
       "newPassword" -> nonEmptyText
     )(UpdatePassword.apply)(UpdatePassword.unapply)
+  )
+
+  def updatePlatforms = Form(
+    mapping(
+      "email" -> email,
+      "platforms" -> seq(platformMapping)
+    )(UpdatePlatforms.apply)(UpdatePlatforms.unapply)
+  )
+
+  def updatePersonalData = Form(
+    mapping(
+      "email" -> email,
+      "firstName" -> nonEmptyText,
+      "lastName" -> nonEmptyText,
+      "birthday" -> date("MM/dd/yyyy")
+    )(UpdatePersonalData.apply)(UpdatePersonalData.unapply)
+  )
+
+  def destroyAccountForm = Form(
+    mapping(
+      "email" -> email,
+      "password" -> nonEmptyText
+    )(DestroyAccount.apply)(DestroyAccount.unapply)
   )
 }

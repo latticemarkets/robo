@@ -2390,6 +2390,21 @@ div.flot-chart.platform-allocation-chart {
 .loans-acquired-per-day-chart {
     margin-top: 20px;
 }
+li.uib-tab > a {
+    background-color: white;
+}
+.btn-erase {
+    width: 100%;
+    height: 100%;
+}
+div button.btn.primary-button.erase-user {
+    background-color: #f0ad4e;
+    color: white;
+}
+div button.btn.primary-button.erase-user:hover {
+    background-color: transparent;
+    color: white;
+}
 /*------------------------
  * RULES
  *----------------------*/
