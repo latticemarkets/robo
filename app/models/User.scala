@@ -58,6 +58,8 @@ case class UpdatePersonalData(email: String, firstName: String, lastName: String
 
 case class DestroyAccount(email: String, password: String)
 
+case class Rules(email: String, rules: Seq[Rule])
+
 object User {
 
   val collectionName = "user"

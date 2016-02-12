@@ -77,4 +77,30 @@ object Forms {
       "password" -> nonEmptyText
     )(DestroyAccount.apply)(DestroyAccount.unapply)
   )
+
+  def updateRules = Form(
+    mapping(
+      "email" -> email,
+      "rules" -> seq(ruleMapping)
+    )(Rules.apply)(Rules.unapply)
+  )
+
+  def ruleMapping = mapping(
+     "name" -> nonEmptyText,
+     "expectedReturn" -> expectedReturnMapping,
+     "loansAvailablePerWeek" -> bigDecimal,
+     "moneyAvailablePerWeek" -> bigDecimal,
+     "criteria" -> seq(criterionMapping),
+     "pause" -> boolean
+   )(Rule.apply)(Rule.unapply)
+
+  def expectedReturnMapping = mapping(
+     "value" -> bigDecimal,
+     "percent" -> bigDecimal,
+     "margin" -> bigDecimal
+  )(ExpectedReturn.apply)(ExpectedReturn.unapply)
+
+  def criterionMapping = mapping(
+    "name" -> nonEmptyText
+  )(Criterion.apply)(Criterion.unapply)
 }

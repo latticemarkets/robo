@@ -15,7 +15,7 @@
     'use strict';
 
     class RulesController {
-        constructor($routeParams, constantsService, $location, cssInjector) {
+        constructor($routeParams, constantsService, $location, cssInjector, rulesService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -63,7 +63,13 @@
             ];
             // ----
 
-            vm.pause = rule => rule.pause = !rule.pause;
+            vm.pause = rule => {
+                vm.spinner = true;
+                rulesService.updateRules(vm.rules, () => {
+                    rule.pause = !rule.pause;
+                    vm.spinner = false;
+                });
+            };
         }
     }
 

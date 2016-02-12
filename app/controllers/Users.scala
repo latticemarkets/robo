@@ -12,6 +12,8 @@ import java.time.LocalDate
 
 import controllers.Security.HasToken
 import core.{Forms, Hash}
+import models.{Rule, Rules, User}
+import play.api.data.Form
 import models.User
 import play.api.data
 import play.api.libs.json.Json
@@ -253,4 +255,15 @@ class Users extends Controller {
       }
     )
   }
+
+  /*def updateRules() = HasToken.async { implicit request =>
+    Forms.updateRules.bindFromRequest.fold(
+      formWithErrors => Future.successful( BadRequest("Wrong data sent") ),
+      data => {
+        User.findByEmail(data.email) flatMap (_.map (user => {
+          User.update(user.copy(rules = data.rules)) map (user => Ok(""))
+        }) getOrElse Future.successful( BadRequest("Wrong data sent") ))
+      }
+    )
+  }*/
 }
