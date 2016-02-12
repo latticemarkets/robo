@@ -6,9 +6,9 @@
         .directive('p2pPlatform', p2pPlatform);
 
 
-    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService',];
+    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService', 'constantsService'];
 
-    function p2pPlatform(userService, notificationService, authenticationService) {
+    function p2pPlatform(userService, notificationService, authenticationService, constantsService) {
         return {
             replace: true,
             restrict: 'E',
@@ -17,7 +17,7 @@
             },
             templateUrl: '/assets/app/userAccount/p2pPlatform/p2pPlatform.html',
             link(scope){
-                const platforms = ['lendingClub', 'prosper', 'bondora', 'ratesetter', 'fundingCircle'];
+                const platforms = constantsService.platforms();
 
                 scope.userPromise.then(response => {
                     scope.platforms = platforms.map(platform => ({ name: platform, accountId: '', apiKey: '' }));
