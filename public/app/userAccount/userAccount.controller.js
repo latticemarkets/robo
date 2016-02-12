@@ -15,9 +15,9 @@
     'use strict';
 
     class UserAccountController {
-        constructor(userService, authenticationService) {
+        constructor(userService, authenticationService, cssInjector) {
             var vm = this;
-
+            cssInjector.add("assets/stylesheets/homer_style.css");
             const userId = authenticationService.getCurrentUsersEmail();
 
             vm.userPromise = userService.userData(userId);
