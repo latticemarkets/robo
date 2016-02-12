@@ -71,7 +71,10 @@ object Forms {
     )(UpdatePersonalData.apply)(UpdatePersonalData.unapply)
   )
 
-  def emailForm = Form(
-    mapping("email" -> email)(Email.apply)(Email.unapply)
+  def destroyAccountForm = Form(
+    mapping(
+      "email" -> email,
+      "password" -> nonEmptyText
+    )(DestroyAccount.apply)(DestroyAccount.unapply)
   )
 }

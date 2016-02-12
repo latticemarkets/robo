@@ -238,10 +238,18 @@ class Users extends Controller {
   }
 
   def destroyAccount() = HasToken.async { implicit request =>
-    Forms.emailForm.bindFromRequest.fold(
+    Forms.destroyAccountForm.bindFromRequest.fold(
       _ => Future.successful( respondWrongDataSent ),
       data => {
-        User.delete(data.email) map (deleted => if (deleted) Ok("") else BadGateway(""))
+        User.findByEmail(data.email) flatMap (optUser => optUser map (user =>
+          if (Hash.checkPassword(data.password, user.password)) {
+            User.delete(data.email) map (deleted => if (deleted) Ok("") else BadGateway(""))
+          }
+          else {
+            Future.successful( BadRequest("Incorrect password") )
+          }
+          ) getOrElse Future.successful( BadGateway("") )
+          )
       }
     )
   }

@@ -67,8 +67,8 @@
             this.$http.put('/api/user/personalData', { email: email, firstName: firstName, lastName: lastName, birthday: birthday }).then(callback, this.notificationService.apiError());
         }
 
-        destroyUser(email, callback) {
-            this.$http.post('/api/user/destroy', { email: email }).then(callback, this.notificationService.apiError());
+        destroyUser(email, password, callback) {
+            this.$http.post('/api/user/destroy', { email: email, password: password }).then(callback, this.notificationService.apiError());
         }
     }
 

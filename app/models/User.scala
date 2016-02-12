@@ -56,7 +56,7 @@ case class UpdatePlatforms(email: String, platforms: Seq[Platform])
 
 case class UpdatePersonalData(email: String, firstName: String, lastName: String, birthday: Date)
 
-case class Email(email: String)
+case class DestroyAccount(email: String, password: String)
 
 object User {
 
