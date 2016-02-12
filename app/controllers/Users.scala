@@ -213,7 +213,7 @@ class Users extends Controller {
 
   def updatePlatforms() = HasToken.async { implicit request =>
     Forms.updatePlatforms.bindFromRequest.fold(
-      formWithErrors => Future.successful( BadRequest("Wring data sent") ),
+      formWithErrors => Future.successful( BadRequest("Wrong data sent") ),
       data => {
         User.findByEmail(data.email) flatMap (_.map (user => {
           User.update(user.copy(platforms = data.platforms)) map (user => Ok(""))
@@ -224,7 +224,7 @@ class Users extends Controller {
 
   def updatePersonalData() = HasToken.async { implicit request =>
     Forms.updatePersonalData.bindFromRequest.fold(
-      formWithErrors => Future.successful( BadRequest("Wring data sent") ),
+      formWithErrors => Future.successful( BadRequest("Wrong data sent") ),
       data => {
         User.findByEmail(data.email) flatMap (_.map (user => {
           User.update(user.copy(firstName = data.firstName, lastName = data.lastName, birthday = data.birthday)) map (user => Ok(""))
