@@ -3,8 +3,62 @@
 <p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<sidebar></sidebar>
-
+<aside id="menu">
+  <div id="logo" class="light-version">
+    <span>
+      PDX Robo
+    </span>
+  </div>
+  <div id="navigation">
+    <div class="profile-picture">
+    <div class="stats-label text-color menu">
+      <div class="dropdown on-toggle(open)" uib-dropdown="">
+        <a class="dropdown-toggle" uib-dropdown-toggle="" aria-hashpopup="true" aria-expanded="false">
+          <span class="font-extra-bold font-uppercase ng-binding">
+            User
+            <b class="caret"></b>
+          </span>
+        </a>
+        <ul class="dropdown-menu m-t-xs" aria-labelledby="single-button" role="menu" uib-dropdown-menu="">
+          <li>
+            <a href="#/userAccount">
+              User account
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id="sparkline1" class="small-chart m-t-sm"></div>
+      <div class="stats-label">
+        <h4 class="text-center">
+          Account Value
+        </h4>
+      </div>
+      <h4 class="font-extra-bold m-b-xs text-blue ng-binding">
+        $34,000,00
+      </h4>
+      <small class="text-muted ng-binding">
+        in 2 years
+      </small>
+    </div>
+  </div>
+  <ul id="side-menu" class="nav">
+      <li class="active">
+        <a href="/#/dashboard">
+          <span class="nav-label">
+            Dashboard
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="/#/strategies">
+          <span class="nav-label">
+            Strategies
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</aside>
 <div id="wrapper">
     <div class="content animate-panel">
         <div class="row">
