@@ -246,4 +246,26 @@ describe('userService', () => {
             _$httpBackend.verifyNoOutstandingRequest();
         });
     });
+
+    describe('destroyUser', () => {
+        let email;
+
+        beforeEach(() => {
+            email = 'toto@tata.co.uk';
+
+            _$httpBackend.when('POST', '/api/user/destroy').respond();
+
+            _userService.destroyUser(email);
+        });
+
+        it('should should call the API', () => {
+            _$httpBackend.expectPOST('/api/user/destroy', { email: email });
+            expect(_$httpBackend.flush).not.toThrow();
+        });
+
+        afterEach(() => {
+            _$httpBackend.verifyNoOutstandingExpectation();
+            _$httpBackend.verifyNoOutstandingRequest();
+        });
+    });
 });
