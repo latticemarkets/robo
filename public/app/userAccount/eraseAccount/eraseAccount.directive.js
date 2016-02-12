@@ -5,9 +5,9 @@
         .module('app')
         .directive('eraseAccount', eraseAccount);
 
-    eraseAccount.$inject = ['userService', 'notificationService','authenticationService', '$timeout', '$location', 'SweetAlert'];
+    eraseAccount.$inject = ['userService','authenticationService', '$timeout', '$location', 'SweetAlert'];
 
-      function eraseAccount(userService, notificationService, authenticationService, $timeout, $location, SweetAlert) {
+      function eraseAccount(userService, authenticationService, $timeout, $location, SweetAlert) {
         return {
             replace: true,
             restrict: 'E',
