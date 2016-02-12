@@ -17,21 +17,20 @@
             templateUrl: '/assets/app/userAccount/personalInfos/personalInfos.html',
             link(scope){
 
-              scope.data = {
-                availableOptions : [{id:'1', name: 'January'},
-                            {id:'2', name: 'February'},
-                            {id:'3', name: 'March'},
-                            {id:'4', name: 'April'},
-                            {id:'5', name: 'May'},
-                            {id:'6', name: 'June'},
-                            {id:'7', name: 'July'},
-                            {id:'8', name: 'August'},
-                            {id:'9', name: 'September'},
-                            {id:'10', name: 'October'},
-                            {id:'11', name: 'November'},
-                            {id:'12', name: 'December'}],
-                selectedOption : {id:'10', name: 'October'}
-              };
+              scope.availableOptions = [
+                  {id:'1', name: 'January'},
+                  {id:'2', name: 'February'},
+                  {id:'3', name: 'March'},
+                  {id:'4', name: 'April'},
+                  {id:'5', name: 'May'},
+                  {id:'6', name: 'June'},
+                  {id:'7', name: 'July'},
+                  {id:'8', name: 'August'},
+                  {id:'9', name: 'September'},
+                  {id:'10', name: 'October'},
+                  {id:'11', name: 'November'},
+                  {id:'12', name: 'December'}
+              ];
 
               scope.userPromise.then(response => {
                   scope.firstName = response.data.firstName;
@@ -41,8 +40,8 @@
                   scope.date = new Date(scope.timeStamp);
                   scope.year = scope.date.getFullYear();
                   scope.day = scope.date.getDate();
-                  scope.month = scope.date.getMinutes();
-
+                  const month = scope.date.getMinutes();
+                  scope.month = scope.availableOptions[month - 1];
               });
 
               function isNumeric(n) {
@@ -50,7 +49,7 @@
               }
 
               function allConditionsSatisfied() {
-                  const month = isNumeric(scope.month) && scope.month > 0 && scope.month <= 12;
+                  const month = (scope.month) ? isNumeric(scope.month.id) && scope.month.id > 0 && scope.month.id <= 12 : false;
                   const day = isNumeric(scope.day) && scope.day > 0 && scope.day <= 31;
                   const year = isNumeric(scope.year) && scope.year > 1900 && scope.year < (new Date().getFullYear() - 18);
                   return month && day && year;
@@ -65,7 +64,7 @@
                         authenticationService.getCurrentUsersEmail(),
                         scope.firstName,
                         scope.lastName,
-                        scope.birthday = scope.month + "/" + scope.day + "/" + scope.year,
+                        scope.birthday = scope.month.id + "/" + scope.day + "/" + scope.year,
                         () => {
                                 scope.spinner = false;
                                 notificationService.success('Personal infos changed');
