@@ -3,18 +3,12 @@
 
     angular
         .module('app')
-        .filter('titleCase', function() {
-          return function(input) {
-            input = input || '';
-            return input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-          };
-        })
         .directive('p2pPlatform', p2pPlatform);
 
 
-    p2pPlatform.$inject = ['userService', 'notificationService'];
+    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService',];
 
-    function p2pPlatform(userService, notificationService) {
+    function p2pPlatform(userService, notificationService, authenticationService) {
         return {
             replace: true,
             restrict: 'E',
@@ -41,9 +35,10 @@
 
                 scope.submit = () => {
                       scope.spinner = true;
-                      userService.updatePlatform(
-                          scope.accountId,
-                          scope.apiKey,
+                      userService.updatePlatforms(
+                          authenticationService.getCurrentUsersEmail(),
+                          scope.platforms = scope.platforms.sort(platform => platform.apiKey.length === 0),
+                          alert(scope.platforms),
                           () => {
                                   scope.spinner = false;
                                   notificationService.success('Account ID and API key added');

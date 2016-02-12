@@ -1,6 +1,6 @@
 <div class="signup account-configuration">
   <uib-tabset>
-      <uib-tab ng-repeat="platform in platforms" heading="{{ platform.name | titleCase }}">
+      <uib-tab ng-repeat="platform in platforms" heading="{{ platform.name | titlecase }}">
         <form>
         <div class="form-group">
             <input type="text" class="form-control user" id="accountId" placeholder="Account Id" data-ng-model="platform.accountId">

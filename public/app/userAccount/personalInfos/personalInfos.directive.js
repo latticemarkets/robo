@@ -5,9 +5,9 @@
         .module('app')
         .directive('personalInfos', personalInfos);
 
-    personalInfos.$inject = ['userService', 'notificationService'];
+    personalInfos.$inject = ['userService', 'notificationService','authenticationService'];
 
-      function personalInfos(userService, notificationService) {
+      function personalInfos(userService, notificationService, authenticationService) {
         return {
             replace: true,
             restrict: 'E',
@@ -16,28 +16,44 @@
             },
             templateUrl: '/assets/app/userAccount/personalInfos/personalInfos.html',
             link(scope){
+              scope.data = {
+                availableOptions : [{id:'1', name: 'January'},
+                            {id:'2', name: 'February'},
+                            {id:'3', name: 'March'},
+                            {id:'4', name: 'April'},
+                            {id:'5', name: 'May'},
+                            {id:'6', name: 'June'},
+                            {id:'7', name: 'July'},
+                            {id:'8', name: 'August'},
+                            {id:'9', name: 'September'},
+                            {id:'10', name: 'October'},
+                            {id:'11', name: 'November'},
+                            {id:'12', name: 'December'}],
+                selectedOption : {id:'10', name: 'October'}
+              };
 
               scope.userPromise.then(response => {
-                  scope.platforms = platforms.map(platform => ({ name: platform, accountId: '', apiKey: '' }));
-                  response.data.platforms.forEach(platform => {
-                      scope.platforms.some(scopePlatform => {
-                          if (scopePlatform.name == platform.name) {
-                              scopePlatform.accountId = platform.accountId;
-                              scopePlatform.apiKey = platform.apiKey;
-                              return true;
-                          }
-                      });
-                  });
+                  scope.firstName = response.data.firstName;
+                  scope.lastName = response.data.lastName;
+                  scope.birthday = response.data.birthday;
+                  scope.timeStamp = scope.birthday;
+                  scope.date = new Date(scope.timeStamp);
+                  scope.year = scope.date.getFullYear();
+                  scope.day = scope.date.getDate();
+                  scope.month = scope.date.getMinutes();
+
               });
 
               scope.submit = () => {
                     scope.spinner = true;
-                    userService.updatePlatform(
-                        scope.accountId,
-                        scope.apiKey,
+                    userService.updatePersonalData(
+                        authenticationService.getCurrentUsersEmail(),
+                        scope.firstName,
+                        scope.lastName,
+                        scope.birthday = scope.month + "/" + scope.day + "/" + scope.year,
                         () => {
                                 scope.spinner = false;
-                                notificationService.success('Account ID and API key added');
+                                notificationService.success('Personal infos changed');
                         }
                     );
               };

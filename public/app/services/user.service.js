@@ -58,6 +58,14 @@
         updatePassword(email, oldPassword, newPassword, callback) {
             this.$http.put('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
         }
+
+        updatePlatforms(email, platforms, callback){
+            this.$http.put('/api/user/p2pPlatforms', { email: email, platforms: platforms}).then(callback, this.notificationService.apiError());
+        }
+
+        updatePersonalData(email, firstName, lastName, birthday, callback) {
+            this.$http.put('/api/user/personalData', { email: email, firstName: firstName, lastName: lastName, birthday: birthday }).then(callback, this.notificationService.apiError());
+        }
     }
 
     angular
