@@ -2392,7 +2392,20 @@ div.flot-chart.platform-allocation-chart {
 }
 li.uib-tab > a {
     background-color: white;
-}/*------------------------
+}
+.btn-erase {
+    width: 100%;
+    height: 100%;
+}
+div button.btn.primary-button.erase-user {
+    background-color: #f0ad4e;
+    color: white;
+}
+div button.btn.primary-button.erase-user:hover {
+    background-color: transparent;
+    color: white;
+}
+/*------------------------
  * RULES
  *----------------------*/
 .project-label {
