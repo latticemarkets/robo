@@ -6,9 +6,9 @@
         .directive('p2pPlatform', p2pPlatform);
 
 
-    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService',];
+    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService', 'constantsService'];
 
-    function p2pPlatform(userService, notificationService, authenticationService) {
+    function p2pPlatform(userService, notificationService, authenticationService, constantsService) {
         return {
             replace: true,
             restrict: 'E',
@@ -16,8 +16,8 @@
                 userPromise: '='
             },
             templateUrl: '/assets/app/userAccount/p2pPlatform/p2pPlatform.html',
-            link(scope){
-                const platforms = ['lendingClub', 'prosper', 'bondora', 'ratesetter', 'fundingCircle'];
+            link(scope) {
+                const platforms = constantsService.platforms();
 
                 scope.userPromise.then(response => {
                     scope.platforms = platforms.map(platform => ({ name: platform, accountId: '', apiKey: '' }));
@@ -34,15 +34,21 @@
                 });
 
                 scope.submit = () => {
-                      scope.spinner = true;
-                      userService.updatePlatforms(
-                          authenticationService.getCurrentUsersEmail(),
-                          scope.platforms.filter(platform => platform.apiKey.length > 0),
-                          () => {
-                                  scope.spinner = false;
-                                  notificationService.success('Account ID and API key added');
-                          }
-                      );
+                    const filledPlatforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
+                    if (filledPlatforms.length > 0) {
+                        scope.spinner = true;
+                        userService.updatePlatforms(
+                            authenticationService.getCurrentUsersEmail(),
+                            scope.platforms.filter(platform => platform.apiKey.length > 0),
+                            () => {
+                                scope.spinner = false;
+                                notificationService.success('Account ID and API key added');
+                            }
+                        );
+                    }
+                    else {
+                        notificationService.error('You have to link at least one platform');
+                    }
                 };
             }
         };

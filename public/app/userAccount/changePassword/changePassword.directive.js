@@ -41,7 +41,7 @@
                     return scope.charLengthGreaterThan8() && scope.hasLowercase() && scope.hasUppercase() && scope.hasSpecialChar();
                 }
 
-                scope.disableSubmitButton = () => scope.oldPassword && !allConditionsSatisfied();
+                scope.disableSubmitButton = () => !(scope.oldPassword && allConditionsSatisfied());
 
                 scope.submit = () => {
                     if (allConditionsSatisfied()) {
