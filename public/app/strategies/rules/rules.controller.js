@@ -68,7 +68,7 @@
                 });
             };
 
-            vm.goTo = id => $location.path(`/strategies/rules/${platform}/ruleEdit/${id}`);
+            vm.editRule = id => $location.path(`/strategies/rules/${platform}/ruleEdit/${id}`);
 
             function updateOneRule(rule, transformation) {
                 vm.spinner = true;
