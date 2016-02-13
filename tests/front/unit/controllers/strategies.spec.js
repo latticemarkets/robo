@@ -14,7 +14,8 @@
 describe('StrategiesController', () => {
     let strategiesController,
         cssInjector,
-        authenticationService;
+        authenticationService,
+        userService;
 
     beforeEach(module('app'));
 
@@ -23,12 +24,15 @@ describe('StrategiesController', () => {
 
         authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
         authenticationService.getCurrentUsersEmail.and.returnValue('toto@tata.fr');
+
+        userService = jasmine.createSpyObj('userService', ['userData']);
     });
 
     beforeEach(inject(($controller) => {
         strategiesController = $controller('StrategiesController', {
             cssInjector: cssInjector,
-            authenticationService: authenticationService
+            authenticationService: authenticationService,
+            userService: userService
         });
     }));
 
@@ -48,6 +52,13 @@ describe('StrategiesController', () => {
         it('should return 0 if there is no rule', () => {
             const result = strategiesController.totalExpected({rules: []});
             expect(result).toBe(0);
+        });
+    });
+
+    describe('data initialisation', () => {
+        it('should call userService', () => {
+            expect(userService.userData).toHaveBeenCalled();
+            expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
         });
     });
 });

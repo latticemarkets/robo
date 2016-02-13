@@ -62,6 +62,10 @@ describe('RulesController', () => {
         });
 
         describe('parameter test', () => {
+            it('should get the platforms list from constant\'s service', () => {
+                expect(constantsService.platforms).toHaveBeenCalled();
+            });
+
             it('should stay on the page', () => {
                 expect($location.path).not.toHaveBeenCalled();
             });
@@ -72,6 +76,16 @@ describe('RulesController', () => {
                 expect(rulesController.rules.length).toBe(1);
                 expect(rulesController.rules[0].pause).toBe(true);
             });
+
+            it('should call user service', () => {
+                expect(userService.userData).toHaveBeenCalled();
+            });
+        });
+
+        describe('email initialisation', () => {
+            it('should call authentication service', () => {
+                expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
+            });
         });
 
         describe('pause', () => {
@@ -80,6 +94,10 @@ describe('RulesController', () => {
                     rulesService.updateRules.and.callFake((rules, email, platform, success, error) => success());
                     expect(rulesController.rules[0].pause).toBeTruthy();
                     rulesController.pause(rulesController.rules[0]);
+                });
+
+                it('should call rulesService.updateRules', () => {
+                    expect(rulesService.updateRules).toHaveBeenCalled();
                 });
 
                 it('should stop the spinner', () => {
@@ -96,6 +114,10 @@ describe('RulesController', () => {
                     rulesService.updateRules.and.callFake((rules, email, platform, success, error) => error());
                     expect(rulesController.rules[0].pause).toBeTruthy();
                     rulesController.pause(rulesController.rules[0]);
+                });
+
+                it('should call rulesService.updateRules', () => {
+                    expect(rulesService.updateRules).toHaveBeenCalled();
                 });
                 
                 it('should stop the spinner', () => {
@@ -129,6 +151,10 @@ describe('RulesController', () => {
         }));
 
         describe('parameter test', () => {
+            it('should get the platforms list from constant\'s service', () => {
+                expect(constantsService.platforms).toHaveBeenCalled();
+            });
+
             it('should be redirected to strategies\' pages', () => {
                 expect($location.path).toHaveBeenCalledWith('/strategies')
             });
