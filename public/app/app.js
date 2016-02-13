@@ -20,7 +20,8 @@
             'angular.css.injector',
             'angular-flot',
             'camelCaseToHuman',
-            'oitozero.ngSweetAlert'])
+            'oitozero.ngSweetAlert',
+            'ui.sortable'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);

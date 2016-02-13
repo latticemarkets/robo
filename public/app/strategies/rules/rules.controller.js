@@ -37,21 +37,38 @@
                 vm.spinner = false;
             });
 
+            let rulesPriorityMinusOne;
+            vm.sortableOptions = {
+                update() {
+                    rulesPriorityMinusOne = vm.rules;
+                },
+                stop() {
+                    vm.spinner = true;
+                    rulesService.updateRules(vm.rules, email, platform,
+                        () => vm.spinner = false,
+                        () => {
+                            vm.spinner = false;
+                            vm.rules = rulesPriorityMinusOne;
+                        }
+                    );
+                }
+            };
+
             vm.pause = rule => {
-                updateRules(rule, (rules, index) => {
+                updateOneRule(rule, (rules, index) => {
                     rules[index].pause = !rules[index].pause;
                     return rules;
                 });
             };
 
             vm.delete = rule => {
-                updateRules(rule, (rules, index) => {
+                updateOneRule(rule, (rules, index) => {
                     rules.splice(index, 1);
                     return rules;
                 });
             };
 
-            function updateRules(rule, transformation) {
+            function updateOneRule(rule, transformation) {
                 vm.spinner = true;
                 const rulesCopy = clone(vm.rules);
                 let ruleToDeleteIndex;
@@ -65,9 +82,10 @@
                     rulesService.updateRules(transformedRules, email, platform,
                         () => {
                             vm.rules = rulesCopy;
-                        }
-                    );
-                    vm.spinner = false;
+                            vm.spinner = false;
+                        },
+                        () => vm.spinner = false
+                );
                 }
                 else {
                     notificationService.error('An error occurred');

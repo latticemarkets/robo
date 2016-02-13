@@ -112,6 +112,26 @@ describe('RulesController', () => {
                     expect(rulesController.rules[0].pause).toBeFalsy();
                 });
             });
+
+            describe('on error', () => {
+                beforeEach(() => {
+                    rulesService.updateRules.and.callFake((rules, email, platform, success, error) => error());
+                    expect(rulesController.rules[0].pause).toBeTruthy();
+                    rulesController.pause(rulesController.rules[0]);
+                });
+
+                it('should call rulesService.updateRules', () => {
+                    expect(rulesService.updateRules).toHaveBeenCalled();
+                });
+
+                it('should stop the spinner', () => {
+                    expect(rulesController.spinner).toBeFalsy();
+                });
+
+                it('should have changed back the rule.pause state', () => {
+                    expect(rulesController.rules[0].pause).toBeTruthy();
+                });
+            });
         });
 
         describe('delete', () => {
@@ -132,6 +152,63 @@ describe('RulesController', () => {
 
                 it('should update the scoped list of rules', () => {
                     expect(rulesController.rules.length).toBe(2);
+                });
+            });
+
+            describe('on error', () => {
+                beforeEach(() => {
+                    rulesService.updateRules.and.callFake((rules, email, platform, success, error) => error());
+                    expect(rulesController.rules.length).toBe(3);
+                    rulesController.delete(rulesController.rules[2]);
+                });
+
+                it('should call rules service to update the list', () => {
+                    expect(rulesService.updateRules).toHaveBeenCalled();
+                });
+
+                it('should stop the spinner', () => {
+                    expect(rulesController.spinner).toBeFalsy();
+                });
+
+                it('should not update the scoped list of rules', () => {
+                    expect(rulesController.rules.length).toBe(3);
+                });
+            });
+        });
+
+        describe('rearrange priority', () => {
+            beforeEach(() => {
+                rulesController.sortableOptions.update();
+                rulesController.rules = [{name: 'rule1', pause: true}, {name: 'rule3', pause: false}, {name: 'rule2', pause: false}];
+            });
+
+            describe('on success', () => {
+                beforeEach(() => {
+                    rulesService.updateRules.and.callFake((rules, email, platform, success, error) => success());
+                    rulesController.sortableOptions.stop();
+                });
+
+                it('should stop the spinner', () => {
+                    expect(rulesController.spinner).toBeFalsy();
+                });
+
+                it('should have rearrange the rules priority', () => {
+                    expect(rulesController.rules).toEqual([{name: 'rule1', pause: true}, {name: 'rule3', pause: false}, {name: 'rule2', pause: false}]);
+                });
+            });
+
+            describe('on error', () => {
+                beforeEach(() => {
+                    rulesService.updateRules.and.callFake((rules, email, platform, success, error) => error());
+                    rulesController.sortableOptions.stop();
+                });
+
+                it('should stop the spinner', () => {
+                    expect(rulesController.spinner).toBeFalsy();
+                });
+
+                it('should rearrange back the rules priority', () => {
+                    expect(rulesController.rules).toEqual([{name: 'rule1', pause: true}, {name: 'rule2', pause: false}, {name: 'rule3', pause: false}]);
                 });
             });
         });
