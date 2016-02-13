@@ -15,7 +15,7 @@
     'use strict';
 
     class RulesController {
-        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService) {
+        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService, notificationService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -26,14 +26,16 @@
                 $location.path('/strategies');
             }
 
-            userService.userData(email, response =>
+            vm.spinner = true;
+            userService.userData(email, response => {
                 response.data.platforms.some(p => {
                     if (p.name == platform) {
                         vm.rules = p.rules;
                         return true;
                     }
-                })
-            );
+                });
+                vm.spinner = false;
+            });
 
             vm.pause = rule => {
                 vm.spinner = true;
@@ -46,6 +48,37 @@
                     }
                 );
             };
+
+            vm.delete = rule => {
+                vm.spinner = true;
+                const newRules = this.clone(vm);
+                let ruleToDeleteIndex;
+                if (newRules.some((aRule, index) => {
+                    if (aRule.name == rule.name) {
+                        ruleToDeleteIndex = index;
+                        return true;
+                    }
+                })) {
+                    newRules.splice(ruleToDeleteIndex, 1);
+                    rulesService.updateRules(newRules, email, platform,
+                        () => {
+                            vm.rules = newRules;
+                            vm.spinner = false;
+                        },
+                        () => {
+                            rule.pause = !rule.pause;
+                            vm.spinner = false;
+                        }
+                    );
+                }
+                else {
+                    notificationService.error('An error occurred');
+                }
+            };
+        }
+
+        clone(vm) {
+            return JSON.parse(JSON.stringify(vm.rules));
         }
     }
 
