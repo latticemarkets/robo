@@ -89,6 +89,7 @@ object Forms {
   )
 
   def ruleMapping = mapping(
+     "id" -> nonEmptyText,
      "name" -> nonEmptyText,
      "expectedReturn" -> expectedReturnMapping,
      "loansAvailablePerWeek" -> bigDecimal,
