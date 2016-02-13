@@ -26,9 +26,9 @@
                 <div class="sk-circle12 sk-circle"></div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" ui-sortable="vm.sortableOptions" ng-model="vm.rules">
             <div class="col-sm-8 col-sm-offset-2" data-ng-repeat="rule in vm.rules">
-                <div class="hpanel hblue">
+                <div class="hpanel hblue" data-drag="true" jqyoui-draggable jqyoui-draggable="{animate:true}" data-jqyoui-options="{revert: 'invalid'}">
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-10">
