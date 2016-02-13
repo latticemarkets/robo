@@ -34,7 +34,7 @@ describe('RulesController', () => {
         rulesService = jasmine.createSpyObj('rulesService', ['updateRules']);
 
         userService = jasmine.createSpyObj('userService', ['userData']);
-        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', rules:[{pause: true}]}, {name: 'b', rules: [{pause: false}]}]}}));
+        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', rules:[{name: 'rule1', pause: true}, {name: 'rule2', pause: false}, {name: 'rule3', pause: false}]}, {name: 'b', rules: [{pause: false}]}]}}));
     });
 
     describe('called with good URL parameter', () => {
@@ -73,12 +73,16 @@ describe('RulesController', () => {
 
         describe('get appropriate rules', () => {
             it('should get the right rules', () => {
-                expect(rulesController.rules.length).toBe(1);
+                expect(rulesController.rules.length).toBe(3);
                 expect(rulesController.rules[0].pause).toBe(true);
             });
 
             it('should call user service', () => {
                 expect(userService.userData).toHaveBeenCalled();
+            });
+
+            it('should stop the spinner on success', () => {
+                expect(rulesController.spinner).toBeFalsy();
             });
         });
 
@@ -108,24 +112,26 @@ describe('RulesController', () => {
                     expect(rulesController.rules[0].pause).toBeFalsy();
                 });
             });
+        });
 
-            describe('on error', () => {
+        describe('delete', () => {
+            describe('on success', () => {
                 beforeEach(() => {
-                    rulesService.updateRules.and.callFake((rules, email, platform, success, error) => error());
-                    expect(rulesController.rules[0].pause).toBeTruthy();
-                    rulesController.pause(rulesController.rules[0]);
+                    rulesService.updateRules.and.callFake((rules, email, platform, success, error) => success());
+                    expect(rulesController.rules.length).toBe(3);
+                    rulesController.delete(rulesController.rules[2]);
                 });
 
-                it('should call rulesService.updateRules', () => {
+                it('should call rules service to update the list', () => {
                     expect(rulesService.updateRules).toHaveBeenCalled();
                 });
-                
+
                 it('should stop the spinner', () => {
                     expect(rulesController.spinner).toBeFalsy();
                 });
 
-                it('should change back the state of rule.pause', () => {
-                    expect(rulesController.rules[0].pause).toBeTruthy();
+                it('should update the scoped list of rules', () => {
+                    expect(rulesController.rules.length).toBe(2);
                 });
             });
         });

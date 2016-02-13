@@ -15,7 +15,7 @@
     'use strict';
 
     class RulesController {
-        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService) {
+        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService, notificationService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -26,26 +26,57 @@
                 $location.path('/strategies');
             }
 
-            userService.userData(email, response =>
+            vm.spinner = true;
+            userService.userData(email, response => {
                 response.data.platforms.some(p => {
                     if (p.name == platform) {
                         vm.rules = p.rules;
                         return true;
                     }
-                })
-            );
+                });
+                vm.spinner = false;
+            });
 
             vm.pause = rule => {
-                vm.spinner = true;
-                rule.pause = !rule.pause;
-                rulesService.updateRules(vm.rules, email, platform,
-                    () => vm.spinner = false,
-                    () => {
-                        rule.pause = !rule.pause;
-                        vm.spinner = false;
-                    }
-                );
+                updateRules(rule, (rules, index) => {
+                    rules[index].pause = !rules[index].pause;
+                    return rules;
+                });
             };
+
+            vm.delete = rule => {
+                updateRules(rule, (rules, index) => {
+                    rules.splice(index, 1);
+                    return rules;
+                });
+            };
+
+            function updateRules(rule, transformation) {
+                vm.spinner = true;
+                const rulesCopy = clone(vm.rules);
+                let ruleToDeleteIndex;
+                if (rulesCopy.some((aRule, index) => {
+                        if (aRule.name == rule.name) {
+                            ruleToDeleteIndex = index;
+                            return true;
+                        }
+                    })) {
+                    const transformedRules = transformation(rulesCopy, ruleToDeleteIndex);
+                    rulesService.updateRules(transformedRules, email, platform,
+                        () => {
+                            vm.rules = rulesCopy;
+                        }
+                    );
+                    vm.spinner = false;
+                }
+                else {
+                    notificationService.error('An error occurred');
+                }
+            }
+
+            function clone(obj) {
+                return JSON.parse(JSON.stringify(obj));
+            }
         }
     }
 
