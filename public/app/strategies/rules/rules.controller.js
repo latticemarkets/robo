@@ -51,18 +51,25 @@
 
             vm.delete = rule => {
                 vm.spinner = true;
-                const newRules = this.clone(vm);
+                updateRules(rule, (rules, index) => {
+                    rules.splice(index, 1);
+                    return rules;
+                });
+            };
+
+            function updateRules(rule, transformation) {
+                const rulesCopy = clone(vm.rules);
                 let ruleToDeleteIndex;
-                if (newRules.some((aRule, index) => {
-                    if (aRule.name == rule.name) {
-                        ruleToDeleteIndex = index;
-                        return true;
-                    }
-                })) {
-                    newRules.splice(ruleToDeleteIndex, 1);
-                    rulesService.updateRules(newRules, email, platform,
+                if (rulesCopy.some((aRule, index) => {
+                        if (aRule.name == rule.name) {
+                            ruleToDeleteIndex = index;
+                            return true;
+                        }
+                    })) {
+                    const transformedRules = transformation(rulesCopy, ruleToDeleteIndex);
+                    rulesService.updateRules(transformedRules, email, platform,
                         () => {
-                            vm.rules = newRules;
+                            vm.rules = rulesCopy;
                             vm.spinner = false;
                         },
                         () => {
@@ -74,11 +81,11 @@
                 else {
                     notificationService.error('An error occurred');
                 }
-            };
-        }
+            }
 
-        clone(vm) {
-            return JSON.parse(JSON.stringify(vm.rules));
+            function clone(obj) {
+                return JSON.parse(JSON.stringify(obj));
+            }
         }
     }
 
