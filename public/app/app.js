@@ -116,6 +116,11 @@
                 controller: "RulesController",
                 controllerAs: 'vm'
             })
+            .when('/strategies/rules/:platform/ruleEdit/:ruleId', {
+                templateUrl: "assets/app/strategies/ruleEdit/ruleEdit.html",
+                controller: "RuleEditController",
+                controllerAs: 'vm'
+            })
             .otherwise({ redirectTo: '/' });
     }
 

@@ -14,6 +14,7 @@ package models
   */
 
 case class Rule(
+               id: String,
                name: String,
                expectedReturn: ExpectedReturn,
                loansAvailablePerWeek: BigDecimal,
