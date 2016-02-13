@@ -151,4 +151,33 @@ describe('RuleEditController', () => {
             });
         });
     });
+
+    describe('called with good platform URL parameter and no ruleId URL parameter', () => {
+        beforeEach(() => {
+            constantsService = jasmine.createSpyObj('constantsService', ['platforms']);
+            constantsService.platforms.and.callFake(() => ['a']);
+            $routeParams.ruleId = undefined;
+        });
+
+        beforeEach(inject(($controller) => {
+            ruleEditController = $controller('RuleEditController', {
+                cssInjector: cssInjector,
+                $routeParams: $routeParams,
+                constantsService: constantsService,
+                $location: $location,
+                authenticationService: authenticationService,
+                userService: userService
+            });
+        }));
+
+        describe('parameters test', () => {
+            it('should get the platforms list from constant\'s service', () => {
+                expect(constantsService.platforms).toHaveBeenCalled();
+            });
+
+            it('should initialize a new rule object', () => {
+                expect(ruleEditController.rule).toEqual({ name: jasmine.any(String), criteria: [] });
+            });
+        });
+    });
 });

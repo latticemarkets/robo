@@ -70,6 +70,8 @@
 
             vm.editRule = id => $location.path(`/strategies/rules/${platform}/ruleEdit/${id}`);
 
+            vm.newRule = id => $location.path(`/strategies/rules/${platform}/ruleEdit/`);
+
             function updateOneRule(rule, transformation) {
                 vm.spinner = true;
                 const rulesCopy = clone(vm.rules);

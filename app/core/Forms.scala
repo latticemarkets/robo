@@ -8,8 +8,6 @@
 
 package core
 
-import java.util.UUID
-
 import models._
 import play.api.data.Form
 import play.api.data.Forms._
@@ -91,7 +89,7 @@ object Forms {
   )
 
   def ruleMapping = mapping(
-    "id" -> ignored(UUID.randomUUID.toString),
+     "id" -> nonEmptyText,
      "name" -> nonEmptyText,
      "expectedReturn" -> expectedReturnMapping,
      "loansAvailablePerWeek" -> bigDecimal,
