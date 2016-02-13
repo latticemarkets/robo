@@ -40,7 +40,10 @@
                 rule.pause = !rule.pause;
                 rulesService.updateRules(vm.rules, email, platform,
                     () => vm.spinner = false,
-                    () => rule.pause = !rule.pause
+                    () => {
+                        rule.pause = !rule.pause;
+                        vm.spinner = false;
+                    }
                 );
             };
         }

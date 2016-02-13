@@ -56,6 +56,7 @@ describe('SignupPersonalInfosController', () => {
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.platform');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.accountId');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.apiKey');
+                expect($cookieStore.get).toHaveBeenCalledWith('signup.portfolio');
             });
         });
 
@@ -75,6 +76,7 @@ describe('SignupPersonalInfosController', () => {
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.platform');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.accountId');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.apiKey');
+                expect($cookieStore.get).toHaveBeenCalledWith('signup.portfolio');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
         });
@@ -141,6 +143,7 @@ describe('SignupPersonalInfosController', () => {
                          platform,
                          accountId,
                          apiKey,
+                         portfolio,
                          firstName,
                          lastName,
                          successCallback,
@@ -165,6 +168,7 @@ describe('SignupPersonalInfosController', () => {
                     expect($cookieStore.remove).toHaveBeenCalledWith('signup.platform');
                     expect($cookieStore.remove).toHaveBeenCalledWith('signup.accountId');
                     expect($cookieStore.remove).toHaveBeenCalledWith('signup.apiKey');
+                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.portfolio');
                 });
 
                 it('should go to success register page', () => {
@@ -193,6 +197,7 @@ describe('SignupPersonalInfosController', () => {
                          platform,
                          accountId,
                          apiKey,
+                         portfolio,
                          firstName,
                          lastName,
                          successCallback,

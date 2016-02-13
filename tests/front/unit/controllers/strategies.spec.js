@@ -12,17 +12,23 @@
 */
 
 describe('StrategiesController', () => {
-    let strategiesController, cssInjector;
+    let strategiesController,
+        cssInjector,
+        authenticationService;
 
     beforeEach(module('app'));
 
     beforeEach(() => {
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
+
+        authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
+        authenticationService.getCurrentUsersEmail.and.returnValue('toto@tata.fr');
     });
 
     beforeEach(inject(($controller) => {
         strategiesController = $controller('StrategiesController', {
-            cssInjector: cssInjector
+            cssInjector: cssInjector,
+            authenticationService: authenticationService
         });
     }));
 
