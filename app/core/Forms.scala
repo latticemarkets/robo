@@ -37,7 +37,9 @@ object Forms {
   def platformMapping = mapping(
       "name" -> nonEmptyText,
       "accountId" -> nonEmptyText,
-      "apiKey" -> nonEmptyText
+      "apiKey" -> nonEmptyText,
+      "strategy" -> nonEmptyText,
+      "rules" -> seq(ruleMapping)
     )(Platform.apply)(Platform.unapply)
 
   def loginForm = Form(
@@ -77,4 +79,31 @@ object Forms {
       "password" -> nonEmptyText
     )(DestroyAccount.apply)(DestroyAccount.unapply)
   )
+
+  def updateRules = Form(
+    mapping(
+      "email" -> email,
+      "rules" -> seq(ruleMapping),
+      "platform" -> nonEmptyText
+    )(UpdateRules.apply)(UpdateRules.unapply)
+  )
+
+  def ruleMapping = mapping(
+     "name" -> nonEmptyText,
+     "expectedReturn" -> expectedReturnMapping,
+     "loansAvailablePerWeek" -> bigDecimal,
+     "moneyAvailablePerWeek" -> bigDecimal,
+     "criteria" -> seq(criterionMapping),
+     "pause" -> boolean
+   )(Rule.apply)(Rule.unapply)
+
+  def expectedReturnMapping = mapping(
+     "value" -> bigDecimal,
+     "percent" -> bigDecimal,
+     "margin" -> bigDecimal
+  )(ExpectedReturn.apply)(ExpectedReturn.unapply)
+
+  def criterionMapping = mapping(
+    "name" -> nonEmptyText
+  )(Criterion.apply)(Criterion.unapply)
 }

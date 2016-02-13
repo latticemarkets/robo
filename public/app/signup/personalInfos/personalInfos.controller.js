@@ -27,7 +27,8 @@
                 birthday,
                 platform,
                 accountId,
-                apiKey;
+                apiKey,
+                portfolio;
 
             vm.pageClass = 'signup-login blue';
 
@@ -45,8 +46,9 @@
                 platform = $cookieStore.get('signup.platform');
                 accountId = $cookieStore.get('signup.accountId');
                 apiKey = $cookieStore.get('signup.apiKey');
+                portfolio = $cookieStore.get('signup.portfolio');
 
-                if (!(email && password && terms && reason && income && timeline && birthday && platform && accountId && apiKey)) {
+                if (!(email && password && terms && reason && income && timeline && birthday && platform && accountId && apiKey && portfolio)) {
                     $location.path('/signup');
                 }
 
@@ -63,7 +65,7 @@
 
             vm.submit = () => {
                 if (allConditionsSatisfied()) {
-                    userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, vm.firstName, vm.lastName,
+                    userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, portfolio, vm.firstName, vm.lastName,
                         response => {
                             authenticationService.authenticate(response.data.token, email);
                             $cookieStore.remove('signup.email');
@@ -76,6 +78,7 @@
                             $cookieStore.remove('signup.platform');
                             $cookieStore.remove('signup.accountId');
                             $cookieStore.remove('signup.apiKey');
+                            $cookieStore.remove('signup.portfolio');
                             $location.path('/signup/registered');
                         },
                         response => {

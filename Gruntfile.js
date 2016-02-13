@@ -58,6 +58,7 @@ module.exports = function(grunt) {
                     "bower_components/animate.css/animate.min.css",
                     "public/fonts/pe-icon-7-stroke/css/helper.css",
                     "public/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css",
+                    "public/stylesheets/spinners.css",
                     "public/stylesheets/main.css"
                 ],
                 dest: "public/dist/dist.css"

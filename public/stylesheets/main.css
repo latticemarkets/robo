@@ -2411,3 +2411,17 @@ div button.btn.primary-button.erase-user:hover {
 .project-label {
     font-weight: 600;
 }
+.new-rule {
+    height: 200px;
+}
+.new-rule:hover {
+    height: 200px;
+    opacity: 0.6;
+}
+.new-rule h1.new-rule-title {
+    color: #b1c0d5;
+    text-transform: uppercase;
+    font-size: 100px;
+    text-align: center;
+    padding-top: 25px;
+}

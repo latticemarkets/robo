@@ -42,7 +42,9 @@ case class User(
 case class Platform(
                      name: String,
                      accountId: String,
-                     apiKey: String
+                     apiKey: String,
+                     strategy: String,
+                     rules: Seq[Rule]
                    )
 
 case class Login(
@@ -58,10 +60,15 @@ case class UpdatePersonalData(email: String, firstName: String, lastName: String
 
 case class DestroyAccount(email: String, password: String)
 
+case class UpdateRules(email: String, rules: Seq[Rule], platform: String)
+
 object User {
 
   val collectionName = "user"
 
+  implicit val criterionFormat = Json.format[Criterion]
+  implicit val expectedReturnFormat = Json.format[ExpectedReturn]
+  implicit val ruleFormat = Json.format[Rule]
   implicit val platformFormat = Json.format[Platform]
   implicit val accountSummaryFormat = Json.format[User]
 

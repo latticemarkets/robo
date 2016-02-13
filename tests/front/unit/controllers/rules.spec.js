@@ -16,7 +16,10 @@ describe('RulesController', () => {
         cssInjector,
         $routeParams,
         constantsService,
-        $location;
+        $location,
+        authenticationService,
+        userService,
+        rulesService;
 
     beforeEach(module('app'));
 
@@ -24,12 +27,20 @@ describe('RulesController', () => {
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
         $location = jasmine.createSpyObj('$location', ['path']);
         $routeParams = { platform: 'a' };
+
+        authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
+        authenticationService.getCurrentUsersEmail.and.returnValue('toto@tata.fr');
+
+        rulesService = jasmine.createSpyObj('rulesService', ['updateRules']);
+
+        userService = jasmine.createSpyObj('userService', ['userData']);
+        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', rules:[{pause: true}]}, {name: 'b', rules: [{pause: false}]}]}}));
     });
 
     describe('called with good URL parameter', () => {
         beforeEach(() => {
             constantsService = jasmine.createSpyObj('constantsService', ['platforms']);
-            constantsService.platforms.and.callFake(() => ['a']);
+            constantsService.platforms.and.returnValue(['a']);
         });
 
         beforeEach(inject(($controller) => {
@@ -37,7 +48,10 @@ describe('RulesController', () => {
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
-                $location: $location
+                $location: $location,
+                authenticationService: authenticationService,
+                userService: userService,
+                rulesService: rulesService
             });
         }));
 
@@ -48,8 +62,71 @@ describe('RulesController', () => {
         });
 
         describe('parameter test', () => {
+            it('should get the platforms list from constant\'s service', () => {
+                expect(constantsService.platforms).toHaveBeenCalled();
+            });
+
             it('should stay on the page', () => {
                 expect($location.path).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('get appropriate rules', () => {
+            it('should get the right rules', () => {
+                expect(rulesController.rules.length).toBe(1);
+                expect(rulesController.rules[0].pause).toBe(true);
+            });
+
+            it('should call user service', () => {
+                expect(userService.userData).toHaveBeenCalled();
+            });
+        });
+
+        describe('email initialisation', () => {
+            it('should call authentication service', () => {
+                expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
+            });
+        });
+
+        describe('pause', () => {
+            describe('on success', () => {
+                beforeEach(() => {
+                    rulesService.updateRules.and.callFake((rules, email, platform, success, error) => success());
+                    expect(rulesController.rules[0].pause).toBeTruthy();
+                    rulesController.pause(rulesController.rules[0]);
+                });
+
+                it('should call rulesService.updateRules', () => {
+                    expect(rulesService.updateRules).toHaveBeenCalled();
+                });
+
+                it('should stop the spinner', () => {
+                    expect(rulesController.spinner).toBeFalsy();
+                });
+
+                it('should have changed the rule.pause state', () => {
+                    expect(rulesController.rules[0].pause).toBeFalsy();
+                });
+            });
+
+            describe('on error', () => {
+                beforeEach(() => {
+                    rulesService.updateRules.and.callFake((rules, email, platform, success, error) => error());
+                    expect(rulesController.rules[0].pause).toBeTruthy();
+                    rulesController.pause(rulesController.rules[0]);
+                });
+
+                it('should call rulesService.updateRules', () => {
+                    expect(rulesService.updateRules).toHaveBeenCalled();
+                });
+                
+                it('should stop the spinner', () => {
+                    expect(rulesController.spinner).toBeFalsy();
+                });
+
+                it('should change back the state of rule.pause', () => {
+                    expect(rulesController.rules[0].pause).toBeTruthy();
+                });
             });
         });
     });
@@ -66,11 +143,18 @@ describe('RulesController', () => {
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
-                $location: $location
+                $location: $location,
+                authenticationService: authenticationService,
+                userService: userService,
+                rulesService: rulesService
             });
         }));
 
         describe('parameter test', () => {
+            it('should get the platforms list from constant\'s service', () => {
+                expect(constantsService.platforms).toHaveBeenCalled();
+            });
+
             it('should be redirected to strategies\' pages', () => {
                 expect($location.path).toHaveBeenCalledWith('/strategies')
             });

@@ -37,6 +37,7 @@ describe('userService', () => {
             accountId,
             firstName,
             lastName,
+            portfolio,
             apiKey;
 
         beforeEach(() => {
@@ -52,10 +53,11 @@ describe('userService', () => {
             firstName = 'firstName';
             lastName = 'lastName';
             apiKey = 'apiKey';
+            portfolio = 'portfolio';
 
             _$httpBackend.when('POST', '/api/register').respond();
 
-            _userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, firstName, lastName);
+            _userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, portfolio, firstName, lastName);
         });
 
         it('should call the API', () => {
@@ -67,7 +69,7 @@ describe('userService', () => {
                 income: income,
                 timeline: timeline,
                 birthday: birthday,
-                platforms: [{name:'platform',accountId:'accountId',apiKey:'apiKey'}],
+                platforms: [{name:platform, accountId:accountId, apiKey:apiKey, strategy: portfolio, rules: []}],
                 firstName: firstName,
                 lastName: lastName
             });

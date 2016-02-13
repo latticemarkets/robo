@@ -13,7 +13,6 @@ import java.time.LocalDate
 import controllers.Security.HasToken
 import core.{Forms, Hash}
 import models.User
-import play.api.data
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -250,6 +249,24 @@ class Users extends Controller {
           }
           ) getOrElse Future.successful( BadGateway("") )
           )
+      }
+    )
+  }
+
+  def updateRules() = HasToken.async { implicit request =>
+    Forms.updateRules.bindFromRequest.fold(
+      formWithErrors => Future.successful( respondWrongDataSent ),
+      data => {
+        User.findByEmail(data.email) flatMap (_.map (user => {
+          user.platforms.find(_.name == data.platform) map (platform => {
+            val updatedPlatform = platform.copy(rules = data.rules)
+            val platforms = user.platforms.map {
+              case p if p.name == data.platform => updatedPlatform
+              case p => p
+            }
+            User.update(user.copy(platforms = platforms)) map (user => Ok(""))
+          }) getOrElse Future.successful( BadGateway("") )
+        }) getOrElse Future.successful( BadGateway("") ))
       }
     )
   }
