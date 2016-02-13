@@ -38,19 +38,13 @@
             });
 
             vm.pause = rule => {
-                vm.spinner = true;
-                rule.pause = !rule.pause;
-                rulesService.updateRules(vm.rules, email, platform,
-                    () => vm.spinner = false,
-                    () => {
-                        rule.pause = !rule.pause;
-                        vm.spinner = false;
-                    }
-                );
+                updateRules(rule, (rules, index) => {
+                    rules[index].pause = !rules[index].pause;
+                    return rules;
+                });
             };
 
             vm.delete = rule => {
-                vm.spinner = true;
                 updateRules(rule, (rules, index) => {
                     rules.splice(index, 1);
                     return rules;
@@ -58,6 +52,7 @@
             };
 
             function updateRules(rule, transformation) {
+                vm.spinner = true;
                 const rulesCopy = clone(vm.rules);
                 let ruleToDeleteIndex;
                 if (rulesCopy.some((aRule, index) => {
@@ -70,13 +65,9 @@
                     rulesService.updateRules(transformedRules, email, platform,
                         () => {
                             vm.rules = rulesCopy;
-                            vm.spinner = false;
-                        },
-                        () => {
-                            rule.pause = !rule.pause;
-                            vm.spinner = false;
                         }
                     );
+                    vm.spinner = false;
                 }
                 else {
                     notificationService.error('An error occurred');

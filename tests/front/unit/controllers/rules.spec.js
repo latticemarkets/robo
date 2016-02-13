@@ -112,26 +112,6 @@ describe('RulesController', () => {
                     expect(rulesController.rules[0].pause).toBeFalsy();
                 });
             });
-
-            describe('on error', () => {
-                beforeEach(() => {
-                    rulesService.updateRules.and.callFake((rules, email, platform, success, error) => error());
-                    expect(rulesController.rules[0].pause).toBeTruthy();
-                    rulesController.pause(rulesController.rules[0]);
-                });
-
-                it('should call rulesService.updateRules', () => {
-                    expect(rulesService.updateRules).toHaveBeenCalled();
-                });
-                
-                it('should stop the spinner', () => {
-                    expect(rulesController.spinner).toBeFalsy();
-                });
-
-                it('should change back the state of rule.pause', () => {
-                    expect(rulesController.rules[0].pause).toBeTruthy();
-                });
-            });
         });
 
         describe('delete', () => {
