@@ -15,7 +15,7 @@
     'use strict';
 
     class RuleEditController {
-        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector) {
+        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, CriteriaService) {
             var vm = this;
 
             cssInjector.add("assets/stylesheets/homer_style.css");
@@ -51,6 +51,8 @@
             else {
                 vm.rule = { name: defaultName, criteria: [] };
             }
+
+            CriteriaService.criteria(response => vm.criteria = response.data);
         }
     }
 

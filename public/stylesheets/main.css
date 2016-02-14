@@ -2431,3 +2431,9 @@ div button.btn.primary-button.erase-user:hover {
     text-align: center;
     padding-top: 25px;
 }
+/*------------------------
+ * CRITERIA
+ *----------------------*/
+.base-criteria {
+    height: 130px;
+}
