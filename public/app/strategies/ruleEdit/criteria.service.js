@@ -526,7 +526,11 @@
                 { typeKey: 'newAccounts', name: 'New Accounts (24 months)' },
                 { typeKey: 'totalCreditLines', name: 'Total Credit Lines' },
                 { typeKey: 'creditScore', name: 'Credit Score' },
+<<<<<<< HEAD
                 { typeKey: 'maxDelinquencies', name: 'Maximum Delinquencies' },
+=======
+                { typeKey: 'delinquencies', name: 'Delinquencies' },
+>>>>>>> implements newAccount slider
                 { typeKey: 'earliestCreditLine', name: 'Earliest Credit Line' },
                 { typeKey: 'employmentLength', name: 'Employment Length' },
                 { typeKey: 'jobTitle', name: 'Job Title' },
@@ -547,11 +551,16 @@
                 { typeKey: 'expectedReturn', name: 'Expected Return' },
                 { typeKey: 'highestExpectedReturn', name: 'Highest Expected Return' },
                 { typeKey: 'state', name: 'State' },
+<<<<<<< HEAD
                 { typeKey: 'subGrade', name: 'Sub-Grade' },
+=======
+                { typeKey: 'subGrade', name: 'Sub Grade' },
+>>>>>>> implements newAccount slider
                 { typeKey: 'term', name: 'Term' },
                 { typeKey: 'loanPopularity', name: 'Loan Popularity' }
             ];
         }
+<<<<<<< HEAD
 
         convertNumberToSubGrade(n) {
             return this.subGrades[n];
@@ -593,6 +602,8 @@
         get terms() {
             return ['36 Months', '60 Months'];
         }
+=======
+>>>>>>> implements newAccount slider
     }
 
     angular
