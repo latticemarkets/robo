@@ -239,7 +239,7 @@ body.modal-open {
     font-weight: 400;
     line-height: 36px;
     margin: 0 10px;
-    border: 2px solid white;
+    border: 1px solid #1080f2;
     -webkit-transition: 0.3s;
     -o-transition: 0.3s;
     transition: 0.3s;
@@ -284,7 +284,7 @@ body.modal-open {
     background: #1080f2;
 }
 .primary-button:hover {
-    background: none;
+    background-color: #1080f2;
     color: #fff;
     text-decoration: none;
 }
@@ -514,6 +514,10 @@ body.modal-open {
 /* --------------------------------------
 4. MENU
 -----------------------------------------*/
+
+.nav-tabs>li>a{
+  border: 0px;
+}
 
 .navbar-default {
     border-color: transparent;
@@ -2398,12 +2402,14 @@ li.uib-tab > a {
     height: 100%;
 }
 div button.btn.primary-button.erase-user {
-    background-color: #f0ad4e;
-    color: white;
+    background-color: #FFFFFF;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
 }
 div button.btn.primary-button.erase-user:hover {
-    background-color: transparent;
+    background-color: #e74c3c;
     color: white;
+    border: 1px solid #e74c3c;
 }
 /*------------------------
  * RULES
