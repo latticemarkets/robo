@@ -313,6 +313,22 @@
                                 }
                             };
                             return criterion;
+                        case 'loanPopularity':
+                            criterion.value = parseInt(criterion.value);
+                            criterion.slider = {};
+                            criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.slider.min = 0;
+                            criterion.slider.max = 100;
+                            criterion.slider.step = 1;
+                            criterion.slider.format = value => {
+                                if (value >= criterion.slider.min && value <= criterion.slider.max) {
+                                    return `Top ${value}%`;
+                                }
+                                else {
+                                    return `Error`;
+                                }
+                            };
+                            return criterion;
                         default:
                             console.log('Unknown criteria');
                             return undefined;
