@@ -389,6 +389,28 @@
                                 }
                             };
                             return criterion;
+                        case 'openCreditLine':
+                            criterion.type = 'rangeSlider';
+                            splitValue = criterion.value.split('-');
+                            criterion.value = splitValue[0];
+                            criterion.highValue = splitValue[1];
+                            criterion.slider = {};
+                            criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.slider.min = 0;
+                            criterion.slider.max = 30;
+                            criterion.slider.step = 1;
+                            criterion.slider.format = (value, highValue) => {
+                                if (value >= criterion.slider.min && highValue < criterion.slider.max) {
+                                    return `From ${value} to ${highValue} lines`;
+                                }
+                                else if (highValue === criterion.slider.max) {
+                                    return `From ${value} to any number of lines`;
+                                }
+                                else {
+                                    return `Error`;
+                                }
+                            };
+                            return criterion;
                         default:
                             console.log('Unknown criteria');
                             return undefined;
