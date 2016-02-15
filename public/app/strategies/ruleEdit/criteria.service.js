@@ -15,9 +15,10 @@
     'use strict';
 
     class CriteriaService {
-        constructor(notificationService, $http) {
+        constructor(notificationService, $http, $filter) {
             this.notificationService = notificationService;
             this.$http = $http;
+            this.$filter = $filter;
         }
 
         expendCriteriaObject(rule) {
@@ -25,9 +26,11 @@
                 .map(criterion => {
                     switch (criterion.typeKey) {
                         case 'newAccounts':
-                            criterion.name = this.getCriteriaName(criterion.typeKey);
-                            criterion.constraints = { min: 0, max: 10 };
-                            criterion.format = value => {
+                            criterion.slider = {};
+                            criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.slider.min = 0;
+                            criterion.slider.max = 10;
+                            criterion.slider.format = value => {
                                 if (value === 0) {
                                     return `No account`;
                                 }
@@ -39,6 +42,21 @@
                                 }
                                 else if (value === 10) {
                                     return `No limit`;
+                                }
+                                else {
+                                    return `Error`;
+                                }
+                            };
+                            return criterion;
+                        case 'maxDebtIncomeWithLoan':
+                            criterion.slider = {};
+                            criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.slider.min = 0.1;
+                            criterion.slider.max = 0.4;
+                            criterion.slider.step = 0.1;
+                            criterion.slider.format = value => {
+                                if (value >= 0.1 && value <= 0.4) {
+                                    return `No more than ${this.$filter('percent')(value, 0)}`;
                                 }
                                 else {
                                     return `Error`;

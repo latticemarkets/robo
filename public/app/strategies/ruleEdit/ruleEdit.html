@@ -13,7 +13,7 @@
         <spinner condition="vm.spinner"></spinner>
         <div class="row">
             <div class="col-md-8" data-ng-repeat="criterion in vm.rule.criteria">
-                <div slider-criterion name="criterion.name" min="criterion.constraints.min" max="criterion.constraints.max" model="criterion.value" format="criterion.format"></div>
+                <div slider-criterion criterion="criterion"></div>
             </div>
             <div class="col-md-4">
                 <div class="row">
