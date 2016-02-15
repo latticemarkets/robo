@@ -142,7 +142,30 @@
                                 }
                             };
                             return criterion;
+                        case 'inquiries':
+                            criterion.value = parseInt(criterion.value);
+                            criterion.slider = {};
+                            criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.slider.min = 0;
+                            criterion.slider.max = 10;
+                            criterion.slider.step = 1;
+                            criterion.slider.format = value => {
+                                if (value === 0) {
+                                    return `No enquiry`;
+                                }
+                                if (value === 1) {
+                                    return `No more than 1 enquiry`;
+                                }
+                                if (value > 1 && value <= criterion.slider.max) {
+                                    return `No more than ${value} enquiries`;
+                                }
+                                else {
+                                    return `Error`;
+                                }
+                            };
+                            return criterion;
                         default:
+                            console.log('Unknown criteria');
                             return undefined;
                     }
                 })
