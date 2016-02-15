@@ -15,14 +15,17 @@
     'use strict';
 
     class CriteriaService {
-        constructor(notificationService, $http) {
+        constructor(notificationService, $http, $filter) {
             this.notificationService = notificationService;
             this.$http = $http;
+            this.$filter = $filter;
         }
 
         expendCriteriaObject(rule) {
             rule.criteria = rule.criteria
                 .map(criterion => {
+                    let splitValue;
+
                     switch (criterion.typeKey) {
                         case 'newAccounts':
                             criterion.type = 'slider';
@@ -347,7 +350,7 @@
                             return criterion;
                         case 'creditScore':
                             criterion.type = 'rangeSlider';
-                            const splitValue = criterion.value.split('-');
+                            splitValue = criterion.value.split('-');
                             criterion.value = splitValue[0];
                             criterion.highValue = splitValue[1];
                             criterion.slider = {};
@@ -358,6 +361,28 @@
                             criterion.slider.format = (value, highValue) => {
                                 if (value >= criterion.slider.min && highValue <= criterion.slider.max) {
                                     return `Between ${value} and ${highValue}`;
+                                }
+                                else {
+                                    return `Error`;
+                                }
+                            };
+                            return criterion;
+                        case 'monthlyIncome':
+                            criterion.type = 'rangeSlider';
+                            splitValue = criterion.value.split('-');
+                            criterion.value = splitValue[0];
+                            criterion.highValue = splitValue[1];
+                            criterion.slider = {};
+                            criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.slider.min = 500;
+                            criterion.slider.max = 20000;
+                            criterion.slider.step = 500;
+                            criterion.slider.format = (value, highValue) => {
+                                if (value >= criterion.slider.min && highValue < criterion.slider.max) {
+                                    return `From ${this.$filter('currency')(value)} to ${this.$filter('currency')(highValue)}`;
+                                }
+                                else if (highValue === criterion.slider.max) {
+                                    return `${this.$filter('currency')(value)} and up`;
                                 }
                                 else {
                                     return `Error`;
