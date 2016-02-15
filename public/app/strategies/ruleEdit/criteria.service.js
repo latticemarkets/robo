@@ -240,6 +240,31 @@
                                 }
                             };
                             return criterion;
+                        case 'publicRecords':
+                            criterion.value = parseInt(criterion.value);
+                            criterion.slider = {};
+                            criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.slider.min = 0;
+                            criterion.slider.max = 5;
+                            criterion.slider.step = 1;
+                            criterion.slider.format = value => {
+                                if (value === criterion.slider.min) {
+                                    return 'No public record';
+                                }
+                                else if (value === 1) {
+                                    return `No more than 1 public record`;
+                                }
+                                else if (value > 1 && value < criterion.slider.max) {
+                                    return `No more than ${value} public records`;
+                                }
+                                else if (value === criterion.slider.max) {
+                                    return 'Any public records';
+                                }
+                                else {
+                                    return `Error`;
+                                }
+                            };
+                            return criterion;
                         default:
                             console.log('Unknown criteria');
                             return undefined;
