@@ -430,7 +430,10 @@
                             criterion.slider.max = 34;
                             criterion.slider.step = 1;
                             criterion.slider.format = (value, highValue) => {
-                                if (value >= criterion.slider.min && highValue <= criterion.slider.max) {
+                                if (value === highValue) {
+                                    return `${this.convertNumberToSubGrade(value)} only`;
+                                }
+                                else if (value >= criterion.slider.min && highValue <= criterion.slider.max) {
                                     return `From ${this.convertNumberToSubGrade(value)} to ${this.convertNumberToSubGrade(highValue)}`;
                                 }
                                 else {
