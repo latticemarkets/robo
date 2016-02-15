@@ -56,7 +56,7 @@
                             criterion.slider.max = 40;
                             criterion.slider.format = value => {
                                 if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                                    return `No more than ${value} %`;
+                                    return `No more than ${value}%`;
                                 }
                                 else {
                                     return `Error`;
@@ -173,7 +173,7 @@
                             criterion.slider.step = 1;
                             criterion.slider.format = value => {
                                 if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                                    return `No more than ${value} %`;
+                                    return `No more than ${value}%`;
                                 }
                                 else {
                                     return `Error`;
@@ -189,7 +189,7 @@
                             criterion.slider.step = 1;
                             criterion.slider.format = value => {
                                 if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                                    return `No more than ${value} %`;
+                                    return `No more than ${value}%`;
                                 }
                                 else {
                                     return `Error`;
@@ -274,7 +274,7 @@
                             criterion.slider.step = 1;
                             criterion.slider.format = value => {
                                 if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                                    return `No more than ${value} %`;
+                                    return `No more than ${value}%`;
                                 }
                                 else {
                                     return `Error`;
