@@ -19,6 +19,14 @@
             this.notificationService = notificationService;
             this.$http = $http;
             this.$filter = $filter;
+
+            const grades = "ABCDEFG".split('');
+            this.subGrades = grades.reduce((prev, grade) => {
+                for (var i = 0; i < 5; i++) {
+                    prev.push(`${grade}${i+1}`);
+                }
+                return prev;
+            }, []);
         }
 
         expendCriteriaObject(rule) {
@@ -411,6 +419,25 @@
                                 }
                             };
                             return criterion;
+                        case 'subGrade':
+                            criterion.type = 'rangeSlider';
+                            splitValue = criterion.value.split('-');
+                            criterion.value = this.convertSubGradeToNumber(splitValue[0]);
+                            criterion.highValue = this.convertSubGradeToNumber(splitValue[1]);
+                            criterion.slider = {};
+                            criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.slider.min = 0;
+                            criterion.slider.max = 34;
+                            criterion.slider.step = 1;
+                            criterion.slider.format = (value, highValue) => {
+                                if (value >= criterion.slider.min && highValue <= criterion.slider.max) {
+                                    return `From ${this.convertNumberToSubGrade(value)} to ${this.convertNumberToSubGrade(highValue)}`;
+                                }
+                                else {
+                                    return `Error`;
+                                }
+                            };
+                            return criterion;
                         default:
                             console.log('Unknown criteria');
                             return undefined;
@@ -461,10 +488,18 @@
                 { typeKey: 'expectedReturn', name: 'Expected Return' },
                 { typeKey: 'highestExpectedReturn', name: 'Highest Expected Return' },
                 { typeKey: 'state', name: 'State' },
-                { typeKey: 'subGrade', name: 'Sub Grade' },
+                { typeKey: 'subGrade', name: 'Sub-Grade' },
                 { typeKey: 'term', name: 'Term' },
                 { typeKey: 'loanPopularity', name: 'Loan Popularity' }
             ];
+        }
+
+        convertNumberToSubGrade(n) {
+            return this.subGrades[n];
+        }
+
+        convertSubGradeToNumber(subGrade) {
+            return this.subGrades.indexOf(subGrade);
         }
     }
 

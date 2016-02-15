@@ -28,8 +28,6 @@
             checkUrlParameters();
             getCriteria();
 
-
-
             /**
              * Functions
              */
