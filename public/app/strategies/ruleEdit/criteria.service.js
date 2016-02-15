@@ -15,10 +15,9 @@
     'use strict';
 
     class CriteriaService {
-        constructor(notificationService, $http, $filter) {
+        constructor(notificationService, $http) {
             this.notificationService = notificationService;
             this.$http = $http;
-            this.$filter = $filter;
         }
 
         expendCriteriaObject(rule) {
@@ -26,6 +25,7 @@
                 .map(criterion => {
                     switch (criterion.typeKey) {
                         case 'newAccounts':
+                            criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
                             criterion.slider.min = 0;
@@ -49,14 +49,14 @@
                             };
                             return criterion;
                         case 'maxDebtIncomeWithLoan':
+                            criterion.value = criterion.value * 100;
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
-                            criterion.slider.min = 0.1;
-                            criterion.slider.max = 0.4;
-                            criterion.slider.step = 0.1;
+                            criterion.slider.min = 10;
+                            criterion.slider.max = 40;
                             criterion.slider.format = value => {
-                                if (value >= 0.1 && value <= 0.4) {
-                                    return `No more than ${this.$filter('percent')(value, 0)}`;
+                                if (value >= criterion.slider.min && value <= criterion.slider.max) {
+                                    return `No more than ${value}`;
                                 }
                                 else {
                                     return `Error`;
@@ -64,7 +64,6 @@
                             };
                             return criterion;
                         default:
-                            console.log('Unknown criteria');
                             return undefined;
                     }
                 })

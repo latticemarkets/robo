@@ -41,10 +41,12 @@
             controller($scope) {
                 const min = $scope.criterion.slider.min || 0;
                 const max = $scope.criterion.slider.max || null;
+                const step = $scope.criterion.slider.step || 1;
 
                 $scope.options = {
                     floor: min,
                     ceil: max,
+                    step: step,
                     translate: () => "",
                     onEnd: (id, value) => $scope.display = $scope.criterion.slider.format(value),
                     onChange: (id, value) => $scope.display = $scope.criterion.slider.format(value),
