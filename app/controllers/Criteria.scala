@@ -21,7 +21,7 @@ import controllers.Security.HasToken
 class Criteria extends Controller {
   implicit val criterionTypeFormat = Json.format[CriterionType]
 
-  def criteraTypes = HasToken {
+  def criteriaTypes = HasToken {
     Ok(Json.toJson(Criteria.criteriaTypes))
   }
 }
