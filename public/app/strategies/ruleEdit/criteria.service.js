@@ -31,16 +31,16 @@
                             criterion.slider.min = 0;
                             criterion.slider.max = 10;
                             criterion.slider.format = value => {
-                                if (value === 0) {
+                                if (value === criterion.slider.min) {
                                     return `No account`;
                                 }
                                 else if (value === 1) {
                                     return `No more than ${value} account`;
                                 }
-                                else if (value > 1 && value < 10) {
+                                else if (value > 1 && value < criterion.slider.max) {
                                     return `No more than ${value} accounts`;
                                 }
-                                else if (value === 10) {
+                                else if (value === criterion.slider.max) {
                                     return `No limit`;
                                 }
                                 else {
@@ -74,8 +74,30 @@
                                 if (value >= criterion.slider.min && value < criterion.slider.max) {
                                     return `Up to ${value} credit lines`;
                                 }
-                                else if (value === 40) {
+                                else if (value === criterion.slider.max) {
                                     return `Any number`;
+                                }
+                                else {
+                                    return `Error`;
+                                }
+                            };
+                            return criterion;
+                        case 'maxDelinquencies':
+                            criterion.value = parseInt(criterion.value);
+                            criterion.slider = {};
+                            criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.slider.min = 0;
+                            criterion.slider.max = 6;
+                            criterion.slider.step = 1;
+                            criterion.slider.format = value => {
+                                if (value === 0) {
+                                    return `No delinquencies`;
+                                }
+                                if (value > criterion.slider.min && value < criterion.slider.max) {
+                                    return `No more than ${value} delinquencies`;
+                                }
+                                else if (value === criterion.slider.max) {
+                                    return `Any number of delinquencies`;
                                 }
                                 else {
                                     return `Error`;
@@ -110,7 +132,7 @@
                 { typeKey: 'newAccounts', name: 'New Accounts (24 months)' },
                 { typeKey: 'totalCreditLines', name: 'Total Credit Lines' },
                 { typeKey: 'creditScore', name: 'Credit Score' },
-                { typeKey: 'delinquencies', name: 'Delinquencies' },
+                { typeKey: 'maxDelinquencies', name: 'Maximum Delinquencies' },
                 { typeKey: 'earliestCreditLine', name: 'Earliest Credit Line' },
                 { typeKey: 'employmentLength', name: 'Employment Length' },
                 { typeKey: 'jobTitle', name: 'Job Title' },

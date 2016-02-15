@@ -23,7 +23,7 @@ object CriterionName extends Enumeration {
   val newAccounts = Value("newAccounts")
   val totalCreditLines = Value("totalCreditLines")
   val creditScore = Value("creditScore")
-  val delinquencies = Value("delinquencies")
+  val maxDelinquencies = Value("maxDelinquencies")
   val earliestCreditLine = Value("earliestCreditLine")
   val employmentLength = Value("employmentLength")
   val jobTitle = Value("jobTitle")
