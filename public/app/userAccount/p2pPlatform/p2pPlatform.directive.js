@@ -6,9 +6,9 @@
         .directive('p2pPlatform', p2pPlatform);
 
 
-    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService', 'constantsService'];
+    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService', 'constantsService','portfolioSimulationService'];
 
-    function p2pPlatform(userService, notificationService, authenticationService, constantsService) {
+    function p2pPlatform(userService, notificationService, authenticationService, constantsService, portfolioSimulationService) {
         return {
             replace: true,
             restrict: 'E',
@@ -18,14 +18,16 @@
             templateUrl: '/assets/app/userAccount/p2pPlatform/p2pPlatform.html',
             link(scope) {
                 const platforms = constantsService.platforms();
+                scope.availableOptions = portfolioSimulationService.portfolioKeysValues;
 
                 scope.userPromise.then(response => {
-                    scope.platforms = platforms.map(platform => ({ name: platform, accountId: '', apiKey: '' }));
+                    scope.platforms = platforms.map(platform => ({ name: platform, accountId: '', apiKey: '', strategy: '', rules: '' }));
                     response.data.platforms.forEach(platform => {
                         scope.platforms.some(scopePlatform => {
                             if (scopePlatform.name == platform.name) {
                                 scopePlatform.accountId = platform.accountId;
                                 scopePlatform.apiKey = platform.apiKey;
+                                scopePlatform.strategy = platform.strategy;
                                 return true;
                             }
                         });
