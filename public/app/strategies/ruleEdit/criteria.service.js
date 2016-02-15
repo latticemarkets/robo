@@ -25,6 +25,7 @@
                 .map(criterion => {
                     switch (criterion.typeKey) {
                         case 'newAccounts':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -49,6 +50,7 @@
                             };
                             return criterion;
                         case 'maxDebtIncomeWithLoan':
+                            criterion.type = 'slider';
                             criterion.value = criterion.value * 100;
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -64,6 +66,7 @@
                             };
                             return criterion;
                         case 'totalCreditLines':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -83,6 +86,7 @@
                             };
                             return criterion;
                         case 'maxDelinquencies':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -105,6 +109,7 @@
                             };
                             return criterion;
                         case 'earliestCreditLine':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -124,6 +129,7 @@
                             };
                             return criterion;
                         case 'employmentLength':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -143,6 +149,7 @@
                             };
                             return criterion;
                         case 'inquiries':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -165,6 +172,7 @@
                             };
                             return criterion;
                         case 'loanPaymentIncome':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -181,6 +189,7 @@
                             };
                             return criterion;
                         case 'maxDebtIncome':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -197,6 +206,7 @@
                             };
                             return criterion;
                         case 'lastDelinquency':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -219,6 +229,7 @@
                             };
                             return criterion;
                         case 'lastRecord':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -241,6 +252,7 @@
                             };
                             return criterion;
                         case 'publicRecords':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -266,6 +278,7 @@
                             };
                             return criterion;
                         case 'revolvingUtilization':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -282,6 +295,7 @@
                             };
                             return criterion;
                         case 'expectedReturn':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -298,6 +312,7 @@
                             };
                             return criterion;
                         case 'highestExpectedReturn':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -314,6 +329,7 @@
                             };
                             return criterion;
                         case 'loanPopularity':
+                            criterion.type = 'slider';
                             criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
@@ -323,6 +339,25 @@
                             criterion.slider.format = value => {
                                 if (value >= criterion.slider.min && value <= criterion.slider.max) {
                                     return `Top ${value}%`;
+                                }
+                                else {
+                                    return `Error`;
+                                }
+                            };
+                            return criterion;
+                        case 'creditScore':
+                            criterion.type = 'rangeSlider';
+                            const splitValue = criterion.value.split('-');
+                            criterion.value = splitValue[0];
+                            criterion.highValue = splitValue[1];
+                            criterion.slider = {};
+                            criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.slider.min = 660;
+                            criterion.slider.max = 850;
+                            criterion.slider.step = 5;
+                            criterion.slider.format = (value, highValue) => {
+                                if (value >= criterion.slider.min && highValue <= criterion.slider.max) {
+                                    return `Between ${value} and ${highValue}`;
                                 }
                                 else {
                                     return `Error`;
