@@ -21,7 +21,8 @@
             'angular-flot',
             'camelCaseToHuman',
             'oitozero.ngSweetAlert',
-            'ui.sortable'])
+            'ui.sortable',
+            'rzModule'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);

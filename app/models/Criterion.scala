@@ -8,8 +8,6 @@
 
 package models
 
-import play.api.libs.json.Json
-
 /**
   * @author : julienderay
   * Created on 14/02/2016
@@ -18,26 +16,15 @@ import play.api.libs.json.Json
 case class Criterion(
                       id: String,
                       criterionType: CriterionType,
-                      value: Int
+                      value: String
                     )
 
-abstract class CriterionType {
-    def typeKey: String
-    def typeName: String
-    def representation: String
-}
-
-case class CriterionRangeConstraint(
-                            val typeKey: String,
-                            val typeName: String,
-                            val representation: String,
-                            val min: Int,
-                            val max: Int) extends CriterionType
+case class CriterionType(typeKey: String, typeName: String, representation: String, constraints: String)
 
 object Criteria {
 
   val criteriaTypes = Seq(
-    CriterionRangeConstraint(CriterionName.newAccounts.toString, "New Accounts (24 months)", CriterionRepresentation.slider.toString, 0, 10)
+    CriterionType(CriterionName.newAccounts.toString, "New Accounts (24 months)", CriterionRepresentation.slider.toString, s"0,10")
 //    CriterionType(CriterionName.totalCreditLines.toString, "Total Credit Lines", CriterionRepresentation.slider.toString),
 //    CriterionType(CriterionName.creditScore.toString, "Credit Score", CriterionRepresentation.slider.toString),
 //    CriterionType(CriterionName.delinquencies.toString, "Max. Delinquencies", CriterionRepresentation.slider.toString),

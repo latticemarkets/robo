@@ -107,12 +107,13 @@ object Forms {
   def criterionMapping = mapping(
     "id" -> nonEmptyText,
     "criterionType" -> criterionTypeMapping,
-    "value" -> number
+    "value" -> nonEmptyText
   )(Criterion.apply)(Criterion.unapply)
 
   def criterionTypeMapping = mapping(
     "typeKey" -> nonEmptyText,
     "typeName" -> nonEmptyText,
-    "representation" -> nonEmptyText
+    "representation" -> nonEmptyText,
+    "constraints" -> nonEmptyText
   )(CriterionType.apply)(CriterionType.unapply)
 }

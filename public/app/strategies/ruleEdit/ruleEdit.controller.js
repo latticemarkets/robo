@@ -28,7 +28,9 @@
             checkUrlParameters();
             getCriteria();
 
-
+            vm.min = 0;
+            vm.max = 100;
+            vm.model = 50;
 
             /**
              * Functions
