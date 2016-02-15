@@ -66,7 +66,6 @@ object User {
 
   val collectionName = "user"
 
-  implicit val criterionTypeFormat = Json.format[CriterionType]
   implicit val criterionFormat = Json.format[Criterion]
   implicit val expectedReturnFormat = Json.format[ExpectedReturn]
   implicit val ruleFormat = Json.format[Rule]

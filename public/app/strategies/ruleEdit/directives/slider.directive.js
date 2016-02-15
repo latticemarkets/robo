@@ -16,28 +16,46 @@
 
     angular
         .module('app')
-        .directive('sliderCriterion', slider);
+        .directive('sliderCriterion', sliderCriterion);
 
-    slider.$inject = ['$timeout'];
+    sliderCriterion.$inject = ['$timeout'];
 
-    function slider($timeout) {
+    function sliderCriterion($timeout) {
         return {
-            restrict: 'E',
+            restrict: 'A',
             scope: {
                 min: '=',
                 max: '=',
+                model: '=',
                 format: '=',
-                model: '='
+                name: '='
             },
-            template: '<rzslider rz-slider-model="model" rz-slider-options="options"></rzslider>',
-            link(scope) {
-                scope.options = {
-                    floor: scope.min,
-                    ceil: scope.max
+            template: `<div class="hpanel hblue">
+                        <div class="panel-body">
+                        <div class="row">
+                            <h1 class="col-md-6">{{ name }}</h1>
+                            <span class="col-md-6"><h3 class="pull-right">{{ display }}</h3></span>
+                        </div>
+                            <rzslider rz-slider-model="model" rz-slider-options="options"></rzslider>
+                        </div>
+                            <div class="panel-footer">
+                            </div>
+                        </div>
+                       </div>`,
+            controller($scope) {
+                $scope.options = {
+                    floor: $scope.min,
+                    ceil: $scope.max,
+                    translate: () => "",
+                    onEnd: (id, value) => $scope.display = $scope.format(value),
+                    onChange: (id, value) => $scope.display = $scope.format(value),
+                    hideLimitLabels: true
                 };
 
+                $scope.display = $scope.format($scope.model);
+
                 $timeout(function () {
-                    scope.$broadcast('rzSliderForceRender');
+                    $scope.$broadcast('reCalcViewDimensions');
                 }, 500);
             }
         };

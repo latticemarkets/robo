@@ -13,14 +13,7 @@
         <spinner condition="vm.spinner"></spinner>
         <div class="row">
             <div class="col-md-8" data-ng-repeat="criterion in vm.rule.criteria">
-                <div class="hpanel hblue">
-                    <div class="panel-body">
-                        <h1>{{ criterion.criterionType.typeName }}</h1>
-                        <slider-criterion min="vm.min" max="vm.max" model="vm.model"></slider-criterion>
-                    </div>
-                    <div class="panel-footer">
-                    </div>
-                </div>
+                <div slider-criterion name="criterion.name" min="criterion.constraints.min" max="criterion.constraints.max" model="criterion.value" format="criterion.format"></div>
             </div>
             <div class="col-md-4">
                 <div class="row">
@@ -31,11 +24,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 base-criteria" data-ng-repeat="baseCriterion in vm.criteria">
+                    <div class="col-md-3 base-criteria" data-ng-repeat="baseCriterion in vm.baseCriteria">
                         <div class="hpanel">
                             <div class="panel-body text-center">
                                 <div class="m-t-sm">
-                                    <strong>{{ baseCriterion.typeName }}</strong>
+                                    <strong>{{ baseCriterion.name }}</strong>
                                 </div>
                             </div>
                         </div>

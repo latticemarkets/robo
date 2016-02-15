@@ -15,44 +15,9 @@ package models
 
 case class Criterion(
                       id: String,
-                      criterionType: CriterionType,
-                      value: String
+                      value: String,
+                      typeKey: String
                     )
-
-case class CriterionType(typeKey: String, typeName: String, representation: String, constraints: String)
-
-object Criteria {
-
-  val criteriaTypes = Seq(
-    CriterionType(CriterionName.newAccounts.toString, "New Accounts (24 months)", CriterionRepresentation.slider.toString, s"0,10")
-//    CriterionType(CriterionName.totalCreditLines.toString, "Total Credit Lines", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.creditScore.toString, "Credit Score", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.delinquencies.toString, "Max. Delinquencies", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.earliestCreditLine.toString, "Earliest Credit Line", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.employmentLength.toString, "Employment Length", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.jobTitle.toString, "Job Title", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.homeOwnership.toString, "Home Ownership", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.inquiries.toString, "Inquiries", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.loanPaymentIncome.toString, "Loan Payment / Income", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.verifiedIncome.toString, "Verified Income", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.loanAmount.toString, "Loan Amount", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.maxDebtIncome.toString, "Max. Debt / Income", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.maxDebtIncomeWithLoan.toString, "Max. Debt / Income with Loan", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.monthlyIncome.toString, "Monthly Income", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.lastDelinquency.toString, "Last Delinquency", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.lastRecord.toString, "Last Record", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.openCreditLine.toString, "Open Credit Lines", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.publicRecords.toString, "Public Records", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.loanPurpose.toString, "Loan Purpose", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.revolvingItilization.toString, "Revolving Utilization", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.expectedReturn.toString, "Expected Return", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.highestExpectedReturn.toString, "Highest Expected Return", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.state.toString, "State", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.subGrade.toString, "Sub-Grade", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.term.toString, "Term", CriterionRepresentation.slider.toString),
-//    CriterionType(CriterionName.loanPopularity.toString, "Loan Popularity", CriterionRepresentation.slider.toString)
-  )
-}
 
 object CriterionName extends Enumeration {
   val newAccounts = Value("newAccounts")

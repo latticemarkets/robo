@@ -28,9 +28,7 @@
             checkUrlParameters();
             getCriteria();
 
-            vm.min = 0;
-            vm.max = 100;
-            vm.model = 50;
+
 
             /**
              * Functions
@@ -41,7 +39,7 @@
             }
 
             function getCriteria() {
-                CriteriaService.criteria(response => vm.criteria = response.data);
+                vm.baseCriteria = CriteriaService.baseCriteria;
             }
 
             function checkUrlParameters() {
@@ -62,7 +60,7 @@
                                 if (p.name == platform) {
                                     if (!p.rules.some(rule => {
                                             if (rule.id == ruleId) {
-                                                vm.rule = rule;
+                                                vm.rule = CriteriaService.expendCriteriaObject(rule);
                                                 return true;
                                             }
                                         })) {
