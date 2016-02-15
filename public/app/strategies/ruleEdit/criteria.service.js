@@ -64,14 +64,18 @@
                             };
                             return criterion;
                         case 'totalCreditLines':
-                            criterion.value = criterion.value * 100;
+                            criterion.value = parseInt(criterion.value);
                             criterion.slider = {};
                             criterion.slider.name = this.getCriteriaName(criterion.typeKey);
                             criterion.slider.min = 10;
                             criterion.slider.max = 40;
+                            criterion.slider.step = 10;
                             criterion.slider.format = value => {
-                                if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                                    return `No more than ${value} %`;
+                                if (value >= criterion.slider.min && value < criterion.slider.max) {
+                                    return `Up to ${value} credit lines`;
+                                }
+                                else if (value === 40) {
+                                    return `Any number`;
                                 }
                                 else {
                                     return `Error`;
