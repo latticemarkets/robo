@@ -24,9 +24,9 @@
             const platform = $routeParams.platform;
             const ruleId = $routeParams.ruleId;
 
+            getCriteria();
             checkUrlParameters();
             injectCss();
-            getCriteria();
 
             vm.addCriterion = criterion => {
                 vm.rule.criteria.push(criteriaService.expendCriterion(criterion));
