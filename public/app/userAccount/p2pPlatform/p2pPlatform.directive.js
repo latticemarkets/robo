@@ -17,11 +17,10 @@
             },
             templateUrl: '/assets/app/userAccount/p2pPlatform/p2pPlatform.html',
             link(scope) {
-                const platforms = constantsService.platforms();
                 scope.availableOptions = portfolioSimulationService.portfolioKeysValues;
 
                 scope.userPromise.then(response => {
-                    scope.platforms = platforms.map(platform => ({ name: platform, accountId: '', apiKey: '', strategy: '', rules: '' }));
+                    scope.platforms = response.data.platforms;
                     response.data.platforms.forEach(platform => {
                         scope.platforms.some(scopePlatform => {
                             if (scopePlatform.name == platform.name) {
