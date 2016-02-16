@@ -28,6 +28,10 @@
             checkUrlParameters();
             getCriteria();
 
+            vm.addCriterion = criterion => {
+               vm.rule.criteria.push(criteriaService.expendCriterion(criterion));
+            };
+
             /**
              * Functions
              */
