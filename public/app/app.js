@@ -112,7 +112,7 @@
                 controller: "StrategiesController",
                 controllerAs: 'vm'
             })
-            .when('/strategies/rules/:platform', {
+            .when('/strategies/rules/:platform/:success?', {
                 templateUrl: "assets/app/strategies/rules/rules.html",
                 controller: "RulesController",
                 controllerAs: 'vm'

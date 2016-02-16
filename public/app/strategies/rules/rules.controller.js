@@ -26,6 +26,10 @@
                 $location.path('/strategies');
             }
 
+            if ($routeParams.success) {
+                notificationService.success("Your criteria have been updated");
+            }
+
             vm.spinner = true;
             userService.userData(email, response => {
                 response.data.platforms.some(p => {

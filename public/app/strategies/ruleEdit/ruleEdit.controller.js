@@ -38,9 +38,11 @@
                 vm.spinner = true;
                 userService.updatePlatforms(email, vm.platforms, () => {
                     vm.spinner = false;
-                    notificationService.success("Your criteria have been updated");
+                    $location.path(`/strategies/rules/${platform}/s`);
                 });
             };
+
+            vm.cancel = () => $location.path(`/strategies/rules/${platform}`);
 
             vm.showGhostBox = () => {
                 if (vm.rule) {
@@ -62,7 +64,6 @@
                         p.rules.forEach(r => {
                             if (r.id === ruleId) {
                                 var criteria = criteriaService.unexpendCriteriaObject(vm.rule);
-                                console.table(criteria);
                                 r.criteria = criteria;
                             }
                         });
