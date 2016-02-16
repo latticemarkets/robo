@@ -14,7 +14,7 @@
 (() => {
     'use strict';
 
-    class CriteriaService {
+    class criteriaService {
         constructor(notificationService, $http, $filter) {
             this.notificationService = notificationService;
             this.$http = $http;
@@ -597,5 +597,5 @@
 
     angular
         .module('app')
-        .service('CriteriaService', CriteriaService);
+        .service('criteriaService', criteriaService);
 })();

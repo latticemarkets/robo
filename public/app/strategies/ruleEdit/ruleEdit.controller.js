@@ -15,7 +15,7 @@
     'use strict';
 
     class RuleEditController {
-        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, CriteriaService) {
+        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService) {
             var vm = this;
 
             const defaultName = "New Rule";
@@ -37,7 +37,7 @@
             }
 
             function getCriteria() {
-                vm.baseCriteria = CriteriaService.baseCriteria;
+                vm.baseCriteria = criteriaService.baseCriteria;
             }
 
             function checkUrlParameters() {
@@ -58,7 +58,7 @@
                                 if (p.name == platform) {
                                     if (!p.rules.some(rule => {
                                             if (rule.id == ruleId) {
-                                                vm.rule = CriteriaService.expendCriteriaObject(rule);
+                                                vm.rule = criteriaService.expendCriteriaObject(rule);
                                                 return true;
                                             }
                                         })) {

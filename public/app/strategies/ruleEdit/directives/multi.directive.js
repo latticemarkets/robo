@@ -16,11 +16,11 @@
 
     angular
         .module('app')
-        .directive('multiCriterion', sliderCriterion);
+        .directive('multiCriterion', multiCriterion);
 
-    sliderCriterion.$inject = [];
+    multiCriterion.$inject = [];
 
-    function sliderCriterion() {
+    function multiCriterion() {
         return {
             restrict: 'A',
             scope: {
