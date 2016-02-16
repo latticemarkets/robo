@@ -21,16 +21,6 @@
 
                 scope.userPromise.then(response => {
                     scope.platforms = response.data.platforms;
-                    response.data.platforms.forEach(platform => {
-                        scope.platforms.some(scopePlatform => {
-                            if (scopePlatform.name == platform.name) {
-                                scopePlatform.accountId = platform.accountId;
-                                scopePlatform.apiKey = platform.apiKey;
-                                scopePlatform.strategy = platform.strategy;
-                                return true;
-                            }
-                        });
-                    });
                     scope.platforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
                 });
 
