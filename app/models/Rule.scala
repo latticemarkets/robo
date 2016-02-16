@@ -28,7 +28,3 @@ case class ExpectedReturn(
                          percent: BigDecimal,
                          margin: BigDecimal
                          )
-
-case class Criterion(
-                    name: String
-                    )

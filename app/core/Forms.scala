@@ -105,6 +105,8 @@ object Forms {
   )(ExpectedReturn.apply)(ExpectedReturn.unapply)
 
   def criterionMapping = mapping(
-    "name" -> nonEmptyText
+    "id" -> nonEmptyText,
+    "value" -> nonEmptyText,
+    "typeKey" -> nonEmptyText // todo : validate that it is a valid key
   )(Criterion.apply)(Criterion.unapply)
 }

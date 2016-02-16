@@ -12,17 +12,34 @@
     <div class="content">
         <spinner condition="vm.spinner"></spinner>
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2" data-ng-repeat="criterion in vm.rule.criteria">
-                <div class="hpanel hblue">
-                    <div class="panel-body">
-                        <h1>{{ criterion.name }}</h1>
-                    </div>
-                    <div class="panel-footer">
-                    </div>
+            <div class="col-md-8">
+                <div data-ng-repeat="criterion in vm.rule.criteria">
+                    <div data-ng-if="criterion.type == 'slider'" slider-criterion criterion="criterion"></div>
+                    <div data-ng-if="criterion.type == 'rangeSlider'" range-slider-criterion criterion="criterion"></div>
+                    <div data-ng-if="criterion.type == 'multi'" multi-criterion criterion="criterion"></div>
                 </div>
             </div>
-            <div class="ui-sortable-placeholder col-sm-8 col-sm-offset-2 new-rule">
-                <h1 class="new-rule-title">New Rule</h1>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12" >
+                        <div class="hpanel hblue">
+                            <div class="panel-body">
+                                <h1 class="text-center">Available Criteria</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 base-criteria" data-ng-repeat="baseCriterion in vm.baseCriteria">
+                        <div class="hpanel">
+                            <div class="panel-body text-center">
+                                <div class="m-t-sm">
+                                    <strong>{{ baseCriterion.name }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

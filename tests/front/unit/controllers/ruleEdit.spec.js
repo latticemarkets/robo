@@ -31,7 +31,7 @@ describe('RuleEditController', () => {
         authenticationService.getCurrentUsersEmail.and.returnValue('toto@tata.fr');
 
         userService = jasmine.createSpyObj('userService', ['userData']);
-        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', rules:[{id: "id1", name: 'rule1', pause: true}, {id: "id2", name: 'rule2', pause: false}, {id: "id3", name: 'rule3', pause: false}]}, {name: 'b', rules: [{pause: false}]}]}}));
+        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', rules:[{id: "id1", name: 'rule1', pause: true, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}, {id: "id2", name: 'rule2', pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}, {id: "id3", name: 'rule3', pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}] }]}, {name: 'b', rules: [{pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}]}]}}));
     });
 
     describe('called with good platform and ruleId URL parameters', () => {
@@ -41,14 +41,15 @@ describe('RuleEditController', () => {
             $routeParams.ruleId = 'id1';
         });
 
-        beforeEach(inject(($controller) => {
+        beforeEach(inject(($controller, criteriaService) => {
             ruleEditController = $controller('RuleEditController', {
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
                 authenticationService: authenticationService,
-                userService: userService
+                userService: userService,
+                criteriaService: criteriaService
             });
         }));
 
@@ -76,7 +77,7 @@ describe('RuleEditController', () => {
 
         describe('get appropriate rule', () => {
             it('should get the right rule', () => {
-                expect(ruleEditController.rule).toEqual({id: "id1", name: 'rule1', pause: true});
+                expect(ruleEditController.rule).toEqual({ id: 'id1', name: 'rule1', pause: true, criteria: jasmine.any(Array)});
             });
 
             it('should call user service', () => {
