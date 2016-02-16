@@ -16,6 +16,7 @@
                 <div data-ng-repeat="criterion in vm.rule.criteria">
                     <div data-ng-if="criterion.type == 'slider'" slider-criterion criterion="criterion"></div>
                     <div data-ng-if="criterion.type == 'rangeSlider'" range-slider-criterion criterion="criterion"></div>
+                    <div data-ng-if="criterion.type == 'multi'" multi-criterion criterion="criterion"></div>
                 </div>
             </div>
             <div class="col-md-4">

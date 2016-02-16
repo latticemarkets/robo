@@ -2437,3 +2437,12 @@ div button.btn.primary-button.erase-user:hover {
 .base-criteria {
     height: 130px;
 }
+.badge-multi-criterion {
+    font-size: 14px;
+    font-weight: 400;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+.badge-multi-criterion-any {
+    background-color: #9daec0;
+}

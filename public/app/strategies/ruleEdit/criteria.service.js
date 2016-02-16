@@ -441,6 +441,18 @@
                                 }
                             };
                             return criterion;
+                        case 'loanPurpose':
+                            criterion.type = 'multi';
+                            criterion.value = JSON.parse(criterion.value);
+                            criterion.multi = {};
+                            criterion.multi.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.multi.list = this.loansPurposes;
+                            criterion.multi.format = (values) => {
+                                let tmpValues = JSON.parse(JSON.stringify(values));
+                                const firsts = tmpValues.splice(0, 5);
+                                return `${firsts.reduce((prev, elem) => `${prev}, ${elem}`, '')} and ${tmpValues.length} others`;
+                            };
+                            return criterion;
                         default:
                             console.log('Unknown criteria');
                             return undefined;
@@ -503,6 +515,23 @@
 
         convertSubGradeToNumber(subGrade) {
             return this.subGrades.indexOf(subGrade);
+        }
+
+        get loansPurposes() {
+            return ['Car financing',
+                'Refinancing credit card at a better rate',
+                'Consolidate debt',
+                'Investing in learning and training',
+                'Home improvement project',
+                'Home down payment',
+                'Major purchase',
+                'Medical expenses',
+                'Covering moving expenses',
+                'Other',
+                'Renewable energy financing',
+                'Business loan',
+                'Paying for dream vacation',
+                'Wedding expenses'];
         }
     }
 
