@@ -363,7 +363,7 @@
                     return criterion;
                 case 'creditScore':
                     criterion.type = 'rangeSlider';
-                    splitValue = criterion.value ? criterion.value.split('-') : ['A1', 'B5'];
+                    splitValue = criterion.value ? criterion.value.split('-') : [700, 800];
                     criterion.value = splitValue[0];
                     criterion.highValue = splitValue[1];
                     criterion.slider = {};
@@ -426,7 +426,7 @@
                     return criterion;
                 case 'subGrade':
                     criterion.type = 'rangeSlider';
-                    splitValue = criterion.value ? criterion.value.split('-') : [18, 23];
+                    splitValue = criterion.value ? criterion.value.split('-') : ['A3', 'B4'];
                     criterion.value = this.convertSubGradeToNumber(splitValue[0]);
                     criterion.highValue = this.convertSubGradeToNumber(splitValue[1]);
                     criterion.slider = {};
