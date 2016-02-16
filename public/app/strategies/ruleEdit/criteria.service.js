@@ -464,6 +464,17 @@
                                 return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
                             };
                             return criterion;
+                        case 'verifiedIncome':
+                            criterion.type = 'multi';
+                            criterion.value = JSON.parse(criterion.value);
+                            criterion.multi = {};
+                            criterion.multi.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.multi.list = this.verifiedIncomes;
+                            criterion.multi.format = (values) => {
+                                let tmpValues = JSON.parse(JSON.stringify(values));
+                                return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
+                            };
+                            return criterion;
                         default:
                             console.log('Unknown criteria');
                             return undefined;
@@ -547,6 +558,10 @@
 
         get homeOwnerships() {
             return ['Mortgage', 'Other', 'Own', 'Rent'];
+        }
+
+        get verifiedIncomes() {
+            return ['Unverified', 'Verified'];
         }
     }
 
