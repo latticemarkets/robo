@@ -529,7 +529,8 @@
                     criterion.multi.list = this.states;
                     criterion.multi.format = (values) => {
                         let tmpValues = JSON.parse(JSON.stringify(values));
-                        return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
+                        const firsts = tmpValues.splice(0, 5);
+                        return firsts.length ? `${firsts.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)} ${tmpValues.length ? `and ${tmpValues.length} others` : ''}` : 'Any';
                     };
                     return criterion;
                 case 'term':
