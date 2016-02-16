@@ -15,7 +15,7 @@
     'use strict';
 
     class RuleEditController {
-        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService) {
+        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, notificationService) {
             var vm = this;
 
             const defaultName = "New Rule";
@@ -33,12 +33,35 @@
                 vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => criterion.typeKey !== baseCriterion.typeKey);
             };
 
+            vm.saveCriteria = () => {
+                updatePlatforms();
+                vm.spinner = true;
+                userService.updatePlatforms(email, vm.platforms, () => {
+                    vm.spinner = false;
+                    notificationService.success("Your criteria have been updated");
+                });
+            };
+
             /**
              * Functions
              */
 
             function injectCss() {
                 cssInjector.add("assets/stylesheets/homer_style.css");
+            }
+
+            function updatePlatforms() {
+                vm.platforms.forEach(p => {
+                    if (p.name === platform) {
+                        p.rules.forEach(r => {
+                            if (r.id === ruleId) {
+                                var criteria = criteriaService.unexpendCriteriaObject(vm.rule);
+                                console.table(criteria);
+                                r.criteria = criteria;
+                            }
+                        });
+                    }
+                });
             }
 
             function getCriteria() {
@@ -61,9 +84,10 @@
                         userService.userData(email, response => {
                             response.data.platforms.some(p => {
                                 if (p.name == platform) {
+                                    vm.platforms = response.data.platforms;
                                     if (!p.rules.some(rule => {
                                             if (rule.id == ruleId) {
-                                                vm.rule = criteriaService.expendCriteriaObject(rule);
+                                                vm.rule = criteriaService.expendCriteriaObject(JSON.parse(JSON.stringify(rule)));
                                                 vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => vm.rule.criteria.every(criterion => criterion.typeKey !== baseCriterion.typeKey));
                                                 return true;
                                             }

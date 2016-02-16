@@ -29,6 +29,35 @@
             }, []);
         }
 
+        unexpendCriteriaObject(rule) {
+            const tmpsRule = JSON.parse(JSON.stringify(rule));
+            return tmpsRule.criteria.map(criterion => {
+                if (criterion.typeKey === 'subGrade') {
+                    criterion.value = this.convertNumberToSubGrade(criterion.value);
+                    criterion.highValue = this.convertNumberToSubGrade(criterion.highValue);
+                }
+
+                if (criterion.type === 'rangeSlider') {
+                    criterion.value = `${criterion.value}-${criterion.highValue}`;
+                    delete criterion.highValue;
+                    delete criterion.slider;
+                }
+                else if (criterion.type === 'multi') {
+                    criterion.value = JSON.stringify(criterion.value);
+                }
+
+                if (criterion.typeKey === 'maxDebtIncomeWithLoan') {
+                    criterion.value = criterion.value / 100;
+                }
+
+                delete criterion[criterion.type];
+                delete criterion.type;
+                delete criterion.name;
+
+                return criterion;
+            });
+        }
+
         expendCriteriaObject(rule) {
             rule.criteria = rule.criteria
                 .map(criterion => this.expendCriterion(criterion))
