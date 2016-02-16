@@ -33,7 +33,7 @@
                             <span class="col-md-6"><h3 class="pull-right list-multi">{{ display }}</h3></span>
                         </div>
                         <span class="badge badge-multi-criterion badge-multi-criterion-any" data-ng-click="reset()">Any</span>
-                        <span class="badge badge-multi-criterion {{ elem.value ? 'badge-multi-criterion-selected' : 'badge-info' }}" data-ng-click="select(elem)" data-ng-repeat="elem in criterion.multi.list">{{ elem.name }}</span>
+                        <span class="badge badge-multi-criterion {{ elem.value ? 'badge-info' : 'badge-multi-criterion-selected' }}" data-ng-click="select(elem)" data-ng-repeat="elem in criterion.multi.list">{{ elem.name }}</span>
                         </div>
                             <div class="panel-footer">
                             </div>
