@@ -24,9 +24,14 @@
             const platform = $routeParams.platform;
             const ruleId = $routeParams.ruleId;
 
-            injectCss();
-            checkUrlParameters();
             getCriteria();
+            checkUrlParameters();
+            injectCss();
+
+            vm.addCriterion = criterion => {
+                vm.rule.criteria.push(criteriaService.expendCriterion(criterion));
+                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => criterion.typeKey !== baseCriterion.typeKey);
+            };
 
             /**
              * Functions
@@ -59,6 +64,7 @@
                                     if (!p.rules.some(rule => {
                                             if (rule.id == ruleId) {
                                                 vm.rule = criteriaService.expendCriteriaObject(rule);
+                                                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => vm.rule.criteria.every(criterion => criterion.typeKey !== baseCriterion.typeKey));
                                                 return true;
                                             }
                                         })) {

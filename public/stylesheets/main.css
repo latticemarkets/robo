@@ -2438,7 +2438,7 @@ div button.btn.primary-button.erase-user:hover {
  * CRITERIA
  *----------------------*/
 .base-criteria {
-    height: 130px;
+    height: 100px;
 }
 .badge-multi-criterion {
     font-size: 14px;
