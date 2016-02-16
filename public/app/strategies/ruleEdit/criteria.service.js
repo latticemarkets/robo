@@ -450,7 +450,7 @@
                             criterion.multi.format = (values) => {
                                 let tmpValues = JSON.parse(JSON.stringify(values));
                                 const firsts = tmpValues.splice(0, 5);
-                                return `${firsts.reduce((prev, elem) => `${prev}, ${elem}`, '')} and ${tmpValues.length} others`;
+                                return `${firsts.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)} ${tmpValues.length ? `and ${tmpValues.length} others.` : '.'}`;
                             };
                             return criterion;
                         default:
