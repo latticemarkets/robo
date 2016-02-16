@@ -283,8 +283,11 @@ body.modal-open {
     color: #fff;
     background: #1080f2;
 }
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    opacity: 5;
+}
 .primary-button:hover {
-    background-color: #1080f2;
+    background-color: #0067D9;
     color: #fff;
     text-decoration: none;
 }
