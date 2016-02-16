@@ -453,6 +453,17 @@
                                 return `${firsts.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)} ${tmpValues.length ? `and ${tmpValues.length} others.` : '.'}`;
                             };
                             return criterion;
+                        case 'homeOwnership':
+                            criterion.type = 'multi';
+                            criterion.value = JSON.parse(criterion.value);
+                            criterion.multi = {};
+                            criterion.multi.name = this.getCriteriaName(criterion.typeKey);
+                            criterion.multi.list = this.homeOwnerships;
+                            criterion.multi.format = (values) => {
+                                let tmpValues = JSON.parse(JSON.stringify(values));
+                                return `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}`;
+                            };
+                            return criterion;
                         default:
                             console.log('Unknown criteria');
                             return undefined;
@@ -532,6 +543,10 @@
                 'Business loan',
                 'Paying for dream vacation',
                 'Wedding expenses'];
+        }
+
+        get homeOwnerships() {
+            return ['Mortgage', 'Other', 'Own', 'Rent'];
         }
     }
 

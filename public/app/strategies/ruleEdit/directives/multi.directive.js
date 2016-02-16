@@ -40,11 +40,24 @@
                         </div>
                        </div>`,
             controller($scope) {
-                $scope.display = $scope.criterion.multi.format($scope.criterion.value);
                 $scope.criterion.multi.list = $scope.criterion.multi.list.map(elem => ({ name: elem, value: $scope.criterion.value.indexOf(elem) > -1}));
 
-                $scope.reset = () => $scope.criterion.multi.list.map(elem => elem.value = false);
-                $scope.select = elem => elem.value = !elem.value;
+                $scope.reset = () => {
+                    $scope.criterion.multi.list.map(elem => elem.value = false);
+                    update();
+                };
+
+                $scope.select = elem => {
+                    elem.value = !elem.value;
+                    update();
+                };
+
+                update();
+
+                function update() {
+                    $scope.criterion.value = $scope.criterion.multi.list.filter(elem => elem.value).map(elem => elem.name);
+                    $scope.display = $scope.criterion.multi.format($scope.criterion.value);
+                }
             }
         };
     }
