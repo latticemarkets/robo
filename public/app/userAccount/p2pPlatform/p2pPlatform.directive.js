@@ -32,7 +32,7 @@
                             }
                         });
                     });
-                    scope.platforms = scope.platforms.sort(platform => platform.apiKey.length === 0);
+                    scope.platforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
                 });
 
                 scope.submit = () => {
@@ -51,6 +51,19 @@
                     else {
                         notificationService.error('You have to link at least one platform');
                     }
+                };
+
+                scope.delete = (platform) => {
+                  const name = platform.name;
+                  scope.spinner = true;
+                  userService.updatePlatforms(
+                      authenticationService.getCurrentUsersEmail(),
+                      scope.platforms.filter(platform => platform.name !== name ),
+                      () => {
+                          scope.spinner = false;
+                          notificationService.success('Delete platform');
+                      }
+                  );
                 };
             }
         };

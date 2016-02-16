@@ -1,6 +1,6 @@
 <div class="signup account-configuration">
-  <uib-tabset>
-      <uib-tab ng-repeat="platform in platforms" heading="{{ platform.name | camelCaseToHuman | titlecase }}">
+  <uib-accordion>
+      <uib-accordion-group ng-repeat="platform in platforms" heading="{{ platform.name | camelCaseToHuman | titlecase }}">
         <form>
         <div class="form-group">
             <input type="text" class="form-control user" id="accountId" placeholder="Account Id" data-ng-model="platform.accountId">
@@ -14,8 +14,17 @@
                   ng-model="platform.strategy">
           </select>
         </div>
-      </form>
-      <button class="btn primary-button" data-ng-click="submit()" data-ng-disabled="disableSubmitButton()">Submit</button>
-      </uib-tab>
-  </uib-tabset>
+
+      <div class="row">
+      <div class="form-group col-md-6">
+        <button class="btn primary-button" data-ng-click="submit()" data-ng-disabled="disableSubmitButton()">Modify</button>
+      </div>
+      <div class="form-group col-md-6">
+        <button class="btn primary-button erase-platform" data-ng-click="delete(platform)" data-ng-disabled="disableSubmitButton()">Delete</button>
+      </div>
+    </div>
+    </form>
+    </uib-accordion-group>
+      <spinner condition="spinner"></spinner>
+  </uib-accordion>
 </div>
