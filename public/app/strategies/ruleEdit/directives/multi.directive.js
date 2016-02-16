@@ -32,8 +32,8 @@
                             <h1 class="col-md-6">{{ criterion.multi.name }}</h1>
                             <span class="col-md-6"><h3 class="pull-right">{{ display }}</h3></span>
                         </div>
-                        <span class="badge badge-multi-criterion badge-multi-criterion-any">Any</span>
-                        <span class="badge badge-multi-criterion {{ elem.value ? 'badge-multi-criterion-selected' : 'badge-info' }}" data-ng-click="elem.value = !elem.value" data-ng-repeat="elem in criterion.multi.list">{{ elem.name }}</span>
+                        <span class="badge badge-multi-criterion badge-multi-criterion-any" data-ng-click="reset()">Any</span>
+                        <span class="badge badge-multi-criterion {{ elem.value ? 'badge-multi-criterion-selected' : 'badge-info' }}" data-ng-click="select(elem)" data-ng-repeat="elem in criterion.multi.list">{{ elem.name }}</span>
                         </div>
                             <div class="panel-footer">
                             </div>
@@ -42,6 +42,9 @@
             controller($scope) {
                 $scope.display = $scope.criterion.multi.format($scope.criterion.value);
                 $scope.criterion.multi.list = $scope.criterion.multi.list.map(elem => ({ name: elem, value: $scope.criterion.value.indexOf(elem) > -1}));
+
+                $scope.reset = () => $scope.criterion.multi.list.map(elem => elem.value = false);
+                $scope.select = elem => elem.value = !elem.value;
             }
         };
     }
