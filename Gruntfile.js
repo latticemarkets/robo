@@ -151,6 +151,6 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['build']);
     grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat', 'bowercopy', 'jshint', 'babel']);
     grunt.registerTask('test', ['build', 'concat:test', 'babel:test', 'jasmine']);
-    grunt.registerTask('test-dev', ['build', 'watch:test']);
+    grunt.registerTask('dev-test', ['build', 'watch:test']);
     grunt.registerTask('dev', ['build', 'watch:dev']);
 };
