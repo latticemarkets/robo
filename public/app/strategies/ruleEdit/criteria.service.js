@@ -375,6 +375,9 @@
                         if (value >= criterion.slider.min && highValue <= criterion.slider.max) {
                             return `Between ${value} and ${highValue}`;
                         }
+                        else if (value === highValue) {
+                            return value;
+                        }
                         else {
                             return `Error`;
                         }
@@ -413,8 +416,17 @@
                     criterion.slider.max = 30;
                     criterion.slider.step = 1;
                     criterion.slider.format = (value, highValue) => {
-                        if (value >= criterion.slider.min && highValue < criterion.slider.max) {
+                        if (value === criterion.slider.min && highValue === criterion.slider.min) {
+                            return `No line`;
+                        }
+                        if (value === 1 && highValue === 1) {
+                            return `1 line`;
+                        }
+                        else if (value >= criterion.slider.min && highValue < criterion.slider.max) {
                             return `From ${value} to ${highValue} lines`;
+                        }
+                        else if (value === highValue) {
+                            return `${value} lines`;
                         }
                         else if (highValue === criterion.slider.max) {
                             return `From ${value} to any number of lines`;
