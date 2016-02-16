@@ -42,6 +42,12 @@
                 });
             };
 
+            vm.showGhostBox = () => {
+                if (vm.rule) {
+                    return vm.rule.criteria.length === 0;
+                }
+            };
+
             /**
              * Functions
              */

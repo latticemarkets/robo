@@ -2455,3 +2455,14 @@ div button.btn.primary-button.erase-user:hover {
 .list-multi {
     font-size: 15px;
 }
+.no-criteria {
+    height: 177px;
+    margin-bottom: 20px;
+}
+.no-criteria h1.no-criteria-title {
+    color: #b1c0d5;
+    text-transform: uppercase;
+    font-size: 50px;
+    text-align: center;
+    padding-top: 55px;
+}
