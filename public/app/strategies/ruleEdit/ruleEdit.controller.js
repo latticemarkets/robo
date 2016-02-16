@@ -33,6 +33,8 @@
                 vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => criterion.typeKey !== baseCriterion.typeKey);
             };
 
+            vm.remove = typeKey => vm.rule.criteria = vm.rule.criteria.filter(criterion => criterion.typeKey !== typeKey);
+
             vm.saveCriteria = () => {
                 updatePlatforms();
                 vm.spinner = true;

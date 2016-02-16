@@ -26,18 +26,13 @@
             scope: {
                 criterion: '='
             },
-            template: `<div class="hpanel hblue">
-                        <div class="panel-body">
+            template: `<div>
                         <div class="row">
                             <h1 class="col-md-6">{{ criterion.multi.name }}</h1>
                             <span class="col-md-6"><h3 class="pull-right list-multi">{{ display }}</h3></span>
                         </div>
                         <span class="badge badge-multi-criterion badge-multi-criterion-any" data-ng-click="reset()">Any</span>
-                        <span class="badge badge-multi-criterion {{ elem.value ? 'badge-info' : 'badge-multi-criterion-selected' }}" data-ng-click="select(elem)" data-ng-repeat="elem in criterion.multi.list">{{ elem.name }}</span>
-                        </div>
-                            <div class="panel-footer">
-                            </div>
-                        </div>
+                        <span class="badge badge-multi-criterion {{ elem.value ? 'badge-multi-criterion-selected' : 'badge-info' }}" data-ng-click="select(elem)" data-ng-repeat="elem in criterion.multi.list">{{ elem.name }}</span>
                        </div>`,
             controller($scope) {
                 $scope.criterion.multi.list = $scope.criterion.multi.list.map(elem => ({ name: elem, value: $scope.criterion.value.indexOf(elem) > -1}));
