@@ -2449,3 +2449,6 @@ div button.btn.primary-button.erase-user:hover {
 .badge-multi-criterion-selected {
     background-color: #bed1e4;
 }
+.list-multi {
+    font-size: 15px;
+}

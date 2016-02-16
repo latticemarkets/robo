@@ -30,7 +30,7 @@
                         <div class="panel-body">
                         <div class="row">
                             <h1 class="col-md-6">{{ criterion.multi.name }}</h1>
-                            <span class="col-md-6"><h3 class="pull-right">{{ display }}</h3></span>
+                            <span class="col-md-6"><h3 class="pull-right list-multi">{{ display }}</h3></span>
                         </div>
                         <span class="badge badge-multi-criterion badge-multi-criterion-any" data-ng-click="reset()">Any</span>
                         <span class="badge badge-multi-criterion {{ elem.value ? 'badge-multi-criterion-selected' : 'badge-info' }}" data-ng-click="select(elem)" data-ng-repeat="elem in criterion.multi.list">{{ elem.name }}</span>

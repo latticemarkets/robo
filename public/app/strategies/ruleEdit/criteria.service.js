@@ -450,7 +450,7 @@
                             criterion.multi.format = (values) => {
                                 let tmpValues = JSON.parse(JSON.stringify(values));
                                 const firsts = tmpValues.splice(0, 5);
-                                return `${firsts.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)} ${tmpValues.length ? `and ${tmpValues.length} others.` : '.'}`;
+                                return firsts.length ? `${firsts.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)} ${tmpValues.length ? `and ${tmpValues.length} others` : ''}` : 'Any';
                             };
                             return criterion;
                         case 'homeOwnership':
@@ -461,7 +461,7 @@
                             criterion.multi.list = this.homeOwnerships;
                             criterion.multi.format = (values) => {
                                 let tmpValues = JSON.parse(JSON.stringify(values));
-                                return `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}`;
+                                return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
                             };
                             return criterion;
                         default:
