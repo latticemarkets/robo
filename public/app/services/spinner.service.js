@@ -3,6 +3,7 @@
 
     class spinnerService {
         constructor() {
+            this.callback = () => {};
         }
 
         on() {

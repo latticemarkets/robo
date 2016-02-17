@@ -45,12 +45,14 @@
                 scope.delete = (platform) => {
                   const name = platform.name;
                   spinnerService.on();
+                  const newPlatforms = scope.platforms.filter(platform => platform.name !== name );
                   userService.updatePlatforms(
                       authenticationService.getCurrentUsersEmail(),
-                      scope.platforms.filter(platform => platform.name !== name ),
+                      newPlatforms,
                       () => {
                           spinnerService.off();
                           notificationService.success('Delete platform');
+                          scope.platforms = newPlatforms;
                       }
                   );
                 };

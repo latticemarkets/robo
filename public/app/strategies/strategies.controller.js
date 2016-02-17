@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategiesController {
-        constructor(cssInjector, userService, authenticationService, constantsService, $filter) {
+        constructor(cssInjector, userService, authenticationService, constantsService, $filter, addPlatformService) {
             var vm = this;
 
             cssInjector.add("assets/stylesheets/homer_style.css");
@@ -26,6 +26,8 @@
 
             vm.totalExpected = platform => platform.rules.reduce((prev, rule) => rule.expectedReturn.value + prev, 0);
             vm.fromCamelCaseToTitle = str => $filter('titlecase')($filter('camelCaseToHuman')(str));
+
+            vm.newPlatform = () => addPlatformService.newPlatformModal(vm.platforms);
         }
     }
 

@@ -23,7 +23,9 @@
             'oitozero.ngSweetAlert',
             'ui.sortable',
             'rzModule',
-            'ngTagsInput'])
+            'ngTagsInput',
+            'ui.bootstrap.modal',
+            'multiStepForm'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);

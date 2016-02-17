@@ -62,6 +62,8 @@ case class DestroyAccount(email: String, password: String)
 
 case class UpdateRules(email: String, rules: Seq[Rule], platform: String)
 
+case class AddPlatform(email: String, platform: Platform)
+
 object User {
 
   val collectionName = "user"
