@@ -2427,6 +2427,9 @@ div button.btn.primary-button.erase-user:hover {
     text-align: center;
     padding-top: 90px;
 }
+img.ticked {
+    -webkit-filter: grayscale(1);
+}
 /*------------------------
  * RULES
  *----------------------*/

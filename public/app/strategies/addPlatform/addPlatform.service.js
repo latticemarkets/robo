@@ -27,14 +27,14 @@
                 controller: AddPlatformModalController,
                 resolve: {
                     constantsService: () => this.constantsService,
-                    platforms: platforms
+                    platforms: () => platforms
                 }
             });
         }
     }
 
     class AddPlatformModalController {
-        constructor($scope, $uibModalInstance, constantsService, userService, authenticationService, $location) {
+        constructor($scope, $uibModalInstance, constantsService, userService, authenticationService, $location, platforms) {
             $scope.platforms = constantsService.platformsImgExtensions;
 
             $scope.cancel = () => {
@@ -52,8 +52,10 @@
             ];
 
             $scope.choose = (platform, nextStep) => {
-                $scope.chosePlatform = platform;
-                nextStep();
+                if (!$scope.alreadyAdded(platform)) {
+                    $scope.chosePlatform = platform;
+                    nextStep();
+                }
             };
 
             $scope.disableFinishButton = () => {
@@ -73,6 +75,10 @@
                         finish();
                         $location.path(`/strategies/rules/${$scope.chosePlatform}`);
                 });
+            };
+
+            $scope.alreadyAdded = platformName => {
+                return platforms.some(platform => platform.name == platformName);
             };
         }
     }
