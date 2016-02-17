@@ -18,7 +18,8 @@ describe('RuleEditController', () => {
         constantsService,
         $location,
         authenticationService,
-        userService;
+        userService,
+        spinnerService;
 
     beforeEach(module('app'));
 
@@ -32,6 +33,8 @@ describe('RuleEditController', () => {
 
         userService = jasmine.createSpyObj('userService', ['userData']);
         userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', rules:[{id: "id1", name: 'rule1', pause: true, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}, {id: "id2", name: 'rule2', pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}, {id: "id3", name: 'rule3', pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}] }]}, {name: 'b', rules: [{pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}]}]}}));
+
+        spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
     });
 
     describe('called with good platform and ruleId URL parameters', () => {
@@ -49,7 +52,8 @@ describe('RuleEditController', () => {
                 $location: $location,
                 authenticationService: authenticationService,
                 userService: userService,
-                criteriaService: criteriaService
+                criteriaService: criteriaService,
+                spinnerService: spinnerService
             });
         }));
 
@@ -85,7 +89,7 @@ describe('RuleEditController', () => {
             });
 
             it('should stop the spinner on success', () => {
-                expect(ruleEditController.spinner).toBeFalsy();
+                expect(spinnerService.off).toHaveBeenCalled();
             });
         });
 
@@ -138,7 +142,8 @@ describe('RuleEditController', () => {
                 constantsService: constantsService,
                 $location: $location,
                 authenticationService: authenticationService,
-                userService: userService
+                userService: userService,
+                spinnerService: spinnerService
             });
         }));
 
@@ -167,7 +172,8 @@ describe('RuleEditController', () => {
                 constantsService: constantsService,
                 $location: $location,
                 authenticationService: authenticationService,
-                userService: userService
+                userService: userService,
+                spinnerService: spinnerService
             });
         }));
 

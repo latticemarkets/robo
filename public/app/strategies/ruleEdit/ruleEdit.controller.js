@@ -15,7 +15,7 @@
     'use strict';
 
     class RuleEditController {
-        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, notificationService) {
+        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, notificationService, spinnerService) {
             var vm = this;
 
             const defaultName = "New Rule";
@@ -37,9 +37,9 @@
 
             vm.saveCriteria = () => {
                 updatePlatforms();
-                vm.spinner = true;
+                spinnerService.on();
                 userService.updatePlatforms(email, vm.platforms, () => {
-                    vm.spinner = false;
+                    spinnerService.off();
                     $location.path(`/strategies/rules/${platform}/s`);
                 });
             };
@@ -89,7 +89,7 @@
 
                 function checkRuleId() {
                     if (ruleId) {
-                        vm.spinner = true;
+                        spinnerService.on();
                         userService.userData(email, response => {
                             response.data.platforms.some(p => {
                                 if (p.name == platform) {
@@ -106,7 +106,7 @@
                                     return true;
                                 }
                             });
-                            vm.spinner = false;
+                            spinnerService.off();
                         });
                     }
                     else {

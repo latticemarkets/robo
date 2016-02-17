@@ -6,9 +6,9 @@
         .directive('p2pPlatform', p2pPlatform);
 
 
-    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService', 'constantsService','portfolioSimulationService'];
+    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService', 'constantsService','portfolioSimulationService','spinnerService'];
 
-    function p2pPlatform(userService, notificationService, authenticationService, constantsService, portfolioSimulationService) {
+    function p2pPlatform(userService, notificationService, authenticationService, constantsService, portfolioSimulationService,spinnerService) {
         return {
             replace: true,
             restrict: 'E',
@@ -27,12 +27,12 @@
                 scope.submit = () => {
                     const filledPlatforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
                     if (filledPlatforms.length > 0) {
-                        scope.spinner = true;
+                        spinnerService.on();
                         userService.updatePlatforms(
                             authenticationService.getCurrentUsersEmail(),
                             scope.platforms.filter(platform => platform.apiKey.length > 0),
                             () => {
-                                scope.spinner = false;
+                                spinnerService.off();
                                 notificationService.success('Account ID and API key added');
                             }
                         );
@@ -44,12 +44,12 @@
 
                 scope.delete = (platform) => {
                   const name = platform.name;
-                  scope.spinner = true;
+                  spinnerService.on();
                   userService.updatePlatforms(
                       authenticationService.getCurrentUsersEmail(),
                       scope.platforms.filter(platform => platform.name !== name ),
                       () => {
-                          scope.spinner = false;
+                          spinnerService.off();
                           notificationService.success('Delete platform');
                       }
                   );
