@@ -37,13 +37,13 @@ object Criterion {
     } else if  (ruleType==RuleType.InRange.toString()) {
       val p=ruleParams.split(",").map(_.trim)
       InRangeParams(BigDecimal(p(0)),BigDecimal(p(1)))
-    }  
+    }
     else {
       throw new IllegalArgumentException
     }
     new Criterion(attribute,ruleType,params)
   }
-  
+
   def unapply(c:Criterion):Option[(String,String,String)]={
     val params=if (c.ruleType==RuleType.InSet.toString()) {
       c.ruleParams.asInstanceOf[InSetParams].set mkString ","
@@ -61,8 +61,8 @@ object Criterion {
                      val ruleType: String,
                      val ruleParams: RuleParams) {
   def ruleTypeEnum=RuleType.withName(ruleType)
-  
-  
+
+
 }
 
 object CriterionName extends Enumeration {
