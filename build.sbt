@@ -22,5 +22,9 @@ routesGenerator := InjectedRoutesGenerator
 libraryDependencies ++= Seq(
   "org.reactivemongo" %% "play2-reactivemongo" % "0.11.7.play24",
   "org.mindrot" % "jbcrypt" % "0.3m",
-  "org.scalaj" %% "scalaj-http" % "2.2.1"
+  "org.scalaj" %% "scalaj-http" % "2.2.1",
+  "org.scalanlp" %% "breeze" % "0.12",
+  "org.scalanlp" %% "breeze-natives" % "0.12",
+  "org.scalanlp" %% "breeze-viz" % "0.12",
+  "de.sciss" %% "play-json-sealed" % "0.2.0"
 )

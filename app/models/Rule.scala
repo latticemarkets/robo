@@ -9,22 +9,22 @@
 package models
 
 /**
-  * @author : julienderay
-  * Created on 12/02/2016
-  */
+ * @author : julienderay
+ * Created on 12/02/2016
+ */
 
-case class Rule(
-               id: String,
-               name: String,
-               expectedReturn: ExpectedReturn,
-               loansAvailablePerWeek: BigDecimal,
-               moneyAvailablePerWeek: BigDecimal,
-               criteria: Seq[Criterion],
-               pause: Boolean
-               )
+case class Rule(id: String,
+                name: String,
+                originator: String,
+                expectedReturn: ExpectedReturn,
+                loansAvailablePerWeek: BigDecimal,
+                moneyAvailablePerWeek: BigDecimal,
+                criteria: Seq[Criterion],
+                isEnabled: Boolean,
+                minNoteAmount: BigDecimal,
+                maxNoteAmount: BigDecimal)
 
 case class ExpectedReturn(
-                         value: BigDecimal,
-                         percent: BigDecimal,
-                         margin: BigDecimal
-                         )
+  value: BigDecimal,
+  percent: BigDecimal,
+  margin: BigDecimal)
