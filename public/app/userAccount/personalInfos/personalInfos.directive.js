@@ -5,9 +5,9 @@
         .module('app')
         .directive('personalInfos', personalInfos);
 
-    personalInfos.$inject = ['userService', 'notificationService','authenticationService'];
+    personalInfos.$inject = ['userService', 'notificationService','authenticationService','spinnerService'];
 
-      function personalInfos(userService, notificationService, authenticationService) {
+      function personalInfos(userService, notificationService, authenticationService,spinnerService) {
         return {
             replace: true,
             restrict: 'E',

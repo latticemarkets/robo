@@ -15,7 +15,7 @@
     'use strict';
 
     class RulesController {
-        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService, notificationService) {
+        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService, notificationService, spinnerService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 

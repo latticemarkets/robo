@@ -6,9 +6,9 @@
         .directive('p2pPlatform', p2pPlatform);
 
 
-    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService', 'constantsService','portfolioSimulationService'];
+    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService', 'constantsService','portfolioSimulationService','spinnerService'];
 
-    function p2pPlatform(userService, notificationService, authenticationService, constantsService, portfolioSimulationService) {
+    function p2pPlatform(userService, notificationService, authenticationService, constantsService, portfolioSimulationService,spinnerService) {
         return {
             replace: true,
             restrict: 'E',

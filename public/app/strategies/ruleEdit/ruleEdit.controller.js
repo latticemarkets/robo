@@ -15,7 +15,7 @@
     'use strict';
 
     class RuleEditController {
-        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, notificationService) {
+        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, notificationService, spinnerService) {
             var vm = this;
 
             const defaultName = "New Rule";
