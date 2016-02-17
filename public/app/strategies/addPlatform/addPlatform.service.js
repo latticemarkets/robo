@@ -21,19 +21,20 @@
             this.$uibModal = $uibModal;
         }
 
-        newPlatformModal() {
+        newPlatformModal(platforms) {
             var modalInstance = this.$uibModal.open({
                 templateUrl: 'assets/app/strategies/addPlatform/addPlatform.modal.html',
                 controller: AddPlatformModalController,
                 resolve: {
-                    constantsService: () => this.constantsService
+                    constantsService: () => this.constantsService,
+                    platforms: platforms
                 }
             });
         }
     }
 
     class AddPlatformModalController {
-        constructor($scope, $uibModalInstance, constantsService, userService, authenticationService, notificationService) {
+        constructor($scope, $uibModalInstance, constantsService, userService, authenticationService, $location) {
             $scope.platforms = constantsService.platformsImgExtensions;
 
             $scope.cancel = () => {
@@ -66,10 +67,11 @@
                 const accountId = $('#accountId').val();
                 const apiKey = $('#apiKey').val();
 
-                userService.addPlatform(authenticationService.getCurrentUsersEmail(), { name: $scope.chosePlatform, accountId: accountId, apiKey: apiKey, strategy: 'moderate', rules: [] },
+                var newPlatform = { name: $scope.chosePlatform, accountId: accountId, apiKey: apiKey, strategy: 'moderate', rules: [] };
+                userService.addPlatform(authenticationService.getCurrentUsersEmail(), newPlatform,
                     () => {
                         finish();
-                        notificationService.success("A new platform has been successfully added !");
+                        $location.path(`/strategies/rules/${$scope.chosePlatform}`);
                 });
             };
         }
