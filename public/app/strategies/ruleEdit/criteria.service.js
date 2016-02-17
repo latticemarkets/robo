@@ -29,6 +29,35 @@
             }, []);
         }
 
+        unexpendCriteriaObject(rule) {
+            const tmpsRule = JSON.parse(JSON.stringify(rule));
+            return tmpsRule.criteria.map(criterion => {
+                if (criterion.typeKey === 'subGrade') {
+                    criterion.value = this.convertNumberToSubGrade(criterion.value);
+                    criterion.highValue = this.convertNumberToSubGrade(criterion.highValue);
+                }
+
+                if (criterion.type === 'rangeSlider') {
+                    criterion.value = `${criterion.value}-${criterion.highValue}`;
+                    delete criterion.highValue;
+                    delete criterion.slider;
+                }
+                else if (criterion.type === 'multi') {
+                    criterion.value = JSON.stringify(criterion.value);
+                }
+
+                if (criterion.typeKey === 'maxDebtIncomeWithLoan') {
+                    criterion.value = criterion.value / 100;
+                }
+
+                delete criterion[criterion.type];
+                delete criterion.type;
+                delete criterion.name;
+
+                return criterion;
+            });
+        }
+
         expendCriteriaObject(rule) {
             rule.criteria = rule.criteria
                 .map(criterion => this.expendCriterion(criterion))
@@ -375,6 +404,9 @@
                         if (value >= criterion.slider.min && highValue <= criterion.slider.max) {
                             return `Between ${value} and ${highValue}`;
                         }
+                        else if (value === highValue) {
+                            return value;
+                        }
                         else {
                             return `Error`;
                         }
@@ -413,8 +445,17 @@
                     criterion.slider.max = 30;
                     criterion.slider.step = 1;
                     criterion.slider.format = (value, highValue) => {
-                        if (value >= criterion.slider.min && highValue < criterion.slider.max) {
+                        if (value === criterion.slider.min && highValue === criterion.slider.min) {
+                            return `No line`;
+                        }
+                        if (value === 1 && highValue === 1) {
+                            return `1 line`;
+                        }
+                        else if (value >= criterion.slider.min && highValue < criterion.slider.max) {
                             return `From ${value} to ${highValue} lines`;
+                        }
+                        else if (value === highValue) {
+                            return `${value} lines`;
                         }
                         else if (highValue === criterion.slider.max) {
                             return `From ${value} to any number of lines`;
@@ -488,7 +529,8 @@
                     criterion.multi.list = this.states;
                     criterion.multi.format = (values) => {
                         let tmpValues = JSON.parse(JSON.stringify(values));
-                        return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
+                        const firsts = tmpValues.splice(0, 5);
+                        return firsts.length ? `${firsts.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)} ${tmpValues.length ? `and ${tmpValues.length} others` : ''}` : 'Any';
                     };
                     return criterion;
                 case 'term':

@@ -14,7 +14,6 @@ package models
   */
 
 case class Criterion(
-                      id: String,
                       value: String,
                       typeKey: String
                     )
