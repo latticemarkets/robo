@@ -3,19 +3,18 @@
 
     class spinnerService {
         constructor() {
-            this.spinner = false;
         }
 
         on() {
-            this.spinner = true;
+            this.callback(true);
         }
 
         off() {
-            this.spinner = false;
+            this.callback(false);
         }
 
-        getspinnerValue() {
-            return this.spinner;
+        listenSpinnerValue(callback) {
+            this.callback = callback;
         }
     }
 

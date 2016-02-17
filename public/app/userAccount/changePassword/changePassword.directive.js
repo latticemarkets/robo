@@ -46,14 +46,12 @@
                 scope.submit = () => {
                     if (allConditionsSatisfied()) {
                         spinnerService.on();
-                        scope.spinner = spinnerService.getspinnerValue();
                         userService.updatePassword(
                             authenticationService.getCurrentUsersEmail(),
                             scope.oldPassword,
                             scope.newPassword,
                             () => {
                                 spinnerService.off();
-                                scope.spinner = spinnerService.getspinnerValue();
                                 notificationService.success('Password changed');
                             }
                         );

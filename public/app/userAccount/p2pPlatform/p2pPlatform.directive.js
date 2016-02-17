@@ -27,12 +27,12 @@
                 scope.submit = () => {
                     const filledPlatforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
                     if (filledPlatforms.length > 0) {
-                        scope.spinner = true;
+                        spinnerService.on();
                         userService.updatePlatforms(
                             authenticationService.getCurrentUsersEmail(),
                             scope.platforms.filter(platform => platform.apiKey.length > 0),
                             () => {
-                                scope.spinner = false;
+                                spinnerService.off();
                                 notificationService.success('Account ID and API key added');
                             }
                         );
@@ -44,12 +44,12 @@
 
                 scope.delete = (platform) => {
                   const name = platform.name;
-                  scope.spinner = true;
+                  spinnerService.on();
                   userService.updatePlatforms(
                       authenticationService.getCurrentUsersEmail(),
                       scope.platforms.filter(platform => platform.name !== name ),
                       () => {
-                          scope.spinner = false;
+                          spinnerService.off();
                           notificationService.success('Delete platform');
                       }
                   );

@@ -30,7 +30,7 @@
                 notificationService.success("Your criteria have been updated");
             }
 
-            vm.spinner = true;
+            spinnerService.on();
             userService.userData(email, response => {
                 response.data.platforms.some(p => {
                     if (p.name == platform) {
@@ -38,7 +38,7 @@
                         return true;
                     }
                 });
-                vm.spinner = false;
+                spinnerService.off();
             });
 
             let rulesPriorityMinusOne;
@@ -47,11 +47,11 @@
                     rulesPriorityMinusOne = vm.rules;
                 },
                 stop() {
-                    vm.spinner = true;
+                    spinnerService.on();
                     rulesService.updateRules(vm.rules, email, platform,
-                        () => vm.spinner = false,
+                        () => spinnerService.off(),
                         () => {
-                            vm.spinner = false;
+                            spinnerService.off();
                             vm.rules = rulesPriorityMinusOne;
                         }
                     );
@@ -77,7 +77,7 @@
             vm.newRule = id => $location.path(`/strategies/rules/${platform}/ruleEdit/`);
 
             function updateOneRule(rule, transformation) {
-                vm.spinner = true;
+                spinnerService.on();
                 const rulesCopy = clone(vm.rules);
                 let ruleToDeleteIndex;
                 if (rulesCopy.some((aRule, index) => {
@@ -90,9 +90,9 @@
                     rulesService.updateRules(transformedRules, email, platform,
                         () => {
                             vm.rules = rulesCopy;
-                            vm.spinner = false;
+                            spinnerService.off();
                         },
-                        () => vm.spinner = false
+                        () => spinnerService.off()
                 );
                 }
                 else {

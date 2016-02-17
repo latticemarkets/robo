@@ -15,11 +15,10 @@
     'use strict';
 
     class UserAccountController {
-        constructor(userService, authenticationService, cssInjector, spinnerService) {
+        constructor(userService, authenticationService, cssInjector) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
             const userId = authenticationService.getCurrentUsersEmail();
-            vm.spinner = spinnerService.getspinnerValue();
             vm.userPromise = userService.userData(userId);
         }
     }

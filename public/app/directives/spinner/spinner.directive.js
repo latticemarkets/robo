@@ -24,7 +24,7 @@
         return {
             replace: true,
             restrict: 'E',
-
+            scope: {},
             template: `<div data-ng-show="spinner" class="sk-spinner sk-spinner-circle pull-right">
             <div class="sk-spinner sk-spinner-circle">
             <div class="sk-circle1 sk-circle"></div>
@@ -40,7 +40,10 @@
             <div class="sk-circle11 sk-circle"></div>
             <div class="sk-circle12 sk-circle"></div>
             </div>
-            </div>`
+            </div>`,
+            link(scope) {
+                spinnerService.listenSpinnerValue(spinner => scope.spinner = spinner);
+            }
         };
     }
 })();
