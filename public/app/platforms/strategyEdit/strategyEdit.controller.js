@@ -14,8 +14,8 @@
 (() => {
     'use strict';
 
-    class RuleEditController {
-        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, notificationService, spinnerService) {
+    class StrategyEditController {
+        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, $cookieStore, spinnerService) {
             var vm = this;
 
             const defaultName = "New Rule";
@@ -41,11 +41,11 @@
                 userService.updatePlatforms(email, vm.platforms, () => {
                     spinnerService.off();
                     $cookieStore.put('newCriteriaSuccess', true);
-                    $location.path(`/platforms/rules/${platform}`);
+                    $location.path(`/platforms/strategies/${platform}`);
                 });
             };
 
-            vm.cancel = () => $location.path(`/platforms/rules/${platform}`);
+            vm.cancel = () => $location.path(`/platforms/strategies/${platform}`);
 
             vm.showGhostBox = () => {
                 if (vm.rule) {
@@ -64,6 +64,9 @@
             function updatePlatforms() {
                 vm.platforms.forEach(p => {
                     if (p.name === platform) {
+                        if (p.rules.length === 0) {
+                            p.rules.push(criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule)));
+                        }
                         p.rules.forEach(r => {
                             if (r.id === ruleId) {
                                 r.criteria = criteriaService.unexpendCriteriaObject(vm.rule);
@@ -88,12 +91,12 @@
                 }
 
                 function checkRuleId() {
-                    if (ruleId) {
-                        spinnerService.on();
-                        userService.userData(email, response => {
-                            response.data.platforms.some(p => {
-                                if (p.name == platform) {
-                                    vm.platforms = response.data.platforms;
+                    spinnerService.on();
+                    userService.userData(email, response => {
+                        response.data.platforms.some(p => {
+                            if (p.name == platform) {
+                                vm.platforms = response.data.platforms;
+                                if (ruleId) {
                                     if (!p.rules.some(rule => {
                                             if (rule.id == ruleId) {
                                                 vm.rule = criteriaService.expendCriteriaObject(JSON.parse(JSON.stringify(rule)));
@@ -101,17 +104,17 @@
                                                 return true;
                                             }
                                         })) {
-                                        $location.path(`/platforms/rules/${platform}`);
+                                        $location.path(`/platforms/strategies/${platform}`);
                                     }
-                                    return true;
                                 }
-                            });
-                            spinnerService.off();
+                                else {
+                                    vm.rule = {name: defaultName, criteria: []};
+                                }
+                                return true;
+                            }
                         });
-                    }
-                    else {
-                        vm.rule = {name: defaultName, criteria: []};
-                    }
+                        spinnerService.off();
+                    });
                 }
             }
         }
@@ -119,5 +122,5 @@
 
     angular
         .module('app')
-        .controller('RuleEditController', RuleEditController);
+        .controller('StrategyEditController', StrategyEditController);
 })();

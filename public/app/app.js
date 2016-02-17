@@ -115,14 +115,14 @@
                 controller: "PlatformsController",
                 controllerAs: 'vm'
             })
-            .when('/platforms/rules/:platform', {
-                templateUrl: "assets/app/platforms/rules/rules.html",
-                controller: "RulesController",
+            .when('/platforms/strategies/:platform', {
+                templateUrl: "assets/app/platforms/strategies/strategies.html",
+                controller: "StrategiesController",
                 controllerAs: 'vm'
             })
-            .when('/platforms/rules/:platform/ruleEdit/:ruleId?', {
-                templateUrl: "assets/app/platforms/ruleEdit/ruleEdit.html",
-                controller: "RuleEditController",
+            .when('/platforms/strategies/:platform/strategyEdit/:ruleId?', {
+                templateUrl: "assets/app/platforms/strategyEdit/strategyEdit.html",
+                controller: "StrategyEditController",
                 controllerAs: 'vm'
             })
             .otherwise({ redirectTo: '/' });

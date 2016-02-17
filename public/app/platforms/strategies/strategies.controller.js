@@ -14,7 +14,7 @@
 (() => {
     'use strict';
 
-    class RulesController {
+    class StrategiesController {
         constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService, notificationService, spinnerService, $cookieStore) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
@@ -73,9 +73,9 @@
                 });
             };
 
-            vm.editRule = id => $location.path(`/platforms/rules/${platform}/ruleEdit/${id}`);
+            vm.editRule = id => $location.path(`/platforms/strategies/${platform}/strategyEdit/${id}`);
 
-            vm.newRule = id => $location.path(`/platforms/rules/${platform}/ruleEdit/`);
+            vm.newRule = id => $location.path(`/platforms/strategies/${platform}/strategyEdit/`);
 
             function updateOneRule(rule, transformation) {
                 spinnerService.on();
@@ -109,5 +109,5 @@
 
     angular
         .module('app')
-        .controller('RulesController', RulesController);
+        .controller('StrategiesController', StrategiesController);
 })();
