@@ -18,16 +18,14 @@
         .module('app')
         .directive('spinner', spinner);
 
-    spinner.$inject = [];
+    spinner.$inject = ['spinnerService'];
 
-    function spinner() {
+    function spinner(spinnerService) {
         return {
             replace: true,
             restrict: 'E',
-            scope: {
-                condition: '='
-            },
-            template: `<div data-ng-show="condition" class="sk-spinner sk-spinner-circle pull-right">
+
+            template: `<div data-ng-show="spinner" class="sk-spinner sk-spinner-circle pull-right">
             <div class="sk-spinner sk-spinner-circle">
             <div class="sk-circle1 sk-circle"></div>
             <div class="sk-circle2 sk-circle"></div>
