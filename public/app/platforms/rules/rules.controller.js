@@ -15,7 +15,7 @@
     'use strict';
 
     class RulesController {
-        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService, notificationService, spinnerService) {
+        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService, notificationService, spinnerService, $cookieStore) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -26,8 +26,9 @@
                 $location.path('/platforms');
             }
 
-            if ($routeParams.success) {
+            if ($cookieStore.get('newCriteriaSuccess')) {
                 notificationService.success("Your criteria have been updated");
+                $cookieStore.remove('newCriteriaSuccess');
             }
 
             spinnerService.on();

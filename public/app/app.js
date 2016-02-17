@@ -115,7 +115,7 @@
                 controller: "PlatformsController",
                 controllerAs: 'vm'
             })
-            .when('/platforms/rules/:platform/:success?', {
+            .when('/platforms/rules/:platform', {
                 templateUrl: "assets/app/platforms/rules/rules.html",
                 controller: "RulesController",
                 controllerAs: 'vm'

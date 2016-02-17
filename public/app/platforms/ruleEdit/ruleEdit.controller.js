@@ -40,7 +40,8 @@
                 spinnerService.on();
                 userService.updatePlatforms(email, vm.platforms, () => {
                     spinnerService.off();
-                    $location.path(`/platforms/rules/${platform}/s`);
+                    $cookieStore.put('newCriteriaSuccess', true);
+                    $location.path(`/platforms/rules/${platform}`);
                 });
             };
 
