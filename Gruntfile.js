@@ -63,7 +63,8 @@ module.exports = function(grunt) {
                     "public/fonts/pe-icon-7-stroke/css/helper.css",
                     "public/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css",
                     "public/stylesheets/spinners.css",
-                    "public/stylesheets/main.css"
+                    "public/stylesheets/main.css",
+                    "bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css"
                 ],
                 dest: "public/dist/dist.css"
             }
