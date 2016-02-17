@@ -26,17 +26,12 @@
             scope: {
                 criterion: '='
             },
-            template: `<div class="hpanel hblue">
-                        <div class="panel-body">
+            template: `<div>
                         <div class="row">
                             <h1 class="col-md-6">{{ criterion.slider.name }}</h1>
                             <span class="col-md-6"><h3 class="pull-right">{{ display }}</h3></span>
                         </div>
                             <rzslider rz-slider-model="criterion.value" rz-slider-high="criterion.highValue" rz-slider-options="options"></rzslider>
-                        </div>
-                            <div class="panel-footer">
-                            </div>
-                        </div>
                        </div>`,
             controller($scope) {
                 const min = $scope.criterion.slider.min || 0;

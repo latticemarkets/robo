@@ -2466,3 +2466,19 @@ div button.btn.primary-button.erase-user:hover {
     text-align: center;
     padding-top: 55px;
 }
+.triangle-close {
+    width: 0;
+    height: 0;
+    border-top: 40px solid #c0392b;
+    border-left: 40px solid transparent;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.triangle-close i {
+    position: absolute;
+    top: -34px;
+    right: 7px;
+    color: white;
+}
