@@ -2482,3 +2482,6 @@ div button.btn.primary-button.erase-user:hover {
     right: 7px;
     color: white;
 }
+a.remove-button {
+    color: white!important;
+}

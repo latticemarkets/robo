@@ -37,13 +37,18 @@
                     criterion.highValue = this.convertNumberToSubGrade(criterion.highValue);
                 }
 
-                if (criterion.type === 'rangeSlider') {
-                    criterion.value = `${criterion.value}-${criterion.highValue}`;
-                    delete criterion.highValue;
-                    delete criterion.slider;
-                }
-                else if (criterion.type === 'multi') {
-                    criterion.value = JSON.stringify(criterion.value);
+                switch (criterion.type) {
+                    case 'rangeSlider':
+                        criterion.value = `${criterion.value}-${criterion.highValue}`;
+                        delete criterion.highValue;
+                        delete criterion.slider;
+                        break;
+                    case 'multi':
+                        criterion.value = JSON.stringify(criterion.value);
+                        break;
+                    case 'text':
+                        criterion.value = JSON.stringify(criterion.value.map(v => v.text));
+                        break;
                 }
 
                 if (criterion.typeKey === 'maxDebtIncomeWithLoan') {
@@ -542,6 +547,16 @@
                     criterion.multi.format = (values) => {
                         let tmpValues = JSON.parse(JSON.stringify(values));
                         return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
+                    };
+                    return criterion;
+                case 'jobTitle':
+                    criterion.type = 'text';
+                    criterion.value = criterion.value ? JSON.parse(criterion.value).map(v => ({ text: v })) : [];
+                    criterion.text = {};
+                    criterion.text.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.text.format = (values) => {
+                        let tmpValues = JSON.parse(JSON.stringify(values));
+                        return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem.text}`, '').substr(2)}` : 'Any';
                     };
                     return criterion;
                 default:
