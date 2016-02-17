@@ -37,13 +37,18 @@
                     criterion.highValue = this.convertNumberToSubGrade(criterion.highValue);
                 }
 
-                if (criterion.type === 'rangeSlider') {
-                    criterion.value = `${criterion.value}-${criterion.highValue}`;
-                    delete criterion.highValue;
-                    delete criterion.slider;
-                }
-                else if (criterion.type === 'multi') {
-                    criterion.value = JSON.stringify(criterion.value);
+                switch (criterion.type) {
+                    case 'rangeSlider':
+                        criterion.value = `${criterion.value}-${criterion.highValue}`;
+                        delete criterion.highValue;
+                        delete criterion.slider;
+                        break;
+                    case 'multi':
+                        criterion.value = JSON.stringify(criterion.value);
+                        break;
+                    case 'text':
+                        criterion.value = JSON.stringify(criterion.value.map(v => v.text));
+                        break;
                 }
 
                 if (criterion.typeKey === 'maxDebtIncomeWithLoan') {
