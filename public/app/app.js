@@ -24,7 +24,8 @@
             'ui.sortable',
             'rzModule',
             'ngTagsInput',
-            'ui.bootstrap.modal'])
+            'ui.bootstrap.modal',
+            'multiStepForm'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);

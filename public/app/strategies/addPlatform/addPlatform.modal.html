@@ -11,11 +11,18 @@
         <h4 class="modal-title">Add a new Platform</h4>
     </div>
     <div class="modal-body">
-        <div class="signup row">
-            <img width="80px" src="assets/img/platforms/{{ platform }}.{{ extension }}" class="img-rounded platform" data-ng-click="choose(platform)" data-ng-repeat="(platform, extension) in platforms">
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-white" data-ng-click="cancel()">Cancel</button>
+        <multi-step-container steps="steps" on-cancel="$dismiss()" on-finish="$close()">
+            <div class="text-center">
+                <strong>Step {{$getActiveIndex()}} / {{$getSteps().length}}</strong>
+            </div>
+
+            <main step-container></main>
+
+            <div class="text-right">
+                <button class="btn btn-danger2" ng-click="$cancel()">Cancel</button>
+
+                <button class="btn btn-info" ng-click="$finish()" ng-if="$isLast()">Finish</button>
+            </div>
+        </multi-step-container>
     </div>
 </div>

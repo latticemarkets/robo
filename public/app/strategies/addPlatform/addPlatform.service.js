@@ -43,6 +43,12 @@
             $scope.cancel = () => {
                 $uibModalInstance.dismiss('cancel');
             };
+
+            $scope.steps = [
+                {
+                    templateUrl: 'assets/app/strategies/addPlatform/choosePlatform.step.html'
+                }
+            ];
         }
     }
 
