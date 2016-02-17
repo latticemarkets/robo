@@ -21,7 +21,7 @@
             <div class="text-right">
                 <button class="btn btn-danger2" ng-click="$cancel()">Cancel</button>
 
-                <button class="btn btn-info" ng-click="finish($finish)" ng-if="$isLast()">Finish</button>
+                <button class="btn btn-info" ng-click="finish($finish)" data-ng-disabled="disableFinishButton()" ng-if="$isLast()">Finish</button>
             </div>
         </multi-step-container>
     </div>
