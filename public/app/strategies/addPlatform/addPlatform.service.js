@@ -33,12 +33,8 @@
     }
 
     class AddPlatformModalController {
-        constructor($scope, $uibModalInstance, constantsService) {
+        constructor($scope, $uibModalInstance, constantsService, userService, authenticationService, notificationService) {
             $scope.platforms = constantsService.platformsImgExtensions;
-
-            $scope.choose = () => {
-
-            };
 
             $scope.cancel = () => {
                 $uibModalInstance.dismiss('cancel');
@@ -47,8 +43,35 @@
             $scope.steps = [
                 {
                     templateUrl: 'assets/app/strategies/addPlatform/choosePlatform.step.html'
+                },
+                {
+                    templateUrl: 'assets/app/strategies/addPlatform/setCredentials.step.html',
+                    hasForm: true
                 }
             ];
+
+            $scope.choose = (platform, nextStep) => {
+                $scope.chosePlatform = platform;
+                nextStep();
+            };
+
+            $scope.disableFinishButton = () => {
+                const accountId = $('#accountId').val();
+                const apiKey = $('#apiKey').val();
+
+                return !(accountId && apiKey);
+            };
+
+            $scope.finish = finish => {
+                const accountId = $('#accountId').val();
+                const apiKey = $('#apiKey').val();
+
+                userService.addPlatform(authenticationService.getCurrentUsersEmail(), { name: $scope.chosePlatform, accountId: accountId, apiKey: apiKey, strategy: 'moderate', rules: [] },
+                    () => {
+                        finish();
+                        notificationService.success("A new platform has been successfully added !");
+                });
+            };
         }
     }
 

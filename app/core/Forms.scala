@@ -42,6 +42,13 @@ object Forms {
       "rules" -> seq(ruleMapping)
     )(Platform.apply)(Platform.unapply)
 
+  def addPlatformForm = Form(
+    mapping(
+      "email" -> email,
+      "platform" -> platformMapping
+    )(AddPlatform.apply)(AddPlatform.unapply)
+  )
+
   def loginForm = Form(
     mapping(
       "email" -> email,

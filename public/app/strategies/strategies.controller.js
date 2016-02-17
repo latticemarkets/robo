@@ -28,11 +28,6 @@
             vm.fromCamelCaseToTitle = str => $filter('titlecase')($filter('camelCaseToHuman')(str));
 
             vm.newPlatform = () => addPlatformService.newPlatformModal();
-
-            vm.choose = (platform, nextStep) => {
-                vm.chosePlatform = platform;
-                nextStep();
-            };
         }
     }
 
