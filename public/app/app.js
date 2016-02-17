@@ -22,7 +22,8 @@
             'camelCaseToHuman',
             'oitozero.ngSweetAlert',
             'ui.sortable',
-            'rzModule'])
+            'rzModule',
+            'ngTagsInput'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);

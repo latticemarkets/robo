@@ -544,6 +544,16 @@
                         return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
                     };
                     return criterion;
+                case 'jobTitle':
+                    criterion.type = 'text';
+                    criterion.value = criterion.value ? JSON.parse(criterion.value).map(v => ({ text: v })) : [];
+                    criterion.text = {};
+                    criterion.text.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.text.format = (values) => {
+                        let tmpValues = JSON.parse(JSON.stringify(values));
+                        return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem.text}`, '').substr(2)}` : 'Any';
+                    };
+                    return criterion;
                 default:
                     console.log('Unknown criteria');
                     return undefined;
