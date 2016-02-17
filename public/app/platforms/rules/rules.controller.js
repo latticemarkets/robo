@@ -23,7 +23,7 @@
             const platform = $routeParams.platform;
 
             if (!constantsService.platforms().some(realPlatform => realPlatform == platform)) {
-                $location.path('/strategies');
+                $location.path('/platforms');
             }
 
             if ($routeParams.success) {
@@ -72,9 +72,9 @@
                 });
             };
 
-            vm.editRule = id => $location.path(`/strategies/rules/${platform}/ruleEdit/${id}`);
+            vm.editRule = id => $location.path(`/platforms/rules/${platform}/ruleEdit/${id}`);
 
-            vm.newRule = id => $location.path(`/strategies/rules/${platform}/ruleEdit/`);
+            vm.newRule = id => $location.path(`/platforms/rules/${platform}/ruleEdit/`);
 
             function updateOneRule(rule, transformation) {
                 spinnerService.on();

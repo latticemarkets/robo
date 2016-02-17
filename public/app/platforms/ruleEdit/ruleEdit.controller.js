@@ -40,11 +40,11 @@
                 spinnerService.on();
                 userService.updatePlatforms(email, vm.platforms, () => {
                     spinnerService.off();
-                    $location.path(`/strategies/rules/${platform}/s`);
+                    $location.path(`/platforms/rules/${platform}/s`);
                 });
             };
 
-            vm.cancel = () => $location.path(`/strategies/rules/${platform}`);
+            vm.cancel = () => $location.path(`/platforms/rules/${platform}`);
 
             vm.showGhostBox = () => {
                 if (vm.rule) {
@@ -65,8 +65,7 @@
                     if (p.name === platform) {
                         p.rules.forEach(r => {
                             if (r.id === ruleId) {
-                                var criteria = criteriaService.unexpendCriteriaObject(vm.rule);
-                                r.criteria = criteria;
+                                r.criteria = criteriaService.unexpendCriteriaObject(vm.rule);
                             }
                         });
                     }
@@ -83,7 +82,7 @@
 
                 function checkPlatform() {
                     if (!constantsService.platforms().some(realPlatform => realPlatform == platform)) {
-                        $location.path('/strategies');
+                        $location.path('/platforms');
                     }
                 }
 
@@ -101,7 +100,7 @@
                                                 return true;
                                             }
                                         })) {
-                                        $location.path(`/strategies/rules/${platform}`);
+                                        $location.path(`/platforms/rules/${platform}`);
                                     }
                                     return true;
                                 }

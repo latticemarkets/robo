@@ -110,18 +110,18 @@
                 controller: "UserAccountController",
                 controllerAs: 'vm'
             })
-            .when('/strategies', {
-                templateUrl: "assets/app/strategies/strategies.html",
-                controller: "StrategiesController",
+            .when('/platforms', {
+                templateUrl: "assets/app/platforms/platforms.html",
+                controller: "PlatformsController",
                 controllerAs: 'vm'
             })
-            .when('/strategies/rules/:platform/:success?', {
-                templateUrl: "assets/app/strategies/rules/rules.html",
+            .when('/platforms/rules/:platform/:success?', {
+                templateUrl: "assets/app/platforms/rules/rules.html",
                 controller: "RulesController",
                 controllerAs: 'vm'
             })
-            .when('/strategies/rules/:platform/ruleEdit/:ruleId?', {
-                templateUrl: "assets/app/strategies/ruleEdit/ruleEdit.html",
+            .when('/platforms/rules/:platform/ruleEdit/:ruleId?', {
+                templateUrl: "assets/app/platforms/ruleEdit/ruleEdit.html",
                 controller: "RuleEditController",
                 controllerAs: 'vm'
             })
