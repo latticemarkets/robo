@@ -19,7 +19,8 @@ describe('RulesController', () => {
         $location,
         authenticationService,
         userService,
-        rulesService;
+        rulesService,
+        spinnerService;
 
     beforeEach(module('app'));
 
@@ -35,6 +36,8 @@ describe('RulesController', () => {
 
         userService = jasmine.createSpyObj('userService', ['userData']);
         userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', rules:[{name: 'rule1', pause: true}, {name: 'rule2', pause: false}, {name: 'rule3', pause: false}]}, {name: 'b', rules: [{pause: false}]}]}}));
+
+        spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
     });
 
     describe('called with good URL parameter', () => {
@@ -51,7 +54,8 @@ describe('RulesController', () => {
                 $location: $location,
                 authenticationService: authenticationService,
                 userService: userService,
-                rulesService: rulesService
+                rulesService: rulesService,
+                spinnerService: spinnerService
             });
         }));
 
@@ -82,7 +86,7 @@ describe('RulesController', () => {
             });
 
             it('should stop the spinner on success', () => {
-                expect(rulesController.spinner).toBeFalsy();
+                expect(spinnerService.off).toHaveBeenCalled();
             });
         });
 
@@ -105,7 +109,7 @@ describe('RulesController', () => {
                 });
 
                 it('should stop the spinner', () => {
-                    expect(rulesController.spinner).toBeFalsy();
+                    expect(spinnerService.off).toHaveBeenCalled();
                 });
 
                 it('should have changed the rule.pause state', () => {
@@ -125,7 +129,7 @@ describe('RulesController', () => {
                 });
 
                 it('should stop the spinner', () => {
-                    expect(rulesController.spinner).toBeFalsy();
+                    expect(spinnerService.off).toHaveBeenCalled();
                 });
 
                 it('should have changed back the rule.pause state', () => {
@@ -147,7 +151,7 @@ describe('RulesController', () => {
                 });
 
                 it('should stop the spinner', () => {
-                    expect(rulesController.spinner).toBeFalsy();
+                    expect(spinnerService.off).toHaveBeenCalled();
                 });
 
                 it('should update the scoped list of rules', () => {
@@ -167,7 +171,7 @@ describe('RulesController', () => {
                 });
 
                 it('should stop the spinner', () => {
-                    expect(rulesController.spinner).toBeFalsy();
+                    expect(spinnerService.off).toHaveBeenCalled();
                 });
 
                 it('should not update the scoped list of rules', () => {
@@ -189,7 +193,7 @@ describe('RulesController', () => {
                 });
 
                 it('should stop the spinner', () => {
-                    expect(rulesController.spinner).toBeFalsy();
+                    expect(spinnerService.off).toHaveBeenCalled();
                 });
 
                 it('should have rearrange the rules priority', () => {
@@ -204,7 +208,7 @@ describe('RulesController', () => {
                 });
 
                 it('should stop the spinner', () => {
-                    expect(rulesController.spinner).toBeFalsy();
+                    expect(spinnerService.off).toHaveBeenCalled();
                 });
 
                 it('should rearrange back the rules priority', () => {
@@ -229,7 +233,8 @@ describe('RulesController', () => {
                 $location: $location,
                 authenticationService: authenticationService,
                 userService: userService,
-                rulesService: rulesService
+                rulesService: rulesService,
+                spinnerService: spinnerService
             });
         }));
 
