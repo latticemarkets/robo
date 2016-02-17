@@ -91,12 +91,15 @@ object Forms {
   def ruleMapping = mapping(
      "id" -> nonEmptyText,
      "name" -> nonEmptyText,
+     "originator" -> nonEmptyText,
      "expectedReturn" -> expectedReturnMapping,
      "loansAvailablePerWeek" -> bigDecimal,
      "moneyAvailablePerWeek" -> bigDecimal,
      "criteria" -> seq(criterionMapping),
-     "pause" -> boolean
-   )(Rule.apply)(Rule.unapply)
+     "isEnabled" -> boolean,
+     "minNoteAmount" -> bigDecimal,
+     "maxNoteAmount" -> bigDecimal
+     )(Rule.apply)(Rule.unapply)
 
   def expectedReturnMapping = mapping(
      "value" -> bigDecimal,
@@ -105,7 +108,9 @@ object Forms {
   )(ExpectedReturn.apply)(ExpectedReturn.unapply)
 
   def criterionMapping = mapping(
-    "value" -> nonEmptyText,
-    "typeKey" -> nonEmptyText // todo : validate that it is a valid key
+    "attribute" -> nonEmptyText,
+    "ruleType" -> nonEmptyText, // InSet, InRange
+    "ruleParams" -> nonEmptyText // format: for InSet: coma separated values, for InRange: lower bound, upperbound 
+    // todo : validate that it is a valid key
   )(Criterion.apply)(Criterion.unapply)
 }

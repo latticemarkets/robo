@@ -9,48 +9,44 @@
 package models
 
 import java.util.Date
-
-import core.{DbUtil, Hash}
-import play.api.libs.json.{JsObject, Json}
+import core.{ DbUtil, Hash }
+import play.api.libs.json.{ JsObject, Json }
 import play.modules.reactivemongo.json._
 import play.modules.reactivemongo.json.collection.JSONCollection
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import de.sciss.play.json.AutoFormat
 
 /**
-  * @author : julienderay
-  * Created on 27/01/2016
-  */
+ * @author : julienderay
+ * Created on 27/01/2016
+ */
 
 case class User(
-               _id: String,
-               password: String,
-               terms: String,
-               reason: String,
-               income: String,
-               timeline: String,
-               birthday: Date,
-               platforms: Seq[Platform],
-               firstName: String,
-               lastName: String,
-               token: String
-               ){
+    _id: String,
+    password: String,
+    terms: String,
+    reason: String,
+    income: String,
+    timeline: String,
+    birthday: Date,
+    platforms: Seq[Platform],
+    firstName: String,
+    lastName: String,
+    token: String) {
   def withEncryptedPassword: User = this.copy(password = Hash.createPassword(this.password))
 }
 
 case class Platform(
-                     name: String,
-                     accountId: String,
-                     apiKey: String,
-                     strategy: String,
-                     rules: Seq[Rule]
-                   )
+  name: String,
+  accountId: String,
+  apiKey: String,
+  strategy: String,
+  rules: Seq[Rule])
 
 case class Login(
-                email: String,
-                password: String
-                )
+  email: String,
+  password: String)
 
 case class UpdatePassword(email: String, oldPassword: String, newPassword: String)
 
@@ -65,7 +61,9 @@ case class UpdateRules(email: String, rules: Seq[Rule], platform: String)
 object User {
 
   val collectionName = "user"
-
+  implicit val inSetParamsFormat = Json.format[InSetParams]
+  implicit val inRangeParamsIntFormat = Json.format[InRangeParams]
+  implicit val paramsForamt = AutoFormat[RuleParams]
   implicit val criterionFormat = Json.format[Criterion]
   implicit val expectedReturnFormat = Json.format[ExpectedReturn]
   implicit val ruleFormat = Json.format[Rule]
@@ -80,8 +78,7 @@ object User {
     for {
       result <- usersTable.insert(Json.toJson(user.withEncryptedPassword).as[JsObject])
       newUser <- findByEmail(user._id) if result.ok
-    }
-      yield newUser
+    } yield newUser
   }
 
   def getByToken(token: String): Future[Option[User]] = {
@@ -98,7 +95,7 @@ object User {
     val selector = Json.obj("_id" -> user._id)
     val modifier = Json.toJson(user).as[JsObject]
 
-    usersTable.update(selector, modifier) map(_ => user)
+    usersTable.update(selector, modifier) map (_ => user)
   }
 
   def delete(email: String): Future[Boolean] = usersTable.remove(Json.obj("_id" -> email)) map (_.ok)

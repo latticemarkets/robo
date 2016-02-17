@@ -9,14 +9,55 @@
 package models
 
 /**
-  * @author : julienderay
-  * Created on 14/02/2016
-  */
+ * @author : julienderay
+ * Created on 14/02/2016
+ */
 
-case class Criterion(
-                      value: String,
-                      typeKey: String
-                    )
+sealed trait RuleParams
+case class InSetParams(set: Set[String]) extends RuleParams
+case class InRangeParams(from: BigDecimal, to: BigDecimal) extends RuleParams
+
+object RuleType extends Enumeration {
+  type RuleType = Value
+  val InSet, InRange = Value
+}
+
+object Criterion {
+  def apply(attribute: String,
+                     ruleType: String,
+                     ruleParams: String):Criterion = {
+    val params=if (ruleType==RuleType.InSet.toString()) {
+      InSetParams(ruleParams.split(",").map(_.trim).toSet)
+    } else if  (ruleType==RuleType.InRange.toString()) {
+      val p=ruleParams.split(",").map(_.trim)
+      InRangeParams(BigDecimal(p(0)),BigDecimal(p(1)))
+    }  
+    else {
+      throw new IllegalArgumentException
+    }
+    new Criterion(attribute,ruleType,params)
+  }
+  
+  def unapply(c:Criterion):Option[(String,String,String)]={
+    val params=if (c.ruleType==RuleType.InSet.toString()) {
+      c.ruleParams.asInstanceOf[InSetParams].set mkString ","
+    }
+    else if (c.ruleType==RuleType.InRange.toString()) {
+      c.ruleParams.asInstanceOf[InRangeParams].from+","+c.ruleParams.asInstanceOf[InRangeParams].to
+    }
+    else {
+      throw new IllegalArgumentException
+    }
+    Some((c.attribute,c.ruleType,params))
+  }
+}
+ class Criterion(val attribute: String,
+                     val ruleType: String,
+                     val ruleParams: RuleParams) {
+  def ruleTypeEnum=RuleType.withName(ruleType)
+  
+  
+}
 
 object CriterionName extends Enumeration {
   val newAccounts = Value("newAccounts")
