@@ -18,7 +18,6 @@
         constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, $cookieStore, spinnerService) {
             var vm = this;
 
-            const defaultName = "New Rule";
             const email = authenticationService.getCurrentUsersEmail();
 
             const platform = $routeParams.platform;
@@ -50,7 +49,21 @@
 
             vm.showGhostBox = () => {
                 if (vm.rule) {
-                    return vm.rule.criteria.length === 0;
+                    if (vm.rule.criteria) {
+                        return vm.rule.criteria.length === 0;
+                    }
+                }
+            };
+
+            vm.onMinChange = min => {
+                if (min > vm.rule.maxNoteAmount) {
+                    vm.rule.maxNoteAmount = min;
+                }
+            };
+
+            vm.onMaxChange = max => {
+                if (max < vm.rule.minNoteAmount) {
+                    vm.rule.minNoteAmount = max;
                 }
             };
 
@@ -66,16 +79,17 @@
                 vm.platforms.forEach(p => {
                     if (p.name === platform) {
                         if (p[market].rules.length === 0) {
-                            p[market].rules = [criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule), platform)];
+                            p[market].rules = [criteriaService.unexpendCriteriaObject(vm.rule)];
                         }
                         else if (!ruleId) {
-                            p[market].rules.push(criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule), platform));
+                            p[market].rules.push(criteriaService.unexpendCriteriaObject(vm.rule));
                         }
                         else {
-                            p[market].rules.forEach(r => {
+                            p[market].rules = p[market].rules.map(r => {
                                 if (r.id === ruleId) {
-                                    r.criteria = criteriaService.unexpendCriteriaObject(vm.rule);
+                                    return criteriaService.unexpendCriteriaObject(vm.rule);
                                 }
+                                return r;
                             });
                         }
                     }
@@ -120,7 +134,7 @@
                                     }
                                 }
                                 else {
-                                    vm.rule = {name: defaultName, criteria: []};
+                                    vm.rule = criteriaService.initializeRule(platform);
                                 }
                                 return true;
                             }

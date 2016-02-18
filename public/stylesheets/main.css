@@ -2423,9 +2423,9 @@ div button.btn.primary-button.erase-user:hover {
 .new-platform h1.new-platform-title {
     color: #b1c0d5;
     text-transform: uppercase;
-    font-size: 60px;
+    font-size: 30px;
     text-align: center;
-    padding-top: 90px;
+    padding-top: 120px;
 }
 img.ticked {
     -webkit-filter: grayscale(1);
@@ -2485,7 +2485,7 @@ img.ticked {
 .no-criteria h1.no-criteria-title {
     color: #b1c0d5;
     text-transform: uppercase;
-    font-size: 50px;
+    font-size: 40px;
     text-align: center;
     padding-top: 55px;
 }
