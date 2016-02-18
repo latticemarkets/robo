@@ -35,7 +35,7 @@ describe('StrategiesController', () => {
         strategiesService = jasmine.createSpyObj('strategiesService', ['updateRules']);
 
         userService = jasmine.createSpyObj('userService', ['userData']);
-        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', primary: { rules:[{name: 'rule1', pause: true}, {name: 'rule2', pause: false}, {name: 'rule3', pause: false}] }}, {name: 'b', rules: [{pause: false}]}]}}));
+        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', primary: { rules:[{name: 'rule1', isEnabled: true}, {name: 'rule2', isEnabled: false}, {name: 'rule3', isEnabled: false}] }}, {name: 'b', rules: [{isEnabled: false}]}]}}));
 
         spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
     });
@@ -79,7 +79,7 @@ describe('StrategiesController', () => {
         describe('get appropriate rules', () => {
             it('should get the right rules', () => {
                 expect(strategiesController.rules.length).toBe(3);
-                expect(strategiesController.rules[0].pause).toBe(true);
+                expect(strategiesController.rules[0].isEnabled).toBe(true);
             });
 
             it('should call user service', () => {
@@ -101,7 +101,7 @@ describe('StrategiesController', () => {
             describe('on success', () => {
                 beforeEach(() => {
                     strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => success());
-                    expect(strategiesController.rules[0].pause).toBeTruthy();
+                    expect(strategiesController.rules[0].isEnabled).toBeTruthy();
                     strategiesController.pause(strategiesController.rules[0]);
                 });
 
@@ -113,15 +113,15 @@ describe('StrategiesController', () => {
                     expect(spinnerService.off).toHaveBeenCalled();
                 });
 
-                it('should have changed the rule.pause state', () => {
-                    expect(strategiesController.rules[0].pause).toBeFalsy();
+                it('should have changed the rule.isEnabled state', () => {
+                    expect(strategiesController.rules[0].isEnabled).toBeFalsy();
                 });
             });
 
             describe('on error', () => {
                 beforeEach(() => {
                     strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => error());
-                    expect(strategiesController.rules[0].pause).toBeTruthy();
+                    expect(strategiesController.rules[0].isEnabled).toBeTruthy();
                     strategiesController.pause(strategiesController.rules[0]);
                 });
 
@@ -133,8 +133,8 @@ describe('StrategiesController', () => {
                     expect(spinnerService.off).toHaveBeenCalled();
                 });
 
-                it('should have changed back the rule.pause state', () => {
-                    expect(strategiesController.rules[0].pause).toBeTruthy();
+                it('should have changed back the rule.isEnabled state', () => {
+                    expect(strategiesController.rules[0].isEnabled).toBeTruthy();
                 });
             });
         });
@@ -184,7 +184,7 @@ describe('StrategiesController', () => {
         describe('rearrange priority', () => {
             beforeEach(() => {
                 strategiesController.sortableOptions.update();
-                strategiesController.rules = [{name: 'rule1', pause: true}, {name: 'rule3', pause: false}, {name: 'rule2', pause: false}];
+                strategiesController.rules = [{name: 'rule1', isEnabled: true}, {name: 'rule3', isEnabled: false}, {name: 'rule2', isEnabled: false}];
             });
 
             describe('on success', () => {
@@ -198,7 +198,7 @@ describe('StrategiesController', () => {
                 });
 
                 it('should have rearrange the rules priority', () => {
-                    expect(strategiesController.rules).toEqual([{name: 'rule1', pause: true}, {name: 'rule3', pause: false}, {name: 'rule2', pause: false}]);
+                    expect(strategiesController.rules).toEqual([{name: 'rule1', isEnabled: true}, {name: 'rule3', isEnabled: false}, {name: 'rule2', isEnabled: false}]);
                 });
             });
 
@@ -213,7 +213,7 @@ describe('StrategiesController', () => {
                 });
 
                 it('should rearrange back the rules priority', () => {
-                    expect(strategiesController.rules).toEqual([{name: 'rule1', pause: true}, {name: 'rule2', pause: false}, {name: 'rule3', pause: false}]);
+                    expect(strategiesController.rules).toEqual([{name: 'rule1', isEnabled: true}, {name: 'rule2', isEnabled: false}, {name: 'rule3', isEnabled: false}]);
                 });
             });
         });
