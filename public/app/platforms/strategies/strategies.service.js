@@ -14,7 +14,7 @@
 (() => {
     'use strict';
         
-    class rulesService {
+    class strategiesService {
         constructor($http, $timeout, notificationService) {
             this.$http = $http;
             this.$timeout = $timeout;
@@ -28,5 +28,5 @@
     
     angular
         .module('app')
-        .service('rulesService', rulesService);
+        .service('strategiesService', strategiesService);
 })();

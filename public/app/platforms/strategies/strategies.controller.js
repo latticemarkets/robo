@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategiesController {
-        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService, notificationService, spinnerService, $cookieStore) {
+        constructor($routeParams, constantsService, $location, cssInjector, strategiesService, userService, authenticationService, notificationService, spinnerService, $cookieStore) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -49,7 +49,7 @@
                 },
                 stop() {
                     spinnerService.on();
-                    rulesService.updateRules(vm.rules, email, platform,
+                    strategiesService.updateRules(vm.rules, email, platform,
                         () => spinnerService.off(),
                         () => {
                             spinnerService.off();
@@ -88,7 +88,7 @@
                         }
                     })) {
                     const transformedRules = transformation(rulesCopy, ruleToDeleteIndex);
-                    rulesService.updateRules(transformedRules, email, platform,
+                    strategiesService.updateRules(transformedRules, email, platform,
                         () => {
                             vm.rules = rulesCopy;
                             spinnerService.off();

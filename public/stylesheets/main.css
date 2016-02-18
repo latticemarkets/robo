@@ -2430,8 +2430,11 @@ div button.btn.primary-button.erase-user:hover {
 img.ticked {
     -webkit-filter: grayscale(1);
 }
+.hpanel >  .panel-footer.blue-footer {
+    background-color: #3498db;
+}
 /*------------------------
- * RULES
+ * STRATEGIES
  *----------------------*/
 .project-label {
     font-weight: 600;
@@ -2449,6 +2452,10 @@ img.ticked {
     font-size: 100px;
     text-align: center;
     padding-top: 25px;
+}
+.strategies-top-menu {
+    height: 100px;
+    vertical-align: middle;
 }
 /*------------------------
  * CRITERIA
