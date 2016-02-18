@@ -8,6 +8,8 @@
 
 package models
 
+import de.sciss.play.json.AutoFormat
+
 /**
  * @author : julienderay
  * Created on 14/02/2016
@@ -16,6 +18,10 @@ package models
 sealed trait RuleParams
 case class InSetParams(set: Set[String]) extends RuleParams
 case class InRangeParams(from: BigDecimal, to: BigDecimal) extends RuleParams
+
+object RuleParams {
+  implicit val paramsForamt = AutoFormat[RuleParams]
+}
 
 object RuleType extends Enumeration {
   type RuleType = Value
