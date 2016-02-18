@@ -30,8 +30,8 @@
         }
 
         unexpendCriteriaObject(rule) {
-            const tmpsRule = JSON.parse(JSON.stringify(rule));
-            return tmpsRule.criteria.map(criterion => {
+            const tmpRule = JSON.parse(JSON.stringify(rule));
+            tmpRule.criteria = tmpRule.criteria.map(criterion => {
                 if (criterion.attribute === 'subGrade') {
                     criterion.ruleParams = this.convertNumberToSubGrade(criterion.ruleParams);
                     criterion.highValue = this.convertNumberToSubGrade(criterion.highValue);
@@ -72,6 +72,7 @@
 
                 return criterion;
             });
+            return tmpRule;
         }
 
         expendCriteriaObject(rule) {
@@ -668,10 +669,10 @@
             return ['36 Months', '60 Months'];
         }
 
-        initializeRule(criteria, originator, name) {
+        initializeRule(originator) {
             return {
                 id: this.generateUUID(),
-                name: name,
+                name: 'New Rule',
                 originator: originator,
                 expectedReturn: {
                     value: 0,
@@ -680,7 +681,7 @@
                 },
                 loansAvailablePerWeek: 0,
                 moneyAvailablePerWeek: 0,
-                criteria: criteria,
+                criteria: [],
                 isEnabled: true,
                 minNoteAmount: 25,
                 maxNoteAmount: 25

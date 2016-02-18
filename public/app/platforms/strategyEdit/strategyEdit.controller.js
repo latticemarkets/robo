@@ -67,17 +67,17 @@
                 vm.platforms.forEach(p => {
                     if (p.name === platform) {
                         if (p[market].rules.length === 0) {
-                            p[market].rules = [criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule), platform, vm.rule.name)];
+                            p[market].rules = [criteriaService.unexpendCriteriaObject(vm.rule)];
                         }
                         else if (!ruleId) {
-                            p[market].rules.push(criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule), platform, vm.rule.name));
+                            p[market].rules.push(criteriaService.unexpendCriteriaObject(vm.rule));
                         }
                         else {
-                            p[market].rules.forEach(r => {
+                            p[market].rules = p[market].rules.map(r => {
                                 if (r.id === ruleId) {
-                                    r.name = vm.rule.name;
-                                    r.criteria = criteriaService.unexpendCriteriaObject(vm.rule);
+                                    return criteriaService.unexpendCriteriaObject(vm.rule);
                                 }
+                                return r;
                             });
                         }
                     }
@@ -122,7 +122,7 @@
                                     }
                                 }
                                 else {
-                                    vm.rule = {name: defaultName, criteria: []};
+                                    vm.rule = criteriaService.initializeRule(platform);
                                 }
                                 return true;
                             }
