@@ -10,7 +10,7 @@
                     </div>
                     <div class="panel-body">
                         <p class="text-muted text-center">
-                            Current Strategy : <u>{{ vm.fromCamelCaseToTitle(platform.strategy) }}</u>
+                            Current Primary Strategy : <u>{{ vm.fromCamelCaseToTitle(platform.primary.strategy) }}</u>
                         </p>
 
                         <div class="text-center">
@@ -22,7 +22,7 @@
                         </h3>
 
                         <div class="text-center">
-                            <a href="/#/platforms/strategies/{{ platform.name }}" class="btn btn-info btn-sm m-t-xs">Edit Strategy</a>
+                            <a href="/#/platforms/strategies/{{ platform.name }}/primary" class="btn btn-info btn-sm m-t-xs">Edit Strategy</a>
                         </div>
                     </div>
                 </div>

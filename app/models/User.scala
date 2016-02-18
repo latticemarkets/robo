@@ -43,8 +43,8 @@ case class Platform(
                      name: String,
                      accountId: String,
                      apiKey: String,
-                     strategy: String,
-                     rules: Seq[Rule]
+                     primary: Market,
+                     secondary: Market
                    )
 
 case class Login(
@@ -60,7 +60,7 @@ case class UpdatePersonalData(email: String, firstName: String, lastName: String
 
 case class DestroyAccount(email: String, password: String)
 
-case class UpdateRules(email: String, rules: Seq[Rule], platform: String)
+case class UpdateRules(email: String, rules: Seq[Rule], platform: String, market: String)
 
 case class AddPlatform(email: String, platform: Platform)
 
@@ -71,6 +71,7 @@ object User {
   implicit val criterionFormat = Json.format[Criterion]
   implicit val expectedReturnFormat = Json.format[ExpectedReturn]
   implicit val ruleFormat = Json.format[Rule]
+  implicit val marketFormat = Json.format[Market]
   implicit val platformFormat = Json.format[Platform]
   implicit val accountSummaryFormat = Json.format[User]
 

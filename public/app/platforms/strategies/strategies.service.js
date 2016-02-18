@@ -21,8 +21,8 @@
             this.notificationService = notificationService;
         }
         
-        updateRules(rules, email, platform, callback, errorCallback) {
-            this.$http.put('/api/user/rules', { rules: rules, email: email, platform: platform }).then(callback, this.notificationService.apiError(errorCallback));
+        updateRules(rules, email, platform, market, callback, errorCallback) {
+            this.$http.put('/api/user/rules', { rules: rules, email: email, platform: platform, market: market }).then(callback, this.notificationService.apiError(errorCallback));
         }
     }
     

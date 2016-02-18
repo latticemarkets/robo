@@ -115,12 +115,12 @@
                 controller: "PlatformsController",
                 controllerAs: 'vm'
             })
-            .when('/platforms/strategies/:platform', {
+            .when('/platforms/strategies/:platform/:market', {
                 templateUrl: "assets/app/platforms/strategies/strategies.html",
                 controller: "StrategiesController",
                 controllerAs: 'vm'
             })
-            .when('/platforms/strategies/:platform/strategyEdit/:ruleId?', {
+            .when('/platforms/strategies/:platform/:market/strategyEdit/:ruleId?', {
                 templateUrl: "assets/app/platforms/strategyEdit/strategyEdit.html",
                 controller: "StrategyEditController",
                 controllerAs: 'vm'

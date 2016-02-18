@@ -21,8 +21,9 @@
 
             const email = authenticationService.getCurrentUsersEmail();
             const platform = $routeParams.platform;
+            const market = $routeParams.market;
 
-            if (!constantsService.platforms().some(realPlatform => realPlatform == platform)) {
+            if (!constantsService.platforms().some(realPlatform => realPlatform == platform) || !constantsService.markets().some(realMarket => realMarket == market)) {
                 $location.path('/platforms');
             }
 
@@ -35,7 +36,7 @@
             userService.userData(email, response => {
                 response.data.platforms.some(p => {
                     if (p.name == platform) {
-                        vm.rules = p.rules;
+                        vm.rules = p[market].rules;
                         return true;
                     }
                 });
@@ -49,7 +50,7 @@
                 },
                 stop() {
                     spinnerService.on();
-                    strategiesService.updateRules(vm.rules, email, platform,
+                    strategiesService.updateRules(vm.rules, email, platform, market,
                         () => spinnerService.off(),
                         () => {
                             spinnerService.off();
@@ -73,9 +74,11 @@
                 });
             };
 
-            vm.editRule = id => $location.path(`/platforms/strategies/${platform}/strategyEdit/${id}`);
+            vm.editRule = id => $location.path(`/platforms/strategies/${platform}/${market}/strategyEdit/${id}`);
+            vm.newRule = id => $location.path(`/platforms/strategies/${platform}/${market}/strategyEdit/`);
 
-            vm.newRule = id => $location.path(`/platforms/strategies/${platform}/strategyEdit/`);
+            vm.goToPrimaryMarket = () => $location.path(`/platforms/strategies/${platform}/primary`);
+            vm.goToSecondMarket = () => $location.path(`/platforms/strategies/${platform}/secondary`);
 
             function updateOneRule(rule, transformation) {
                 spinnerService.on();
@@ -88,7 +91,7 @@
                         }
                     })) {
                     const transformedRules = transformation(rulesCopy, ruleToDeleteIndex);
-                    strategiesService.updateRules(transformedRules, email, platform,
+                    strategiesService.updateRules(transformedRules, email, platform, market,
                         () => {
                             vm.rules = rulesCopy;
                             spinnerService.off();

@@ -22,6 +22,7 @@
             const email = authenticationService.getCurrentUsersEmail();
 
             const platform = $routeParams.platform;
+            const market = $routeParams.market;
             const ruleId = $routeParams.ruleId;
 
             getCriteria();
@@ -41,11 +42,11 @@
                 userService.updatePlatforms(email, vm.platforms, () => {
                     spinnerService.off();
                     $cookieStore.put('newCriteriaSuccess', true);
-                    $location.path(`/platforms/strategies/${platform}`);
+                    $location.path(`/platforms/strategies/${platform}/${market}`);
                 });
             };
 
-            vm.cancel = () => $location.path(`/platforms/strategies/${platform}`);
+            vm.cancel = () => $location.path(`/platforms/strategies/${platform}/${market}`);
 
             vm.showGhostBox = () => {
                 if (vm.rule) {
@@ -64,10 +65,10 @@
             function updatePlatforms() {
                 vm.platforms.forEach(p => {
                     if (p.name === platform) {
-                        if (p.rules.length === 0) {
-                            p.rules.push(criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule)));
+                        if (p[market].rules.length === 0) {
+                            p[market].rules.push(criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule)));
                         }
-                        p.rules.forEach(r => {
+                        p[market].rules.forEach(r => {
                             if (r.id === ruleId) {
                                 r.criteria = criteriaService.unexpendCriteriaObject(vm.rule);
                             }
@@ -82,10 +83,16 @@
 
             function checkUrlParameters() {
                 checkPlatform();
+                checkMarket();
                 checkRuleId();
 
                 function checkPlatform() {
                     if (!constantsService.platforms().some(realPlatform => realPlatform == platform)) {
+                        $location.path('/platforms');
+                    }
+                }
+                function checkMarket() {
+                    if (!constantsService.markets().some(realMarkets => realMarkets == market)) {
                         $location.path('/platforms');
                     }
                 }
@@ -97,14 +104,14 @@
                             if (p.name == platform) {
                                 vm.platforms = response.data.platforms;
                                 if (ruleId) {
-                                    if (!p.rules.some(rule => {
+                                    if (!p[market].rules.some(rule => {
                                             if (rule.id == ruleId) {
                                                 vm.rule = criteriaService.expendCriteriaObject(JSON.parse(JSON.stringify(rule)));
                                                 vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => vm.rule.criteria.every(criterion => criterion.typeKey !== baseCriterion.typeKey));
                                                 return true;
                                             }
                                         })) {
-                                        $location.path(`/platforms/strategies/${platform}`);
+                                        $location.path(`/platforms/strategies/${platform}/${market}`);
                                     }
                                 }
                                 else {

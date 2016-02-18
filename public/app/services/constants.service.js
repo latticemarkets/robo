@@ -31,6 +31,10 @@
         platforms() {
             return ['lendingClub', 'prosper', 'bondora', 'ratesetter', 'fundingCircle'];
         }
+
+        markets() {
+            return ['primary', 'secondary'];
+        }
     }
 
     angular

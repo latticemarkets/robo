@@ -24,10 +24,14 @@
 
             vm.platformsImgExtensions = constantsService.platformsImgExtensions;
 
-            vm.totalExpected = platform => platform.rules.reduce((prev, rule) => rule.expectedReturn.value + prev, 0);
+            vm.totalExpected = platform => computeExpectedReturn(platform.primary) + computeExpectedReturn(platform.secondary);
             vm.fromCamelCaseToTitle = str => $filter('titlecase')($filter('camelCaseToHuman')(str));
 
             vm.newPlatform = () => addPlatformService.newPlatformModal(vm.platforms);
+
+            function computeExpectedReturn(market) {
+                return market.rules.reduce((prev, rule) => rule.expectedReturn.value + prev, 0);
+            }
         }
     }
 
