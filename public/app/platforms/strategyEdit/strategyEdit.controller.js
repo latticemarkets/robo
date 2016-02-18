@@ -31,10 +31,10 @@
 
             vm.addCriterion = criterion => {
                 vm.rule.criteria.push(criteriaService.expendCriterion(criterion));
-                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => criterion.typeKey !== baseCriterion.typeKey);
+                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => criterion.attribute !== baseCriterion.attribute);
             };
 
-            vm.remove = typeKey => vm.rule.criteria = vm.rule.criteria.filter(criterion => criterion.typeKey !== typeKey);
+            vm.remove = attribute => vm.rule.criteria = vm.rule.criteria.filter(criterion => criterion.attribute !== attribute);
 
             vm.saveCriteria = () => {
                 updatePlatforms();
@@ -66,10 +66,10 @@
                 vm.platforms.forEach(p => {
                     if (p.name === platform) {
                         if (p[market].rules.length === 0) {
-                            p[market].rules = [criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule))];
+                            p[market].rules = [criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule), platform)];
                         }
                         else if (!ruleId) {
-                            p[market].rules.push(criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule)));
+                            p[market].rules.push(criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule), platform));
                         }
                         else {
                             p[market].rules.forEach(r => {
@@ -112,7 +112,7 @@
                                     if (!p[market].rules.some(rule => {
                                             if (rule.id == ruleId) {
                                                 vm.rule = criteriaService.expendCriteriaObject(JSON.parse(JSON.stringify(rule)));
-                                                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => vm.rule.criteria.every(criterion => criterion.typeKey !== baseCriterion.typeKey));
+                                                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => vm.rule.criteria.every(criterion => criterion.attribute !== baseCriterion.attribute));
                                                 return true;
                                             }
                                         })) {

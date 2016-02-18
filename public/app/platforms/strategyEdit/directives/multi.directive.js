@@ -35,7 +35,7 @@
                         <span class="badge badge-multi-criterion {{ elem.value ? 'badge-multi-criterion-selected' : 'badge-info' }}" data-ng-click="select(elem)" data-ng-repeat="elem in criterion.multi.list">{{ elem.name }}</span>
                        </div>`,
             controller($scope) {
-                $scope.criterion.multi.list = $scope.criterion.multi.list.map(elem => ({ name: elem, value: $scope.criterion.value.indexOf(elem) > -1}));
+                $scope.criterion.multi.list = $scope.criterion.multi.list.map(elem => ({ name: elem, value: $scope.criterion.ruleParams.indexOf(elem) > -1}));
 
                 $scope.reset = () => {
                     $scope.criterion.multi.list.map(elem => elem.value = false);
@@ -50,8 +50,8 @@
                 update();
 
                 function update() {
-                    $scope.criterion.value = $scope.criterion.multi.list.filter(elem => elem.value).map(elem => elem.name);
-                    $scope.display = $scope.criterion.multi.format($scope.criterion.value);
+                    $scope.criterion.ruleParams = $scope.criterion.multi.list.filter(elem => elem.value).map(elem => elem.name);
+                    $scope.display = $scope.criterion.multi.format($scope.criterion.ruleParams);
                 }
             }
         };

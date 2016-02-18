@@ -31,10 +31,10 @@
                             <h1 class="col-md-6">{{ criterion.multi.name }}</h1>
                             <span class="col-md-6"><h3 class="pull-right list-multi">{{ display }}</h3></span>
                         </div>
-                        <tags-input ng-model="criterion.value" on-tag-added="updateDisplay()" on-tag-removed="updateDisplay()"></tags-input>
+                        <tags-input ng-model="criterion.ruleParams" on-tag-added="updateDisplay()" on-tag-removed="updateDisplay()"></tags-input>
                        </div>`,
             controller($scope) {
-                $scope.updateDisplay = () => $scope.display = $scope.criterion.text.format($scope.criterion.value);
+                $scope.updateDisplay = () => $scope.display = $scope.criterion.text.format($scope.criterion.ruleParams);
 
                 $scope.updateDisplay();
             }

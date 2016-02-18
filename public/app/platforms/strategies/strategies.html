@@ -71,7 +71,7 @@
                                 <div class="project-action m-t-md">
                                     <div class="btn-group">
                                         <button class="btn btn-xs btn-default" data-ng-click="vm.editRule(rule.id)"> Edit</button>
-                                        <button class="btn btn-xs {{ rule.pause ? 'btn-warning' : 'btn-default'}}" data-ng-click="vm.pause(rule)"> Pause</button>
+                                        <button class="btn btn-xs {{ rule.isEnabled ? 'btn-default' : 'btn-warning'}}" data-ng-click="vm.pause(rule)"> Pause</button>
                                         <button class="btn btn-xs btn-default" data-ng-click="vm.delete(rule)"> Delete</button>
                                     </div>
                                 </div>

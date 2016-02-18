@@ -31,7 +31,7 @@
                             <h1 class="col-md-6">{{ criterion.slider.name }}</h1>
                             <span class="col-md-6"><h3 class="pull-right">{{ display }}</h3></span>
                         </div>
-                            <rzslider rz-slider-model="criterion.value" rz-slider-high="criterion.highValue" rz-slider-options="options"></rzslider>
+                            <rzslider rz-slider-model="criterion.ruleParams" rz-slider-high="criterion.highValue" rz-slider-options="options"></rzslider>
                        </div>`,
             controller($scope) {
                 const min = $scope.criterion.slider.min || 0;
@@ -49,7 +49,7 @@
                     noSwitching: true
                 };
 
-                $scope.display = $scope.criterion.slider.format($scope.criterion.value, $scope.criterion.highValue);
+                $scope.display = $scope.criterion.slider.format($scope.criterion.ruleParams, $scope.criterion.highValue);
 
                 $timeout(function () {
                     $scope.$broadcast('reCalcViewDimensions');

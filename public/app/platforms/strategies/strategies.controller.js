@@ -64,7 +64,7 @@
 
             vm.pause = rule => {
                 updateOneRule(rule, (rules, index) => {
-                    rules[index].pause = !rules[index].pause;
+                    rules[index].isEnabled = !rules[index].isEnabled;
                     return rules;
                 });
             };

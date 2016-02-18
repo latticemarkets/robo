@@ -32,32 +32,43 @@
         unexpendCriteriaObject(rule) {
             const tmpsRule = JSON.parse(JSON.stringify(rule));
             return tmpsRule.criteria.map(criterion => {
-                if (criterion.typeKey === 'subGrade') {
-                    criterion.value = this.convertNumberToSubGrade(criterion.value);
+                if (criterion.attribute === 'subGrade') {
+                    criterion.ruleParams = this.convertNumberToSubGrade(criterion.ruleParams);
                     criterion.highValue = this.convertNumberToSubGrade(criterion.highValue);
                 }
 
                 switch (criterion.type) {
+                    case 'slider':
+                        criterion.ruleParams = `${criterion.ruleParams},${criterion.ruleParams}`;
+                        criterion.ruleType = 'InRange';
+                        break;
                     case 'rangeSlider':
-                        criterion.value = `${criterion.value}-${criterion.highValue}`;
+                        criterion.ruleParams = `${criterion.ruleParams},${criterion.highValue}`;
+                        criterion.ruleType = 'InRange';
                         delete criterion.highValue;
                         delete criterion.slider;
                         break;
                     case 'multi':
-                        criterion.value = JSON.stringify(criterion.value);
+                        criterion.ruleParams = criterion.ruleParams.reduce((prev, ruleParams) => `${prev},${ruleParams}`, '').substr(1);
+                        criterion.ruleType = 'InSet';
                         break;
                     case 'text':
-                        criterion.value = JSON.stringify(criterion.value.map(v => v.text));
+                        criterion.ruleParams = criterion.ruleParams
+                            .map(v => v.text)
+                            .reduce((prev, ruleParams) => `${prev},${ruleParams}`, '')
+                            .substr(1);
+                        criterion.ruleType = 'InSet';
                         break;
                 }
 
-                if (criterion.typeKey === 'maxDebtIncomeWithLoan') {
-                    criterion.value = criterion.value / 100;
+                if (criterion.attribute === 'maxDebtIncomeWithLoan') {
+                    criterion.ruleParams = criterion.ruleParams / 100;
                 }
 
                 delete criterion[criterion.type];
                 delete criterion.type;
                 delete criterion.name;
+                delete criterion.value;
 
                 return criterion;
             });
@@ -73,25 +84,25 @@
         expendCriterion(criterion) {
             let splitValue;
 
-            switch (criterion.typeKey) {
+            switch (criterion.attribute) {
                 case 'newAccounts':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 5;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 5;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 10;
-                    criterion.slider.format = value => {
-                        if (value === criterion.slider.min) {
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams === criterion.slider.min) {
                             return `No account`;
                         }
-                        else if (value === 1) {
-                            return `No more than ${value} account`;
+                        else if (ruleParams === 1) {
+                            return `No more than ${ruleParams} account`;
                         }
-                        else if (value > 1 && value < criterion.slider.max) {
-                            return `No more than ${value} accounts`;
+                        else if (ruleParams > 1 && ruleParams < criterion.slider.max) {
+                            return `No more than ${ruleParams} accounts`;
                         }
-                        else if (value === criterion.slider.max) {
+                        else if (ruleParams === criterion.slider.max) {
                             return `No limit`;
                         }
                         else {
@@ -101,14 +112,14 @@
                     return criterion;
                 case 'maxDebtIncomeWithLoan':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? criterion.value * 100 : 30;
+                    criterion.ruleParams = criterion.ruleParams ? criterion.ruleParams * 100 : 30;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 10;
                     criterion.slider.max = 40;
-                    criterion.slider.format = value => {
-                        if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                            return `No more than ${value}%`;
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams >= criterion.slider.min && ruleParams <= criterion.slider.max) {
+                            return `No more than ${ruleParams}%`;
                         }
                         else {
                             return `Error`;
@@ -117,17 +128,17 @@
                     return criterion;
                 case 'totalCreditLines':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 30;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 30;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 10;
                     criterion.slider.max = 40;
                     criterion.slider.step = 10;
-                    criterion.slider.format = value => {
-                        if (value >= criterion.slider.min && value < criterion.slider.max) {
-                            return `Up to ${value} credit lines`;
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams >= criterion.slider.min && ruleParams < criterion.slider.max) {
+                            return `Up to ${ruleParams} credit lines`;
                         }
-                        else if (value === criterion.slider.max) {
+                        else if (ruleParams === criterion.slider.max) {
                             return `Any number`;
                         }
                         else {
@@ -137,20 +148,20 @@
                     return criterion;
                 case 'maxDelinquencies':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 3;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 3;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 6;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value === 0) {
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams === 0) {
                             return `No delinquencies`;
                         }
-                        if (value > criterion.slider.min && value < criterion.slider.max) {
-                            return `No more than ${value} delinquencies`;
+                        if (ruleParams > criterion.slider.min && ruleParams < criterion.slider.max) {
+                            return `No more than ${ruleParams} delinquencies`;
                         }
-                        else if (value === criterion.slider.max) {
+                        else if (ruleParams === criterion.slider.max) {
                             return `Any number of delinquencies`;
                         }
                         else {
@@ -160,18 +171,18 @@
                     return criterion;
                 case 'earliestCreditLine':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 4;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 4;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 10;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value === 0) {
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams === 0) {
                             return `Any`;
                         }
-                        if (value > criterion.slider.min && value <= criterion.slider.max) {
-                            return `At least ${value} years`;
+                        if (ruleParams > criterion.slider.min && ruleParams <= criterion.slider.max) {
+                            return `At least ${ruleParams} years`;
                         }
                         else {
                             return `Error`;
@@ -180,18 +191,18 @@
                     return criterion;
                 case 'employmentLength':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 5;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 5;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 10;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value === 0) {
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams === 0) {
                             return `Any`;
                         }
-                        if (value > criterion.slider.min && value <= criterion.slider.max) {
-                            return `At least ${value} years`;
+                        if (ruleParams > criterion.slider.min && ruleParams <= criterion.slider.max) {
+                            return `At least ${ruleParams} years`;
                         }
                         else {
                             return `Error`;
@@ -200,21 +211,21 @@
                     return criterion;
                 case 'inquiries':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 5;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 5;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 10;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value === 0) {
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams === 0) {
                             return `No enquiry`;
                         }
-                        if (value === 1) {
+                        if (ruleParams === 1) {
                             return `No more than 1 enquiry`;
                         }
-                        if (value > 1 && value <= criterion.slider.max) {
-                            return `No more than ${value} enquiries`;
+                        if (ruleParams > 1 && ruleParams <= criterion.slider.max) {
+                            return `No more than ${ruleParams} enquiries`;
                         }
                         else {
                             return `Error`;
@@ -223,15 +234,15 @@
                     return criterion;
                 case 'loanPaymentIncome':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 12;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 12;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 3;
                     criterion.slider.max = 20;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                            return `No more than ${value}%`;
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams >= criterion.slider.min && ruleParams <= criterion.slider.max) {
+                            return `No more than ${ruleParams}%`;
                         }
                         else {
                             return `Error`;
@@ -240,15 +251,15 @@
                     return criterion;
                 case 'maxDebtIncome':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 25;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 25;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 10;
                     criterion.slider.max = 40;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                            return `No more than ${value}%`;
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams >= criterion.slider.min && ruleParams <= criterion.slider.max) {
+                            return `No more than ${ruleParams}%`;
                         }
                         else {
                             return `Error`;
@@ -257,21 +268,21 @@
                     return criterion;
                 case 'lastDelinquency':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 30;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 30;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 60;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value === criterion.slider.min) {
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams === criterion.slider.min) {
                             return 'Any';
                         }
-                        else if (value === 1) {
+                        else if (ruleParams === 1) {
                             return `1 month and more`;
                         }
-                        else if (value > 1 && value <= criterion.slider.max) {
-                            return `${value} months and more`;
+                        else if (ruleParams > 1 && ruleParams <= criterion.slider.max) {
+                            return `${ruleParams} months and more`;
                         }
                         else {
                             return `Error`;
@@ -280,21 +291,21 @@
                     return criterion;
                 case 'lastRecord':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 30;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 30;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 60;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value === criterion.slider.min) {
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams === criterion.slider.min) {
                             return 'Any';
                         }
-                        else if (value === 1) {
+                        else if (ruleParams === 1) {
                             return `1 month and more`;
                         }
-                        else if (value > 1 && value <= criterion.slider.max) {
-                            return `${value} months and more`;
+                        else if (ruleParams > 1 && ruleParams <= criterion.slider.max) {
+                            return `${ruleParams} months and more`;
                         }
                         else {
                             return `Error`;
@@ -303,23 +314,23 @@
                     return criterion;
                 case 'publicRecords':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 3;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 3;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 5;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value === criterion.slider.min) {
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams === criterion.slider.min) {
                             return 'No public record';
                         }
-                        else if (value === 1) {
+                        else if (ruleParams === 1) {
                             return `No more than 1 public record`;
                         }
-                        else if (value > 1 && value < criterion.slider.max) {
-                            return `No more than ${value} public records`;
+                        else if (ruleParams > 1 && ruleParams < criterion.slider.max) {
+                            return `No more than ${ruleParams} public records`;
                         }
-                        else if (value === criterion.slider.max) {
+                        else if (ruleParams === criterion.slider.max) {
                             return 'Any public records';
                         }
                         else {
@@ -329,15 +340,15 @@
                     return criterion;
                 case 'revolvingUtilization':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 50;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 50;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 100;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                            return `No more than ${value}%`;
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams >= criterion.slider.min && ruleParams <= criterion.slider.max) {
+                            return `No more than ${ruleParams}%`;
                         }
                         else {
                             return `Error`;
@@ -346,15 +357,15 @@
                     return criterion;
                 case 'expectedReturn':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 10;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 10;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 20;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                            return `${value}% and above`;
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams >= criterion.slider.min && ruleParams <= criterion.slider.max) {
+                            return `${ruleParams}% and above`;
                         }
                         else {
                             return `Error`;
@@ -363,15 +374,15 @@
                     return criterion;
                 case 'highestExpectedReturn':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 50;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 50;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 100;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                            return `Top ${value}%`;
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams >= criterion.slider.min && ruleParams <= criterion.slider.max) {
+                            return `Top ${ruleParams}%`;
                         }
                         else {
                             return `Error`;
@@ -380,15 +391,15 @@
                     return criterion;
                 case 'loanPopularity':
                     criterion.type = 'slider';
-                    criterion.value = criterion.value ? parseInt(criterion.value) : 50;
+                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 50;
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 100;
                     criterion.slider.step = 1;
-                    criterion.slider.format = value => {
-                        if (value >= criterion.slider.min && value <= criterion.slider.max) {
-                            return `Top ${value}%`;
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams >= criterion.slider.min && ruleParams <= criterion.slider.max) {
+                            return `Top ${ruleParams}%`;
                         }
                         else {
                             return `Error`;
@@ -397,20 +408,20 @@
                     return criterion;
                 case 'creditScore':
                     criterion.type = 'rangeSlider';
-                    splitValue = criterion.value ? criterion.value.split('-') : [700, 800];
-                    criterion.value = splitValue[0];
+                    splitValue = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : [700, 800];
+                    criterion.ruleParams = splitValue[0];
                     criterion.highValue = splitValue[1];
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 660;
                     criterion.slider.max = 850;
                     criterion.slider.step = 5;
-                    criterion.slider.format = (value, highValue) => {
-                        if (value >= criterion.slider.min && highValue <= criterion.slider.max) {
-                            return `Between ${value} and ${highValue}`;
+                    criterion.slider.format = (ruleParams, highValue) => {
+                        if (ruleParams >= criterion.slider.min && highValue <= criterion.slider.max) {
+                            return `Between ${ruleParams} and ${highValue}`;
                         }
-                        else if (value === highValue) {
-                            return value;
+                        else if (ruleParams === highValue) {
+                            return ruleParams;
                         }
                         else {
                             return `Error`;
@@ -419,20 +430,20 @@
                     return criterion;
                 case 'monthlyIncome':
                     criterion.type = 'rangeSlider';
-                    splitValue = criterion.value ? criterion.value.split('-') : [4000, 15000];
-                    criterion.value = splitValue[0];
+                    splitValue = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : [4000, 15000];
+                    criterion.ruleParams = splitValue[0];
                     criterion.highValue = splitValue[1];
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 500;
                     criterion.slider.max = 20000;
                     criterion.slider.step = 500;
-                    criterion.slider.format = (value, highValue) => {
-                        if (value >= criterion.slider.min && highValue < criterion.slider.max) {
-                            return `From ${this.$filter('currency')(value)} to ${this.$filter('currency')(highValue)}`;
+                    criterion.slider.format = (ruleParams, highValue) => {
+                        if (ruleParams >= criterion.slider.min && highValue < criterion.slider.max) {
+                            return `From ${this.$filter('currency')(ruleParams)} to ${this.$filter('currency')(highValue)}`;
                         }
                         else if (highValue === criterion.slider.max) {
-                            return `${this.$filter('currency')(value)} and up`;
+                            return `${this.$filter('currency')(ruleParams)} and up`;
                         }
                         else {
                             return `Error`;
@@ -441,29 +452,29 @@
                     return criterion;
                 case 'openCreditLine':
                     criterion.type = 'rangeSlider';
-                    splitValue = criterion.value ? criterion.value.split('-') : [4, 12];
-                    criterion.value = splitValue[0];
+                    splitValue = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : [4, 12];
+                    criterion.ruleParams = splitValue[0];
                     criterion.highValue = splitValue[1];
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 30;
                     criterion.slider.step = 1;
-                    criterion.slider.format = (value, highValue) => {
-                        if (value === criterion.slider.min && highValue === criterion.slider.min) {
+                    criterion.slider.format = (ruleParams, highValue) => {
+                        if (ruleParams === criterion.slider.min && highValue === criterion.slider.min) {
                             return `No line`;
                         }
-                        if (value === 1 && highValue === 1) {
+                        if (ruleParams === 1 && highValue === 1) {
                             return `1 line`;
                         }
-                        else if (value >= criterion.slider.min && highValue < criterion.slider.max) {
-                            return `From ${value} to ${highValue} lines`;
+                        else if (ruleParams >= criterion.slider.min && highValue < criterion.slider.max) {
+                            return `From ${ruleParams} to ${highValue} lines`;
                         }
-                        else if (value === highValue) {
-                            return `${value} lines`;
+                        else if (ruleParams === highValue) {
+                            return `${ruleParams} lines`;
                         }
                         else if (highValue === criterion.slider.max) {
-                            return `From ${value} to any number of lines`;
+                            return `From ${ruleParams} to any number of lines`;
                         }
                         else {
                             return `Error`;
@@ -472,20 +483,20 @@
                     return criterion;
                 case 'subGrade':
                     criterion.type = 'rangeSlider';
-                    splitValue = criterion.value ? criterion.value.split('-') : ['A3', 'B4'];
-                    criterion.value = this.convertSubGradeToNumber(splitValue[0]);
+                    splitValue = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : ['A3', 'B4'];
+                    criterion.ruleParams = this.convertSubGradeToNumber(splitValue[0]);
                     criterion.highValue = this.convertSubGradeToNumber(splitValue[1]);
                     criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 0;
                     criterion.slider.max = 34;
                     criterion.slider.step = 1;
-                    criterion.slider.format = (value, highValue) => {
-                        if (value === highValue) {
-                            return `${this.convertNumberToSubGrade(value)} only`;
+                    criterion.slider.format = (ruleParams, highValue) => {
+                        if (ruleParams === highValue) {
+                            return `${this.convertNumberToSubGrade(ruleParams)} only`;
                         }
-                        else if (value >= criterion.slider.min && highValue <= criterion.slider.max) {
-                            return `From ${this.convertNumberToSubGrade(value)} to ${this.convertNumberToSubGrade(highValue)}`;
+                        else if (ruleParams >= criterion.slider.min && highValue <= criterion.slider.max) {
+                            return `From ${this.convertNumberToSubGrade(ruleParams)} to ${this.convertNumberToSubGrade(highValue)}`;
                         }
                         else {
                             return `Error`;
@@ -494,9 +505,9 @@
                     return criterion;
                 case 'loanPurpose':
                     criterion.type = 'multi';
-                    criterion.value = criterion.value ? JSON.parse(criterion.value) : this.loansPurposes;
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : this.loansPurposes;
                     criterion.multi = {};
-                    criterion.multi.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.multi.name = this.getCriteriaName(criterion.attribute);
                     criterion.multi.list = this.loansPurposes;
                     criterion.multi.format = (values) => {
                         let tmpValues = JSON.parse(JSON.stringify(values));
@@ -506,9 +517,9 @@
                     return criterion;
                 case 'homeOwnership':
                     criterion.type = 'multi';
-                    criterion.value = criterion.value ? JSON.parse(criterion.value) : this.homeOwnerships;
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : this.homeOwnerships;
                     criterion.multi = {};
-                    criterion.multi.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.multi.name = this.getCriteriaName(criterion.attribute);
                     criterion.multi.list = this.homeOwnerships;
                     criterion.multi.format = (values) => {
                         let tmpValues = JSON.parse(JSON.stringify(values));
@@ -517,9 +528,9 @@
                     return criterion;
                 case 'verifiedIncome':
                     criterion.type = 'multi';
-                    criterion.value = criterion.value ? JSON.parse(criterion.value) : this.verifiedIncomes;
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : this.verifiedIncomes;
                     criterion.multi = {};
-                    criterion.multi.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.multi.name = this.getCriteriaName(criterion.attribute);
                     criterion.multi.list = this.verifiedIncomes;
                     criterion.multi.format = (values) => {
                         let tmpValues = JSON.parse(JSON.stringify(values));
@@ -528,9 +539,9 @@
                     return criterion;
                 case 'state':
                     criterion.type = 'multi';
-                    criterion.value = criterion.value ? JSON.parse(criterion.value) : this.states;
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : this.states;
                     criterion.multi = {};
-                    criterion.multi.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.multi.name = this.getCriteriaName(criterion.attribute);
                     criterion.multi.list = this.states;
                     criterion.multi.format = (values) => {
                         let tmpValues = JSON.parse(JSON.stringify(values));
@@ -540,9 +551,9 @@
                     return criterion;
                 case 'term':
                     criterion.type = 'multi';
-                    criterion.value = criterion.value ? JSON.parse(criterion.value) : this.terms;
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : this.terms;
                     criterion.multi = {};
-                    criterion.multi.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.multi.name = this.getCriteriaName(criterion.attribute);
                     criterion.multi.list = this.terms;
                     criterion.multi.format = (values) => {
                         let tmpValues = JSON.parse(JSON.stringify(values));
@@ -551,9 +562,9 @@
                     return criterion;
                 case 'jobTitle':
                     criterion.type = 'text';
-                    criterion.value = criterion.value ? JSON.parse(criterion.value).map(v => ({ text: v })) : [];
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams).map(v => ({ text: v })) : [];
                     criterion.text = {};
-                    criterion.text.name = this.getCriteriaName(criterion.typeKey);
+                    criterion.text.name = this.getCriteriaName(criterion.attribute);
                     criterion.text.format = (values) => {
                         let tmpValues = JSON.parse(JSON.stringify(values));
                         return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem.text}`, '').substr(2)}` : 'Any';
@@ -565,10 +576,14 @@
             }
         }
 
-        getCriteriaName(typeKey) {
+        splitValues(inRangeValue) {
+            return inRangeValue.split(',');
+        }
+
+        getCriteriaName(attribute) {
             let name;
             if (this.baseCriteria.some(baseCriterion => {
-                if (baseCriterion.typeKey == typeKey) {
+                if (baseCriterion.attribute == attribute) {
                     name = baseCriterion.name;
                     return true;
                 }
@@ -582,33 +597,33 @@
 
         get baseCriteria() {
             return [
-                { typeKey: 'newAccounts', name: 'New Accounts (24 months)' },
-                { typeKey: 'totalCreditLines', name: 'Total Credit Lines' },
-                { typeKey: 'creditScore', name: 'Credit Score' },
-                { typeKey: 'maxDelinquencies', name: 'Maximum Delinquencies' },
-                { typeKey: 'earliestCreditLine', name: 'Earliest Credit Line' },
-                { typeKey: 'employmentLength', name: 'Employment Length' },
-                { typeKey: 'jobTitle', name: 'Job Title' },
-                { typeKey: 'homeOwnership', name: 'Home Ownership' },
-                { typeKey: 'inquiries', name: 'Inquiries' },
-                { typeKey: 'loanPaymentIncome', name: 'Loan Payment Income' },
-                { typeKey: 'verifiedIncome', name: 'Verified Income' },
-                { typeKey: 'loanAmount', name: 'Loan Amount' },
-                { typeKey: 'maxDebtIncome', name: 'Max Debt / Income' },
-                { typeKey: 'maxDebtIncomeWithLoan', name: 'Max Debt / Income with Loan' },
-                { typeKey: 'monthlyIncome', name: 'Monthly Income' },
-                { typeKey: 'lastDelinquency', name: 'Last Delinquency' },
-                { typeKey: 'lastRecord', name: 'Last Record' },
-                { typeKey: 'openCreditLine', name: 'Open Credit Line' },
-                { typeKey: 'publicRecords', name: 'Public Records' },
-                { typeKey: 'loanPurpose', name: 'Loan Purpose' },
-                { typeKey: 'revolvingUtilization', name: 'Revolving Utilization' },
-                { typeKey: 'expectedReturn', name: 'Expected Return' },
-                { typeKey: 'highestExpectedReturn', name: 'Highest Expected Return' },
-                { typeKey: 'state', name: 'State' },
-                { typeKey: 'subGrade', name: 'Sub-Grade' },
-                { typeKey: 'term', name: 'Term' },
-                { typeKey: 'loanPopularity', name: 'Loan Popularity' }
+                { attribute: 'newAccounts', name: 'New Accounts (24 months)' },
+                { attribute: 'totalCreditLines', name: 'Total Credit Lines' },
+                { attribute: 'creditScore', name: 'Credit Score' },
+                { attribute: 'maxDelinquencies', name: 'Maximum Delinquencies' },
+                { attribute: 'earliestCreditLine', name: 'Earliest Credit Line' },
+                { attribute: 'employmentLength', name: 'Employment Length' },
+                { attribute: 'jobTitle', name: 'Job Title' },
+                { attribute: 'homeOwnership', name: 'Home Ownership' },
+                { attribute: 'inquiries', name: 'Inquiries' },
+                { attribute: 'loanPaymentIncome', name: 'Loan Payment Income' },
+                { attribute: 'verifiedIncome', name: 'Verified Income' },
+                { attribute: 'loanAmount', name: 'Loan Amount' },
+                { attribute: 'maxDebtIncome', name: 'Max Debt / Income' },
+                { attribute: 'maxDebtIncomeWithLoan', name: 'Max Debt / Income with Loan' },
+                { attribute: 'monthlyIncome', name: 'Monthly Income' },
+                { attribute: 'lastDelinquency', name: 'Last Delinquency' },
+                { attribute: 'lastRecord', name: 'Last Record' },
+                { attribute: 'openCreditLine', name: 'Open Credit Line' },
+                { attribute: 'publicRecords', name: 'Public Records' },
+                { attribute: 'loanPurpose', name: 'Loan Purpose' },
+                { attribute: 'revolvingUtilization', name: 'Revolving Utilization' },
+                { attribute: 'expectedReturn', name: 'Expected Return' },
+                { attribute: 'highestExpectedReturn', name: 'Highest Expected Return' },
+                { attribute: 'state', name: 'State' },
+                { attribute: 'subGrade', name: 'Sub-Grade' },
+                { attribute: 'term', name: 'Term' },
+                { attribute: 'loanPopularity', name: 'Loan Popularity' }
             ];
         }
 
@@ -653,10 +668,11 @@
             return ['36 Months', '60 Months'];
         }
 
-        initializeRule(criteria) {
+        initializeRule(criteria, originator) {
             return {
                 id: this.generateUUID(),
                 name: "Default name",
+                originator: originator,
                 expectedReturn: {
                     value: 0,
                     percent: 0.3,
@@ -665,7 +681,9 @@
                 loansAvailablePerWeek: 0,
                 moneyAvailablePerWeek: 0,
                 criteria: criteria,
-                pause: false
+                isEnabled: false,
+                minNoteAmount: 20,
+                maxNoteAmount: 200
             };
         }
 

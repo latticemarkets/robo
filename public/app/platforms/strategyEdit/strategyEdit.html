@@ -16,7 +16,7 @@
                 <div data-ng-repeat="criterion in vm.rule.criteria">
                     <div class="hpanel hblue">
                         <div class="panel-body">
-                            <div class="triangle-close" data-ng-click="vm.remove(criterion.typeKey)"><i class="fa fa-times"></i></div>
+                            <div class="triangle-close" data-ng-click="vm.remove(criterion.attribute)"><i class="fa fa-times"></i></div>
                                 <div data-ng-if="criterion.type == 'slider'" slider-criterion criterion="criterion"></div>
                                 <div data-ng-if="criterion.type == 'rangeSlider'" range-slider-criterion criterion="criterion"></div>
                                 <div data-ng-if="criterion.type == 'multi'" multi-criterion criterion="criterion"></div>
