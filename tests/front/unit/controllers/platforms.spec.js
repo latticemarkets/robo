@@ -44,13 +44,13 @@ describe('PlatformsController', () => {
 
     describe('totalExpect', () => {
         it('should return the sum of all expected returns', () => {
-            const input = {rules: [{expectedReturn: { value: 1200 } }, {expectedReturn: { value: 4800 } }]};
+            const input = { primary: {rules: [{expectedReturn: { value: 1200 } }, {expectedReturn: { value: 4800 } }]}, secondary: {rules: [{expectedReturn: { value: 1200 } }, {expectedReturn: { value: 4800 } }]} };
             const result = platformsController.totalExpected(input);
-            expect(result).toBe(6000);
+            expect(result).toBe(12000);
         });
 
         it('should return 0 if there is no rule', () => {
-            const result = platformsController.totalExpected({rules: []});
+            const result = platformsController.totalExpected({ primary: {rules: []}, secondary: {rules: []}});
             expect(result).toBe(0);
         });
     });

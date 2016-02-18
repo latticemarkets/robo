@@ -26,21 +26,22 @@ describe('StrategyEditController', () => {
     beforeEach(() => {
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
         $location = jasmine.createSpyObj('$location', ['path']);
-        $routeParams = { platform: 'a' };
+        $routeParams = { platform: 'a', market: 'primary' };
 
         authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
         authenticationService.getCurrentUsersEmail.and.returnValue('toto@tata.fr');
 
         userService = jasmine.createSpyObj('userService', ['userData']);
-        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', rules:[{id: "id1", name: 'rule1', pause: true, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}, {id: "id2", name: 'rule2', pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}, {id: "id3", name: 'rule3', pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}] }]}, {name: 'b', rules: [{pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}]}]}}));
+        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', primary: { rules: [{id: "id1", name: 'rule1', pause: true, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}, {id: "id2", name: 'rule2', pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}, {id: "id3", name: 'rule3', pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}] }] }}, {name: 'b', rules: [{pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}]}]}}));
 
         spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
     });
 
     describe('called with good platform and ruleId URL parameters', () => {
         beforeEach(() => {
-            constantsService = jasmine.createSpyObj('constantsService', ['platforms']);
+            constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
             constantsService.platforms.and.returnValue(['a']);
+            constantsService.markets.and.returnValue(['primary']);
             $routeParams.ruleId = 'id1';
         });
 
@@ -102,8 +103,9 @@ describe('StrategyEditController', () => {
 
     describe('called with bad platform URL parameter', () => {
         beforeEach(() => {
-            constantsService = jasmine.createSpyObj('constantsService', ['platforms']);
+            constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
             constantsService.platforms.and.callFake(() => ['b']);
+            constantsService.markets.and.callFake(() => ['primary']);
         });
 
         beforeEach(inject(($controller) => {
@@ -130,8 +132,9 @@ describe('StrategyEditController', () => {
 
     describe('called with good platform URL parameter but bad ruleId URL parameter', () => {
         beforeEach(() => {
-            constantsService = jasmine.createSpyObj('constantsService', ['platforms']);
+            constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
             constantsService.platforms.and.callFake(() => ['a']);
+            constantsService.markets.and.callFake(() => ['primary']);
             $routeParams.ruleId = 'id1986859';
         });
 
@@ -153,15 +156,16 @@ describe('StrategyEditController', () => {
             });
 
             it('should be redirected to platform\'s page', () => {
-                expect($location.path).toHaveBeenCalledWith('/platforms/strategies/a');
+                expect($location.path).toHaveBeenCalledWith('/platforms/strategies/a/primary');
             });
         });
     });
 
     describe('called with good platform URL parameter and no ruleId URL parameter', () => {
         beforeEach(() => {
-            constantsService = jasmine.createSpyObj('constantsService', ['platforms']);
+            constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
             constantsService.platforms.and.callFake(() => ['a']);
+            constantsService.markets.and.callFake(() => ['primary']);
             $routeParams.ruleId = undefined;
         });
 

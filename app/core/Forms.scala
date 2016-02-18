@@ -38,9 +38,14 @@ object Forms {
       "name" -> nonEmptyText,
       "accountId" -> nonEmptyText,
       "apiKey" -> nonEmptyText,
-      "strategy" -> nonEmptyText,
-      "rules" -> seq(ruleMapping)
+      "primary" -> marketMapping,
+      "secondary" -> marketMapping
     )(Platform.apply)(Platform.unapply)
+
+  def marketMapping = mapping(
+    "strategy" -> nonEmptyText,
+    "rules" -> seq(ruleMapping)
+  )(Market.apply)(Market.unapply)
 
   def addPlatformForm = Form(
     mapping(
@@ -91,7 +96,8 @@ object Forms {
     mapping(
       "email" -> email,
       "rules" -> seq(ruleMapping),
-      "platform" -> nonEmptyText
+      "platform" -> nonEmptyText,
+      "market" -> nonEmptyText
     )(UpdateRules.apply)(UpdateRules.unapply)
   )
 
