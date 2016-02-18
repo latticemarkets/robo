@@ -15,8 +15,21 @@
             <div class="col-xs-8">
                 <div class="hpanel hblue">
                     <div class="panel-body">
-                        <input type="text" ng-touch-spin ng-model="vm.rule.minNoteAmount" prefix="$" step="25" min="25" max="10000">
-                        <input type="text" ng-touch-spin ng-model="vm.rule.maxNoteAmount" prefix="$" step="25" min="25" max="10000">
+                        <div class="row">
+                            <h1 class="col-md-6">{{ criterion.multi.name }}</h1>
+                            <span class="col-md-6"><h3 class="pull-right list-multi">{{ display }}</h3></span>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6 col-lg-4">
+                                <label for="minimum">Minimum Loan Amount :</label>
+                                <input id="minimum" class="form-control" type="text" ng-touch-spin ng-model="vm.rule.minNoteAmount" prefix="$" step="25" min="25" max="10000">
+                            </div>
+
+                            <div class="form-group col-sm-6 col-lg-4 col-lg-offset-4">
+                                <label for="maximum">Maximum Loan Amount :</label>
+                                <input id="maximum" class="form-control" type="text" ng-touch-spin ng-model="vm.rule.maxNoteAmount" prefix="$" step="25" min="25" max="10000">
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-footer"></div>
                 </div>
