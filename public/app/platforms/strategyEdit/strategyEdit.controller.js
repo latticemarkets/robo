@@ -18,7 +18,6 @@
         constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, $cookieStore, spinnerService) {
             var vm = this;
 
-            const defaultName = "New Rule";
             const email = authenticationService.getCurrentUsersEmail();
 
             const platform = $routeParams.platform;
@@ -68,14 +67,15 @@
                 vm.platforms.forEach(p => {
                     if (p.name === platform) {
                         if (p[market].rules.length === 0) {
-                            p[market].rules = [criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule), platform)];
+                            p[market].rules = [criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule), platform, vm.rule.name)];
                         }
                         else if (!ruleId) {
-                            p[market].rules.push(criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule), platform));
+                            p[market].rules.push(criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule), platform, vm.rule.name));
                         }
                         else {
                             p[market].rules.forEach(r => {
                                 if (r.id === ruleId) {
+                                    r.name = vm.rule.name;
                                     r.criteria = criteriaService.unexpendCriteriaObject(vm.rule);
                                 }
                             });

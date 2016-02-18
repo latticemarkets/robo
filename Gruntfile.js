@@ -59,6 +59,7 @@ module.exports = function(grunt) {
                     "bower_components/angularjs-slider/dist/rzslider.min.css",
                     "bower_components/ng-tags-input/ng-tags-input.min.css",
                     "bower_components/ng-tags-input/ng-tags-input.bootstrap.min.css",
+                    "bower_components/angular-xeditable/dist/css/xeditable.css",
                     "public/fonts/pe-icon-7-stroke/css/helper.css",
                     "public/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css",
                     "public/stylesheets/spinners.css",

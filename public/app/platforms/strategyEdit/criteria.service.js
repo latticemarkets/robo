@@ -668,10 +668,10 @@
             return ['36 Months', '60 Months'];
         }
 
-        initializeRule(criteria, originator) {
+        initializeRule(criteria, originator, name) {
             return {
                 id: this.generateUUID(),
-                name: "Default name",
+                name: name,
                 originator: originator,
                 expectedReturn: {
                     value: 0,

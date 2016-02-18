@@ -26,7 +26,8 @@
             'ngTagsInput',
             'ui.bootstrap.modal',
             'multiStepForm',
-            'jkuri.touchspin'])
+            'jkuri.touchspin',
+            'xeditable'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);
@@ -129,8 +130,9 @@
             .otherwise({ redirectTo: '/' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
-    function run($rootScope, $location, $cookieStore, $http) {
+    run.$inject = ['$rootScope', '$location', '$cookieStore', '$http', 'editableOptions'];
+    function run($rootScope, $location, $cookieStore, $http, editableOptions) {
+        editableOptions.theme = 'bs3';
         $rootScope.globals = $cookieStore.get('globals') || {};
 
         function authorizedPage() {
