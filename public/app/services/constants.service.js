@@ -24,7 +24,7 @@
                 'prosper': 'png',
                 'bondora': 'png',
                 'ratesetter': 'jpg',
-                'fundingCircle': 'jpeg'
+                'fundingCircle': 'png'
             };
         }
 
