@@ -69,7 +69,7 @@ describe('userService', () => {
                 income: income,
                 timeline: timeline,
                 birthday: birthday,
-                platforms: [{name:platform, accountId:accountId, apiKey:apiKey, strategy: portfolio, rules: []}],
+                platforms: [{name:platform, accountId:accountId, apiKey:apiKey, primary: {strategy: portfolio, rules: []}, secondary: {strategy: portfolio, rules: []}}],
                 firstName: firstName,
                 lastName: lastName
             });
