@@ -66,7 +66,6 @@ object User {
   val collectionName = "user"
   implicit val inSetParamsFormat = Json.format[InSetParams]
   implicit val inRangeParamsIntFormat = Json.format[InRangeParams]
-  implicit val paramsForamt = AutoFormat[RuleParams]
   implicit val criterionFormat = Json.format[Criterion]
   implicit val expectedReturnFormat = Json.format[ExpectedReturn]
   implicit val ruleFormat = Json.format[Rule]
