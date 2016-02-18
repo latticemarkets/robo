@@ -27,7 +27,7 @@ describe('StrategiesController', () => {
     beforeEach(() => {
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
         $location = jasmine.createSpyObj('$location', ['path']);
-        $routeParams = { platform: 'a' };
+        $routeParams = { platform: 'a', market: 'primary' };
 
         authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
         authenticationService.getCurrentUsersEmail.and.returnValue('toto@tata.fr');
@@ -35,15 +35,16 @@ describe('StrategiesController', () => {
         strategiesService = jasmine.createSpyObj('strategiesService', ['updateRules']);
 
         userService = jasmine.createSpyObj('userService', ['userData']);
-        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', rules:[{name: 'rule1', pause: true}, {name: 'rule2', pause: false}, {name: 'rule3', pause: false}]}, {name: 'b', rules: [{pause: false}]}]}}));
+        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', primary: { rules:[{name: 'rule1', pause: true}, {name: 'rule2', pause: false}, {name: 'rule3', pause: false}] }}, {name: 'b', rules: [{pause: false}]}]}}));
 
         spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
     });
 
     describe('called with good URL parameter', () => {
         beforeEach(() => {
-            constantsService = jasmine.createSpyObj('constantsService', ['platforms']);
+            constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
             constantsService.platforms.and.returnValue(['a']);
+            constantsService.markets.and.returnValue(['primary']);
         });
 
         beforeEach(inject(($controller) => {
@@ -99,7 +100,7 @@ describe('StrategiesController', () => {
         describe('pause', () => {
             describe('on success', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, success, error) => success());
+                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => success());
                     expect(strategiesController.rules[0].pause).toBeTruthy();
                     strategiesController.pause(strategiesController.rules[0]);
                 });
@@ -119,7 +120,7 @@ describe('StrategiesController', () => {
 
             describe('on error', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, success, error) => error());
+                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => error());
                     expect(strategiesController.rules[0].pause).toBeTruthy();
                     strategiesController.pause(strategiesController.rules[0]);
                 });
@@ -141,7 +142,7 @@ describe('StrategiesController', () => {
         describe('delete', () => {
             describe('on success', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, success, error) => success());
+                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => success());
                     expect(strategiesController.rules.length).toBe(3);
                     strategiesController.delete(strategiesController.rules[2]);
                 });
@@ -161,7 +162,7 @@ describe('StrategiesController', () => {
 
             describe('on error', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, success, error) => error());
+                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => error());
                     expect(strategiesController.rules.length).toBe(3);
                     strategiesController.delete(strategiesController.rules[2]);
                 });
@@ -188,7 +189,7 @@ describe('StrategiesController', () => {
 
             describe('on success', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, success, error) => success());
+                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => success());
                     strategiesController.sortableOptions.stop();
                 });
 
@@ -203,7 +204,7 @@ describe('StrategiesController', () => {
 
             describe('on error', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, success, error) => error());
+                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => error());
                     strategiesController.sortableOptions.stop();
                 });
 
