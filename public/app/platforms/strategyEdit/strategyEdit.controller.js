@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategyEditController {
-        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, $cookieStore, spinnerService) {
+        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, $cookieStore, spinnerService, $scope) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
@@ -52,6 +52,18 @@
                     if (vm.rule.criteria) {
                         return vm.rule.criteria.length === 0;
                     }
+                }
+            };
+
+            vm.onMinChange = min => {
+                if (min > vm.rule.maxNoteAmount) {
+                    vm.rule.maxNoteAmount = min;
+                }
+            };
+
+            vm.onMaxChange = max => {
+                if (max < vm.rule.minNoteAmount) {
+                    vm.rule.minNoteAmount = max;
                 }
             };
 
