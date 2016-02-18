@@ -11,12 +11,45 @@
 <div id="wrapper">
     <div class="content">
         <spinner></spinner>
+        <div class="row">
+            <div class="hpanel col-sm-3 col-lg-2 col-lg-offset-2 text-center">
+                <div class="panel-body strategies-top-menu">
+                    <p>Strategy</p>
+                    <p>Primary market</p>
+                </div>
+                <div class="panel-footer blue-footer">
+                </div>
+            </div>
+            <div class="hpanel col-sm-3 col-lg-2 text-center">
+                <div class="panel-body strategies-top-menu">
+                    <p>Strategy</p>
+                    <p>Secondary market</p>
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+            <div class="hpanel col-sm-3 col-lg-2 text-center">
+                <div class="panel-body strategies-top-menu">
+                    <p>Strategy</p>
+                    <p>Sell</p>
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+            <div class="hpanel col-sm-3 col-lg-2 text-center">
+                <div class="panel-body strategies-top-menu">
+                    <p>History</p>
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+        </div>
         <div class="row" ui-sortable="vm.sortableOptions" ng-model="vm.rules">
-            <div class="col-sm-8 col-sm-offset-2" data-ng-repeat="rule in vm.rules">
+            <div class="col-sm-12" data-ng-repeat="rule in vm.rules">
                 <div class="hpanel hblue" data-drag="true" jqyoui-draggable jqyoui-draggable="{animate:true}" data-jqyoui-options="{revert: 'invalid'}">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-sm-10">
+                            <div class="col-sm-9">
                                 <h4>#{{ $index + 1 }} {{ rule.name | titlecase }}</h4>
 
                                 <div class="row m-t-md">
@@ -34,7 +67,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-2 project-info">
+                            <div class="col-sm-3 project-info">
                                 <div class="project-action m-t-md">
                                     <div class="btn-group">
                                         <button class="btn btn-xs btn-default" data-ng-click="vm.editRule(rule.id)"> Edit</button>
@@ -55,8 +88,8 @@
                     </div>
                 </div>
             </div>
-            <div class="ui-sortable-placeholder col-sm-8 col-sm-offset-2 new-rule" data-ng-click="vm.newRule()">
-                <h1 class="new-rule-title">New Rule</h1>
+            <div class="ui-sortable-placeholder col-sm-12 new-rule" data-ng-click="vm.newRule()">
+                <h1 class="new-rule-title">New Strategy</h1>
             </div>
         </div>
     </div>

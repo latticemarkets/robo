@@ -11,8 +11,8 @@
 * Created on 11/02/2016
 */
 
-describe('RuleEditController', () => {
-    let ruleEditController,
+describe('StrategyEditController', () => {
+    let strategyEditController,
         cssInjector,
         $routeParams,
         constantsService,
@@ -45,7 +45,7 @@ describe('RuleEditController', () => {
         });
 
         beforeEach(inject(($controller, criteriaService) => {
-            ruleEditController = $controller('RuleEditController', {
+            strategyEditController = $controller('StrategyEditController', {
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
@@ -81,7 +81,7 @@ describe('RuleEditController', () => {
 
         describe('get appropriate rule', () => {
             it('should get the right rule', () => {
-                expect(ruleEditController.rule).toEqual({ id: 'id1', name: 'rule1', pause: true, criteria: jasmine.any(Array)});
+                expect(strategyEditController.rule).toEqual({ id: 'id1', name: 'rule1', pause: true, criteria: jasmine.any(Array)});
             });
 
             it('should call user service', () => {
@@ -107,7 +107,7 @@ describe('RuleEditController', () => {
         });
 
         beforeEach(inject(($controller) => {
-            ruleEditController = $controller('RuleEditController', {
+            strategyEditController = $controller('StrategyEditController', {
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
@@ -123,7 +123,7 @@ describe('RuleEditController', () => {
             });
 
             it('should be redirected to strategies\' page', () => {
-                expect($location.path).toHaveBeenCalledWith('/strategies')
+                expect($location.path).toHaveBeenCalledWith('/platforms')
             });
         });
     });
@@ -136,7 +136,7 @@ describe('RuleEditController', () => {
         });
 
         beforeEach(inject(($controller) => {
-            ruleEditController = $controller('RuleEditController', {
+            strategyEditController = $controller('StrategyEditController', {
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
@@ -153,7 +153,7 @@ describe('RuleEditController', () => {
             });
 
             it('should be redirected to platform\'s page', () => {
-                expect($location.path).toHaveBeenCalledWith('/strategies/rules/a');
+                expect($location.path).toHaveBeenCalledWith('/platforms/strategies/a');
             });
         });
     });
@@ -166,7 +166,7 @@ describe('RuleEditController', () => {
         });
 
         beforeEach(inject(($controller) => {
-            ruleEditController = $controller('RuleEditController', {
+            strategyEditController = $controller('StrategyEditController', {
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
@@ -183,7 +183,7 @@ describe('RuleEditController', () => {
             });
 
             it('should initialize a new rule object', () => {
-                expect(ruleEditController.rule).toEqual({ name: jasmine.any(String), criteria: [] });
+                expect(strategyEditController.rule).toEqual({ name: jasmine.any(String), criteria: [] });
             });
         });
     });

@@ -652,6 +652,34 @@
         get terms() {
             return ['36 Months', '60 Months'];
         }
+
+        initializeRule(criteria) {
+            return {
+                id: this.generateUUID(),
+                name: "Default name",
+                expectedReturn: {
+                    value: 0,
+                    percent: 0.3,
+                    margin: 0
+                },
+                loansAvailablePerWeek: 0,
+                moneyAvailablePerWeek: 0,
+                criteria: criteria,
+                pause: false
+            };
+        }
+
+        generateUUID() {
+            var d = new Date().getTime();
+            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = (d + Math.random()*16)%16 | 0;
+                d = Math.floor(d/16);
+                return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+            });
+            return uuid;
+        }
+
+
     }
 
     angular

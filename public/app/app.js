@@ -110,19 +110,19 @@
                 controller: "UserAccountController",
                 controllerAs: 'vm'
             })
-            .when('/strategies', {
-                templateUrl: "assets/app/strategies/strategies.html",
+            .when('/platforms', {
+                templateUrl: "assets/app/platforms/platforms.html",
+                controller: "PlatformsController",
+                controllerAs: 'vm'
+            })
+            .when('/platforms/strategies/:platform', {
+                templateUrl: "assets/app/platforms/strategies/strategies.html",
                 controller: "StrategiesController",
                 controllerAs: 'vm'
             })
-            .when('/strategies/rules/:platform/:success?', {
-                templateUrl: "assets/app/strategies/rules/rules.html",
-                controller: "RulesController",
-                controllerAs: 'vm'
-            })
-            .when('/strategies/rules/:platform/ruleEdit/:ruleId?', {
-                templateUrl: "assets/app/strategies/ruleEdit/ruleEdit.html",
-                controller: "RuleEditController",
+            .when('/platforms/strategies/:platform/strategyEdit/:ruleId?', {
+                templateUrl: "assets/app/platforms/strategyEdit/strategyEdit.html",
+                controller: "StrategyEditController",
                 controllerAs: 'vm'
             })
             .otherwise({ redirectTo: '/' });

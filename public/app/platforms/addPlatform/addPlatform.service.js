@@ -23,7 +23,7 @@
 
         newPlatformModal(platforms) {
             var modalInstance = this.$uibModal.open({
-                templateUrl: 'assets/app/strategies/addPlatform/addPlatform.modal.html',
+                templateUrl: 'assets/app/platforms/addPlatform/addPlatform.modal.html',
                 controller: AddPlatformModalController,
                 resolve: {
                     constantsService: () => this.constantsService,
@@ -43,10 +43,10 @@
 
             $scope.steps = [
                 {
-                    templateUrl: 'assets/app/strategies/addPlatform/choosePlatform.step.html'
+                    templateUrl: 'assets/app/platforms/addPlatform/choosePlatform.step.html'
                 },
                 {
-                    templateUrl: 'assets/app/strategies/addPlatform/setCredentials.step.html',
+                    templateUrl: 'assets/app/platforms/addPlatform/setCredentials.step.html',
                     hasForm: true
                 }
             ];
@@ -73,7 +73,7 @@
                 userService.addPlatform(authenticationService.getCurrentUsersEmail(), newPlatform,
                     () => {
                         finish();
-                        $location.path(`/strategies/rules/${$scope.chosePlatform}`);
+                        $location.path(`/platforms/rules/${$scope.chosePlatform}`);
                 });
             };
 

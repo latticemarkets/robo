@@ -14,8 +14,8 @@
 (() => {
     'use strict';
 
-    class RulesController {
-        constructor($routeParams, constantsService, $location, cssInjector, rulesService, userService, authenticationService, notificationService, spinnerService) {
+    class StrategiesController {
+        constructor($routeParams, constantsService, $location, cssInjector, strategiesService, userService, authenticationService, notificationService, spinnerService, $cookieStore) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -23,11 +23,12 @@
             const platform = $routeParams.platform;
 
             if (!constantsService.platforms().some(realPlatform => realPlatform == platform)) {
-                $location.path('/strategies');
+                $location.path('/platforms');
             }
 
-            if ($routeParams.success) {
+            if ($cookieStore.get('newCriteriaSuccess')) {
                 notificationService.success("Your criteria have been updated");
+                $cookieStore.remove('newCriteriaSuccess');
             }
 
             spinnerService.on();
@@ -48,7 +49,7 @@
                 },
                 stop() {
                     spinnerService.on();
-                    rulesService.updateRules(vm.rules, email, platform,
+                    strategiesService.updateRules(vm.rules, email, platform,
                         () => spinnerService.off(),
                         () => {
                             spinnerService.off();
@@ -72,9 +73,9 @@
                 });
             };
 
-            vm.editRule = id => $location.path(`/strategies/rules/${platform}/ruleEdit/${id}`);
+            vm.editRule = id => $location.path(`/platforms/strategies/${platform}/strategyEdit/${id}`);
 
-            vm.newRule = id => $location.path(`/strategies/rules/${platform}/ruleEdit/`);
+            vm.newRule = id => $location.path(`/platforms/strategies/${platform}/strategyEdit/`);
 
             function updateOneRule(rule, transformation) {
                 spinnerService.on();
@@ -87,7 +88,7 @@
                         }
                     })) {
                     const transformedRules = transformation(rulesCopy, ruleToDeleteIndex);
-                    rulesService.updateRules(transformedRules, email, platform,
+                    strategiesService.updateRules(transformedRules, email, platform,
                         () => {
                             vm.rules = rulesCopy;
                             spinnerService.off();
@@ -108,5 +109,5 @@
 
     angular
         .module('app')
-        .controller('RulesController', RulesController);
+        .controller('StrategiesController', StrategiesController);
 })();

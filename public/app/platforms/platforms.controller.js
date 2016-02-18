@@ -14,7 +14,7 @@
 (() => {
     'use strict';
 
-    class StrategiesController {
+    class PlatformsController {
         constructor(cssInjector, userService, authenticationService, constantsService, $filter, addPlatformService) {
             var vm = this;
 
@@ -33,5 +33,5 @@
 
     angular
         .module('app')
-        .controller('StrategiesController', StrategiesController);
+        .controller('PlatformsController', PlatformsController);
 })();
