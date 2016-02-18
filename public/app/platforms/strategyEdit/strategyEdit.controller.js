@@ -50,7 +50,9 @@
 
             vm.showGhostBox = () => {
                 if (vm.rule) {
-                    return vm.rule.criteria.length === 0;
+                    if (vm.rule.criteria) {
+                        return vm.rule.criteria.length === 0;
+                    }
                 }
             };
 

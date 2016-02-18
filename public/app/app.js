@@ -25,7 +25,8 @@
             'rzModule',
             'ngTagsInput',
             'ui.bootstrap.modal',
-            'multiStepForm'])
+            'multiStepForm',
+            'jkuri.touchspin'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);

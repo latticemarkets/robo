@@ -13,6 +13,13 @@
         <spinner></spinner>
         <div class="row">
             <div class="col-xs-8">
+                <div class="hpanel hblue">
+                    <div class="panel-body">
+                        <input type="text" ng-touch-spin ng-model="vm.rule.minNoteAmount" prefix="$" step="25" min="25" max="10000">
+                        <input type="text" ng-touch-spin ng-model="vm.rule.maxNoteAmount" prefix="$" step="25" min="25" max="10000">
+                    </div>
+                    <div class="panel-footer"></div>
+                </div>
                 <div data-ng-repeat="criterion in vm.rule.criteria">
                     <div class="hpanel hblue">
                         <div class="panel-body">

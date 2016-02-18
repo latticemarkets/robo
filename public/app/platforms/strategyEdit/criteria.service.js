@@ -682,8 +682,8 @@
                 moneyAvailablePerWeek: 0,
                 criteria: criteria,
                 isEnabled: true,
-                minNoteAmount: 20,
-                maxNoteAmount: 200
+                minNoteAmount: 25,
+                maxNoteAmount: 25
             };
         }
 
