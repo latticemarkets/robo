@@ -681,7 +681,7 @@
                 loansAvailablePerWeek: 0,
                 moneyAvailablePerWeek: 0,
                 criteria: criteria,
-                isEnabled: false,
+                isEnabled: true,
                 minNoteAmount: 20,
                 maxNoteAmount: 200
             };
