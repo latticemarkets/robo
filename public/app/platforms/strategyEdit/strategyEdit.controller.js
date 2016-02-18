@@ -66,13 +66,18 @@
                 vm.platforms.forEach(p => {
                     if (p.name === platform) {
                         if (p[market].rules.length === 0) {
+                            p[market].rules = [criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule))];
+                        }
+                        else if (!ruleId) {
                             p[market].rules.push(criteriaService.initializeRule(criteriaService.unexpendCriteriaObject(vm.rule)));
                         }
-                        p[market].rules.forEach(r => {
-                            if (r.id === ruleId) {
-                                r.criteria = criteriaService.unexpendCriteriaObject(vm.rule);
-                            }
-                        });
+                        else {
+                            p[market].rules.forEach(r => {
+                                if (r.id === ruleId) {
+                                    r.criteria = criteriaService.unexpendCriteriaObject(vm.rule);
+                                }
+                            });
+                        }
                     }
                 });
             }

@@ -21,7 +21,9 @@
 
             const email = authenticationService.getCurrentUsersEmail();
             const platform = $routeParams.platform;
+
             const market = $routeParams.market;
+            vm.market = market;
 
             if (!constantsService.platforms().some(realPlatform => realPlatform == platform) || !constantsService.markets().some(realMarket => realMarket == market)) {
                 $location.path('/platforms');
