@@ -561,6 +561,17 @@
                         return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
                     };
                     return criterion;
+                case 'loanStatus':
+                    criterion.type = 'multi';
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : this.terms;
+                    criterion.multi = {};
+                    criterion.multi.name = this.getCriteriaName(criterion.attribute);
+                    criterion.multi.list = this.loanStatus;
+                    criterion.multi.format = (values) => {
+                        let tmpValues = JSON.parse(JSON.stringify(values));
+                        return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
+                    };
+                    return criterion;
                 case 'jobTitle':
                     criterion.type = 'text';
                     criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams).map(v => ({ text: v })) : [];
@@ -583,7 +594,7 @@
 
         getCriteriaName(attribute) {
             let name;
-            if (this.baseCriteria.some(baseCriterion => {
+            if (this.allBaseCriteria().some(baseCriterion => {
                 if (baseCriterion.attribute == attribute) {
                     name = baseCriterion.name;
                     return true;
@@ -594,6 +605,10 @@
             else {
                 return undefined;
             }
+        }
+
+        allBaseCriteria() {
+            return this.baseCriteria('primary').concat(this.baseCriteria('secondary'));
         }
 
         baseCriteria(market) {
@@ -686,6 +701,10 @@
 
         get terms() {
             return ['36 Months', '60 Months'];
+        }
+
+        get loanStatus() {
+            return ['Currently Paying', 'Default', 'In Grace Period', 'Late (16 - 30 days)', 'Late (31 - 120 days)'];
         }
 
         initializeRule(originator) {

@@ -33,7 +33,14 @@
                 vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => criterion.attribute !== baseCriterion.attribute);
             };
 
-            vm.remove = attribute => vm.rule.criteria = vm.rule.criteria.filter(criterion => criterion.attribute !== attribute);
+            vm.remove = attribute => {
+                vm.rule.criteria = vm.rule.criteria.filter(criterion => criterion.attribute !== attribute);
+                criteriaService.baseCriteria(market).some(criterion => {
+                    if (criterion.attribute == attribute) {
+                        vm.baseCriteria.push(criterion);
+                    }
+                });
+            };
 
             vm.saveCriteria = () => {
                 updatePlatforms();
