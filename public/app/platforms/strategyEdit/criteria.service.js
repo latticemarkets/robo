@@ -32,11 +32,6 @@
         unexpendCriteriaObject(rule) {
             const tmpRule = JSON.parse(JSON.stringify(rule));
             tmpRule.criteria = tmpRule.criteria.map(criterion => {
-                if (criterion.attribute === 'subGrade') {
-                    criterion.ruleParams = this.convertNumberToSubGrade(criterion.ruleParams);
-                    criterion.highValue = this.convertNumberToSubGrade(criterion.highValue);
-                }
-
                 if (criterion.attribute === 'price' || criterion.attribute === 'premiumDiscount') {
                     criterion.ruleParams = criterion.ruleParams / 100;
                     criterion.highValue = criterion.highValue / 100;
