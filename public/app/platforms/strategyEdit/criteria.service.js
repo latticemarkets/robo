@@ -596,7 +596,18 @@
                     criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : this.terms;
                     criterion.multi = {};
                     criterion.multi.name = this.getCriteriaName(criterion.attribute);
-                    criterion.multi.list = this.creditScoreTrends;
+                    criterion.multi.list = this.creditScores;
+                    criterion.multi.format = (values) => {
+                        let tmpValues = JSON.parse(JSON.stringify(values));
+                        return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
+                    };
+                    return criterion;
+                case 'recentCreditScore':
+                    criterion.type = 'multi';
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : this.terms;
+                    criterion.multi = {};
+                    criterion.multi.name = this.getCriteriaName(criterion.attribute);
+                    criterion.multi.list = this.creditScores;
                     criterion.multi.format = (values) => {
                         let tmpValues = JSON.parse(JSON.stringify(values));
                         return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
@@ -737,7 +748,7 @@
             return ['Currently Paying', 'Default', 'In Grace Period', 'Late (16 - 30 days)', 'Late (31 - 120 days)'];
         }
 
-        get creditScoreTrends() {
+        get creditScores() {
             return ['Up', 'Unchanged', 'Down'];
         }
 
