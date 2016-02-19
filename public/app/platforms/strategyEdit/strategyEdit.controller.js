@@ -56,14 +56,14 @@
             };
 
             vm.onMinChange = min => {
-                if (min > vm.rule.maxNoteAmount) {
-                    vm.rule.maxNoteAmount = min;
+                if (parseInt(min) > parseInt(vm.rule.maxNoteAmount)) {
+                    vm.rule.maxNoteAmount = parseInt(min);
                 }
             };
 
             vm.onMaxChange = max => {
-                if (max < vm.rule.minNoteAmount) {
-                    vm.rule.minNoteAmount = max;
+                if (parseInt(max) < parseInt(vm.rule.minNoteAmount)) {
+                    vm.rule.minNoteAmount = parseInt(max);
                 }
             };
 
