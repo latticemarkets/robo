@@ -54,7 +54,7 @@
                         delete criterion.slider;
                         break;
                     case 'multi':
-                        criterion.ruleParams = criterion.ruleParams.reduce((prev, ruleParams) => `${prev},${ruleParams}`, '').substr(1);
+                        criterion.ruleParams = criterion.ruleParams.length ? criterion.ruleParams.reduce((prev, ruleParams) => `${prev},${ruleParams}`, '').substr(1) : 'Any';
                         criterion.ruleType = 'InSet';
                         break;
                     case 'text':
