@@ -21,8 +21,8 @@
             const email = authenticationService.getCurrentUsersEmail();
 
             const platform = $routeParams.platform;
-            const market = $routeParams.market;
             const ruleId = $routeParams.ruleId;
+            const market = $routeParams.market;
 
             getCriteria();
             checkUrlParameters();

@@ -737,7 +737,8 @@
                 criteria: [],
                 isEnabled: true,
                 minNoteAmount: 25,
-                maxNoteAmount: 25
+                maxNoteAmount: 25,
+                maximumDailyInvestment: 250
             };
         }
 
