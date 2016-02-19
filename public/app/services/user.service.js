@@ -59,8 +59,8 @@
             this.$http.put('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
         }
 
-        updatePlatforms(email, platforms, callback) {
-            this.$http.put('/api/user/p2pPlatforms', { email: email, platforms: platforms}).then(callback, this.notificationService.apiError());
+        updatePlatforms(email, platforms, callback, errorCallback) {
+            this.$http.put('/api/user/p2pPlatforms', { email: email, platforms: platforms}).then(callback, this.notificationService.apiError(errorCallback));
         }
 
         updatePersonalData(email, firstName, lastName, birthday, callback) {

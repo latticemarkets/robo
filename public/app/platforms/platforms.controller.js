@@ -15,12 +15,21 @@
     'use strict';
 
     class PlatformsController {
-        constructor(cssInjector, userService, authenticationService, constantsService, $filter, addPlatformService) {
+        constructor(cssInjector, userService, authenticationService, constantsService, $filter, addPlatformService, $scope) {
             var vm = this;
+
+            const email = authenticationService.getCurrentUsersEmail();
 
             cssInjector.add("assets/stylesheets/homer_style.css");
 
-            userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.platforms = response.data.platforms);
+            userService.userData(email, response => {
+                vm.platforms = response.data.platforms;
+
+                vm.platforms.forEach(platform =>
+                    $scope.$watch(() => platform.autoEnabled, () =>
+                        userService.updatePlatforms(email, vm.platforms, () => {}, () => platform.autoEnabled = !platform.autoEnabled))
+                );
+            });
 
             vm.platformsImgExtensions = constantsService.platformsImgExtensions;
 
