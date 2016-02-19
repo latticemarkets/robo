@@ -32,7 +32,7 @@
         unexpendCriteriaObject(rule) {
             const tmpRule = JSON.parse(JSON.stringify(rule));
             tmpRule.criteria = tmpRule.criteria.map(criterion => {
-                if (criterion.attribute === 'price' || criterion.attribute === 'premiumDiscount') {
+                if (criterion.attribute === 'price' || criterion.attribute === 'premiumDiscount' || criterion.attribute == 'maxDebtIncomeWithLoan' || criterion.attribute == 'maxDebtIncome') {
                     criterion.ruleParams = criterion.ruleParams / 100;
                     criterion.highValue = criterion.highValue / 100;
                 }
@@ -53,10 +53,11 @@
                         criterion.ruleType = 'InSet';
                         break;
                     case 'text':
-                        criterion.ruleParams = criterion.ruleParams
+                        criterion.ruleParams = criterion.ruleParams.length ? criterion.ruleParams
                             .map(v => v.text)
                             .reduce((prev, ruleParams) => `${prev},${ruleParams}`, '')
-                            .substr(1);
+                            .substr(1)
+                        : 'Any';
                         criterion.ruleType = 'InSet';
                         break;
                 }
@@ -252,7 +253,7 @@
                     return criterion;
                 case 'maxDebtIncome':
                     criterion.type = 'slider';
-                    criterion.ruleParams = criterion.ruleParams ? parseInt(this.splitValues(criterion.ruleParams)[0]) : 25;
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams)[0] * 100 : 25;
                     criterion.slider = {};
                     criterion.slider.name = this.getCriteriaName(criterion.attribute);
                     criterion.slider.min = 10;
