@@ -506,6 +506,33 @@
                         }
                     };
                     return criterion;
+                case 'remainingPayments':
+                    criterion.type = 'rangeSlider';
+                    splitValue = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : [4, 12];
+                    criterion.ruleParams = splitValue[0];
+                    criterion.highValue = splitValue[1];
+                    criterion.slider = {};
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
+                    criterion.slider.min = 1;
+                    criterion.slider.max = 36;
+                    criterion.slider.step = 1;
+                    criterion.slider.format = (ruleParams, highValue) => {
+                        if (ruleParams == highValue) {
+                            if (ruleParams === 1) {
+                                return `${highValue} month`;
+                            }
+                            else {
+                                return `${highValue} months`;
+                            }
+                        }
+                        else if (ruleParams >= criterion.slider.min && highValue <= criterion.slider.max) {
+                            return `From ${ruleParams} to ${highValue} months`;
+                        }
+                        else {
+                            return `Error`;
+                        }
+                    };
+                    return criterion;
                 case 'price':
                     criterion.type = 'rangeSlider';
                     splitValue = criterion.ruleParams ? this.splitValues(criterion.ruleParams).map(v => v * 100) : [30, 70];
@@ -741,8 +768,8 @@
                         { attribute: 'price', name: 'Price' },
                         { attribute: 'remainingPayments', name: 'Remaining Payments' },
                         { attribute: 'subGrade', name: 'Sub-Grade' },
-                        { attribute: 'term', name: 'Term' },
-                        { attribute: 'yieldToMaturity', name: 'Yield To Maturity' }
+                        { attribute: 'term', name: 'Term' }/*,
+                        { attribute: 'yieldToMaturity', name: 'Yield To Maturity' }*/
                     ];
                 default:
                     return undefined;
