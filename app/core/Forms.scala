@@ -111,7 +111,8 @@ object Forms {
      "criteria" -> seq(criterionMapping),
      "isEnabled" -> boolean,
      "minNoteAmount" -> bigDecimal,
-     "maxNoteAmount" -> bigDecimal
+     "maxNoteAmount" -> bigDecimal,
+     "maximumDailyInvestment" -> bigDecimal
      )(Rule.apply)(Rule.unapply)
 
   def expectedReturnMapping = mapping(

@@ -15,14 +15,14 @@
     'use strict';
 
     class StrategyEditController {
-        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, $cookieStore, spinnerService) {
+        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, $cookieStore, spinnerService, $timeout) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
 
             const platform = $routeParams.platform;
-            const market = $routeParams.market;
             const ruleId = $routeParams.ruleId;
+            const market = $routeParams.market;
 
             getCriteria();
             checkUrlParameters();
@@ -33,7 +33,14 @@
                 vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => criterion.attribute !== baseCriterion.attribute);
             };
 
-            vm.remove = attribute => vm.rule.criteria = vm.rule.criteria.filter(criterion => criterion.attribute !== attribute);
+            vm.remove = attribute => {
+                vm.rule.criteria = vm.rule.criteria.filter(criterion => criterion.attribute !== attribute);
+                criteriaService.baseCriteria(market).some(criterion => {
+                    if (criterion.attribute == attribute) {
+                        vm.baseCriteria.push(criterion);
+                    }
+                });
+            };
 
             vm.saveCriteria = () => {
                 updatePlatforms();
@@ -97,7 +104,11 @@
             }
 
             function getCriteria() {
-                vm.baseCriteria = criteriaService.baseCriteria;
+                vm.baseCriteria = criteriaService.baseCriteria(market);
+                if (!vm.baseCriteria) {
+                    notificationService.error('An error occured, you will be redirected');
+                    $timeout(() => $location.path('/platforms'), 1000);
+                }
             }
 
             function checkUrlParameters() {

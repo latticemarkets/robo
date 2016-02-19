@@ -22,7 +22,8 @@ case class Rule(id: String,
                 criteria: Seq[Criterion],
                 isEnabled: Boolean,
                 minNoteAmount: BigDecimal,
-                maxNoteAmount: BigDecimal)
+                maxNoteAmount: BigDecimal,
+                maximumDailyInvestment: BigDecimal)
 
 case class ExpectedReturn(
   value: BigDecimal,
