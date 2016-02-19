@@ -613,6 +613,17 @@
                         return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
                     };
                     return criterion;
+                case 'daysPastDue':
+                    criterion.type = 'multi';
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : this.terms;
+                    criterion.multi = {};
+                    criterion.multi.name = this.getCriteriaName(criterion.attribute);
+                    criterion.multi.list = this.daysPastDues;
+                    criterion.multi.format = (values) => {
+                        let tmpValues = JSON.parse(JSON.stringify(values));
+                        return tmpValues.length ? `${tmpValues.reduce((prev, elem) => `${prev}, ${elem}`, '').substr(2)}` : 'Any';
+                    };
+                    return criterion;
                 case 'jobTitle':
                     criterion.type = 'text';
                     criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams).map(v => ({ text: v })) : [];
@@ -750,6 +761,10 @@
 
         get creditScores() {
             return ['Up', 'Unchanged', 'Down'];
+        }
+
+        get daysPastDues() {
+            return ['5', '15', '30', '60', '90'];
         }
 
         initializeRule(originator) {
