@@ -596,36 +596,55 @@
             }
         }
 
-        get baseCriteria() {
-            return [
-                { attribute: 'newAccounts', name: 'New Accounts (24 months)' },
-                { attribute: 'totalCreditLines', name: 'Total Credit Lines' },
-                { attribute: 'creditScore', name: 'Credit Score' },
-                { attribute: 'maxDelinquencies', name: 'Maximum Delinquencies' },
-                { attribute: 'earliestCreditLine', name: 'Earliest Credit Line' },
-                { attribute: 'employmentLength', name: 'Employment Length' },
-                { attribute: 'jobTitle', name: 'Job Title' },
-                { attribute: 'homeOwnership', name: 'Home Ownership' },
-                { attribute: 'inquiries', name: 'Inquiries' },
-                { attribute: 'loanPaymentIncome', name: 'Loan Payment Income' },
-                { attribute: 'verifiedIncome', name: 'Verified Income' },
-                { attribute: 'loanAmount', name: 'Loan Amount' },
-                { attribute: 'maxDebtIncome', name: 'Max Debt / Income' },
-                { attribute: 'maxDebtIncomeWithLoan', name: 'Max Debt / Income with Loan' },
-                { attribute: 'monthlyIncome', name: 'Monthly Income' },
-                { attribute: 'lastDelinquency', name: 'Last Delinquency' },
-                { attribute: 'lastRecord', name: 'Last Record' },
-                { attribute: 'openCreditLine', name: 'Open Credit Line' },
-                { attribute: 'publicRecords', name: 'Public Records' },
-                { attribute: 'loanPurpose', name: 'Loan Purpose' },
-                { attribute: 'revolvingUtilization', name: 'Revolving Utilization' },
-                { attribute: 'expectedReturn', name: 'Expected Return' },
-                { attribute: 'highestExpectedReturn', name: 'Highest Expected Return' },
-                { attribute: 'state', name: 'State' },
-                { attribute: 'subGrade', name: 'Sub-Grade' },
-                { attribute: 'term', name: 'Term' },
-                { attribute: 'loanPopularity', name: 'Loan Popularity' }
-            ];
+        baseCriteria(market) {
+            switch (market) {
+                case 'primary':
+                    return [
+                        { attribute: 'newAccounts', name: 'New Accounts (24 months)' },
+                        { attribute: 'totalCreditLines', name: 'Total Credit Lines' },
+                        { attribute: 'creditScore', name: 'Credit Score' },
+                        { attribute: 'maxDelinquencies', name: 'Maximum Delinquencies' },
+                        { attribute: 'earliestCreditLine', name: 'Earliest Credit Line' },
+                        { attribute: 'employmentLength', name: 'Employment Length' },
+                        { attribute: 'jobTitle', name: 'Job Title' },
+                        { attribute: 'homeOwnership', name: 'Home Ownership' },
+                        { attribute: 'inquiries', name: 'Inquiries' },
+                        { attribute: 'loanPaymentIncome', name: 'Loan Payment Income' },
+                        { attribute: 'verifiedIncome', name: 'Verified Income' },
+                        { attribute: 'loanAmount', name: 'Loan Amount' },
+                        { attribute: 'maxDebtIncome', name: 'Max Debt / Income' },
+                        { attribute: 'maxDebtIncomeWithLoan', name: 'Max Debt / Income with Loan' },
+                        { attribute: 'monthlyIncome', name: 'Monthly Income' },
+                        { attribute: 'lastDelinquency', name: 'Last Delinquency' },
+                        { attribute: 'lastRecord', name: 'Last Record' },
+                        { attribute: 'openCreditLine', name: 'Open Credit Line' },
+                        { attribute: 'publicRecords', name: 'Public Records' },
+                        { attribute: 'loanPurpose', name: 'Loan Purpose' },
+                        { attribute: 'revolvingUtilization', name: 'Revolving Utilization' },
+                        { attribute: 'expectedReturn', name: 'Expected Return' },
+                        { attribute: 'highestExpectedReturn', name: 'Highest Expected Return' },
+                        { attribute: 'state', name: 'State' },
+                        { attribute: 'subGrade', name: 'Sub-Grade' },
+                        { attribute: 'term', name: 'Term' },
+                        { attribute: 'loanPopularity', name: 'Loan Popularity' }
+                    ];
+                case 'secondary':
+                    return [
+                        { attribute: 'loanStatus', name: 'Loan Status' },
+                        { attribute: 'creditScoreTrend', name: 'Credit Score Trend' },
+                        { attribute: 'premiumDiscount', name: 'Premium / Discount' },
+                        { attribute: 'recentCreditScore', name: 'Recent Credit Score' },
+                        { attribute: 'daysPastDue', name: 'Days Past Due' },
+                        { attribute: 'paymentNeverLate', name: 'Payment Never Late' },
+                        { attribute: 'price', name: 'Price' },
+                        { attribute: 'remainingPayments', name: 'Remaining Payments' },
+                        { attribute: 'subGrade', name: 'Sub-Grade' },
+                        { attribute: 'term', name: 'Term' },
+                        { attribute: 'yieldToMaturity', name: 'Yield To Maturity' }
+                    ];
+                default:
+                    return undefined;
+            }
         }
 
         convertNumberToSubGrade(n) {

@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategyEditController {
-        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, $cookieStore, spinnerService) {
+        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, $cookieStore, spinnerService, $timeout) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
@@ -97,7 +97,11 @@
             }
 
             function getCriteria() {
-                vm.baseCriteria = criteriaService.baseCriteria;
+                vm.baseCriteria = criteriaService.baseCriteria(market);
+                if (!vm.baseCriteria) {
+                    notificationService.error('An error occured, you will be redirected');
+                    $timeout(() => $location.path('/platforms'), 1000);
+                }
             }
 
             function checkUrlParameters() {
