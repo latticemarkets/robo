@@ -39,17 +39,18 @@
 
             vm.loansAcquiredPerDayOption = flotChartService.barChartOptions;
 
-            if($cookieStore.get('guidedTour'))
-            {
-              $timeout(() => {
-                  dashboardGuidedTourService.start();
-              }, 1000);
+            if ($cookieStore.get('guidedTour')) {
+                dashboardGuidedTourService.init();
 
-              $scope.$on('$destroy', function() {
-                  dashboardGuidedTourService.end();
-              });
+                $timeout(() => {
+                    dashboardGuidedTourService.start();
+                }, 1000);
 
-              $cookieStore.remove('guidedTour');
+                $scope.$on('$destroy', function() {
+                    dashboardGuidedTourService.end();
+                });
+
+$cookieStore.remove('guidedTour');
             }
         }
     }

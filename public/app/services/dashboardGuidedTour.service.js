@@ -15,7 +15,7 @@
       'use strict';
 
       class dashboardGuidedTourService{
-        constructor(){
+        constructor() {
           this.tour = new Tour({
             steps: [
             {
@@ -102,7 +102,9 @@
             backdrop: true,
             storage: false
           });
+        }
 
+        init() {
           this.tour.init();
         }
 

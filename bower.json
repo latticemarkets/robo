@@ -44,7 +44,8 @@
     "ng-tags-input": "^3.0.0",
     "angular-multi-step-form": "^1.2.7",
     "ngTouchSpin": "https://github.com/JulienDeray/ngTouchSpin.git",
-    "angular-xeditable": "^0.1.10"
+    "angular-xeditable": "^0.1.10",
+    "bootstrap-tour": "^0.10.2"
   },
   "resolutions": {
     "angular": "~1.4.9"
