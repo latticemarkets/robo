@@ -11,58 +11,67 @@
             <div class="col-lg-12">
                 <div class="hpanel">
                     <div class="panel-body">
+                      <div class="info">
                         <div class="row">
                             <div class="col-md-3 text-center">
+                              <div class="capital">
                                 <div class="text-center small">
                                     <i class="fa fa-money"></i> Your Capital
                                 </div>
-                                <div>
+                                <div class="availableInvestment">
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
                                         {{ vm.availableCapital | currency }}
                                     </h1>
                                     <small>Available for investment</small>
                                 </div>
-                                <div>
+                                <div class="allocatedInvestments">
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
                                         {{ vm.allocatedCapital | currency }}
                                     </h1>
                                     <small>Allocated on investments</small>
                                 </div>
+                              </div>
                             </div>
                             <div class="col-md-6 loansMaturity">
+                              <div class="portfolioDiversification">
                                 <div class="text-center small">
                                     <i class="fa fa-suitcase"></i> Portfolio Diversification
                                 </div>
                                 <loans-maturity data="vm.loansMaturityPromise" identifier="loansMaturity"></loans-maturity>
+                              </div>
                             </div>
                             <div class="col-md-3 text-center">
+                              <div class="returnInvestment">
                                 <div class="text-center small">
                                     <i class="fa fa-tachometer"></i> Return on Investment
                                 </div>
-                                <div>
+                                <div class="averageMaturity">
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
                                         {{ vm.averageMaturity }}
                                     </h1>
                                     <small>Net Capital Gains</small>
                                 </div>
-                                <div>
+                                <div class="averageIntRate">
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
                                         {{ vm.averageIntRate | percent : 2 }}
                                     </h1>
                                     <small>Average Interest Rate</small>
                                 </div>
+                              </div>
                             </div>
                         </div>
                     </div>
                     <div class="panel-footer">
                         Last update: {{ vm.lastUpdate | date : "MMMM dd yyyy - HH:mm"}}
                     </div>
+                  </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-3">
                 <div class="hpanel">
+                  <div class="currentStategy">
                     <div class="panel-body text-center h-200">
                         <div class="stats-icon pull-right">
                             <i class="pe-7s-science fa-4x"></i>
@@ -75,10 +84,12 @@
                         </h3>
                         <small>Current goal : {{ vm.expectedRoiRate | percent : 2 }}</small>
                     </div>
+                  </div>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="hpanel stats">
+                  <div class="investmentsWeek">
                     <div class="panel-body h-200">
                         <div class="stats-title pull-left">
                             <h4>Investments this week</h4>
@@ -96,17 +107,21 @@
                         </div>
                         <div class="loans-metrics">
                             <div class="row">
+                              <div class="investmentWeek">
                                 <div class="text-center">
                                     <small class="stat-label">This week</small>
                                     <h4>{{ vm.loansAcquiredLastWeek | currency }}</h4>
                                 </div>
+                              </div>
                             </div>
                         </div>
                     </div>
+                  </div>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="hpanel stats">
+                  <div class="platformAllocation">
                     <div class="panel-body h-200">
                         <div class="stats-title pull-left">
                             <h4>Platform Allocation</h4>
@@ -118,10 +133,12 @@
                             <div platform-allocation identifier="allocation-pie" data="vm.platformAllocationPromise"></div>
                         </div>
                     </div>
+                  </div>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="hpanel stats">
+                  <div class="riskDiversification">
                     <div class="panel-body h-200">
                         <div class="stats-title pull-left">
                             <h4>Risk Diversification</h4>
@@ -134,6 +151,7 @@
                             <div risk-diversification identifier="risk-diversification-donut" data="vm.riskDiversificationPromise"></div>
                         </div>
                     </div>
+                  </div>
                 </div>
             </div>
         </div>
