@@ -18,7 +18,11 @@ describe('DashboardController', () => {
         $location,
         dashboardDataService,
         userService,
-        loansAcquiredService;
+        loansAcquiredService,
+        $scope,
+        $cookieStore,
+        $timeout,
+        dashboardGuidedTourService;
 
     beforeEach(() => {
         module('app');
@@ -29,6 +33,9 @@ describe('DashboardController', () => {
         dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital', 'averageMaturity', 'averageIntRate', 'expectedReturns', 'lastLoanMaturity', 'currentRoiRate', 'expectedRoiRate', 'currentLoansPromise', 'loansAcquiredPerDayLastWeek', 'loansAcquiredLastWeek', 'loansAcquiredToday', 'platformAllocationPromise', 'riskDiversificationPromise']);
         userService = jasmine.createSpyObj('userService', ['userData']);
         loansAcquiredService = jasmine.createSpyObj('loansAcquiredService', ['prepare', 'barChartOptions']);
+        $scope = jasmine.createSpyObj('$scope', ['$on']);
+        dashboardGuidedTourService = jasmine.createSpyObj('dashboardGuidedTourService', ['start', 'end', 'init']);
+        $cookieStore = jasmine.createSpyObj('$cookieStore', ['get', 'remove']);
     });
 
     let availableCapital;
@@ -88,68 +95,151 @@ describe('DashboardController', () => {
         userService.userData.and.callFake((currentUserEmail, callback) => callback({data: { firstName: firstName, lastName: lastName } }));
     });
 
-    beforeEach(inject(($controller) => {
-        dashboardController = $controller('DashboardController', {
-            $location : $location,
-            authenticationService: authenticationService,
-            cssInjector: cssInjector,
-            dashboardDataService: dashboardDataService,
-            userService: userService,
-            loansAcquiredService: loansAcquiredService
-        });
-    }));
 
-    describe('cssInjection', () => {
-        it('should inject Homer css stylesheet on initialization', () => {
-            expect(cssInjector.add).toHaveBeenCalledWith('assets/stylesheets/homer_style.css');
+    describe('no guided tour', () => {
+        beforeEach(() => {
+            $cookieStore.get.and.returnValue(false);
+        });
+
+        beforeEach(inject(($controller, _$timeout_) => {
+            dashboardController = $controller('DashboardController', {
+                $location : $location,
+                authenticationService: authenticationService,
+                cssInjector: cssInjector,
+                dashboardDataService: dashboardDataService,
+                userService: userService,
+                loansAcquiredService: loansAcquiredService,
+                $scope: $scope,
+                dashboardGuidedTourService: dashboardGuidedTourService,
+                $timeout: _$timeout_,
+                $cookieStore: $cookieStore
+            });
+
+            $timeout = _$timeout_;
+        }));
+
+        describe('cssInjection', () => {
+            it('should inject Homer css stylesheet on initialization', () => {
+                expect(cssInjector.add).toHaveBeenCalledWith('assets/stylesheets/homer_style.css');
+            });
+        });
+
+        describe('data initialisation', () => {
+            it('should load available capital from API', () => {
+                expect(dashboardDataService.availableCapital).toHaveBeenCalled();
+                expect(dashboardController.availableCapital).toBe(availableCapital);
+            });
+
+            it('should load allocated capital from API', () => {
+                expect(dashboardDataService.allocatedCapital).toHaveBeenCalled();
+                expect(dashboardController.allocatedCapital).toBe(allocatedCapital);
+            });
+
+            it('should set the current date', () => {
+                expect(dashboardController.lastUpdate).not.toBeUndefined();
+            });
+
+            it('should load average maturity from API', () => {
+                expect(dashboardDataService.averageMaturity).toHaveBeenCalled();
+                expect(dashboardController.averageMaturity).toBe("2 months");
+            });
+
+            it('should load average interest rate from API', () => {
+                expect(dashboardDataService.averageIntRate).toHaveBeenCalled();
+                expect(dashboardController.averageIntRate).toBe(averageIntRate);
+            });
+
+            it('should load current roi rate from API', () => {
+                expect(dashboardDataService.currentRoiRate).toHaveBeenCalled();
+                expect(dashboardController.currentRoiRate).toBe(currentRoiRate);
+            });
+
+            it('should load expected roi rate from API', () => {
+                expect(dashboardDataService.expectedRoiRate).toHaveBeenCalled();
+                expect(dashboardController.expectedRoiRate).toBe(expectedRoiRate);
+            });
+
+            it('should get a promise containing the current loans', () => {
+                expect(dashboardDataService.currentLoansPromise).toHaveBeenCalled();
+            });
+
+            it('should get a promise containing the portfolio allocation', () => {
+                expect(dashboardDataService.platformAllocationPromise).toHaveBeenCalled();
+            });
+
+            it('should get a promise containing the risk diversification', () => {
+                expect(dashboardDataService.riskDiversificationPromise).toHaveBeenCalled();
+            });
+        });
+
+        describe('no guided tour', () => {
+            it('should not start the guided tour', () => {
+                expect(dashboardGuidedTourService.start).not.toHaveBeenCalled();
+            });
+
+            it('should not remove the cookie', () => {
+                expect($cookieStore.remove).not.toHaveBeenCalledWith('guidedTour');
+            });
+
+            it('should not set on destroy', () => {
+                expect($scope.$on).not.toHaveBeenCalled();
+            });
         });
     });
 
-    describe('data initialisation', () => {
-        it('should load available capital from API', () => {
-            expect(dashboardDataService.availableCapital).toHaveBeenCalled();
-            expect(dashboardController.availableCapital).toBe(availableCapital);
+    describe('with guided tour', () => {
+        beforeEach(() => {
+            $cookieStore.get.and.returnValue(true);
+            $scope.$on.and.callFake((str, callback) => {
+                callback();
+
+                it('should set on destroy', () => {
+                    expect(str).toBe('$destroy');
+                });
+
+                it('should end the tour', () => {
+                    expect(dashboardGuidedTourService.end).toHaveBeenCalled();
+                });
+            })
         });
 
-        it('should load allocated capital from API', () => {
-            expect(dashboardDataService.allocatedCapital).toHaveBeenCalled();
-            expect(dashboardController.allocatedCapital).toBe(allocatedCapital);
-        });
+        beforeEach(inject(($controller, _$timeout_) => {
+            dashboardController = $controller('DashboardController', {
+                $location : $location,
+                authenticationService: authenticationService,
+                cssInjector: cssInjector,
+                dashboardDataService: dashboardDataService,
+                userService: userService,
+                loansAcquiredService: loansAcquiredService,
+                $scope: $scope,
+                dashboardGuidedTourService: dashboardGuidedTourService,
+                $timeout: _$timeout_,
+                $cookieStore: $cookieStore
+            });
 
-        it('should set the current date', () => {
-            expect(dashboardController.lastUpdate).not.toBeUndefined();
-        });
+            $timeout = _$timeout_;
+        }));
 
-        it('should load average maturity from API', () => {
-            expect(dashboardDataService.averageMaturity).toHaveBeenCalled();
-            expect(dashboardController.averageMaturity).toBe("2 months");
-        });
+        describe('guided tour', () => {
+            beforeEach(() => {
+                $timeout.flush();
+            })
+            ;
+            it('should look at the guidedTour cookie', () => {
+                expect($cookieStore.get).toHaveBeenCalledWith('guidedTour');
+            });
 
-        it('should load average interest rate from API', () => {
-            expect(dashboardDataService.averageIntRate).toHaveBeenCalled();
-            expect(dashboardController.averageIntRate).toBe(averageIntRate);
-        });
+            it('should init the guided tour', () => {
+                expect(dashboardGuidedTourService.init).toHaveBeenCalled();
+            });
 
-        it('should load current roi rate from API', () => {
-            expect(dashboardDataService.currentRoiRate).toHaveBeenCalled();
-            expect(dashboardController.currentRoiRate).toBe(currentRoiRate);
-        });
+            it('should start the guided tour', () => {
+                expect(dashboardGuidedTourService.start).toHaveBeenCalled();
+            });
 
-        it('should load expected roi rate from API', () => {
-            expect(dashboardDataService.expectedRoiRate).toHaveBeenCalled();
-            expect(dashboardController.expectedRoiRate).toBe(expectedRoiRate);
-        });
-
-        it('should get a promise containing the current loans', () => {
-            expect(dashboardDataService.currentLoansPromise).toHaveBeenCalled();
-        });
-
-        it('should get a promise containing the portfolio allocation', () => {
-            expect(dashboardDataService.platformAllocationPromise).toHaveBeenCalled();
-        });
-
-        it('should get a promise containing the risk diversification', () => {
-            expect(dashboardDataService.riskDiversificationPromise).toHaveBeenCalled();
+            it('should remove the cookie', () => {
+                expect($cookieStore.remove).toHaveBeenCalledWith('guidedTour');
+            });
         });
     });
 });

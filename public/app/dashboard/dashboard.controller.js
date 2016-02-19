@@ -15,7 +15,7 @@
     'use strict';
 
     class DashboardController {
-        constructor(cssInjector, dashboardDataService, flotChartService) {
+        constructor(cssInjector, dashboardDataService, flotChartService, $scope, $timeout, dashboardGuidedTourService, $cookieStore) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -38,6 +38,20 @@
             }
 
             vm.loansAcquiredPerDayOption = flotChartService.barChartOptions;
+
+            if ($cookieStore.get('guidedTour')) {
+                dashboardGuidedTourService.init();
+
+                $timeout(() => {
+                    dashboardGuidedTourService.start();
+                }, 1000);
+
+                $scope.$on('$destroy', function() {
+                    dashboardGuidedTourService.end();
+                });
+
+$cookieStore.remove('guidedTour');
+            }
         }
     }
 

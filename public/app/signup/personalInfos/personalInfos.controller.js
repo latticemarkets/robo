@@ -68,6 +68,7 @@
                     userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, portfolio, vm.firstName, vm.lastName,
                         response => {
                             authenticationService.authenticate(response.data.token, email);
+                            $cookieStore.put('guidedTour', true);
                             $cookieStore.remove('signup.email');
                             $cookieStore.remove('signup.password');
                             $cookieStore.remove('signup.terms');
