@@ -482,6 +482,25 @@
                         }
                     };
                     return criterion;
+                case 'loanAmount':
+                    criterion.type = 'rangeSlider';
+                    splitValue = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : [4000, 10000];
+                    criterion.ruleParams = splitValue[0];
+                    criterion.highValue = splitValue[1];
+                    criterion.slider = {};
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
+                    criterion.slider.min = 1000;
+                    criterion.slider.max = 35000;
+                    criterion.slider.step = 1000;
+                    criterion.slider.format = (ruleParams, highValue) => {
+                        if (ruleParams >= criterion.slider.min && highValue <= criterion.slider.max) {
+                            return `From ${this.$filter('currency')(ruleParams)} to ${this.$filter('currency')(highValue)}`;
+                        }
+                        else {
+                            return `Error`;
+                        }
+                    };
+                    return criterion;
                 case 'subGrade':
                     criterion.type = 'rangeSlider';
                     splitValue = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : ['A3', 'B4'];
