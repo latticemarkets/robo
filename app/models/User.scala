@@ -42,7 +42,8 @@ case class Platform(
                      accountId: String,
                      apiKey: String,
                      primary: Market,
-                     secondary: Market
+                     secondary: Market,
+                     autoEnabled: Boolean
                    )
 
 case class Login(

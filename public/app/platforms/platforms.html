@@ -10,7 +10,7 @@
                     </div>
                     <div class="panel-body">
                         <p class="text-muted text-center">
-                            Current Primary Strategy : <u>{{ vm.fromCamelCaseToTitle(platform.primary.strategy) }}</u>
+                            Current Strategy : <toggle-switch data-ng-model="platform.autoEnabled" on-label="Auto" off-label="Manual"><toggle-switch>
                         </p>
 
                         <div class="text-center">

@@ -2457,6 +2457,12 @@ img.not-ticked {
 .fa.fa-check-square-o{
 color: green;
 }
+.toggle-switch {
+    border-radius: 9px;
+}
+.toggle-switch .switch-left {
+    background-color: #3498db;
+}
 /*------------------------
  * STRATEGIES
  *----------------------*/
