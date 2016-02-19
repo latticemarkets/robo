@@ -32,9 +32,13 @@
         unexpendCriteriaObject(rule) {
             const tmpRule = JSON.parse(JSON.stringify(rule));
             tmpRule.criteria = tmpRule.criteria.map(criterion => {
-                if (criterion.attribute === 'price' || criterion.attribute === 'premiumDiscount' || criterion.attribute == 'maxDebtIncomeWithLoan' || criterion.attribute == 'maxDebtIncome') {
+                if (criterion.attribute === 'price' || criterion.attribute === 'premiumDiscount') {
                     criterion.ruleParams = criterion.ruleParams / 100;
                     criterion.highValue = criterion.highValue / 100;
+                }
+
+                if (criterion.attribute == 'maxDebtIncome' || criterion.attribute == 'maxDebtIncomeWithLoan') {
+                    criterion.ruleParams = criterion.ruleParams / 100;
                 }
 
                 switch (criterion.type) {
@@ -60,10 +64,6 @@
                         : 'Any';
                         criterion.ruleType = 'InSet';
                         break;
-                }
-
-                if (criterion.attribute === 'maxDebtIncomeWithLoan') {
-                    criterion.ruleParams = criterion.ruleParams / 100;
                 }
 
                 delete criterion[criterion.type];
@@ -106,22 +106,6 @@
                         }
                         else if (ruleParams === criterion.slider.max) {
                             return `No limit`;
-                        }
-                        else {
-                            return `Error`;
-                        }
-                    };
-                    return criterion;
-                case 'maxDebtIncomeWithLoan':
-                    criterion.type = 'slider';
-                    criterion.ruleParams = criterion.ruleParams ? criterion.ruleParams * 100 : 30;
-                    criterion.slider = {};
-                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
-                    criterion.slider.min = 10;
-                    criterion.slider.max = 40;
-                    criterion.slider.format = ruleParams => {
-                        if (ruleParams >= criterion.slider.min && ruleParams <= criterion.slider.max) {
-                            return `No more than ${ruleParams}%`;
                         }
                         else {
                             return `Error`;
@@ -259,6 +243,22 @@
                     criterion.slider.min = 10;
                     criterion.slider.max = 40;
                     criterion.slider.step = 1;
+                    criterion.slider.format = ruleParams => {
+                        if (ruleParams >= criterion.slider.min && ruleParams <= criterion.slider.max) {
+                            return `No more than ${ruleParams}%`;
+                        }
+                        else {
+                            return `Error`;
+                        }
+                    };
+                    return criterion;
+                case 'maxDebtIncomeWithLoan':
+                    criterion.type = 'slider';
+                    criterion.ruleParams = criterion.ruleParams ? this.splitValues(criterion.ruleParams)[0] * 100 : 30;
+                    criterion.slider = {};
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
+                    criterion.slider.min = 10;
+                    criterion.slider.max = 40;
                     criterion.slider.format = ruleParams => {
                         if (ruleParams >= criterion.slider.min && ruleParams <= criterion.slider.max) {
                             return `No more than ${ruleParams}%`;
