@@ -187,7 +187,7 @@ describe('StrategyEditController', () => {
             });
 
             it('should initialize a new rule object', () => {
-                expect(strategyEditController.rule).toEqual({ id: jasmine.any(String), name: jasmine.any(String), criteria: [], originator: jasmine.any(String), expectedReturn: jasmine.any(Object), loansAvailablePerWeek: jasmine.any(Number), moneyAvailablePerWeek: jasmine.any(Number), isEnabled: jasmine.any(Boolean), minNoteAmount: 25, maxNoteAmount: 25 });
+                expect(strategyEditController.rule).toEqual({ id: jasmine.any(String), name: jasmine.any(String), criteria: [], originator: jasmine.any(String), expectedReturn: jasmine.any(Object), loansAvailablePerWeek: jasmine.any(Number), moneyAvailablePerWeek: jasmine.any(Number), isEnabled: jasmine.any(Boolean), minNoteAmount: 25, maxNoteAmount: 25, maximumDailyInvestment: 250 });
             });
         });
     });
