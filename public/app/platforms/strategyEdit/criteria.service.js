@@ -37,6 +37,11 @@
                     criterion.highValue = this.convertNumberToSubGrade(criterion.highValue);
                 }
 
+                if (criterion.attribute === 'price') {
+                    criterion.ruleParams = criterion.ruleParams / 100;
+                    criterion.highValue = criterion.highValue / 100;
+                }
+
                 switch (criterion.type) {
                     case 'slider':
                         criterion.ruleParams = `${criterion.ruleParams},${criterion.ruleParams}`;
@@ -501,6 +506,25 @@
                         }
                     };
                     return criterion;
+                case 'price':
+                    criterion.type = 'rangeSlider';
+                    splitValue = criterion.ruleParams ? this.splitValues(criterion.ruleParams).map(v => v * 100) : [30, 70];
+                    criterion.ruleParams = splitValue[0];
+                    criterion.highValue = splitValue[1];
+                    criterion.slider = {};
+                    criterion.slider.name = this.getCriteriaName(criterion.attribute);
+                    criterion.slider.min = 0;
+                    criterion.slider.max = 100;
+                    criterion.slider.step = 1;
+                    criterion.slider.format = (ruleParams, highValue) => {
+                        if (ruleParams >= criterion.slider.min && highValue <= criterion.slider.max) {
+                            return `From ${ruleParams}% to ${highValue}%`;
+                        }
+                        else {
+                            return `Error`;
+                        }
+                    };
+                    return criterion;
                 case 'subGrade':
                     criterion.type = 'rangeSlider';
                     splitValue = criterion.ruleParams ? this.splitValues(criterion.ruleParams) : ['A3', 'B4'];
@@ -811,8 +835,6 @@
             });
             return uuid;
         }
-
-
     }
 
     angular
