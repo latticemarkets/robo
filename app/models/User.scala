@@ -48,8 +48,6 @@ case class UpdatePersonalData(email: String, firstName: String, lastName: String
 
 case class DestroyAccount(email: String, password: String)
 
-case class UpdateStrategies(email: String, rules: Seq[ManualStrategy], platform: String, market: String)
-
 object User {
 
   val collectionName = "user"

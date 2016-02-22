@@ -96,15 +96,6 @@ object Forms {
     )(DestroyAccount.apply)(DestroyAccount.unapply)
   )
 
-  def updateRules = Form(
-    mapping(
-      "email" -> email,
-      "rules" -> seq(manualStrategyMapping),
-      "platform" -> nonEmptyText,
-      "market" -> nonEmptyText
-    )(UpdateStrategies.apply)(UpdateStrategies.unapply)
-  )
-
   def expectedReturnMapping = mapping(
      "value" -> bigDecimal,
      "percent" -> bigDecimal,
