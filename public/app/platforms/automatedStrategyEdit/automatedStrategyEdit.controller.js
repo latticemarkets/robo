@@ -42,17 +42,17 @@
             ];
 
             const barDistributionColumns = [
-                [['distribution', 0.1, 10, 0, 0, 0, 0, 0]],
-                [['distribution', 0.1, 10, 0, 0.2, 0, 0, 0]],
-                [['distribution', 0.1, 10, 0.15, 0.3, 0.2, 0, 0]],
-                [['distribution', 0.1, 10, 0.3, 1, 0.5, 0.1, 0]],
-                [['distribution', 0.1, 10, 0.6, 2, 1, 0.3, 0]],
-                [['distribution', 0.1, 10, 0.9, 5, 2.5, 0.4, 0]],
-                [['distribution', 0.1, 10, 1.4, 7.5, 3.2, 0.6, 0]],
-                [['distribution', 0, 8, 2.5, 10, 3.5, 0.7, 0]],
-                [['distribution', 0, 5, 3, 10, 5, 0.7, 0]],
-                [['distribution', 0, 2, 3, 10, 5, 0.7, 0]],
-                [['distribution', 0, 0, 3, 10, 5, 0.7, 0]]
+                [['Estimated Loan Distribution', 0.1, 10, 0, 0, 0, 0, 0]],
+                [['Estimated Loan Distribution', 0.1, 10, 0, 0.2, 0, 0, 0]],
+                [['Estimated Loan Distribution', 0.1, 10, 0.15, 0.3, 0.2, 0, 0]],
+                [['Estimated Loan Distribution', 0.1, 10, 0.3, 1, 0.5, 0.1, 0]],
+                [['Estimated Loan Distribution', 0.1, 10, 0.6, 2, 1, 0.3, 0]],
+                [['Estimated Loan Distribution', 0.1, 10, 0.9, 5, 2.5, 0.4, 0]],
+                [['Estimated Loan Distribution', 0.1, 10, 1.4, 7.5, 3.2, 0.6, 0]],
+                [['Estimated Loan Distribution', 0, 8, 2.5, 10, 3.5, 0.7, 0]],
+                [['Estimated Loan Distribution', 0, 5, 3, 10, 5, 0.7, 0]],
+                [['Estimated Loan Distribution', 0, 2, 3, 10, 5, 0.7, 0]],
+                [['Estimated Loan Distribution', 0, 0, 3, 10, 5, 0.7, 0]]
             ];
 
             const splineChartOptions = {
@@ -64,6 +64,9 @@
                     columns: splineDistributionColumns[vm.strategyValue],
                     types: {
                         distribution: 'area-spline'
+                    },
+                    colors: {
+                        'distribution': '#3498db'
                     }
                 },
                 axis: {
@@ -91,7 +94,20 @@
                 bindto: `#${vm.barChartId}`,
                 data: {
                     columns: barDistributionColumns[vm.strategyValue],
-                    type: 'bar'
+                    type: 'bar',
+                    colors: {
+                        'Estimated Loan Distribution': '#3498db'
+                    }
+                },
+                axis: {
+                    x: {
+                        tick: {
+                            format: v => `${['A', 'B', 'C', 'D', 'E', 'F', 'G'][v]}`
+                        }
+                    },
+                    y: {
+                        show: false
+                    }
                 }
             };
 
