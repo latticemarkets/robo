@@ -138,6 +138,4 @@ object Forms {
     "ruleType" -> nonEmptyText, // InSet, InRange
     "ruleParams" -> nonEmptyText // format: for InSet: coma separated values, for InRange: lower bound, upperbound 
   )(Rule.apply)(Rule.unapply)
-
-
 }
