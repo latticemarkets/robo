@@ -19,6 +19,7 @@ case class Platform(
        apiKey: String,
        primary: PrimaryMarket,
        secondary: SecondaryMarket,
+       automatedStrategy: AutomatedStrategy,
        mode: String
      ) {
   def originatorEnum = OriginatorEnum.withName(originator)

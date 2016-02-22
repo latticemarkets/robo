@@ -40,18 +40,19 @@ object Forms {
       "apiKey" -> nonEmptyText,
       "primary" -> primaryMarketMapping,
       "secondary" -> secondaryMarketMapping,
+      "automatedStrategy" -> automatedStrategyMapping,
       "mode" -> nonEmptyText
     )(Platform.apply)(Platform.unapply)
 
   def primaryMarketMapping = mapping(
     "buyStrategies" -> set(manualStrategyMapping),
-    "automatedStrategy" -> optional(automatedStrategyMapping)
+    "isEnabled" -> boolean
   )(PrimaryMarket.apply)(PrimaryMarket.unapply)
 
   def secondaryMarketMapping = mapping(
     "buyStrategies" -> set(manualStrategyMapping),
     "sellStrategies" -> set(manualStrategyMapping),
-    "autoStrategy" -> optional(automatedStrategyMapping)
+    "isEnabled" -> boolean
   )(SecondaryMarket.apply)(SecondaryMarket.unapply)
 
   def manualStrategyMapping = mapping(

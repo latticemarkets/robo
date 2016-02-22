@@ -13,8 +13,4 @@ package models
   * Created on 22/02/2016
   */
 
-case class SecondaryMarket(
-        buyStrategies: Set[ManualStrategy],
-        sellStrategies: Set[ManualStrategy],
-        autoStrategy: Option[AutomatedStrategy]
-        )
+case class SecondaryMarket(buyStrategies: Set[ManualStrategy], sellStrategies: Set[ManualStrategy], isEnabled: Boolean)
