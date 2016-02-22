@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 import controllers.Security.HasToken
 import core.{Forms, Hash}
-import models.{MarketType, Market, User}
+import models.{MarketType, User}
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -267,7 +267,7 @@ class Users extends Controller {
         User.findByEmail(data.email) flatMap (_.map (user => {
           user.platforms.find(_.originator == data.platform) map (platform => {
             val updatedPlatform =
-              if (data.market == MarketType.primary.toString) platform.copy(primary = platform.primary.copy(rules = data.rules))
+              if (data.market == MarketType.primary.toString) platform.copy(primary = platform.primary.copy(buyStrategies = data.rules))
               else platform.copy(secondary = platform.secondary.copy(rules = data.rules))
             val platforms = user.platforms.map {
               case p if p.originator == data.platform => updatedPlatform

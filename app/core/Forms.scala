@@ -38,15 +38,40 @@ object Forms {
       "originator" -> nonEmptyText,
       "accountId" -> nonEmptyText,
       "apiKey" -> nonEmptyText,
-      "primary" -> marketMapping,
-      "secondary" -> marketMapping,
+      "primary" -> primaryMarketMapping,
+      "secondary" -> secondaryMarketMapping,
       "mode" -> nonEmptyText
     )(Platform.apply)(Platform.unapply)
 
-  def marketMapping = mapping(
-    "strategy" -> nonEmptyText,
-    "rules" -> seq(ruleMapping)
-  )(Market.apply)(Market.unapply)
+  def primaryMarketMapping = mapping(
+    "buyStrategies" -> set(manualStrategyMapping),
+    "automatedStrategy" -> optional(automatedStrategyMapping)
+  )(PrimaryMarket.apply)(PrimaryMarket.unapply)
+
+  def secondaryMarketMapping = mapping(
+    "buyStrategies" -> set(manualStrategyMapping),
+    "sellStrategies" -> set(manualStrategyMapping),
+    "autoStrategy" -> optional(automatedStrategyMapping)
+  )(SecondaryMarket.apply)(SecondaryMarket.unapply)
+
+  def manualStrategyMapping = mapping(
+    "id" -> nonEmptyText,
+    "name" -> nonEmptyText,
+    "originator" -> nonEmptyText,
+    "expectedReturn" -> expectedReturnMapping,
+    "loansAvailablePerWeek" -> bigDecimal,
+    "moneyAvailablePerWeek" -> bigDecimal,
+    "rules" -> seq(ruleMapping),
+    "isEnabled" -> boolean,
+    "minNoteAmount" -> bigDecimal,
+    "maxNoteAmount" -> bigDecimal,
+    "maximumDailyInvestment" -> bigDecimal
+  )(ManualStrategy.apply)(ManualStrategy.unapply)
+
+  def automatedStrategyMapping = mapping(
+    "aggressivity" -> number,
+    "originator" -> nonEmptyText
+  )(AutomatedStrategy.apply)(AutomatedStrategy.unapply)
 
   def addPlatformForm = Form(
     mapping(
@@ -96,25 +121,11 @@ object Forms {
   def updateRules = Form(
     mapping(
       "email" -> email,
-      "rules" -> seq(ruleMapping),
+      "rules" -> seq(manualStrategyMapping),
       "platform" -> nonEmptyText,
       "market" -> nonEmptyText
-    )(UpdateRules.apply)(UpdateRules.unapply)
+    )(UpdateStrategies.apply)(UpdateStrategies.unapply)
   )
-
-  def ruleMapping = mapping(
-     "id" -> nonEmptyText,
-     "name" -> nonEmptyText,
-     "originator" -> nonEmptyText,
-     "expectedReturn" -> expectedReturnMapping,
-     "loansAvailablePerWeek" -> bigDecimal,
-     "moneyAvailablePerWeek" -> bigDecimal,
-     "criteria" -> seq(criterionMapping),
-     "isEnabled" -> boolean,
-     "minNoteAmount" -> bigDecimal,
-     "maxNoteAmount" -> bigDecimal,
-     "maximumDailyInvestment" -> bigDecimal
-     )(Rule.apply)(Rule.unapply)
 
   def expectedReturnMapping = mapping(
      "value" -> bigDecimal,
@@ -122,10 +133,11 @@ object Forms {
      "margin" -> bigDecimal
   )(ExpectedReturn.apply)(ExpectedReturn.unapply)
 
-  def criterionMapping = mapping(
+  def ruleMapping = mapping(
     "attribute" -> nonEmptyText,
     "ruleType" -> nonEmptyText, // InSet, InRange
     "ruleParams" -> nonEmptyText // format: for InSet: coma separated values, for InRange: lower bound, upperbound 
-    // todo : validate that it is a valid key
-  )(Criterion.apply)(Criterion.unapply)
+  )(Rule.apply)(Rule.unapply)
+
+
 }

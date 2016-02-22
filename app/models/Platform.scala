@@ -17,8 +17,8 @@ case class Platform(
        originator: String,
        accountId: String,
        apiKey: String,
-       primary: Market,
-       secondary: Market,
+       primary: PrimaryMarket,
+       secondary: SecondaryMarket,
        mode: String
      ) {
   def originatorEnum = OriginatorEnum.withName(originator)
