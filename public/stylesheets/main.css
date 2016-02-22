@@ -2538,3 +2538,9 @@ color: green;
 a.remove-button {
     color: white!important;
 }
+/*------------------------
+ * AUTOMATED STRATEGY
+ *----------------------*/
+.strategy-slider-label {
+    position: absolute;
+}

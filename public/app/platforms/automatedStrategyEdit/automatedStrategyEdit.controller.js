@@ -67,6 +67,16 @@
                 onResizeService.removeOnResizeCallback(vm.splineChartId);
             });
 
+            vm.strategySliderOptions = {
+                floor: 0,
+                ceil: 10,
+                step: 1,
+                translate: () => "",
+                onEnd: (id, value) => {},
+                onChange: (id, value) => {},
+                hideLimitLabels: true
+            };
+            vm.strategyValue = 0;
 
             function generateSplineChart() {
                 c3.generate(splineChartOption);
