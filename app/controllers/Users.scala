@@ -75,10 +75,6 @@ class Users extends Controller {
     Ok(Json.obj("allocatedCapital" -> 300000))
   }
 
-  def averageMaturity() = HasToken {
-    Ok(Json.obj("averageMaturity" -> LocalDate.parse("2016-05-11")))
-  }
-
   def averageIntRate() = HasToken {
     Ok(Json.obj("averageIntRate" -> 0.12))
   }

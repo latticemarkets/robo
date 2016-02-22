@@ -61,9 +61,9 @@
               placement: "bottom"
             },
             {
-              element: ".averageMaturity",
-              title: "Average maturity",
-              content: "This is your average maturity.",
+              element: ".expectedReturns",
+              title: "Net capital gains",
+              content: "This is your net capital gains.",
               placement: "bottom"
             },
             {

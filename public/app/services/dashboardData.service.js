@@ -28,10 +28,6 @@
             return this.$http.get('/api/dashboard/capital/allocated').then(callback, this.notificationService.apiError());
         }
 
-        averageMaturity(callback) {
-            return this.$http.get('/api/dashboard/averageMaturity').then(callback, this.notificationService.apiError());
-        }
-
         averageIntRate(callback) {
             return this.$http.get('/api/dashboard/averageIntRate').then(callback, this.notificationService.apiError());
         }
