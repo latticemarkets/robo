@@ -6,13 +6,14 @@
  * PDX Technology, except with written permission of PDX Technology.
  */
 
-package controllers
+package controllers.users
 
 import java.time.LocalDate
 
 import controllers.Security.HasToken
-import core.{ModelForms, Hash}
-import models.{MarketType, User}
+import controllers.Utils
+import core.{Hash, ModelForms}
+import models.User
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -26,14 +27,10 @@ import scala.concurrent.Future
 
 class Users extends Controller {
 
-  def respondWrongDataSent: Result = {
-    BadRequest("Wrong data sent.")
-  }
-
   def register = Action.async { implicit request =>
     ModelForms.registerForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful( respondWrongDataSent )
+        Future.successful( Utils.responseOnWrongDataSent )
       },
       providedInfos => {
         User.store(providedInfos) map (optUser => optUser.map(user => Ok(Json.obj("token" -> user.token))).getOrElse(BadRequest("An error occurred when inserting data")))
@@ -42,9 +39,9 @@ class Users extends Controller {
   }
 
   def login = Action.async { implicit request =>
-    ModelForms.loginForm.bindFromRequest.fold(
+    UsersForms.loginForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful( respondWrongDataSent )
+        Future.successful( Utils.responseOnWrongDataSent )
       },
       login => {
         User.findByEmail(login.email) flatMap (optUser => optUser map (user =>
@@ -96,7 +93,7 @@ class Users extends Controller {
   }
 
   def userData(email: String) = HasToken.async {
-    User.findByEmail(email) map ( _.map (user => Ok(Json.toJson(user))) getOrElse respondWrongDataSent)
+    User.findByEmail(email) map ( _.map (user => Ok(Json.toJson(user))) getOrElse Utils.responseOnWrongDataSent)
   }
 
   def currentLoans() = HasToken {
@@ -181,9 +178,9 @@ class Users extends Controller {
   }
 
   def updatePassword() = HasToken.async { implicit request =>
-    ModelForms.updatePasswordForm.bindFromRequest.fold(
+    UsersForms.updatePasswordForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful( respondWrongDataSent )
+        Future.successful( Utils.responseOnWrongDataSent )
       },
       infos => {
         User.findByEmail(infos.email) flatMap (optUser => optUser map (user =>
@@ -211,19 +208,19 @@ class Users extends Controller {
   }
 
   def updatePersonalData() = HasToken.async { implicit request =>
-    ModelForms.updatePersonalData.bindFromRequest.fold(
-      formWithErrors => Future.successful( respondWrongDataSent ),
+    UsersForms.updatePersonalData.bindFromRequest.fold(
+      formWithErrors => Future.successful( Utils.responseOnWrongDataSent ),
       data => {
         User.findByEmail(data.email) flatMap (_.map (user => {
           User.update(user.copy(firstName = data.firstName, lastName = data.lastName, birthday = data.birthday)) map (user => Ok(""))
-        }) getOrElse Future.successful( respondWrongDataSent ))
+        }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
       }
     )
   }
 
   def destroyAccount() = HasToken.async { implicit request =>
-    ModelForms.destroyAccountForm.bindFromRequest.fold(
-      _ => Future.successful( respondWrongDataSent ),
+    UsersForms.destroyAccountForm.bindFromRequest.fold(
+      _ => Future.successful( Utils.responseOnWrongDataSent ),
       data => {
         User.findByEmail(data.email) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(data.password, user.password)) {

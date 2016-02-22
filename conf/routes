@@ -5,13 +5,13 @@
 # Home page
 GET     /                                               controllers.Application.index
 
-POST    /api/register                                   controllers.Users.register
-POST    /api/login                                      controllers.Users.login
-PUT     /api/user/password                              controllers.Users.updatePassword
-PUT     /api/user/personalData                          controllers.Users.updatePersonalData
-GET     /api/user/:email                                controllers.Users.isUsed(email)
-GET     /api/user/infos/:email                          controllers.Users.userData(email)
-POST    /api/user/destroy                               controllers.Users.destroyAccount
+POST    /api/register                                   controllers.users.Users.register
+POST    /api/login                                      controllers.users.Users.login
+PUT     /api/user/password                              controllers.users.Users.updatePassword
+PUT     /api/user/personalData                          controllers.users.Users.updatePersonalData
+GET     /api/user/:email                                controllers.users.Users.isUsed(email)
+GET     /api/user/infos/:email                          controllers.users.Users.userData(email)
+POST    /api/user/destroy                               controllers.users.Users.destroyAccount
 
 POST    /api/user/platform                              controllers.platforms.Platforms.addPlatform
 PUT     /api/user/p2pPlatforms                          controllers.platforms.Platforms.updatePlatforms
@@ -21,19 +21,20 @@ PUT     /api/strategies/secondary/buy                   controllers.strategies.S
 PUT     /api/strategies/secondary/sell                  controllers.strategies.Strategies.updateSecondaryMarketSellStrategies
 PUT     /api/strategies/auto                            controllers.strategies.Strategies.updateAutomatedStrategy
 
-GET     /api/dashboard/capital/available                controllers.Users.availableCapital
-GET     /api/dashboard/capital/allocated                controllers.Users.allocatedCapital
-GET     /api/dashboard/averageIntRate                   controllers.Users.averageIntRate
-GET     /api/dashboard/expectedReturns                  controllers.Users.expectedReturns
-GET     /api/dashboard/lastLoanMaturity                 controllers.Users.lastLoanMaturity
-GET     /api/dashboard/currentRoiRate                   controllers.Users.currentRoiRate
-GET     /api/dashboard/expectedRoiRate                  controllers.Users.expectedRoiRate
-GET     /api/dashboard/currentLoans                     controllers.Users.currentLoans
-GET     /api/dashboard/loansAcquiredPerDayLastWeek      controllers.Users.loansAcquiredPerDayLastWeek
-GET     /api/dashboard/platformAllocation               controllers.Users.platformAllocation
-GET     /api/dashboard/riskDiversification              controllers.Users.riskDiversification
+GET     /api/dashboard/capital/available                controllers.users.Users.availableCapital
+GET     /api/dashboard/capital/allocated                controllers.users.Users.allocatedCapital
+GET     /api/dashboard/averageMaturity                  controllers.users.Users.averageMaturity
+GET     /api/dashboard/averageIntRate                   controllers.users.Users.averageIntRate
+GET     /api/dashboard/expectedReturns                  controllers.users.Users.expectedReturns
+GET     /api/dashboard/lastLoanMaturity                 controllers.users.Users.lastLoanMaturity
+GET     /api/dashboard/currentRoiRate                   controllers.users.Users.currentRoiRate
+GET     /api/dashboard/expectedRoiRate                  controllers.users.Users.expectedRoiRate
+GET     /api/dashboard/currentLoans                     controllers.users.Users.currentLoans
+GET     /api/dashboard/loansAcquiredPerDayLastWeek      controllers.users.Users.loansAcquiredPerDayLastWeek
+GET     /api/dashboard/platformAllocation               controllers.users.Users.platformAllocation
+GET     /api/dashboard/riskDiversification              controllers.users.Users.riskDiversification
 
-GET     /api/portfolio/suggestion                       controllers.Users.portfolioSuggestion
+GET     /api/portfolio/suggestion                       controllers.users.Users.portfolioSuggestion
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

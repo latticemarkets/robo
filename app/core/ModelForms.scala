@@ -65,13 +65,6 @@ object ModelForms {
     "originator" -> nonEmptyText
   )(AutomatedStrategy.apply)(AutomatedStrategy.unapply)
 
-  def loginForm = Form(
-    mapping(
-      "email" -> email,
-      "password" -> nonEmptyText
-    )(Login.apply)(Login.unapply)
-  )
-
   def platformMapping = mapping(
     "originator" -> nonEmptyText,
     "accountId" -> nonEmptyText,
@@ -81,30 +74,6 @@ object ModelForms {
     "automatedStrategy" -> ModelForms.automatedStrategyMapping,
     "mode" -> nonEmptyText
   )(Platform.apply)(Platform.unapply)
-
-  def updatePasswordForm = Form(
-    mapping(
-      "email" -> email,
-      "oldPassword" -> nonEmptyText,
-      "newPassword" -> nonEmptyText
-    )(UpdatePassword.apply)(UpdatePassword.unapply)
-  )
-
-  def updatePersonalData = Form(
-    mapping(
-      "email" -> email,
-      "firstName" -> nonEmptyText,
-      "lastName" -> nonEmptyText,
-      "birthday" -> date("MM/dd/yyyy")
-    )(UpdatePersonalData.apply)(UpdatePersonalData.unapply)
-  )
-
-  def destroyAccountForm = Form(
-    mapping(
-      "email" -> email,
-      "password" -> nonEmptyText
-    )(DestroyAccount.apply)(DestroyAccount.unapply)
-  )
 
   def expectedReturnMapping = mapping(
      "value" -> bigDecimal,
