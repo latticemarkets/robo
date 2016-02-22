@@ -46,6 +46,9 @@
                     y: {
                         show: false
                     }
+                },
+                point: {
+                    r: 0
                 }
             };
 
