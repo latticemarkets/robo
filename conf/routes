@@ -13,9 +13,11 @@ PUT     /api/user/personalData                          controllers.Users.update
 GET     /api/user/:email                                controllers.Users.isUsed(email)
 GET     /api/user/infos/:email                          controllers.Users.userData(email)
 POST    /api/user/destroy                               controllers.Users.destroyAccount
-PUT     /api/user/rules                                 controllers.Users.updateRules
 POST    /api/user/platform                              controllers.Users.addPlatform
-PUT     /api/user/strategy/auto                         controllers.Users.updateAutoStrategy
+
+PUT     /api/strategies/primary/buy                     controllers.strategies.Strategies.updatePrimaryMarketBuyStrategies
+PUT     /api/strategies/secondary/buy                   controllers.strategies.Strategies.updateSecondaryMarketBuyStrategies
+PUT     /api/strategies/secondary/sell                  controllers.strategies.Strategies.updateSecondaryMarketSellStrategies
 
 GET     /api/dashboard/capital/available                controllers.Users.availableCapital
 GET     /api/dashboard/capital/allocated                controllers.Users.allocatedCapital
