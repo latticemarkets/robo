@@ -9,9 +9,8 @@
 package controllers.strategies
 
 import controllers.Security.HasToken
-import models.{Platform, PrimaryMarket, ManualStrategy, User}
-import play.api.mvc.Controller
-import play.api.mvc.Result
+import models.{Platform, User}
+import play.api.mvc.{Controller, Result}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -23,10 +22,10 @@ import scala.concurrent.Future
 class Strategies extends Controller {
 
   def updatePrimaryMarketBuyStrategies() = HasToken.async { implicit request =>
-    StrategiesForms.updateBuyStrategiesForm.bindFromRequest.fold(
+    StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
       formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
       data => {
-        updateBuyStrategies(
+        updateStrategies(
           data,
           (data, platform) => platform.copy(primary = platform.primary.copy(buyStrategies = data.strategies))
         )
@@ -35,10 +34,10 @@ class Strategies extends Controller {
   }
 
   def updateSecondaryMarketBuyStrategies() = HasToken.async { implicit request =>
-    StrategiesForms.updateBuyStrategiesForm.bindFromRequest.fold(
+    StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
       formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
       data => {
-        updateBuyStrategies(
+        updateStrategies(
           data,
           (data, platform) => platform.copy(secondary = platform.secondary.copy(buyStrategies = data.strategies))
         )
@@ -46,7 +45,19 @@ class Strategies extends Controller {
     )
   }
 
-  def updateBuyStrategies(data: UpdateBuyStrategies, platformUpdater: (UpdateBuyStrategies, Platform) => Platform): Future[Result] = {
+  def updateSecondaryMarketSellStrategies() = HasToken.async { implicit request =>
+    StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
+      formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
+      data => {
+        updateStrategies(
+          data,
+          (data, platform) => platform.copy(secondary = platform.secondary.copy(sellStrategies = data.strategies))
+        )
+      }
+    )
+  }
+
+  def updateStrategies(data: UpdateStrategies, platformUpdater: (UpdateStrategies, Platform) => Platform): Future[Result] = {
     User.findByEmail(data.email) flatMap (_.map(user => {
       user.platforms.find(_.originator == data.platform) map (platform => {
         val updatedPlatform = platformUpdater(data, platform)
