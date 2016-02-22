@@ -37,6 +37,11 @@
                     }
                 },
                 axis: {
+                    x: {
+                        tick: {
+                            format: v => `${v}%`
+                        }
+                    },
                     y: {
                         show: false
                     }
