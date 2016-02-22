@@ -39,7 +39,8 @@
                 axis: {
                     x: {
                         tick: {
-                            format: v => `${v}%`
+                            format: v => `${v}%`,
+                            values: [-5, 0, 5, 10, 15]
                         }
                     },
                     y: {
