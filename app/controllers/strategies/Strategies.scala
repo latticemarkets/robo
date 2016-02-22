@@ -24,40 +24,44 @@ class Strategies extends Controller {
   def updatePrimaryMarketBuyStrategies() = HasToken.async { implicit request =>
     StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
       formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
-      data => {
-        updateStrategies(
+      data => updateStrategies[UpdateStrategies](
           data,
           (data, platform) => platform.copy(primary = platform.primary.copy(buyStrategies = data.strategies))
-        )
-      }
+      )
     )
   }
 
   def updateSecondaryMarketBuyStrategies() = HasToken.async { implicit request =>
     StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
       formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
-      data => {
-        updateStrategies(
+      data => updateStrategies[UpdateStrategies](
           data,
           (data, platform) => platform.copy(secondary = platform.secondary.copy(buyStrategies = data.strategies))
-        )
-      }
+      )
     )
   }
 
   def updateSecondaryMarketSellStrategies() = HasToken.async { implicit request =>
     StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
       formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
-      data => {
-        updateStrategies(
+      data => updateStrategies[UpdateStrategies](
           data,
           (data, platform) => platform.copy(secondary = platform.secondary.copy(sellStrategies = data.strategies))
-        )
-      }
+      )
     )
   }
 
-  def updateStrategies(data: UpdateStrategies, platformUpdater: (UpdateStrategies, Platform) => Platform): Future[Result] = {
+  def updateAutomatedStrategy() = HasToken.async { implicit request =>
+    StrategiesForms.updateAutomatedStrategy.bindFromRequest.fold(
+      formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
+      data => updateStrategies[UpdateAutomatedStrategy](
+        data,
+        (data, platform) => platform.copy(automatedStrategy = data.autoStrategy)
+      )
+    )
+  }
+
+  def updateStrategies[T <: UpdatePlatform](data: T, platformUpdater: (T, Platform) => Platform): Future[Result] = {
     User.findByEmail(data.email) flatMap (_.map(user => {
       user.platforms.find(_.originator == data.platform) map (platform => {
         val updatedPlatform = platformUpdater(data, platform)

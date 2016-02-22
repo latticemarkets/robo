@@ -9,7 +9,7 @@
 package controllers.strategies
 
 import core.Forms
-import models.ManualStrategy
+import models.{AutomatedStrategy, ManualStrategy}
 import play.api.data.Form
 import play.api.data.Forms._
 
@@ -25,10 +25,29 @@ object StrategiesForms {
       "platform" -> nonEmptyText,
       "strategies" -> set(Forms.manualStrategyMapping)
   )(UpdateStrategies.apply)(UpdateStrategies.unapply))
+
+  def updateAutomatedStrategy = Form(
+    mapping(
+      "email" -> email,
+      "platform" -> nonEmptyText,
+      "autoStrategy" -> Forms.automatedStrategyMapping
+    )(UpdateAutomatedStrategy.apply)(UpdateAutomatedStrategy.unapply)
+  )
 }
 
+sealed class UpdatePlatform(
+             val email: String,
+             val platform: String
+           )
+
 case class UpdateStrategies(
-             email: String,
-             platform: String,
-             strategies: Set[ManualStrategy]
-             )
+           override val email: String,
+           override val platform: String,
+           strategies: Set[ManualStrategy]
+             ) extends UpdatePlatform(email, platform)
+
+case class UpdateAutomatedStrategy(
+            override val email: String,
+            override val platform: String,
+            autoStrategy: AutomatedStrategy
+            ) extends UpdatePlatform(email, platform)
