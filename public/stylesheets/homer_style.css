@@ -1533,6 +1533,7 @@ body {
 .content {
   padding: 25px 40px 40px 40px;
   min-width: 320px;
+  min-height: 800px;
 }
 .footer {
   padding: 10px 18px;
