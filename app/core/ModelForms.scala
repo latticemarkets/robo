@@ -8,7 +8,6 @@
 
 package core
 
-import controllers.platforms.PlatformsForms
 import models._
 import play.api.data.Form
 import play.api.data.Forms._

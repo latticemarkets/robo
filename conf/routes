@@ -21,18 +21,17 @@ PUT     /api/strategies/secondary/buy                   controllers.strategies.S
 PUT     /api/strategies/secondary/sell                  controllers.strategies.Strategies.updateSecondaryMarketSellStrategies
 PUT     /api/strategies/auto                            controllers.strategies.Strategies.updateAutomatedStrategy
 
-GET     /api/dashboard/capital/available                controllers.users.Users.availableCapital
-GET     /api/dashboard/capital/allocated                controllers.users.Users.allocatedCapital
-GET     /api/dashboard/averageMaturity                  controllers.users.Users.averageMaturity
-GET     /api/dashboard/averageIntRate                   controllers.users.Users.averageIntRate
-GET     /api/dashboard/expectedReturns                  controllers.users.Users.expectedReturns
-GET     /api/dashboard/lastLoanMaturity                 controllers.users.Users.lastLoanMaturity
-GET     /api/dashboard/currentRoiRate                   controllers.users.Users.currentRoiRate
-GET     /api/dashboard/expectedRoiRate                  controllers.users.Users.expectedRoiRate
-GET     /api/dashboard/currentLoans                     controllers.users.Users.currentLoans
-GET     /api/dashboard/loansAcquiredPerDayLastWeek      controllers.users.Users.loansAcquiredPerDayLastWeek
-GET     /api/dashboard/platformAllocation               controllers.users.Users.platformAllocation
-GET     /api/dashboard/riskDiversification              controllers.users.Users.riskDiversification
+GET     /api/dashboard/capital/available                controllers.portfolioMetrics.PortfolioMetrics.availableCapital
+GET     /api/dashboard/capital/allocated                controllers.portfolioMetrics.PortfolioMetrics.allocatedCapital
+GET     /api/dashboard/averageIntRate                   controllers.portfolioMetrics.PortfolioMetrics.averageIntRate
+GET     /api/dashboard/expectedReturns                  controllers.portfolioMetrics.PortfolioMetrics.expectedReturns
+GET     /api/dashboard/lastLoanMaturity                 controllers.portfolioMetrics.PortfolioMetrics.lastLoanMaturity
+GET     /api/dashboard/currentRoiRate                   controllers.portfolioMetrics.PortfolioMetrics.currentRoiRate
+GET     /api/dashboard/expectedRoiRate                  controllers.portfolioMetrics.PortfolioMetrics.expectedRoiRate
+GET     /api/dashboard/currentLoans                     controllers.portfolioMetrics.PortfolioMetrics.currentLoans
+GET     /api/dashboard/loansAcquiredPerDayLastWeek      controllers.portfolioMetrics.PortfolioMetrics.loansAcquiredPerDayLastWeek
+GET     /api/dashboard/platformAllocation               controllers.portfolioMetrics.PortfolioMetrics.platformAllocation
+GET     /api/dashboard/riskDiversification              controllers.portfolioMetrics.PortfolioMetrics.riskDiversification
 
 GET     /api/portfolio/suggestion                       controllers.users.Users.portfolioSuggestion
 
