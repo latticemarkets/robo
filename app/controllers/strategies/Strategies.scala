@@ -9,6 +9,7 @@
 package controllers.strategies
 
 import controllers.Security.HasToken
+import controllers.Utils
 import models.{Platform, User}
 import play.api.mvc.{Controller, Result}
 
@@ -23,7 +24,7 @@ class Strategies extends Controller {
 
   def updatePrimaryMarketBuyStrategies() = HasToken.async { implicit request =>
     StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
-      formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
+      Utils.badRequestOnError[UpdateStrategies],
       data => updateStrategies[UpdateStrategies](
           data,
           (data, platform) => platform.copy(primary = platform.primary.copy(buyStrategies = data.strategies))
@@ -33,7 +34,7 @@ class Strategies extends Controller {
 
   def updateSecondaryMarketBuyStrategies() = HasToken.async { implicit request =>
     StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
-      formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
+      Utils.badRequestOnError[UpdateStrategies],
       data => updateStrategies[UpdateStrategies](
           data,
           (data, platform) => platform.copy(secondary = platform.secondary.copy(buyStrategies = data.strategies))
@@ -43,7 +44,7 @@ class Strategies extends Controller {
 
   def updateSecondaryMarketSellStrategies() = HasToken.async { implicit request =>
     StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
-      formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
+      Utils.badRequestOnError[UpdateStrategies],
       data => updateStrategies[UpdateStrategies](
           data,
           (data, platform) => platform.copy(secondary = platform.secondary.copy(sellStrategies = data.strategies))
@@ -53,7 +54,7 @@ class Strategies extends Controller {
 
   def updateAutomatedStrategy() = HasToken.async { implicit request =>
     StrategiesForms.updateAutomatedStrategy.bindFromRequest.fold(
-      formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
+      Utils.badRequestOnError[UpdateAutomatedStrategy],
       data => updateStrategies[UpdateAutomatedStrategy](
         data,
         (data, platform) => platform.copy(automatedStrategy = data.autoStrategy)

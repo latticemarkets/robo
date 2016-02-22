@@ -18,6 +18,7 @@ POST    /api/user/platform                              controllers.Users.addPla
 PUT     /api/strategies/primary/buy                     controllers.strategies.Strategies.updatePrimaryMarketBuyStrategies
 PUT     /api/strategies/secondary/buy                   controllers.strategies.Strategies.updateSecondaryMarketBuyStrategies
 PUT     /api/strategies/secondary/sell                  controllers.strategies.Strategies.updateSecondaryMarketSellStrategies
+PUT     /api/strategies/auto                            controllers.strategies.Strategies.updateAutomatedStrategy
 
 GET     /api/dashboard/capital/available                controllers.Users.availableCapital
 GET     /api/dashboard/capital/allocated                controllers.Users.allocatedCapital
