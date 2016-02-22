@@ -15,7 +15,7 @@
     'use strict';
 
     class PlatformsController {
-        constructor(cssInjector, userService, authenticationService, constantsService, $filter, addPlatformService, $scope) {
+        constructor(cssInjector, userService, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
@@ -26,9 +26,11 @@
                 vm.platforms = response.data.platforms;
 
                 vm.platforms.forEach(platform =>
-                    $scope.$watch(() => platform.autoEnabled, () =>
-                        userService.updatePlatforms(email, vm.platforms, () => {}, () => platform.autoEnabled = !platform.autoEnabled))
-                );
+                    $scope.$watch(() => platform.autoEnabled, () => {
+                        spinnerService.on();
+                        userService.updatePlatforms(email, vm.platforms, () => spinnerService.off(), () => platform.autoEnabled = !platform.autoEnabled);
+                    }
+                ));
             });
 
             vm.platformsImgExtensions = constantsService.platformsImgExtensions;
