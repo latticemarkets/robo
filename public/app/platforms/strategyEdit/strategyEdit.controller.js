@@ -52,7 +52,22 @@
                 });
             };
 
-            vm.cancel = () => $location.path(`/platforms/strategies/${platform}/${market}`);
+            vm.cancel = () => {
+              swal({
+                    title: "Are you sure?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+              },
+                  function(isConfirm) {
+                    if (isConfirm) {
+                      $timeout(() => $location.path(`/platforms/strategies/${platform}/${market}`), 500);
+                    }
+                  });
+            };
 
             vm.showGhostBox = () => {
                 if (vm.rule) {
