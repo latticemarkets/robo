@@ -2379,6 +2379,16 @@ div .portfolio-simulation-chart .portfolio-simulation-tooltip {
 div.flot-chart.platform-allocation-chart {
     margin-top: 40px;
 }
+.logo.sidebar{
+  background-color: #F7F9FA;
+  border-bottom: 1px solid #E4E5E7;
+  text-align: center;
+  -moz-user-select: none;
+  float: left;
+  width: 180px;
+  height: 56px;
+  padding: 5px 40px 5px 40px;
+}
 /*------------------------
  * ACCOUNT CONFIGURATION
  *----------------------*/
