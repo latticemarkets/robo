@@ -279,4 +279,6 @@ class Users extends Controller {
       }
     )
   }
+
+  def updateAutoStrategy() = play.mvc.Results.TODO
 }

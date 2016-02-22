@@ -15,6 +15,7 @@ GET     /api/user/infos/:email                          controllers.Users.userDa
 POST    /api/user/destroy                               controllers.Users.destroyAccount
 PUT     /api/user/rules                                 controllers.Users.updateRules
 POST    /api/user/platform                              controllers.Users.addPlatform
+PUT     /api/user/strategy/auto                         controllers.Users.updateAutoStrategy
 
 GET     /api/dashboard/capital/available                controllers.Users.availableCapital
 GET     /api/dashboard/capital/allocated                controllers.Users.allocatedCapital

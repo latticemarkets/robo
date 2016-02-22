@@ -15,7 +15,7 @@
     'use strict';
     
     class AutomatedStrategyEditController {
-        constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService) {
+        constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, automatedStrategyEditService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -47,6 +47,17 @@
                 onChange: (id, value) => updateDistributionChart(value),
                 onEnd: (id, value) => updateDistributionChart(value),
                 hideLimitLabels: true
+            };
+
+            vm.cancel = () => $location.path('/platforms');
+            vm.save = () => {
+                spinnerService.on();
+                automatedStrategyEditService.saveStrategy(authenticationService.getCurrentUsersEmail(), vm.strategyValue,
+                    () => {
+                        spinnerService.off();
+                        $location.path('/platforms');
+                    }
+                );
             };
 
             function generateCharts() {
