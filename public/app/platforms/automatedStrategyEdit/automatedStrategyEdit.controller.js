@@ -22,18 +22,20 @@
             vm.splineChartId = "expectedReturnDistribution";
             //const parentDir = elem.parent();
 
+            let chart;
+
             const splineChartOption = {
                 bindto: `#${vm.splineChartId}`,
                 data: {
                     xs: {
-                        'conservative': 'x'
+                        'distribution': 'x'
                     },
                     columns: [
                         ['x', -5, 0, 6, 9, 10],
-                        ['conservative', 0, 2.5, 10, 1, 0]
+                        ['distribution', 0, 2.5, 10, 1, 0]
                     ],
                     types: {
-                        conservative: 'area-spline'
+                        distribution: 'area-spline'
                     }
                 },
                 axis: {
@@ -68,19 +70,39 @@
             });
 
             vm.strategySliderOptions = {
-                floor: 0,
+                floor: 1,
                 ceil: 10,
                 step: 1,
                 translate: () => "",
-                onEnd: (id, value) => {},
-                onChange: (id, value) => {},
+                onEnd: (id, value) => updateDistributionChart(value),
                 hideLimitLabels: true
             };
-            vm.strategyValue = 0;
+            vm.strategyValue = 10;
 
             function generateSplineChart() {
-                c3.generate(splineChartOption);
+                chart = c3.generate(splineChartOption);
             }
+
+            const conservativeColumns = [['x', -5, 0, 6, 9, 10], ['distribution', 0, 2.5, 10, 1, 0]];
+            const aggressiveColumns = [['x', -8, -4, 0, 5, 9, 14, 15], ['distribution', 0, 0.5, 2, 8, 10, 1, 0]];
+
+            function updateDistributionChart(value) {
+                console.log(value);
+                if (value < 5) {
+                    chart.load({
+                        columns: conservativeColumns
+                    });
+                }
+                else {
+                    chart.load({
+                        columns: aggressiveColumns
+                    });
+                }
+            }
+
+            $timeout(function () {
+                $scope.$broadcast('reCalcViewDimensions');
+            }, 500);
         }
     }
     
