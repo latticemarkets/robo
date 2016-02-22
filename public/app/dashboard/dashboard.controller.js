@@ -25,7 +25,7 @@
                 dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
                 dashboardDataService.allocatedCapital(response => vm.allocatedCapital = response.data.allocatedCapital);
                 vm.lastUpdate = new Date();
-                dashboardDataService.averageMaturity(response => vm.averageMaturity = moment(response.data.averageMaturity).fromNow(true));
+                dashboardDataService.expectedReturns(response => vm.expectedReturns = response.data.expectedReturns);
                 dashboardDataService.averageIntRate(response => vm.averageIntRate = response.data.averageIntRate);
                 dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
                 dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
