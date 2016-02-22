@@ -118,6 +118,11 @@
                 controller: "PlatformsController",
                 controllerAs: 'vm'
             })
+            .when('/platforms/strategies/:platform/auto', {
+                templateUrl: "assets/app/platforms/automatedStrategyEdit/automatedStrategyEdit.html",
+                controller: "AutomatedStrategyEditController",
+                controllerAs: 'vm'
+            })
             .when('/platforms/strategies/:platform/:market', {
                 templateUrl: "assets/app/platforms/strategies/strategies.html",
                 controller: "StrategiesController",
@@ -126,11 +131,6 @@
             .when('/platforms/strategies/:platform/:market/strategyEdit/:ruleId?', {
                 templateUrl: "assets/app/platforms/strategyEdit/strategyEdit.html",
                 controller: "StrategyEditController",
-                controllerAs: 'vm'
-            })
-            .when('/platforms/strategies/:platform/automatedStrategyEdit', {
-                templateUrl: "assets/app/platforms/automatedStrategyEdit/automatedStrategyEdit.html",
-                controller: "AutomatedStrategyEditController",
                 controllerAs: 'vm'
             })
             .otherwise({ redirectTo: '/' });

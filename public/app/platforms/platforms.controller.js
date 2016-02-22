@@ -15,7 +15,7 @@
     'use strict';
 
     class PlatformsController {
-        constructor(cssInjector, userService, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService) {
+        constructor(cssInjector, userService, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
@@ -39,6 +39,8 @@
             vm.fromCamelCaseToTitle = str => $filter('titlecase')($filter('camelCaseToHuman')(str));
 
             vm.newPlatform = () => addPlatformService.newPlatformModal(vm.platforms);
+
+            vm.editStrategy = (isAuto, name) => isAuto ? $location.path(`platforms/strategies/${name}/auto`) : $location.path(`platforms/strategies/${name}/primary`);
 
             function computeExpectedReturn(market) {
                 return market.rules.reduce((prev, rule) => rule.expectedReturn.value + prev, 0);

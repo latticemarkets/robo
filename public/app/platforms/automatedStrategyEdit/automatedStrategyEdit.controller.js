@@ -15,10 +15,44 @@
     'use strict';
     
     class AutomatedStrategyEditController {
-        constructor() {
+        constructor(cssInjector, $timeout, onResizeService, $scope) {
             var vm = this;
-        
-                    
+            cssInjector.add("assets/stylesheets/homer_style.css");
+
+            vm.splineChartId = "expectedReturnDistribution";
+            //const parentDir = elem.parent();
+
+            const splineChartOption = {
+                bindto: `#${vm.splineChartId}`,
+                data: {
+                    columns: [
+                        ['distribution', 300, 350, 300, 0, 0, 0]
+                    ],
+                    types: {
+                        distribution: 'area-spline'
+                    }
+                },
+                //size: {
+                //    width: parentDir.width()
+                //}
+            };
+
+            $timeout(() => {
+                generateSplineChart();
+            }, 500);
+
+            onResizeService.addOnResizeCallback(() => {
+                generateSplineChart();
+            }, vm.splineChartId);
+
+            $scope.$on('$destroy', function() {
+                onResizeService.removeOnResizeCallback(vm.splineChartId);
+            });
+
+
+            function generateSplineChart() {
+                c3.generate(splineChartOption);
+            }
         }
     }
     
