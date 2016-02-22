@@ -21,7 +21,6 @@
 
             vm.splineChartId = "expectedReturnDistribution";
             vm.barChartId = "gradesDistributionChart";
-            //const parentDir = elem.parent();
 
             vm.strategyValue = 3;
 

@@ -2544,3 +2544,9 @@ a.remove-button {
 .strategy-slider-label {
     position: absolute;
 }
+.automated-strategy-settings-chart {
+    height: 200px;
+}
+.panel-body.automated-strategy-settings-chart-container {
+    height: 230px;
+}
