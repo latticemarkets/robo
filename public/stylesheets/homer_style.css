@@ -2896,6 +2896,10 @@ h6 {
 .ui-sortable .panel-body {
   cursor: move;
 }
+.col-sm-12.ui-sortable-handle{
+  padding-left: 0;
+  padding-right: 0;
+}
 .ui-sortable-placeholder {
   border: 1px dashed #cecece !important;
   visibility: visible !important;
