@@ -86,8 +86,31 @@
                 legend: {
                     show: false
                 }
-            }
-        };
+            };
+        }
+
+        barChartOptions(id, strategyValue) {
+            return {
+                bindto: `#${id}`,
+                data: {
+                    columns: this.simulatedBarChartDataForStrategy(strategyValue),
+                    type: 'bar',
+                    colors: {
+                        'Estimated Loan Distribution': '#3498db'
+                    }
+                },
+                axis: {
+                    x: {
+                        tick: {
+                            format: v => `${['A', 'B', 'C', 'D', 'E', 'F', 'G'][v]}`
+                        }
+                    },
+                    y: {
+                        show: false
+                    }
+                }
+            };
+        }
     }
 
     angular

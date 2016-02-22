@@ -28,29 +28,6 @@
             let splineChart;
             let barChart;
 
-
-
-            const barChartOptions = {
-                bindto: `#${vm.barChartId}`,
-                data: {
-                    columns: autoStrategyChartsService.simulatedBarChartDataForStrategy(vm.strategyValue),
-                    type: 'bar',
-                    colors: {
-                        'Estimated Loan Distribution': '#3498db'
-                    }
-                },
-                axis: {
-                    x: {
-                        tick: {
-                            format: v => `${['A', 'B', 'C', 'D', 'E', 'F', 'G'][v]}`
-                        }
-                    },
-                    y: {
-                        show: false
-                    }
-                }
-            };
-
             $timeout(() => {
                 generateCharts();
             }, 500);
@@ -72,11 +49,10 @@
                 onEnd: (id, value) => updateDistributionChart(value),
                 hideLimitLabels: true
             };
-            vm.strategyValue = 10;
 
             function generateCharts() {
                 splineChart = c3.generate(autoStrategyChartsService.splineChartOptions(vm.splineChartId, vm.strategyValue));
-                barChart = c3.generate(barChartOptions);
+                barChart = c3.generate(autoStrategyChartsService.barChartOptions(vm.barChartId, vm.strategyValue));
             }
 
             function updateDistributionChart(value) {
