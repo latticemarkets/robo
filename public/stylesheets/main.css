@@ -2436,8 +2436,8 @@ div button.btn.primary-button.erase-user:hover {
 img.ticked {
     -webkit-filter: grayscale(1);
 }
-.hpanel >  .panel-footer.blue-footer {
-    background-color: #3498db;
+.hpanel >  .panel-body.blue-box {
+    border: 2px solid #3498DB;
 }
 /*------------------------
  * STRATEGIES
