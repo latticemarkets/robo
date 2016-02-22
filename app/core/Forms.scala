@@ -8,6 +8,7 @@
 
 package core
 
+import controllers.platforms.PlatformsForms
 import models._
 import play.api.data.Form
 import play.api.data.Forms._
@@ -27,22 +28,12 @@ object Forms {
       "income" -> nonEmptyText,
       "timeline" -> nonEmptyText,
       "birthday" -> date("MM/dd/yyyy"),
-      "platforms" -> seq(platformMapping),
+      "platforms" -> seq(PlatformsForms.platformMapping),
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
       "token" -> ignored(Hash.createToken)
     )(User.apply)(User.unapply)
   )
-
-  def platformMapping = mapping(
-      "originator" -> nonEmptyText,
-      "accountId" -> nonEmptyText,
-      "apiKey" -> nonEmptyText,
-      "primary" -> primaryMarketMapping,
-      "secondary" -> secondaryMarketMapping,
-      "automatedStrategy" -> automatedStrategyMapping,
-      "mode" -> nonEmptyText
-    )(Platform.apply)(Platform.unapply)
 
   def primaryMarketMapping = mapping(
     "buyStrategies" -> set(manualStrategyMapping),
@@ -74,13 +65,6 @@ object Forms {
     "originator" -> nonEmptyText
   )(AutomatedStrategy.apply)(AutomatedStrategy.unapply)
 
-  def addPlatformForm = Form(
-    mapping(
-      "email" -> email,
-      "platform" -> platformMapping
-    )(AddPlatform.apply)(AddPlatform.unapply)
-  )
-
   def loginForm = Form(
     mapping(
       "email" -> email,
@@ -94,13 +78,6 @@ object Forms {
       "oldPassword" -> nonEmptyText,
       "newPassword" -> nonEmptyText
     )(UpdatePassword.apply)(UpdatePassword.unapply)
-  )
-
-  def updatePlatforms = Form(
-    mapping(
-      "email" -> email,
-      "platforms" -> seq(platformMapping)
-    )(UpdatePlatforms.apply)(UpdatePlatforms.unapply)
   )
 
   def updatePersonalData = Form(

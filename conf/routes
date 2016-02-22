@@ -8,12 +8,13 @@ GET     /                                               controllers.Application.
 POST    /api/register                                   controllers.Users.register
 POST    /api/login                                      controllers.Users.login
 PUT     /api/user/password                              controllers.Users.updatePassword
-PUT     /api/user/p2pPlatforms                          controllers.Users.updatePlatforms
 PUT     /api/user/personalData                          controllers.Users.updatePersonalData
 GET     /api/user/:email                                controllers.Users.isUsed(email)
 GET     /api/user/infos/:email                          controllers.Users.userData(email)
 POST    /api/user/destroy                               controllers.Users.destroyAccount
-POST    /api/user/platform                              controllers.Users.addPlatform
+
+POST    /api/user/platform                              controllers.platforms.Platforms.addPlatform
+PUT     /api/user/p2pPlatforms                          controllers.platforms.Platforms.updatePlatforms
 
 PUT     /api/strategies/primary/buy                     controllers.strategies.Strategies.updatePrimaryMarketBuyStrategies
 PUT     /api/strategies/secondary/buy                   controllers.strategies.Strategies.updateSecondaryMarketBuyStrategies

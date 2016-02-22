@@ -44,15 +44,11 @@ case class Login(
 
 case class UpdatePassword(email: String, oldPassword: String, newPassword: String)
 
-case class UpdatePlatforms(email: String, platforms: Seq[Platform])
-
 case class UpdatePersonalData(email: String, firstName: String, lastName: String, birthday: Date)
 
 case class DestroyAccount(email: String, password: String)
 
 case class UpdateStrategies(email: String, rules: Seq[ManualStrategy], platform: String, market: String)
-
-case class AddPlatform(email: String, platform: Platform)
 
 object User {
 

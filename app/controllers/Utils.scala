@@ -20,6 +20,10 @@ import scala.concurrent.Future
 
 object Utils extends Controller {
   def badRequestOnError[T]: (Form[T]) => Future[Result] = {
-    formWithErrors => Future.successful(BadRequest("Wrong data sent."))
+    formWithErrors => Future.successful(responseOnWrongDataSent)
+  }
+
+  def responseOnWrongDataSent: Result = {
+    BadRequest("Wrong data sent.")
   }
 }
