@@ -35,6 +35,11 @@
                     types: {
                         conservative: 'area-spline'
                     }
+                },
+                axis: {
+                    y: {
+                        show: false
+                    }
                 }
             };
 
