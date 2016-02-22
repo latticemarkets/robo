@@ -25,12 +25,22 @@
             userService.userData(email, response => {
                 vm.platforms = response.data.platforms;
 
-                vm.platforms.forEach(platform =>
-                    $scope.$watch(() => platform.autoEnabled, () => {
+                vm.platforms.forEach(platform => {
+                    platform.isAuto = platform.mode === 'automated';
+
+                    $scope.$watch(() => platform.isAuto, () => {
                         spinnerService.on();
-                        userService.updatePlatforms(email, vm.platforms, () => spinnerService.off(), () => platform.autoEnabled = !platform.autoEnabled);
-                    }
-                ));
+                        platform.mode = platform.isAuto ? 'automated' : 'manual';
+                        const tmpPlatforms = JSON.parse(JSON.stringify(vm.platforms)).map(p => {
+                            delete p.isAuto;
+                            return p;
+                        });
+                        userService.updatePlatforms(email, tmpPlatforms, () => spinnerService.off(), () => {
+                            platform.mode = platform.isAuto ? 'automated' : 'manual';
+                            platform.isAuto = !platform.isAuto;
+                        });
+                    });
+                });
             });
 
             vm.platformsImgExtensions = constantsService.platformsImgExtensions;
@@ -40,7 +50,7 @@
 
             vm.newPlatform = () => addPlatformService.newPlatformModal(vm.platforms);
 
-            vm.editStrategy = (isAuto, name) => isAuto ? $location.path(`platforms/strategies/${name}/auto`) : $location.path(`platforms/strategies/${name}/primary`);
+            vm.editStrategy = (mode, name) => mode === 'automated' ? $location.path(`platforms/strategies/${name}/auto`) : $location.path(`platforms/strategies/${name}/primary`);
 
             function computeExpectedReturn(market) {
                 return market.rules.reduce((prev, rule) => rule.expectedReturn.value + prev, 0);

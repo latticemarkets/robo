@@ -19,7 +19,18 @@ case class Platform(
        apiKey: String,
        primary: Market,
        secondary: Market,
-       autoEnabled: Boolean
+       mode: String
      ) {
   def originatorEnum = OriginatorEnum.withName(originator)
+  def platformModeEnum = PlatformModeEnum.withName(mode)
+}
+
+object OriginatorEnum extends Enumeration {
+  type OriginatorEnum = Value
+  val lendingClub, prosper, bondora, ratesetter, fundingCircle = Value
+}
+
+object PlatformModeEnum extends Enumeration {
+  type PlatformModeEnum = Value
+  val manual, automated = Value
 }

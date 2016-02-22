@@ -11,7 +11,7 @@
                     </div>
                     <div class="panel-body">
                         <p class="text-muted text-center">
-                            Current Strategy : <toggle-switch data-ng-model="platform.autoEnabled" on-label="Auto" off-label="Manual"><toggle-switch>
+                            Current Strategy : <toggle-switch data-ng-model="platform.isAuto" on-label="Auto" off-label="Manual"><toggle-switch>
                         </p>
 
                         <div class="text-center">
@@ -23,7 +23,7 @@
                         </h3>
 
                         <div class="text-center">
-                            <a data-ng-click="vm.editStrategy(platform.autoEnabled, platform.originator)" class="btn btn-info btn-sm m-t-xs">Edit Strategy</a>
+                            <a data-ng-click="vm.editStrategy(platform.mode, platform.originator)" class="btn btn-info btn-sm m-t-xs">Edit Strategy</a>
                         </div>
                     </div>
                 </div>

@@ -40,7 +40,7 @@ object Forms {
       "apiKey" -> nonEmptyText,
       "primary" -> marketMapping,
       "secondary" -> marketMapping,
-      "autoEnabled" -> boolean
+      "mode" -> nonEmptyText
     )(Platform.apply)(Platform.unapply)
 
   def marketMapping = mapping(
