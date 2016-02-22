@@ -3123,6 +3123,13 @@ label.error:before {
     text-align: left;
   }
 }
+.project-action.m-t-md{
+  float: right;
+  margin-top: 0;
+}
+.project-value{
+  margin-top: 15%;
+}
 .social-board .social-profile img {
   height: 42px;
   width: 42px;

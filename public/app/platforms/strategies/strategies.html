@@ -45,15 +45,15 @@
                                 <h4>#{{ $index + 1 }} {{ rule.name | titlecase }}</h4>
 
                                 <div class="row m-t-md">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="project-label font-uppercase">Estimated Return</div>
                                         <small>{{ rule.expectedReturn.percent | percent : 2 }} ± {{ rule.expectedReturn.margin | percent : 2 }}</small>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="project-label font-uppercase">Loans available per week</div>
                                         <small>{{ rule.loansAvailablePerWeek }}</small>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="project-label font-uppercase">$ available per week</div>
                                         <small>{{ rule.moneyAvailablePerWeek | currency }}</small>
                                     </div>
