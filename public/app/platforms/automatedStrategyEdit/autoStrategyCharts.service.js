@@ -51,6 +51,43 @@
         simulatedSplineChartDataForStrategy(n) {
             return (n < this.splineChartData.length && n > 0) ? this.splineChartData[n] : [];
         }
+
+        splineChartOptions(id, strategyValue) {
+            return {
+                bindto: `#${id}`,
+                    data: {
+                xs: {
+                    'distribution': 'x'
+                },
+                columns: this.simulatedSplineChartDataForStrategy(strategyValue),
+                    types: {
+                    distribution: 'area-spline'
+                },
+                colors: {
+                    'distribution': '#3498db'
+                }
+            },
+                axis: {
+                    x: {
+                        tick: {
+                            format: v => `${v}%`,
+                                values: [-10, -5, 0, 5, 10, 15, 20]
+                        },
+                        min: -10,
+                            max: 20
+                    },
+                    y: {
+                        show: false
+                    }
+                },
+                point: {
+                    r: 0
+                },
+                legend: {
+                    show: false
+                }
+            }
+        };
     }
 
     angular

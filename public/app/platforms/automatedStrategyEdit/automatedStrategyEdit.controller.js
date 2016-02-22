@@ -28,40 +28,7 @@
             let splineChart;
             let barChart;
 
-            const splineChartOptions = {
-                bindto: `#${vm.splineChartId}`,
-                data: {
-                    xs: {
-                        'distribution': 'x'
-                    },
-                    columns: autoStrategyChartsService.simulatedSplineChartDataForStrategy(vm.strategyValue),
-                    types: {
-                        distribution: 'area-spline'
-                    },
-                    colors: {
-                        'distribution': '#3498db'
-                    }
-                },
-                axis: {
-                    x: {
-                        tick: {
-                            format: v => `${v}%`,
-                            values: [-10, -5, 0, 5, 10, 15, 20]
-                        },
-                        min: -10,
-                        max: 20
-                    },
-                    y: {
-                        show: false
-                    }
-                },
-                point: {
-                    r: 0
-                },
-                legend: {
-                    show: false
-                }
-            };
+
 
             const barChartOptions = {
                 bindto: `#${vm.barChartId}`,
@@ -108,7 +75,7 @@
             vm.strategyValue = 10;
 
             function generateCharts() {
-                splineChart = c3.generate(splineChartOptions);
+                splineChart = c3.generate(autoStrategyChartsService.splineChartOptions(vm.splineChartId, vm.strategyValue));
                 barChart = c3.generate(barChartOptions);
             }
 
