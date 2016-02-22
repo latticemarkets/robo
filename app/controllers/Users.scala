@@ -11,7 +11,7 @@ package controllers
 import java.time.LocalDate
 
 import controllers.Security.HasToken
-import core.{Forms, Hash}
+import core.{ModelForms, Hash}
 import models.{MarketType, User}
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -31,7 +31,7 @@ class Users extends Controller {
   }
 
   def register = Action.async { implicit request =>
-    Forms.registerForm.bindFromRequest.fold(
+    ModelForms.registerForm.bindFromRequest.fold(
       formWithErrors => {
         Future.successful( respondWrongDataSent )
       },
@@ -42,7 +42,7 @@ class Users extends Controller {
   }
 
   def login = Action.async { implicit request =>
-    Forms.loginForm.bindFromRequest.fold(
+    ModelForms.loginForm.bindFromRequest.fold(
       formWithErrors => {
         Future.successful( respondWrongDataSent )
       },
@@ -181,7 +181,7 @@ class Users extends Controller {
   }
 
   def updatePassword() = HasToken.async { implicit request =>
-    Forms.updatePasswordForm.bindFromRequest.fold(
+    ModelForms.updatePasswordForm.bindFromRequest.fold(
       formWithErrors => {
         Future.successful( respondWrongDataSent )
       },
@@ -211,7 +211,7 @@ class Users extends Controller {
   }
 
   def updatePersonalData() = HasToken.async { implicit request =>
-    Forms.updatePersonalData.bindFromRequest.fold(
+    ModelForms.updatePersonalData.bindFromRequest.fold(
       formWithErrors => Future.successful( respondWrongDataSent ),
       data => {
         User.findByEmail(data.email) flatMap (_.map (user => {
@@ -222,7 +222,7 @@ class Users extends Controller {
   }
 
   def destroyAccount() = HasToken.async { implicit request =>
-    Forms.destroyAccountForm.bindFromRequest.fold(
+    ModelForms.destroyAccountForm.bindFromRequest.fold(
       _ => Future.successful( respondWrongDataSent ),
       data => {
         User.findByEmail(data.email) flatMap (optUser => optUser map (user =>

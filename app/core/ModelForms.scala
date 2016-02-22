@@ -18,7 +18,7 @@ import play.api.data.Forms._
   * Created on 27/01/2016
   */
 
-object Forms {
+object ModelForms {
   def registerForm = Form(
     mapping (
       "_id" -> email,
@@ -28,7 +28,7 @@ object Forms {
       "income" -> nonEmptyText,
       "timeline" -> nonEmptyText,
       "birthday" -> date("MM/dd/yyyy"),
-      "platforms" -> seq(PlatformsForms.platformMapping),
+      "platforms" -> seq(platformMapping),
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
       "token" -> ignored(Hash.createToken)
@@ -71,6 +71,16 @@ object Forms {
       "password" -> nonEmptyText
     )(Login.apply)(Login.unapply)
   )
+
+  def platformMapping = mapping(
+    "originator" -> nonEmptyText,
+    "accountId" -> nonEmptyText,
+    "apiKey" -> nonEmptyText,
+    "primary" -> ModelForms.primaryMarketMapping,
+    "secondary" -> ModelForms.secondaryMarketMapping,
+    "automatedStrategy" -> ModelForms.automatedStrategyMapping,
+    "mode" -> nonEmptyText
+  )(Platform.apply)(Platform.unapply)
 
   def updatePasswordForm = Form(
     mapping(

@@ -8,7 +8,7 @@
 
 package controllers.platforms
 
-import core.Forms
+import core.ModelForms
 import models.Platform
 import play.api.data.Form
 import play.api.data.Forms._
@@ -23,26 +23,16 @@ object PlatformsForms {
   def addPlatformForm = Form(
     mapping(
       "email" -> email,
-      "platform" -> platformMapping
+      "platform" -> ModelForms.platformMapping
     )(AddPlatform.apply)(AddPlatform.unapply)
   )
 
   def updatePlatforms = Form(
     mapping(
       "email" -> email,
-      "platforms" -> seq(platformMapping)
+      "platforms" -> seq(ModelForms.platformMapping)
     )(UpdatePlatforms.apply)(UpdatePlatforms.unapply)
   )
-
-  def platformMapping = mapping(
-    "originator" -> nonEmptyText,
-    "accountId" -> nonEmptyText,
-    "apiKey" -> nonEmptyText,
-    "primary" -> Forms.primaryMarketMapping,
-    "secondary" -> Forms.secondaryMarketMapping,
-    "automatedStrategy" -> Forms.automatedStrategyMapping,
-    "mode" -> nonEmptyText
-  )(Platform.apply)(Platform.unapply)
 }
 
 case class UpdatePlatforms(email: String, platforms: Seq[Platform])

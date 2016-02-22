@@ -8,7 +8,7 @@
 
 package controllers.strategies
 
-import core.Forms
+import core.ModelForms
 import models.{AutomatedStrategy, ManualStrategy}
 import play.api.data.Form
 import play.api.data.Forms._
@@ -23,14 +23,14 @@ object StrategiesForms {
     mapping(
       "email" -> email,
       "platform" -> nonEmptyText,
-      "strategies" -> set(Forms.manualStrategyMapping)
+      "strategies" -> set(ModelForms.manualStrategyMapping)
   )(UpdateStrategies.apply)(UpdateStrategies.unapply))
 
   def updateAutomatedStrategy = Form(
     mapping(
       "email" -> email,
       "platform" -> nonEmptyText,
-      "autoStrategy" -> Forms.automatedStrategyMapping
+      "autoStrategy" -> ModelForms.automatedStrategyMapping
     )(UpdateAutomatedStrategy.apply)(UpdateAutomatedStrategy.unapply)
   )
 }
