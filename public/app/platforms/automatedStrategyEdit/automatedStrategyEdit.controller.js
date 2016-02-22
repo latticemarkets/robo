@@ -25,16 +25,17 @@
             const splineChartOption = {
                 bindto: `#${vm.splineChartId}`,
                 data: {
+                    xs: {
+                        'conservative': 'x'
+                    },
                     columns: [
-                        ['distribution', 300, 350, 300, 0, 0, 0]
+                        ['x', -5, 0, 6, 9, 10],
+                        ['conservative', 0, 2.5, 10, 1, 0]
                     ],
                     types: {
-                        distribution: 'area-spline'
+                        conservative: 'area-spline'
                     }
-                },
-                //size: {
-                //    width: parentDir.width()
-                //}
+                }
             };
 
             $timeout(() => {
