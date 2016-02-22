@@ -86,28 +86,18 @@
                 chart = c3.generate(splineChartOption);
             }
 
-            const conservativeColumns = [['x', -7, -5, -2.5, 0, 2.5, 5, 10, 12.5, 15], ['distribution', 0, 0, 0.2, 1.5, 5, 10, 0, 0, 0]];
-            const moderateColumns = [['x', -7, -5, -2.5, 0, 2.5, 5, 7, 8, 10, 12.5, 15], ['distribution', 0, 0.01, 0.5, 2, 5, 9, 10, 9, 2, 0, 0]];
-            const aggressiveColumns = [['x', -7, -5, -2.5, 0, 2.5, 5, 8, 10, 12.5, 15, 17], ['distribution', 0, 0.2, 0.5, 2, 5, 8.5, 10, 9, 2.5, 0.5, 0]];
+            const distributionColumns = [
+                [['x', -7, -5, -2.5, 0, 2.5, 5, 6.5, 8.5, 11], ['distribution', 0, 0, 0.2, 1.5, 4, 8, 10, 1.5, 0]],
+                [['x', -7, -5, -2.5, 0, 2.5, 5, 7.5, 11, 12], ['distribution', 0, 0.1, 1, 1.8, 3.8, 7.7, 10, 1, 0]],
+                [['x', -7, -5, -2.5, 0, 2.5, 5, 7.8, 12, 12.5], ['distribution', 0, 0.2, 1.2, 2.2, 3.7, 7.5, 10, 1.2, 0]],
+                [['x', -7, -5, -2.5, 0, 2.5, 5, 8.2, 14, 15], ['distribution', 0, 0.5, 1.3, 2.4, 4, 7, 10, 1, 0]],
+                [['x', -7, -5, -2.5, 0, 2.5, 5, 8.4, 15, 17], ['distribution', 0, 0.5, 1.5, 2.5, 4, 7, 10, 1.5, 0]]
+            ];
 
             function updateDistributionChart(value) {
-                switch (value) {
-                    case 0:
-                        chart.load({
-                            columns: conservativeColumns
-                        });
-                        break;
-                    case 5:
-                        chart.load({
-                            columns: moderateColumns
-                        });
-                        break;
-                    case 10:
-                        chart.load({
-                            columns: aggressiveColumns
-                        });
-                        break;
-                }
+                chart.load({
+                    columns: distributionColumns[value]
+                });
             }
 
             $timeout(function () {
