@@ -49,6 +49,9 @@
                 },
                 point: {
                     r: 0
+                },
+                legend: {
+                    show: false
                 }
             };
 
