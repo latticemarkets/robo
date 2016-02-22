@@ -30,7 +30,7 @@
                     income: income,
                     timeline: timeline,
                     birthday: birthday,
-                    platforms: [{ name: platform, accountId: accountId, apiKey: apiKey, primary: {strategy: portfolio, rules: []}, secondary: {strategy: portfolio, rules: []}}],
+                    platforms: [{ originator: platform, accountId: accountId, apiKey: apiKey, primary: {strategy: portfolio, rules: []}, secondary: {strategy: portfolio, rules: []}}],
                     firstName: firstName,
                     lastName: lastName
                 }))

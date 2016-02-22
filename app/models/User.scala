@@ -10,6 +10,7 @@ package models
 
 import java.util.Date
 import core.{ DbUtil, Hash }
+import models.OriginatorEnum.OriginatorEnum
 import play.api.libs.json.{ JsObject, Json }
 import play.modules.reactivemongo.json._
 import play.modules.reactivemongo.json.collection.JSONCollection
@@ -36,15 +37,6 @@ case class User(
     token: String) {
   def withEncryptedPassword: User = this.copy(password = Hash.createPassword(this.password))
 }
-
-case class Platform(
-                     name: String,
-                     accountId: String,
-                     apiKey: String,
-                     primary: Market,
-                     secondary: Market,
-                     autoEnabled: Boolean
-                   )
 
 case class Login(
   email: String,

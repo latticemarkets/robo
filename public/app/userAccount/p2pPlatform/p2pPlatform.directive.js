@@ -43,9 +43,9 @@
                 };
 
                 scope.delete = (platform) => {
-                  const name = platform.name;
+                  const name = platform.originator;
                   spinnerService.on();
-                  const newPlatforms = scope.platforms.filter(platform => platform.name !== name );
+                  const newPlatforms = scope.platforms.filter(platform => platform.originator !== name );
                   userService.updatePlatforms(
                       authenticationService.getCurrentUsersEmail(),
                       newPlatforms,

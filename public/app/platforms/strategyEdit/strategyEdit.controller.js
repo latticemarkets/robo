@@ -99,7 +99,7 @@
 
             function updatePlatforms() {
                 vm.platforms.forEach(p => {
-                    if (p.name === platform) {
+                    if (p.originator === platform) {
                         if (p[market].rules.length === 0) {
                             p[market].rules = [criteriaService.unexpendCriteriaObject(vm.rule)];
                         }
@@ -146,7 +146,7 @@
                     spinnerService.on();
                     userService.userData(email, response => {
                         response.data.platforms.some(p => {
-                            if (p.name == platform) {
+                            if (p.originator == platform) {
                                 vm.platforms = response.data.platforms;
                                 if (ruleId) {
                                     if (!p[market].rules.some(rule => {

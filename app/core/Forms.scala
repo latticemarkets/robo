@@ -35,7 +35,7 @@ object Forms {
   )
 
   def platformMapping = mapping(
-      "name" -> nonEmptyText,
+      "originator" -> nonEmptyText,
       "accountId" -> nonEmptyText,
       "apiKey" -> nonEmptyText,
       "primary" -> marketMapping,

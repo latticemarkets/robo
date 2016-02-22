@@ -69,7 +69,7 @@
                 const accountId = $('#accountId').val();
                 const apiKey = $('#apiKey').val();
 
-                var newPlatform = { name: $scope.chosePlatform, accountId: accountId, apiKey: apiKey, primary: { rules: [], strategy: 'moderate' }, secondary: { rules: [], strategy: 'moderate' } };
+                var newPlatform = { originator: $scope.chosePlatform, accountId: accountId, apiKey: apiKey, primary: { rules: [], strategy: 'moderate' }, secondary: { rules: [], strategy: 'moderate' } };
                 userService.addPlatform(authenticationService.getCurrentUsersEmail(), newPlatform,
                     () => {
                         finish();
@@ -78,7 +78,7 @@
             };
 
             $scope.alreadyAdded = platformName => {
-                return platforms.some(platform => platform.name == platformName);
+                return platforms.some(platform => platform.originator == platformName);
             };
         }
     }

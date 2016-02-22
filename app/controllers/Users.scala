@@ -265,12 +265,12 @@ class Users extends Controller {
       formWithErrors => Future.successful( respondWrongDataSent ),
       data => {
         User.findByEmail(data.email) flatMap (_.map (user => {
-          user.platforms.find(_.name == data.platform) map (platform => {
+          user.platforms.find(_.originator == data.platform) map (platform => {
             val updatedPlatform =
               if (data.market == MarketType.primary.toString) platform.copy(primary = platform.primary.copy(rules = data.rules))
               else platform.copy(secondary = platform.secondary.copy(rules = data.rules))
             val platforms = user.platforms.map {
-              case p if p.name == data.platform => updatedPlatform
+              case p if p.originator == data.platform => updatedPlatform
               case p => p
             }
             User.update(user.copy(platforms = platforms)) map (user => Ok(""))

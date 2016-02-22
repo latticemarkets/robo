@@ -37,7 +37,7 @@
             spinnerService.on();
             userService.userData(email, response => {
                 response.data.platforms.some(p => {
-                    if (p.name == platform) {
+                    if (p.originator == platform) {
                         vm.rules = p[market].rules;
                         return true;
                     }
@@ -99,7 +99,7 @@
                             spinnerService.off();
                         },
                         () => spinnerService.off()
-                );
+                    );
                 }
                 else {
                     notificationService.error('An error occurred');
