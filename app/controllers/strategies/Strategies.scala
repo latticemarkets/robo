@@ -9,8 +9,9 @@
 package controllers.strategies
 
 import controllers.Security.HasToken
-import models.User
+import models.{Platform, PrimaryMarket, ManualStrategy, User}
 import play.api.mvc.Controller
+import play.api.mvc.Result
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -25,16 +26,10 @@ class Strategies extends Controller {
     StrategiesForms.updateBuyStrategiesForm.bindFromRequest.fold(
       formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
       data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
-          user.platforms.find(_.originator == data.platform) map (platform => {
-            val updatedPlatform = platform.copy(primary = platform.primary.copy(buyStrategies = data.strategies))
-            val platforms = user.platforms.map {
-              case p if p.originator == data.platform => updatedPlatform
-              case p => p
-            }
-            User.update(user.copy(platforms = platforms)) map (user => Ok(""))
-          }) getOrElse Future.successful( BadGateway("") )
-        }) getOrElse Future.successful( BadGateway("") ))
+        updateBuyStrategies(
+          data,
+          (data, platform) => platform.copy(primary = platform.primary.copy(buyStrategies = data.strategies))
+        )
       }
     )
   }
@@ -43,17 +38,24 @@ class Strategies extends Controller {
     StrategiesForms.updateBuyStrategiesForm.bindFromRequest.fold(
       formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
       data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
-          user.platforms.find(_.originator == data.platform) map (platform => {
-            val updatedPlatform = platform.copy(secondary = platform.secondary.copy(buyStrategies = data.strategies))
-            val platforms = user.platforms.map {
-              case p if p.originator == data.platform => updatedPlatform
-              case p => p
-            }
-            User.update(user.copy(platforms = platforms)) map (user => Ok(""))
-          }) getOrElse Future.successful( BadGateway("") )
-        }) getOrElse Future.successful( BadGateway("") ))
+        updateBuyStrategies(
+          data,
+          (data, platform) => platform.copy(secondary = platform.secondary.copy(buyStrategies = data.strategies))
+        )
       }
     )
+  }
+
+  def updateBuyStrategies(data: UpdateBuyStrategies, platformUpdater: (UpdateBuyStrategies, Platform) => Platform): Future[Result] = {
+    User.findByEmail(data.email) flatMap (_.map(user => {
+      user.platforms.find(_.originator == data.platform) map (platform => {
+        val updatedPlatform = platformUpdater(data, platform)
+        val platforms = user.platforms.map {
+          case p if p.originator == data.platform => updatedPlatform
+          case p => p
+        }
+        User.update(user.copy(platforms = platforms)) map (user => Ok(""))
+      }) getOrElse Future.successful(BadGateway(""))
+    }) getOrElse Future.successful(BadGateway("")))
   }
 }
