@@ -20,11 +20,13 @@
             cssInjector.add("assets/stylesheets/homer_style.css");
 
             vm.splineChartId = "expectedReturnDistribution";
+            vm.barChartId = "gradesDistributionChart";
             //const parentDir = elem.parent();
 
-            let chart;
+            let splineChart;
+            let barChart;
 
-            const splineChartOption = {
+            const splineChartOptions = {
                 bindto: `#${vm.splineChartId}`,
                 data: {
                     xs: {
@@ -59,12 +61,22 @@
                 }
             };
 
+            const barChartOptions = {
+                bindto: `#${vm.barChartId}`,
+                data: {
+                    columns: [
+                        ['distribution', 0.1, 10, 0, 0, 0]
+                    ],
+                    type: 'bar'
+                }
+            };
+
             $timeout(() => {
-                generateSplineChart();
+                generateCharts();
             }, 500);
 
             onResizeService.addOnResizeCallback(() => {
-                generateSplineChart();
+                generateCharts();
             }, vm.splineChartId);
 
             $scope.$on('$destroy', function() {
@@ -82,8 +94,9 @@
             };
             vm.strategyValue = 10;
 
-            function generateSplineChart() {
-                chart = c3.generate(splineChartOption);
+            function generateCharts() {
+                splineChart = c3.generate(splineChartOptions);
+                barChart = c3.generate(barChartOptions);
             }
 
             const distributionColumns = [
@@ -100,7 +113,7 @@
             ];
 
             function updateDistributionChart(value) {
-                chart.load({
+                splineChart.load({
                     columns: distributionColumns[value]
                 });
             }
