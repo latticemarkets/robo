@@ -2550,3 +2550,7 @@ a.remove-button {
 .panel-body.automated-strategy-settings-chart-container {
     height: 230px;
 }
+.auto-strategies-top-menu {
+    height: 70px;
+    vertical-align: middle;
+}
