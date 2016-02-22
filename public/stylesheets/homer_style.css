@@ -1867,6 +1867,12 @@ body {
 .small-header .panel-body small {
   color: #838589;
 }
+.rule-criteria h1{
+  font-size: 26px;
+}
+.rule-criteria h3{
+  font-size: 14px;
+}
 .hbreadcrumb {
   padding: 2px 0px;
   margin-top: 6px;
