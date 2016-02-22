@@ -2383,7 +2383,10 @@ div.flot-chart.platform-allocation-chart {
  * ACCOUNT CONFIGURATION
  *----------------------*/
 .account-configuration {
+    position: relative;
     margin-top: 30px;
+    left: 0%;
+    animation: none;
 }.loans-metrics {
     margin-top: 40px;
 }
