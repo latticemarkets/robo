@@ -2417,6 +2417,9 @@ div button.btn.primary-button.erase-user:hover {
     color: white;
     border: 1px solid #e74c3c;
 }
+.text-center.small{
+  font-size: 15px;
+}
 /*------------------------
  * PLATFORMS
  *----------------------*/
