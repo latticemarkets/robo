@@ -19,15 +19,15 @@ import play.api.data.Forms._
   */
 
 object StrategiesForms {
-  def updatePrimaryMarketBuyStrategiesForm = Form(
+  def updateBuyStrategiesForm = Form(
     mapping(
       "email" -> email,
       "platform" -> nonEmptyText,
       "strategies" -> set(Forms.manualStrategyMapping)
-  )(UpdatePrimaryMarketBuyStrategies.apply)(UpdatePrimaryMarketBuyStrategies.unapply))
+  )(UpdateBuyStrategies.apply)(UpdateBuyStrategies.unapply))
 }
 
-case class UpdatePrimaryMarketBuyStrategies(
+case class UpdateBuyStrategies(
              email: String,
              platform: String,
              strategies: Set[ManualStrategy]

@@ -22,12 +22,30 @@ import scala.concurrent.Future
 class Strategies extends Controller {
 
   def updatePrimaryMarketBuyStrategies() = HasToken.async { implicit request =>
-    StrategiesForms.updatePrimaryMarketBuyStrategiesForm.bindFromRequest.fold(
+    StrategiesForms.updateBuyStrategiesForm.bindFromRequest.fold(
       formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
       data => {
         User.findByEmail(data.email) flatMap (_.map (user => {
           user.platforms.find(_.originator == data.platform) map (platform => {
             val updatedPlatform = platform.copy(primary = platform.primary.copy(buyStrategies = data.strategies))
+            val platforms = user.platforms.map {
+              case p if p.originator == data.platform => updatedPlatform
+              case p => p
+            }
+            User.update(user.copy(platforms = platforms)) map (user => Ok(""))
+          }) getOrElse Future.successful( BadGateway("") )
+        }) getOrElse Future.successful( BadGateway("") ))
+      }
+    )
+  }
+
+  def updateSecondaryMarketBuyStrategies() = HasToken.async { implicit request =>
+    StrategiesForms.updateBuyStrategiesForm.bindFromRequest.fold(
+      formWithErrors => Future.successful( BadRequest("Wrong data sent.") ),
+      data => {
+        User.findByEmail(data.email) flatMap (_.map (user => {
+          user.platforms.find(_.originator == data.platform) map (platform => {
+            val updatedPlatform = platform.copy(secondary = platform.secondary.copy(buyStrategies = data.strategies))
             val platforms = user.platforms.map {
               case p if p.originator == data.platform => updatedPlatform
               case p => p
