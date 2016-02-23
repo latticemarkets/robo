@@ -52,7 +52,7 @@ describe('directive: compare-numbers', function() {
         it('should be green', () => {
             const isolateScope = element.isolateScope();
             $timeout.flush();
-            expect(isolateScope.result).toBe('text-success');
+            expect(isolateScope.result).toBe('text-successful');
         });
     });
 });
