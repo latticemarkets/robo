@@ -45,7 +45,7 @@
             vm.saveCriteria = () => {
                 updatePlatforms();
                 spinnerService.on();
-                userService.updatePlatforms(email, vm.platforms, () => {
+                platformService.updatePlatforms(email, vm.platforms, () => {
                     spinnerService.off();
                     $cookieStore.put('newCriteriaSuccess', true);
                     $location.path(`/platforms/strategies/${platform}/${market}`);
@@ -144,10 +144,10 @@
 
                 function checkRuleId() {
                     spinnerService.on();
-                    userService.userData(email, response => {
-                        response.data.platforms.some(p => {
+                    platformService.getPlatforms(email, response => {
+                        response.data.some(p => {
                             if (p.originator == platform) {
-                                vm.platforms = response.data.platforms;
+                                vm.platforms = response.data;
                                 if (ruleId) {
                                     if (!p[market].rules.some(rule => {
                                             if (rule.id == ruleId) {

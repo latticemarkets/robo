@@ -15,15 +15,15 @@
     'use strict';
 
     class PlatformsController {
-        constructor(cssInjector, userService, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location) {
+        constructor(cssInjector, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
 
             cssInjector.add("assets/stylesheets/homer_style.css");
 
-            userService.userData(email, response => {
-                vm.platforms = response.data.platforms;
+            platformService.getPlatforms(email, response => {
+                vm.platforms = response.data;
 
                 vm.platforms.forEach(platform => {
                     platform.isAuto = platform.mode === 'automated';
@@ -35,7 +35,7 @@
                             delete p.isAuto;
                             return p;
                         });
-                        userService.updatePlatforms(email, tmpPlatforms, () => spinnerService.off(), () => {
+                        platformService.updatePlatforms(email, tmpPlatforms, () => spinnerService.off(), () => {
                             platform.mode = platform.isAuto ? 'automated' : 'manual';
                             platform.isAuto = !platform.isAuto;
                         });

@@ -9,10 +9,11 @@ POST    /api/register                                   controllers.users.Users.
 POST    /api/login                                      controllers.users.Users.login
 PUT     /api/user/password                              controllers.users.Users.updatePassword
 PUT     /api/user/personalData                          controllers.users.Users.updatePersonalData
-GET     /api/user/:email                                controllers.users.Users.isUsed(email)
+GET     /api/user/check/:email                          controllers.users.Users.isUsed(email)
 GET     /api/user/infos/:email                          controllers.users.Users.userData(email)
 POST    /api/user/destroy                               controllers.users.Users.destroyAccount
 
+GET     /api/user/platforms                             controllers.platforms.Platforms.getPlatforms
 POST    /api/user/platform                              controllers.platforms.Platforms.addPlatform
 PUT     /api/user/p2pPlatforms                          controllers.platforms.Platforms.updatePlatforms
 

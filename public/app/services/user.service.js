@@ -47,7 +47,7 @@
 
         isEmailUsed(email, successCallback, errorCallback) {
             this.$http
-                .get(`/api/user/${email}`)
+                .get(`/api/user/check/${email}`)
                 .then(successCallback, errorCallback);
         }
 
@@ -61,20 +61,12 @@
             this.$http.put('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
         }
 
-        updatePlatforms(email, platforms, callback, errorCallback) {
-            this.$http.put('/api/user/p2pPlatforms', { email: email, platforms: platforms}).then(callback, this.notificationService.apiError(errorCallback));
-        }
-
         updatePersonalData(email, firstName, lastName, birthday, callback) {
             this.$http.put('/api/user/personalData', { email: email, firstName: firstName, lastName: lastName, birthday: birthday }).then(callback, this.notificationService.apiError());
         }
 
         destroyUser(email, password, callback) {
             this.$http.post('/api/user/destroy', { email: email, password: password }).then(callback, this.notificationService.apiError());
-        }
-
-        addPlatform(email, originator, accountId, apiKey, callback) {
-            this.$http.post('/api/user/platform', { email: email, originator: originator, accountId: accountId, apiKey: apiKey, callback: callback }).then(callback, this.notificationService.apiError());
         }
     }
 

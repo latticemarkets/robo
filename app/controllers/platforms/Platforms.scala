@@ -10,7 +10,9 @@ package controllers.platforms
 
 import controllers.Security.HasToken
 import controllers.Utils
-import models.{Platform, User}
+import controllers.users.UsersForms
+import models._
+import play.api.libs.json.Json
 import play.api.mvc.Controller
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -22,6 +24,16 @@ import scala.concurrent.Future
   */
 
 class Platforms extends Controller {
+  implicit val inSetParamsFormat = Json.format[InSetParams]
+  implicit val inRangeParamsIntFormat = Json.format[InRangeParams]
+  implicit val expectedReturnFormat = Json.format[ExpectedReturn]
+  implicit val ruleFormat = Json.format[Rule]
+  implicit val manualStrategyFormat = Json.format[ManualStrategy]
+  implicit val automatedStrategyFormat = Json.format[AutomatedStrategy]
+  implicit val primaryMarketFormat = Json.format[PrimaryMarket]
+  implicit val secondaryMarketFormat = Json.format[SecondaryMarket]
+  implicit val platformFormat = Json.format[Platform]
+  implicit val userFormat = Json.format[User]
 
   def updatePlatforms() = HasToken.async { implicit request =>
     PlatformsForms.updatePlatformsForm.bindFromRequest.fold(
@@ -42,6 +54,15 @@ class Platforms extends Controller {
           val newPlatform = Platform.factory(data.originator, data.accountId, data.apiKey)
           User.update(user.copy(platforms = user.platforms :+ newPlatform)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
+      }
+    )
+  }
+
+  def getPlatforms() = HasToken.async { implicit request =>
+    UsersForms.emailForm.bindFromRequest.fold(
+      Utils.badRequestOnError,
+      data => {
+        User.findByEmail(data.email) map ( _.map (user => Ok(Json.toJson(user.platforms))) getOrElse Utils.responseOnWrongDataSent)
       }
     )
   }

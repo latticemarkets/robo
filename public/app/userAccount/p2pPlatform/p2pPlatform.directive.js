@@ -6,9 +6,9 @@
         .directive('p2pPlatform', p2pPlatform);
 
 
-    p2pPlatform.$inject = ['userService', 'notificationService', 'authenticationService', 'constantsService','portfolioSimulationService','spinnerService'];
+    p2pPlatform.$inject = ['notificationService', 'authenticationService','portfolioSimulationService', 'spinnerService'];
 
-    function p2pPlatform(userService, notificationService, authenticationService, constantsService, portfolioSimulationService,spinnerService) {
+    function p2pPlatform(notificationService, authenticationService, portfolioSimulationService, spinnerService) {
         return {
             replace: true,
             restrict: 'E',
@@ -28,7 +28,7 @@
                     const filledPlatforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
                     if (filledPlatforms.length > 0) {
                         spinnerService.on();
-                        userService.updatePlatforms(
+                        platformService.updatePlatforms(
                             authenticationService.getCurrentUsersEmail(),
                             scope.platforms.filter(platform => platform.apiKey.length > 0),
                             () => {
@@ -46,7 +46,7 @@
                   const name = platform.originator;
                   spinnerService.on();
                   const newPlatforms = scope.platforms.filter(platform => platform.originator !== name );
-                  userService.updatePlatforms(
+                    platformService.updatePlatforms(
                       authenticationService.getCurrentUsersEmail(),
                       newPlatforms,
                       () => {

@@ -34,7 +34,7 @@
     }
 
     class AddPlatformModalController {
-        constructor($scope, $uibModalInstance, constantsService, userService, authenticationService, $location, platforms) {
+        constructor($scope, $uibModalInstance, constantsService, addPlatform, authenticationService, $location, platforms) {
             $scope.platforms = constantsService.platformsImgExtensions;
 
             $scope.cancel = () => {
@@ -69,7 +69,7 @@
                 const accountId = $('#accountId').val();
                 const apiKey = $('#apiKey').val();
 
-                userService.addPlatform(authenticationService.getCurrentUsersEmail(), $scope.chosePlatform, accountId, apiKey,
+                addPlatform.addPlatform(authenticationService.getCurrentUsersEmail(), $scope.chosePlatform, accountId, apiKey,
                     () => {
                         finish();
                         $location.path(`/platforms/strategies/${$scope.chosePlatform}/primary`);

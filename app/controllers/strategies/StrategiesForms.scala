@@ -23,7 +23,7 @@ object StrategiesForms {
     mapping(
       "email" -> email,
       "platform" -> nonEmptyText,
-      "strategies" -> set(ModelForms.manualStrategyMapping)
+      "strategies" -> seq(ModelForms.manualStrategyMapping)
   )(UpdateStrategies.apply)(UpdateStrategies.unapply))
 
   def updateAutomatedStrategy = Form(
@@ -43,7 +43,7 @@ sealed class UpdatePlatform(
 case class UpdateStrategies(
            override val email: String,
            override val platform: String,
-           strategies: Set[ManualStrategy]
+           strategies: Seq[ManualStrategy]
              ) extends UpdatePlatform(email, platform)
 
 case class UpdateAutomatedStrategy(

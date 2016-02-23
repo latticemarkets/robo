@@ -13,6 +13,4 @@ package models
   * Created on 22/02/2016
   */
 
-case class AutomatedStrategy(
-          aggressivity: Int
-        )
+case class AutomatedStrategy(aggressivity: Int)
