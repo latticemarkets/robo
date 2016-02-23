@@ -1,3 +1,13 @@
 <div class="signup row">
-    <img width="80px" src="assets/img/platforms/{{ platform }}.{{ extension }}" data-ng-class="{ticked: alreadyAdded(platform)}" class="img-rounded platform" data-ng-click="choose(platform, $nextStep)" data-ng-repeat="(platform, extension) in platforms">
+    <div style="float:left;" data-ng-class="{ticked: alreadyAdded(platform)}" data-ng-click="choose(platform, $nextStep)" data-ng-repeat="(platform, extension) in platforms">
+      <div ng-if="alreadyAdded(platform) == true">
+        <div>
+          <i class="fa fa-check-square-o pull-right"></i>
+        </div>
+        <img src="assets/img/platforms/{{ platform }}.{{ extension }}" class="img-rounded platform ticked" width="80px"></img>
+      </div>
+      <div ng-if="alreadyAdded(platform) == false" style="margin-top: auto;">
+        <img src="assets/img/platforms/{{ platform }}.{{ extension }}" class="img-rounded platform not-ticked" width="80px"></img>
+      </div>
+    </div>
 </div>
