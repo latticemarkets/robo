@@ -43,7 +43,7 @@ object ModelForms {
   )(ManualStrategy.apply)(ManualStrategy.unapply)
 
   def automatedStrategyMapping = mapping(
-    "aggressivity" -> number
+    "aggressivity" -> bigDecimal
   )(AutomatedStrategy.apply)(AutomatedStrategy.unapply)
 
   def platformMapping = mapping(

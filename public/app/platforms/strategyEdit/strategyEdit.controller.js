@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategyEditController {
-        constructor(authenticationService, $routeParams, constantsService, $location, cssInjector, criteriaService, $cookieStore, spinnerService, $timeout) {
+        constructor(authenticationService, $routeParams, constantsService, $location, cssInjector, criteriaService, $cookieStore, spinnerService, $timeout, platformService) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();

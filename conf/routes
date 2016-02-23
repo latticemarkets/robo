@@ -21,6 +21,7 @@ PUT     /api/strategies/primary/buy                     controllers.strategies.S
 PUT     /api/strategies/secondary/buy                   controllers.strategies.Strategies.updateSecondaryMarketBuyStrategies
 PUT     /api/strategies/secondary/sell                  controllers.strategies.Strategies.updateSecondaryMarketSellStrategies
 PUT     /api/strategies/auto                            controllers.strategies.Strategies.updateAutomatedStrategy
+GET     /api/strategies/auto/:email/:originator         controllers.strategies.Strategies.getAutomatedStrategy(email, originator)
 
 GET     /api/dashboard/capital/available                controllers.portfolioMetrics.PortfolioMetrics.availableCapital
 GET     /api/dashboard/capital/allocated                controllers.portfolioMetrics.PortfolioMetrics.allocatedCapital

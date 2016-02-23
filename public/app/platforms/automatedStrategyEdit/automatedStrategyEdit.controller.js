@@ -22,39 +22,43 @@
             vm.splineChartId = "expectedReturnDistribution";
             vm.barChartId = "gradesDistributionChart";
 
-            vm.strategyValue = 3;
-
             const platform = getPlatform();
+            const email = authenticationService.getCurrentUsersEmail();
+
+            strategiesService.getAutomatedStrategy(email, platform, response => {
+                vm.strategyValue = response.data.aggressivity * 10;
+
+                $timeout(function () {
+                    generateCharts();
+                    $scope.$broadcast('reCalcViewDimensions');
+                }, 500);
+
+                onResizeService.addOnResizeCallback(() => {
+                    generateCharts();
+                }, vm.splineChartId);
+
+                vm.strategySliderOptions = {
+                    floor: 0,
+                    ceil: 10,
+                    step: 1,
+                    translate: () => "",
+                    onChange: (id, value) => updateDistributionChart(value),
+                    onEnd: (id, value) => updateDistributionChart(value),
+                    hideLimitLabels: true
+                };
+            });
 
             let splineChart;
             let barChart;
-
-            $timeout(() => {
-                generateCharts();
-            }, 500);
-
-            onResizeService.addOnResizeCallback(() => {
-                generateCharts();
-            }, vm.splineChartId);
 
             $scope.$on('$destroy', function() {
                 onResizeService.removeOnResizeCallback(vm.splineChartId);
             });
 
-            vm.strategySliderOptions = {
-                floor: 0,
-                ceil: 10,
-                step: 1,
-                translate: () => "",
-                onChange: (id, value) => updateDistributionChart(value),
-                onEnd: (id, value) => updateDistributionChart(value),
-                hideLimitLabels: true
-            };
-
             vm.cancel = () => $location.path('/platforms');
             vm.save = () => {
                 spinnerService.on();
-                strategiesService.updateAutomatedStrategy(authenticationService.getCurrentUsersEmail(), platform, vm.strategyValue,
+                strategiesService.updateAutomatedStrategy(email, platform, vm.strategyValue,
                     () => {
                         spinnerService.off();
                         $location.path('/platforms');
@@ -83,10 +87,6 @@
                 }
                 return platform;
             }
-
-            $timeout(function () {
-                $scope.$broadcast('reCalcViewDimensions');
-            }, 500);
         }
     }
     
