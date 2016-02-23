@@ -22,7 +22,9 @@ describe('StrategyEditController', () => {
         platformService,
         rulesService,
         notificationService,
-        $cookieStore;
+        $cookieStore,
+        SweetAlert,
+        $timeout;
 
     beforeEach(module('app'));
 
@@ -104,6 +106,10 @@ describe('StrategyEditController', () => {
         $cookieStore = jasmine.createSpyObj('$cookieStore', ['put']);
     });
 
+    beforeEach(() => {
+        SweetAlert = jasmine.createSpyObj('SweetAlert', ['swal']);
+    });
+
     describe('called with good platform and ruleId URL parameters', () => {
         beforeEach(() => {
             constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
@@ -112,7 +118,7 @@ describe('StrategyEditController', () => {
             $routeParams.strategyId = urlRuleId;
         });
 
-        beforeEach(inject(($controller) => {
+        beforeEach(inject(($controller, _$timeout_) => {
             strategyEditController = $controller('StrategyEditController', {
                 notificationService: notificationService,
                 cssInjector: cssInjector,
@@ -123,8 +129,12 @@ describe('StrategyEditController', () => {
                 rulesService: rulesService,
                 spinnerService: spinnerService,
                 platformService: platformService,
-                $cookieStore: $cookieStore
+                $cookieStore: $cookieStore,
+                $timeout: _$timeout_,
+                SweetAlert: SweetAlert
             });
+
+            $timeout = _$timeout_;
         }));
 
         describe('cssInjection', () => {
@@ -235,13 +245,36 @@ describe('StrategyEditController', () => {
             });
 
             describe('cancel', () => {
-                beforeEach(() => {
-                    strategyEditController.cancel();
+                describe('the user confirms', () => {
+                    beforeEach(() => {
+                        SweetAlert.swal.and.callFake((obj, callback) => callback(true));
+                        strategyEditController.cancel();
+                        $timeout.flush();
+                    });
+
+                    it('should call the sweet alert', () => {
+                        expect(SweetAlert.swal).toHaveBeenCalled();
+                    });
+
+                    it('should go back to strategies page with no cookie', () => {
+                        expect($cookieStore.put).not.toHaveBeenCalled();
+                        expect($location.path).toHaveBeenCalledWith(`/platforms/strategies/${urlOriginator}/primary`);
+                    });
                 });
 
-                it('should go back to strategies page with no cookie', () => {
-                    expect($cookieStore.put).not.toHaveBeenCalled();
-                    expect($location.path).toHaveBeenCalledWith(`/platforms/strategies/${urlOriginator}/primary`);
+                describe('the user doesn\'t confirm the cancellation', () => {
+                    beforeEach(() => {
+                        SweetAlert.swal.and.callFake((obj, callback) => callback(false));
+                        strategyEditController.cancel();
+                    });
+
+                    it('should call the sweet alert', () => {
+                        expect(SweetAlert.swal).toHaveBeenCalled();
+                    });
+
+                    it('should stay on the page', () => {
+                        expect($location.path).not.toHaveBeenCalled();
+                    });
                 });
             });
 

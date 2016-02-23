@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategyEditController {
-        constructor(authenticationService, $routeParams, constantsService, $location, cssInjector, rulesService, $cookieStore, spinnerService, $timeout, platformService, notificationService) {
+        constructor(authenticationService, $routeParams, constantsService, $location, cssInjector, rulesService, $cookieStore, spinnerService, $timeout, platformService, notificationService, SweetAlert) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
@@ -53,7 +53,7 @@
             };
 
             vm.cancel = () => {
-              swal({
+                SweetAlert.swal({
                     title: "Are you sure?",
                     type: "warning",
                     showCancelButton: true,
