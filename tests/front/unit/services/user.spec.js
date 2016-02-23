@@ -62,16 +62,18 @@ describe('userService', () => {
 
         it('should call the API', () => {
             _$httpBackend.expectPOST('/api/register', {
-                _id: email,
-                password: password,
-                terms: terms,
-                reason: reason,
-                income: income,
-                timeline: timeline,
-                birthday: birthday,
-                platforms: [{name:platform, accountId:accountId, apiKey:apiKey, primary: {strategy: portfolio, rules: []}, secondary: {strategy: portfolio, rules: []}}],
-                firstName: firstName,
-                lastName: lastName
+                "email": "email",
+                "password": "password",
+                "terms": "terms",
+                "reason": "reason",
+                "income": "income",
+                "timeline": "timeline",
+                "birthday": "birthday",
+                "originator": "platform",
+                "accountId": "accountId",
+                "apiKey": "apiKey",
+                "firstName": "portfolio",
+                "lastName": "firstName"
             });
             expect(_$httpBackend.flush).not.toThrow();
         });
@@ -112,13 +114,13 @@ describe('userService', () => {
         beforeEach(() => {
             email = "email";
 
-            _$httpBackend.when('GET', `/api/user/${email}`).respond();
+            _$httpBackend.when('GET', `/api/user/check/${email}`).respond();
 
             _userService.isEmailUsed(email);
         });
 
         it('should call the API', () => {
-            _$httpBackend.expectGET(`/api/user/${email}`);
+            _$httpBackend.expectGET(`/api/user/check/${email}`);
             expect(_$httpBackend.flush).not.toThrow();
         });
 
@@ -188,30 +190,6 @@ describe('userService', () => {
 
         it('should should call the API', () => {
             _$httpBackend.expectPUT('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword });
-            expect(_$httpBackend.flush).not.toThrow();
-        });
-
-        afterEach(() => {
-            _$httpBackend.verifyNoOutstandingExpectation();
-            _$httpBackend.verifyNoOutstandingRequest();
-        });
-    });
-
-    describe('updatePlatforms', () => {
-        let email,
-            platforms;
-
-        beforeEach(() => {
-            email = 'toto@tata.co.uk';
-            platforms = [{name: 'name', apiKey: 'apiKey', accountId: 'accountId'}];
-
-            _$httpBackend.when('PUT', '/api/user/p2pPlatforms').respond();
-
-            _userService.updatePlatforms(email, platforms);
-        });
-
-        it('should should call the API', () => {
-            _$httpBackend.expectPUT('/api/user/p2pPlatforms', { email: email, platforms: platforms });
             expect(_$httpBackend.flush).not.toThrow();
         });
 

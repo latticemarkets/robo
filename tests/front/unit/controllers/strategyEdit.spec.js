@@ -45,7 +45,7 @@ describe('StrategyEditController', () => {
             $routeParams.ruleId = 'id1';
         });
 
-        beforeEach(inject(($controller, criteriaService) => {
+        beforeEach(inject(($controller, rulesService) => {
             strategyEditController = $controller('StrategyEditController', {
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
@@ -53,7 +53,7 @@ describe('StrategyEditController', () => {
                 $location: $location,
                 authenticationService: authenticationService,
                 userService: userService,
-                criteriaService: criteriaService,
+                rulesService: rulesService,
                 spinnerService: spinnerService
             });
         }));
