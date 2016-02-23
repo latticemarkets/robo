@@ -262,6 +262,54 @@ describe('StrategyEditController', () => {
                     });
                 });
             });
+
+            describe('onMinChange', () => {
+                describe('min stays lower than max', () => {
+                    beforeEach(() => {
+                        strategyEditController.strategy.maxNoteAmount = 100;
+                        strategyEditController.onMinChange(90);
+                    });
+
+                    it('should not change max\'s value', () => {
+                        expect(strategyEditController.strategy.maxNoteAmount).toBe(100);
+                    });
+                });
+
+                describe('min goes higher than max', () => {
+                    beforeEach(() => {
+                        strategyEditController.strategy.maxNoteAmount = 100;
+                        strategyEditController.onMinChange(110);
+                    });
+
+                    it('should change max\'s value', () => {
+                        expect(strategyEditController.strategy.maxNoteAmount).toBe(110);
+                    });
+                });
+            });
+
+            describe('onMaxChange', () => {
+                describe('max stays higher than min', () => {
+                    beforeEach(() => {
+                        strategyEditController.strategy.minNoteAmount = 100;
+                        strategyEditController.onMaxChange(200);
+                    });
+
+                    it('should not change min\'s value', () => {
+                        expect(strategyEditController.strategy.minNoteAmount).toBe(100);
+                    });
+                });
+
+                describe('max goes lower than min', () => {
+                    beforeEach(() => {
+                        strategyEditController.strategy.minNoteAmount = 100;
+                        strategyEditController.onMaxChange(50);
+                    });
+
+                    it('should change min\'s value', () => {
+                        expect(strategyEditController.strategy.minNoteAmount).toBe(50);
+                    });
+                });
+            });
         });
 
     });
