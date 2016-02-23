@@ -244,7 +244,26 @@ describe('StrategyEditController', () => {
                     expect($location.path).toHaveBeenCalledWith(`/platforms/strategies/${urlOriginator}/primary`);
                 });
             });
+
+            describe('showGhostBox', () => {
+                describe('add a rule', () => {
+                    beforeEach(() => {
+                        strategyEditController.addRule(baseCriterion);
+                    });
+
+                    it('should not display the ghost box', () => {
+                        expect(strategyEditController.showGhostBox()).toBeFalsy();
+                    });
+                });
+
+                describe('no rule at the beginning', () => {
+                    it('should display the ghost box', () => {
+                        expect(strategyEditController.showGhostBox()).toBeTruthy();
+                    });
+                });
+            });
         });
+
     });
 
     describe('called with bad platform URL parameter', () => {
