@@ -19,7 +19,9 @@ describe('StrategyEditController', () => {
         $location,
         authenticationService,
         spinnerService,
-        platformService;
+        platformService,
+        rulesService,
+        notificationService;
 
     beforeEach(module('app'));
 
@@ -50,6 +52,47 @@ describe('StrategyEditController', () => {
         platformService.getPlatforms.and.callFake((email, callback) => getPlatformsCallback = callback);
     });
 
+    let baseCriteriaName,
+        baseCriteriaAttribute,
+        baseCriterion,
+        expendedBaseCriterion,
+        sliderName,
+        newStrategy;
+    beforeEach(() => {
+        baseCriteriaName = 'name1';
+        baseCriteriaAttribute = 'attr1';
+        sliderName = 'All letters Name';
+        newStrategy = {
+            id: 'POIP',
+            name: 'New Rule',
+            originator: urlOriginator,
+            expectedReturn: {
+                value: 0,
+                percent: 0.3,
+                margin: 0
+            },
+            loansAvailablePerWeek: 0,
+            moneyAvailablePerWeek: 0,
+            rules: [],
+            isEnabled: true,
+            minNoteAmount: 25,
+            maxNoteAmount: 25,
+            maximumDailyInvestment: 250
+        };
+
+        baseCriterion = { attribute: baseCriteriaAttribute, name: baseCriteriaName};
+        expendedBaseCriterion = { id: urlRuleId, rules: [], attribute: baseCriteriaAttribute, name: baseCriteriaName, type: 'slider', ruleParams: 5, slider: { name: sliderName, min: 0, max: 10, format: () => jasmine.any(String)}};
+
+        rulesService = jasmine.createSpyObj('rulesService', ['baseCriteria', 'expendStrategyObject', 'initializeStrategy']);
+        rulesService.baseCriteria.and.returnValue([baseCriterion]);
+        rulesService.expendStrategyObject.and.returnValue(expendedBaseCriterion);
+        rulesService.initializeStrategy.and.returnValue(newStrategy);
+    });
+
+    beforeEach(() => {
+        notificationService = jasmine.createSpyObj('notificationService', ['error']);
+    });
+
     describe('called with good platform and ruleId URL parameters', () => {
         beforeEach(() => {
             constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
@@ -58,8 +101,9 @@ describe('StrategyEditController', () => {
             $routeParams.strategyId = urlRuleId;
         });
 
-        beforeEach(inject(($controller, rulesService) => {
+        beforeEach(inject(($controller) => {
             strategyEditController = $controller('StrategyEditController', {
+                notificationService: notificationService,
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
@@ -100,7 +144,7 @@ describe('StrategyEditController', () => {
                 });
 
                 it('should get the right rule', () => {
-                    expect(strategyEditController.strategy).toEqual({ id: urlRuleId, rules: jasmine.any(Array)});
+                    expect(strategyEditController.strategy).toEqual(expendedBaseCriterion);
                 });
 
                 it('should stop the spinner on success', () => {
@@ -114,6 +158,22 @@ describe('StrategyEditController', () => {
                 expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
             });
         });
+
+        describe('addRule', () => {
+            beforeEach(() => {
+                getPlatformsCallback({ data: [{ originator: urlOriginator, primary: { buyStrategies: [{id: urlRuleId, rules: []}] } }] });
+                strategyEditController.addRule(baseCriterion);
+            });
+
+            it('should add the criterion in the strategy\'s list', () => {
+                expect(strategyEditController.strategy.rules.length).toBe(1);
+                expect(strategyEditController.strategy.rules[0]).toEqual(expendedBaseCriterion);
+            });
+
+            it('should remove the criterion of base criteria\'s list', () => {
+                expect(strategyEditController.baseCriteria.length).toBe(0);
+            });
+        });
     });
 
     describe('called with bad platform URL parameter', () => {
@@ -125,12 +185,14 @@ describe('StrategyEditController', () => {
 
         beforeEach(inject(($controller) => {
             strategyEditController = $controller('StrategyEditController', {
+                notificationService: notificationService,
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
                 authenticationService: authenticationService,
-                platformService: platformService
+                platformService: platformService,
+                rulesService: rulesService
             });
         }));
 
@@ -155,13 +217,15 @@ describe('StrategyEditController', () => {
 
         beforeEach(inject(($controller) => {
             strategyEditController = $controller('StrategyEditController', {
+                notificationService: notificationService,
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
                 authenticationService: authenticationService,
                 spinnerService: spinnerService,
-                platformService: platformService
+                platformService: platformService,
+                rulesService: rulesService
             });
         }));
 
@@ -190,13 +254,15 @@ describe('StrategyEditController', () => {
 
         beforeEach(inject(($controller) => {
             strategyEditController = $controller('StrategyEditController', {
+                notificationService: notificationService,
                 cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
                 authenticationService: authenticationService,
                 spinnerService: spinnerService,
-                platformService: platformService
+                platformService: platformService,
+                rulesService: rulesService
             });
         }));
 

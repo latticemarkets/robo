@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategyEditController {
-        constructor(authenticationService, $routeParams, constantsService, $location, cssInjector, rulesService, $cookieStore, spinnerService, $timeout, platformService) {
+        constructor(authenticationService, $routeParams, constantsService, $location, cssInjector, rulesService, $cookieStore, spinnerService, $timeout, platformService, notificationService) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
@@ -28,13 +28,13 @@
             checkUrlParameters();
             injectCss();
 
-            vm.addCriterion = criterion => {
-                vm.strategy.criteria.push(rulesService.expendStrategyObject(criterion));
+            vm.addRule = criterion => {
+                vm.strategy.rules.push(rulesService.expendStrategyObject(criterion));
                 vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => criterion.attribute !== baseCriterion.attribute);
             };
 
             vm.remove = attribute => {
-                vm.strategy.criteria = vm.strategy.criteria.filter(criterion => criterion.attribute !== attribute);
+                vm.strategy.rules = vm.strategy.rules.filter(criterion => criterion.attribute !== attribute);
                 rulesService.baseCriteria(market).some(criterion => {
                     if (criterion.attribute == attribute) {
                         vm.baseCriteria.push(criterion);
@@ -42,7 +42,7 @@
                 });
             };
 
-            vm.saveCriteria = () => {
+            vm.saveRule = () => {
                 updatePlatforms();
                 spinnerService.on();
                 platformService.updatePlatforms(email, vm.platforms, () => {
@@ -71,8 +71,8 @@
 
             vm.showGhostBox = () => {
                 if (vm.strategy) {
-                    if (vm.strategy.criteria) {
-                        return vm.strategy.criteria.length === 0;
+                    if (vm.strategy.rules) {
+                        return vm.strategy.rules.length === 0;
                     }
                 }
             };
