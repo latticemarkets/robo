@@ -10,7 +10,7 @@ package controllers.platforms
 
 import controllers.Security.HasToken
 import controllers.Utils
-import models.User
+import models.{Platform, User}
 import play.api.mvc.Controller
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,10 +39,10 @@ class Platforms extends Controller {
       Utils.badRequestOnError[AddPlatform],
       data => {
         User.findByEmail(data.email) flatMap (_.map (user => {
-          User.update(user.copy(platforms = user.platforms :+ data.platform)) map (user => Ok(""))
+          val newPlatform = Platform.factory(data.originator, data.accountId, data.apiKey)
+          User.update(user.copy(platforms = user.platforms :+ newPlatform)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
       }
     )
   }
-
 }

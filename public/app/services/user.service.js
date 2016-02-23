@@ -88,8 +88,8 @@
             this.$http.post('/api/user/destroy', { email: email, password: password }).then(callback, this.notificationService.apiError());
         }
 
-        addPlatform(email, platform, callback) {
-            this.$http.post('/api/user/platform', { email: email, platform: platform }).then(callback, this.notificationService.apiError());
+        addPlatform(email, originator, accountId, apiKey, callback) {
+            this.$http.post('/api/user/platform', { email: email, originator: originator, accountId: accountId, apiKey: apiKey, callback: callback }).then(callback, this.notificationService.apiError());
         }
     }
 

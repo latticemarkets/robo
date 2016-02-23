@@ -69,8 +69,7 @@
                 const accountId = $('#accountId').val();
                 const apiKey = $('#apiKey').val();
 
-                var newPlatform = { originator: $scope.chosePlatform, accountId: accountId, apiKey: apiKey, primary: { rules: [], strategy: 'moderate' }, secondary: { rules: [], strategy: 'moderate' } };
-                userService.addPlatform(authenticationService.getCurrentUsersEmail(), newPlatform,
+                userService.addPlatform(authenticationService.getCurrentUsersEmail(), $scope.chosePlatform, accountId, apiKey,
                     () => {
                         finish();
                         $location.path(`/platforms/strategies/${$scope.chosePlatform}/primary`);

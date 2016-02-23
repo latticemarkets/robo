@@ -26,6 +26,19 @@ case class Platform(
   def platformModeEnum = PlatformModeEnum.withName(mode)
 }
 
+object Platform {
+  def factory(originator: String, accountId: String, apiKey: String): Platform =
+    Platform(
+      OriginatorEnum.withName(originator).toString,
+      accountId,
+      apiKey,
+      PrimaryMarket(Set[ManualStrategy](), isEnabled = true),
+      SecondaryMarket(Set[ManualStrategy](), Set[ManualStrategy](), isEnabled = false),
+      AutomatedStrategy(5),
+      PlatformModeEnum.automated.toString
+    )
+}
+
 object OriginatorEnum extends Enumeration {
   type OriginatorEnum = Value
   val lendingClub, prosper, bondora, ratesetter, fundingCircle = Value
