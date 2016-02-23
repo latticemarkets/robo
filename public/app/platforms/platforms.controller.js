@@ -45,7 +45,7 @@
 
             vm.platformsImgExtensions = constantsService.platformsImgExtensions;
 
-            vm.totalExpected = platform => computeExpectedReturn(platform.primary) + computeExpectedReturn(platform.secondary);
+            vm.totalExpected = platform => computeExpectedReturn(platform.primary);
             vm.fromCamelCaseToTitle = str => $filter('titlecase')($filter('camelCaseToHuman')(str));
 
             vm.newPlatform = () => addPlatformService.newPlatformModal(vm.platforms);
@@ -53,7 +53,7 @@
             vm.editStrategy = (mode, name) => mode === 'automated' ? $location.path(`platforms/strategies/${name}/auto`) : $location.path(`platforms/strategies/${name}/primary`);
 
             function computeExpectedReturn(market) {
-                return market.rules.reduce((prev, rule) => rule.expectedReturn.value + prev, 0);
+                return market.buyStrategies.reduce((prev, strategy) => strategy.expectedReturn.value + prev, 0);
             }
         }
     }
