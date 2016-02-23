@@ -21,7 +21,8 @@ describe('StrategyEditController', () => {
         spinnerService,
         platformService,
         rulesService,
-        notificationService;
+        notificationService,
+        $cookieStore;
 
     beforeEach(module('app'));
 
@@ -48,8 +49,9 @@ describe('StrategyEditController', () => {
 
     let getPlatformsCallback;
     beforeEach(() => {
-        platformService = jasmine.createSpyObj('platformService', ['getPlatforms']);
+        platformService = jasmine.createSpyObj('platformService', ['getPlatforms', 'updatePlatforms']);
         platformService.getPlatforms.and.callFake((email, callback) => getPlatformsCallback = callback);
+        platformService.updatePlatforms.and.callFake((email, platforms, callback) => callback());
     });
 
     let baseCriteriaName,
@@ -57,7 +59,9 @@ describe('StrategyEditController', () => {
         baseCriterion,
         expendedBaseCriterion,
         sliderName,
-        newStrategy;
+        newStrategy,
+        unexpendedBaseCriterion,
+        unexpendedStrategyObj;
     beforeEach(() => {
         baseCriteriaName = 'name1';
         baseCriteriaAttribute = 'attr1';
@@ -82,15 +86,22 @@ describe('StrategyEditController', () => {
 
         baseCriterion = { attribute: baseCriteriaAttribute, name: baseCriteriaName};
         expendedBaseCriterion = { id: urlRuleId, rules: [], attribute: baseCriteriaAttribute, name: baseCriteriaName, type: 'slider', ruleParams: 5, slider: { name: sliderName, min: 0, max: 10, format: () => jasmine.any(String)}};
+        unexpendedBaseCriterion = { ruleType: 'InRange', ruleParams: 5 };
+        unexpendedStrategyObj = { rules: [unexpendedBaseCriterion] };
 
-        rulesService = jasmine.createSpyObj('rulesService', ['baseCriteria', 'expendStrategyObject', 'initializeStrategy']);
+        rulesService = jasmine.createSpyObj('rulesService', ['baseCriteria', 'expendStrategyObject', 'initializeStrategy', 'unexpendStrategyObject']);
         rulesService.baseCriteria.and.returnValue([baseCriterion]);
         rulesService.expendStrategyObject.and.returnValue(expendedBaseCriterion);
         rulesService.initializeStrategy.and.returnValue(newStrategy);
+        rulesService.unexpendStrategyObject.and.returnValue(unexpendedStrategyObj)
     });
 
     beforeEach(() => {
         notificationService = jasmine.createSpyObj('notificationService', ['error']);
+    });
+
+    beforeEach(() => {
+        $cookieStore = jasmine.createSpyObj('$cookieStore', ['put']);
     });
 
     describe('called with good platform and ruleId URL parameters', () => {
@@ -111,7 +122,8 @@ describe('StrategyEditController', () => {
                 authenticationService: authenticationService,
                 rulesService: rulesService,
                 spinnerService: spinnerService,
-                platformService: platformService
+                platformService: platformService,
+                $cookieStore: $cookieStore
             });
         }));
 
@@ -191,6 +203,34 @@ describe('StrategyEditController', () => {
                 it('should add the rule into the base criteria list', () => {
                     expect(strategyEditController.baseCriteria.length).toBe(1);
                     expect(strategyEditController.baseCriteria[0]).toEqual(baseCriterion);
+                });
+            });
+
+            describe('saveRule', () => {
+                beforeEach(() => {
+                    strategyEditController.addRule(baseCriterion);
+                    strategyEditController.saveRule();
+                });
+
+                it('should set the spinner to on', () => {
+                    expect(spinnerService.on).toHaveBeenCalled();
+                });
+
+                it('should add the rule to platform object', () => {
+                    expect(strategyEditController.platforms[0].primary.buyStrategies[0].rules.length).toBe(1);
+                    expect(strategyEditController.platforms[0].primary.buyStrategies[0].rules[0]).toEqual(unexpendedBaseCriterion);
+                });
+
+                it('should set the spinner to off', () => {
+                    expect(spinnerService.off).toHaveBeenCalled();
+                });
+
+                it('should add a cookie to notif the success to the next page', () => {
+                    expect($cookieStore.put).toHaveBeenCalledWith('newCriteriaSuccess', true);
+                });
+
+                it('should go back to the platform page', () => {
+                    expect($location.path).toHaveBeenCalledWith(`/platforms/strategies/${urlOriginator}/primary`);
                 });
             });
         });
