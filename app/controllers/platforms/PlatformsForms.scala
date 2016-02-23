@@ -27,7 +27,7 @@ object PlatformsForms {
     )(AddPlatform.apply)(AddPlatform.unapply)
   )
 
-  def updatePlatforms = Form(
+  def updatePlatformsForm = Form(
     mapping(
       "email" -> email,
       "platforms" -> seq(ModelForms.platformMapping)

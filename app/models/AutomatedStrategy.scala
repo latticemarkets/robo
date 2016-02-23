@@ -14,6 +14,5 @@ package models
   */
 
 case class AutomatedStrategy(
-          aggressivity: Int,
-          originator: String
+          aggressivity: Int
         )

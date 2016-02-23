@@ -24,7 +24,7 @@ import scala.concurrent.Future
 class Platforms extends Controller {
 
   def updatePlatforms() = HasToken.async { implicit request =>
-    PlatformsForms.updatePlatforms.bindFromRequest.fold(
+    PlatformsForms.updatePlatformsForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdatePlatforms],
       data => {
         User.findByEmail(data.email) flatMap (_.map (user => {
