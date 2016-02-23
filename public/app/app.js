@@ -128,7 +128,7 @@
                 controller: "StrategiesController",
                 controllerAs: 'vm'
             })
-            .when('/platforms/strategies/:platform/:market/strategyEdit/:ruleId?', {
+            .when('/platforms/strategies/:platform/:market/strategyEdit/:strategyId?', {
                 templateUrl: "assets/app/platforms/strategyEdit/strategyEdit.html",
                 controller: "StrategyEditController",
                 controllerAs: 'vm'
