@@ -24,7 +24,6 @@
 
             platformService.getPlatforms(email, response => {
                 vm.platforms = response.data;
-
                 vm.platforms.forEach(platform => {
                     platform.isAuto = platform.mode === 'automated';
 

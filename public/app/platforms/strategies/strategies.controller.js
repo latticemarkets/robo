@@ -38,7 +38,7 @@
             platformService.getPlatforms(email, response => {
                 response.data.some(p => {
                     if (p.originator == platform) {
-                        vm.strategies = p[market].rules;
+                        vm.strategies = p[market].buyStrategies;
                         return true;
                     }
                 });
