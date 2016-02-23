@@ -19,7 +19,7 @@
           this.tour = new Tour({
             steps: [
             {
-              element: ".light-version",
+              element: ".logo.sidebar",
               title: "PDX Robo",
               content: "Welcome in your dashboard PDX Robo."
             },
