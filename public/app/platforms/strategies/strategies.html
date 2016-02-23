@@ -36,51 +36,51 @@
                 </div>
             </div>
         </div>
-        <div class="row" ui-sortable="vm.sortableOptions" ng-model="vm.rules">
-            <div class="col-sm-12" data-ng-repeat="rule in vm.rules">
+        <div class="row" ui-sortable="vm.sortableOptions" ng-model="vm.strategies">
+            <div class="col-sm-12" data-ng-repeat="strategy in vm.strategies">
                 <div class="hpanel hblue" data-drag="true" jqyoui-draggable jqyoui-draggable="{animate:true}" data-jqyoui-options="{revert: 'invalid'}">
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-9">
-                                <h4>#{{ $index + 1 }} {{ rule.name | titlecase }}</h4>
+                                <h4>#{{ $index + 1 }} {{ strategy.name | titlecase }}</h4>
 
                                 <div class="row m-t-md">
                                     <div class="col-sm-4">
                                         <div class="project-label font-uppercase">Estimated Return</div>
-                                        <small>{{ rule.expectedReturn.percent | percent : 2 }} ± {{ rule.expectedReturn.margin | percent : 2 }}</small>
+                                        <small>{{ strategy.expectedReturn.percent | percent : 2 }} ± {{ strategy.expectedReturn.margin | percent : 2 }}</small>
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="project-label font-uppercase">Loans available per week</div>
-                                        <small>{{ rule.loansAvailablePerWeek }}</small>
+                                        <small>{{ strategy.loansAvailablePerWeek }}</small>
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="project-label font-uppercase">$ available per week</div>
-                                        <small>{{ rule.moneyAvailablePerWeek | currency }}</small>
+                                        <small>{{ strategy.moneyAvailablePerWeek | currency }}</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-3 project-info">
                                 <div class="project-action m-t-md">
                                     <div class="btn-group">
-                                        <button class="btn btn-xs btn-default" data-ng-click="vm.editRule(rule.id)"> Edit</button>
-                                        <button class="btn btn-xs {{ rule.isEnabled ? 'btn-default' : 'btn-warning'}}" data-ng-click="vm.pause(rule)"> Pause</button>
-                                        <button class="btn btn-xs btn-default" data-ng-click="vm.delete(rule)"> Delete</button>
+                                        <button class="btn btn-xs btn-default" data-ng-click="vm.editStrategy(strategy.id)"> Edit</button>
+                                        <button class="btn btn-xs {{ strategy.isEnabled ? 'btn-default' : 'btn-warning'}}" data-ng-click="vm.pause(strategy)"> Pause</button>
+                                        <button class="btn btn-xs btn-default" data-ng-click="vm.delete(strategy)"> Delete</button>
                                     </div>
                                 </div>
                                 <div class="project-value">
                                     <h2 class="text-info">
-                                        {{ rule.expectedReturn.value | currency }}
+                                        {{ strategy.expectedReturn.value | currency }}
                                     </h2>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="panel-footer">
-                        Based on <b>{{ rule.criteria.length }}</b> {{ rule.criteria.length > 1 ? 'criteria' : 'criterion' }}
+                        Based on <b>{{ strategy.criteria.length }}</b> {{ strategy.criteria.length > 1 ? 'criteria' : 'criterion' }}
                     </div>
                 </div>
             </div>
-            <div class="ui-sortable-placeholder col-sm-12 new-rule" data-ng-click="vm.newRule()">
+            <div class="ui-sortable-placeholder col-sm-12 new-rule" data-ng-click="vm.newStrategy()">
                 <h1 class="new-rule-title">New Strategy</h1>
             </div>
         </div>

@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategiesController {
-        constructor($routeParams, constantsService, $location, cssInjector, strategiesService, userService, authenticationService, notificationService, spinnerService, $cookieStore) {
+        constructor($routeParams, constantsService, $location, cssInjector, strategiesService, platformService, authenticationService, notificationService, spinnerService, $cookieStore) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -35,10 +35,10 @@
             }
 
             spinnerService.on();
-            userService.userData(email, response => {
-                response.data.platforms.some(p => {
+            platformService.getPlatforms(email, response => {
+                response.data.some(p => {
                     if (p.originator == platform) {
-                        vm.rules = p[market].rules;
+                        vm.strategies = p[market].rules;
                         return true;
                     }
                 });
@@ -48,15 +48,15 @@
             let rulesPriorityMinusOne;
             vm.sortableOptions = {
                 update() {
-                    rulesPriorityMinusOne = vm.rules;
+                    rulesPriorityMinusOne = vm.strategies;
                 },
                 stop() {
                     spinnerService.on();
-                    strategiesService.updateRules(vm.rules, email, platform, market,
+                    strategiesService.updateStrategies(vm.strategies, email, platform, market,
                         () => spinnerService.off(),
                         () => {
                             spinnerService.off();
-                            vm.rules = rulesPriorityMinusOne;
+                            vm.strategies = rulesPriorityMinusOne;
                         }
                     );
                 }
@@ -76,15 +76,15 @@
                 });
             };
 
-            vm.editRule = id => $location.path(`/platforms/strategies/${platform}/${market}/strategyEdit/${id}`);
-            vm.newRule = id => $location.path(`/platforms/strategies/${platform}/${market}/strategyEdit/`);
+            vm.editStrategy = id => $location.path(`/platforms/strategies/${platform}/${market}/strategyEdit/${id}`);
+            vm.newStrategy = id => $location.path(`/platforms/strategies/${platform}/${market}/strategyEdit/`);
 
             vm.goToPrimaryMarket = () => $location.path(`/platforms/strategies/${platform}/primary`);
             vm.goToSecondMarket = () => $location.path(`/platforms/strategies/${platform}/secondary`);
 
             function updateOneRule(rule, transformation) {
                 spinnerService.on();
-                const rulesCopy = clone(vm.rules);
+                const rulesCopy = clone(vm.strategies);
                 let ruleToDeleteIndex;
                 if (rulesCopy.some((aRule, index) => {
                         if (aRule.name == rule.name) {
@@ -95,7 +95,7 @@
                     const transformedRules = transformation(rulesCopy, ruleToDeleteIndex);
                     strategiesService.updateRules(transformedRules, email, platform, market,
                         () => {
-                            vm.rules = rulesCopy;
+                            vm.strategies = rulesCopy;
                             spinnerService.off();
                         },
                         () => spinnerService.off()

@@ -24,6 +24,8 @@
 
             vm.strategyValue = 3;
 
+            const platform = getPlatform();
+
             let splineChart;
             let barChart;
 
@@ -52,7 +54,7 @@
             vm.cancel = () => $location.path('/platforms');
             vm.save = () => {
                 spinnerService.on();
-                automatedStrategyEditService.saveStrategy(authenticationService.getCurrentUsersEmail(), vm.strategyValue,
+                strategiesService.updateAutomatedStrategy(authenticationService.getCurrentUsersEmail(), platform, vm.strategyValue,
                     () => {
                         spinnerService.off();
                         $location.path('/platforms');
@@ -72,6 +74,14 @@
                 barChart.load({
                     columns: autoStrategyChartsService.simulatedBarChartDataForStrategy(value)
                 });
+            }
+
+            function getPlatform() {
+                const platform = $routeParams.platform;
+                if (!constantsService.platforms().some(realPlatform => realPlatform == platform)) {
+                    $location.path('/platforms');
+                }
+                return platform;
             }
 
             $timeout(function () {
