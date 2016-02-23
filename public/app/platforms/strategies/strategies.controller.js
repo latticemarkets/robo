@@ -93,7 +93,7 @@
                         }
                     })) {
                     const transformedRules = transformation(rulesCopy, ruleToDeleteIndex);
-                    strategiesService.updateRules(transformedRules, email, platform, market,
+                    strategiesService.updateStrategies(transformedRules, email, platform, market,
                         () => {
                             vm.strategies = rulesCopy;
                             spinnerService.off();
