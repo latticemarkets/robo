@@ -134,7 +134,6 @@
                 checkPlatform();
                 checkMarket();
                 checkRuleId();
-                checkRuleId();
 
                 function checkPlatform() {
                     if (!constantsService.platforms().some(realPlatform => realPlatform == platform)) {
@@ -161,7 +160,7 @@
                                                 return true;
                                             }
                                         })) {
-                                        $location.path(`/platforms/strategy/${platform}/${market}`);
+                                        $location.path(`/platforms/strategies/${platform}/${market}`);
                                     }
                                 }
                                 else {

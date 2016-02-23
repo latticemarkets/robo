@@ -32,7 +32,7 @@ describe('StrategiesController', () => {
         authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
         authenticationService.getCurrentUsersEmail.and.returnValue('toto@tata.fr');
 
-        strategiesService = jasmine.createSpyObj('strategiesService', ['updateRules', 'updateStrategies']);
+        strategiesService = jasmine.createSpyObj('strategiesService', ['updateStrategies']);
 
         spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
 
@@ -120,13 +120,13 @@ describe('StrategiesController', () => {
         describe('pause', () => {
             describe('on success', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => success());
+                    strategiesService.updateStrategies.and.callFake((rules, email, platform, market, success, error) => success());
                     expect(strategiesController.strategies[0].isEnabled).toBeTruthy();
                     strategiesController.pause(strategiesController.strategies[0]);
                 });
 
-                it('should call strategiesService.updateRules', () => {
-                    expect(strategiesService.updateRules).toHaveBeenCalled();
+                it('should call strategiesService.updateStrategies', () => {
+                    expect(strategiesService.updateStrategies).toHaveBeenCalled();
                 });
 
                 it('should stop the spinner', () => {
@@ -140,13 +140,13 @@ describe('StrategiesController', () => {
 
             describe('on error', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => error());
+                    strategiesService.updateStrategies.and.callFake((rules, email, platform, market, success, error) => error());
                     expect(strategiesController.strategies[0].isEnabled).toBeTruthy();
                     strategiesController.pause(strategiesController.strategies[0]);
                 });
 
-                it('should call strategiesService.updateRules', () => {
-                    expect(strategiesService.updateRules).toHaveBeenCalled();
+                it('should call strategiesService.updateStrategies', () => {
+                    expect(strategiesService.updateStrategies).toHaveBeenCalled();
                 });
 
                 it('should stop the spinner', () => {
@@ -162,13 +162,13 @@ describe('StrategiesController', () => {
         describe('delete', () => {
             describe('on success', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => success());
+                    strategiesService.updateStrategies.and.callFake((rules, email, platform, market, success, error) => success());
                     expect(strategiesController.strategies.length).toBe(3);
                     strategiesController.delete(strategiesController.strategies[2]);
                 });
 
                 it('should call rules service to update the list', () => {
-                    expect(strategiesService.updateRules).toHaveBeenCalled();
+                    expect(strategiesService.updateStrategies).toHaveBeenCalled();
                 });
 
                 it('should stop the spinner', () => {
@@ -182,13 +182,13 @@ describe('StrategiesController', () => {
 
             describe('on error', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => error());
+                    strategiesService.updateStrategies.and.callFake((rules, email, platform, market, success, error) => error());
                     expect(strategiesController.strategies.length).toBe(3);
                     strategiesController.delete(strategiesController.strategies[2]);
                 });
 
                 it('should call rules service to update the list', () => {
-                    expect(strategiesService.updateRules).toHaveBeenCalled();
+                    expect(strategiesService.updateStrategies).toHaveBeenCalled();
                 });
 
                 it('should stop the spinner', () => {
@@ -209,7 +209,7 @@ describe('StrategiesController', () => {
 
             describe('on success', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => success());
+                    strategiesService.updateStrategies.and.callFake((rules, email, platform, market, success, error) => success());
                     strategiesController.sortableOptions.stop();
                 });
 
@@ -224,7 +224,7 @@ describe('StrategiesController', () => {
 
             describe('on error', () => {
                 beforeEach(() => {
-                    strategiesService.updateRules.and.callFake((rules, email, platform, market, success, error) => error());
+                    strategiesService.updateStrategies.and.callFake((rules, email, platform, market, success, error) => error());
                     strategiesController.sortableOptions.stop();
                 });
 

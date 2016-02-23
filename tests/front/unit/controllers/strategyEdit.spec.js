@@ -18,31 +18,44 @@ describe('StrategyEditController', () => {
         constantsService,
         $location,
         authenticationService,
-        userService,
-        spinnerService;
+        spinnerService,
+        platformService;
 
     beforeEach(module('app'));
+
+    let urlOriginator;
+    beforeEach(() => {
+        urlOriginator = 'a';
+    });
+
+    let urlRuleId;
+    beforeEach(() => {
+        urlRuleId = 'id1';
+    });
 
     beforeEach(() => {
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
         $location = jasmine.createSpyObj('$location', ['path']);
-        $routeParams = { platform: 'a', market: 'primary' };
+        $routeParams = { platform: urlOriginator, market: 'primary' };
 
         authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
         authenticationService.getCurrentUsersEmail.and.returnValue('toto@tata.fr');
 
-        userService = jasmine.createSpyObj('userService', ['userData']);
-        userService.userData.and.callFake((email, callback) => callback({data: {platforms: [{name: 'a', primary: { rules: [{id: "id1", name: 'rule1', pause: true, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}, {id: "id2", name: 'rule2', pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}, {id: "id3", name: 'rule3', pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}] }] }}, {name: 'b', rules: [{pause: false, criteria:[{id:'fdlsjf', typeKey:'expectedReturn', value: '4000'}]}]}]}}));
-
         spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
+    });
+
+    let getPlatformsCallback;
+    beforeEach(() => {
+        platformService = jasmine.createSpyObj('platformService', ['getPlatforms']);
+        platformService.getPlatforms.and.callFake((email, callback) => getPlatformsCallback = callback);
     });
 
     describe('called with good platform and ruleId URL parameters', () => {
         beforeEach(() => {
             constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
-            constantsService.platforms.and.returnValue(['a']);
+            constantsService.platforms.and.returnValue([urlOriginator]);
             constantsService.markets.and.returnValue(['primary']);
-            $routeParams.ruleId = 'id1';
+            $routeParams.strategyId = urlRuleId;
         });
 
         beforeEach(inject(($controller, rulesService) => {
@@ -52,9 +65,9 @@ describe('StrategyEditController', () => {
                 constantsService: constantsService,
                 $location: $location,
                 authenticationService: authenticationService,
-                userService: userService,
                 rulesService: rulesService,
-                spinnerService: spinnerService
+                spinnerService: spinnerService,
+                platformService: platformService
             });
         }));
 
@@ -80,17 +93,19 @@ describe('StrategyEditController', () => {
             });
         });
 
-        describe('get appropriate rule', () => {
-            it('should get the right rule', () => {
-                expect(strategyEditController.rule).toEqual({ id: 'id1', name: 'rule1', pause: true, criteria: jasmine.any(Array)});
-            });
+        describe('getPlatforms', () => {
+            describe('get appropriate rule', () => {
+                beforeEach(() => {
+                    getPlatformsCallback({ data: [{ originator: urlOriginator, primary: { buyStrategies: [{id: urlRuleId, rules: []}] } }] });
+                });
 
-            it('should call user service', () => {
-                expect(userService.userData).toHaveBeenCalled();
-            });
+                it('should get the right rule', () => {
+                    expect(strategyEditController.strategy).toEqual({ id: urlRuleId, rules: jasmine.any(Array)});
+                });
 
-            it('should stop the spinner on success', () => {
-                expect(spinnerService.off).toHaveBeenCalled();
+                it('should stop the spinner on success', () => {
+                    expect(spinnerService.off).toHaveBeenCalled();
+                });
             });
         });
 
@@ -115,7 +130,7 @@ describe('StrategyEditController', () => {
                 constantsService: constantsService,
                 $location: $location,
                 authenticationService: authenticationService,
-                userService: userService
+                platformService: platformService
             });
         }));
 
@@ -133,9 +148,9 @@ describe('StrategyEditController', () => {
     describe('called with good platform URL parameter but bad ruleId URL parameter', () => {
         beforeEach(() => {
             constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
-            constantsService.platforms.and.callFake(() => ['a']);
+            constantsService.platforms.and.callFake(() => [urlOriginator]);
             constantsService.markets.and.callFake(() => ['primary']);
-            $routeParams.ruleId = 'id1986859';
+            $routeParams.strategyId = 'id1986859';
         });
 
         beforeEach(inject(($controller) => {
@@ -145,10 +160,14 @@ describe('StrategyEditController', () => {
                 constantsService: constantsService,
                 $location: $location,
                 authenticationService: authenticationService,
-                userService: userService,
-                spinnerService: spinnerService
+                spinnerService: spinnerService,
+                platformService: platformService
             });
         }));
+
+        beforeEach(() => {
+            getPlatformsCallback({ data: [{ originator: urlOriginator, primary: { buyStrategies: [{id: urlRuleId, rules: []}] } }] });
+        });
 
         describe('parameters test', () => {
             it('should get the platforms list from constant\'s service', () => {
@@ -164,9 +183,9 @@ describe('StrategyEditController', () => {
     describe('called with good platform URL parameter and no ruleId URL parameter', () => {
         beforeEach(() => {
             constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
-            constantsService.platforms.and.callFake(() => ['a']);
+            constantsService.platforms.and.callFake(() => [urlOriginator]);
             constantsService.markets.and.callFake(() => ['primary']);
-            $routeParams.ruleId = undefined;
+            $routeParams.strategyId = undefined;
         });
 
         beforeEach(inject(($controller) => {
@@ -176,10 +195,14 @@ describe('StrategyEditController', () => {
                 constantsService: constantsService,
                 $location: $location,
                 authenticationService: authenticationService,
-                userService: userService,
-                spinnerService: spinnerService
+                spinnerService: spinnerService,
+                platformService: platformService
             });
         }));
+
+        beforeEach(() => {
+            getPlatformsCallback({ data: [{ originator: urlOriginator, primary: { buyStrategies: [{id: urlRuleId, rules: []}] } }] });
+        });
 
         describe('parameters test', () => {
             it('should get the platforms list from constant\'s service', () => {
@@ -187,7 +210,19 @@ describe('StrategyEditController', () => {
             });
 
             it('should initialize a new rule object', () => {
-                expect(strategyEditController.rule).toEqual({ id: jasmine.any(String), name: jasmine.any(String), criteria: [], originator: jasmine.any(String), expectedReturn: jasmine.any(Object), loansAvailablePerWeek: jasmine.any(Number), moneyAvailablePerWeek: jasmine.any(Number), isEnabled: jasmine.any(Boolean), minNoteAmount: 25, maxNoteAmount: 25, maximumDailyInvestment: 250 });
+                expect(strategyEditController.strategy).toEqual({
+                    id: jasmine.any(String),
+                    name: jasmine.any(String),
+                    originator: jasmine.any(String),
+                    rules: [],
+                    expectedReturn: jasmine.any(Object),
+                    loansAvailablePerWeek: jasmine.any(Number),
+                    moneyAvailablePerWeek: jasmine.any(Number),
+                    isEnabled: jasmine.any(Boolean),
+                    minNoteAmount: 25,
+                    maxNoteAmount: 25,
+                    maximumDailyInvestment: 250
+                });
             });
         });
     });
