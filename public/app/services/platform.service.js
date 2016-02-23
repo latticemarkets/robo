@@ -21,7 +21,7 @@
         }
 
         getPlatforms(email, callback) {
-            this.$http.get('/api/user/platform', { email: email })
+            this.$http.get(`/api/user/platforms/${email}`)
                 .then(callback, this.notificationService.apiError());
         }
 

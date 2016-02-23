@@ -15,7 +15,7 @@
     'use strict';
 
     class PlatformsController {
-        constructor(cssInjector, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location) {
+        constructor(cssInjector, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location, platformService) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();

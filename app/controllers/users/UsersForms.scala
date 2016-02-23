@@ -67,12 +67,6 @@ object UsersForms {
       "apiKey" -> nonEmptyText
     )(RegisterForm.apply)(RegisterForm.unapply)
   )
-
-  def emailForm = Form(
-    mapping(
-      "email" -> email
-    )(EmailForm.apply)(EmailForm.unapply)
-  )
 }
 
 case class RegisterForm(
@@ -88,5 +82,3 @@ case class RegisterForm(
        originator: String,
        accountId: String,
        apiKey: String)
-
-case class EmailForm(email: String)

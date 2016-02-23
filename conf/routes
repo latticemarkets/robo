@@ -13,7 +13,7 @@ GET     /api/user/check/:email                          controllers.users.Users.
 GET     /api/user/infos/:email                          controllers.users.Users.userData(email)
 POST    /api/user/destroy                               controllers.users.Users.destroyAccount
 
-GET     /api/user/platforms                             controllers.platforms.Platforms.getPlatforms
+GET     /api/user/platforms/:email                      controllers.platforms.Platforms.getPlatforms(email)
 POST    /api/user/platform                              controllers.platforms.Platforms.addPlatform
 PUT     /api/user/p2pPlatforms                          controllers.platforms.Platforms.updatePlatforms
 
