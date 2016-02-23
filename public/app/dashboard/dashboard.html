@@ -45,9 +45,9 @@
                                 <div class="text-center small">
                                     <i class="fa fa-tachometer"></i> Return on Investment
                                 </div>
-                                <div class="averageMaturity">
+                                <div class="expectedReturns">
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
-                                        {{ vm.averageMaturity }}
+                                        {{ vm.expectedReturns | currency }}
                                     </h1>
                                     <small>Net Capital Gains</small>
                                 </div>
@@ -60,9 +60,6 @@
                               </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="panel-footer">
-                        Last update: {{ vm.lastUpdate | date : "MMMM dd yyyy - HH:mm"}}
                     </div>
                   </div>
                 </div>

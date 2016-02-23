@@ -91,34 +91,6 @@ describe('dashboardDataService', () => {
     });
 
 
-    describe('averageMaturity', () => {
-        describe('responds 200', () => {
-            beforeEach(() => {
-                _$httpBackend.when('GET', '/api/dashboard/averageMaturity').respond();
-                _dashboardDataService.averageMaturity(() => {});
-            });
-
-            it('should call averageMaturity API', () => {
-                _$httpBackend.expectGET('/api/dashboard/averageMaturity');
-                expect(_$httpBackend.flush).not.toThrow();
-            });
-        });
-
-        describe('responds an error', () => {
-            beforeEach(() => {
-                _$httpBackend.when('GET', '/api/dashboard/averageMaturity').respond(400);
-                _dashboardDataService.averageMaturity(() => {});
-            });
-
-            it('should call averageMaturity API', () => {
-                _$httpBackend.expectGET('/api/dashboard/averageMaturity');
-                expect(_$httpBackend.flush).not.toThrow();
-                expect(errorCallback).toHaveBeenCalled();
-            });
-        });
-    });
-
-
     describe('averageIntRate', () => {
         describe('responds 200', () => {
             beforeEach(() => {

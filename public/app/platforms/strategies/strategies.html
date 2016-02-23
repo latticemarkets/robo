@@ -13,19 +13,15 @@
         <spinner></spinner>
         <div class="row">
             <div class="hpanel col-sm-3 col-lg-2 col-lg-offset-2 text-center">
-                <div class="panel-body strategies-top-menu" data-ng-click="vm.goToPrimaryMarket()">
+                <div class="panel-body strategies-top-menu" data-ng-click="vm.goToPrimaryMarket()" data-ng-class="{'blue-box': vm.market == 'primary'}">
                     <p>Strategy</p>
                     <p>Primary market</p>
                 </div>
-                <div class="panel-footer" data-ng-class="{'blue-footer': vm.market == 'primary'}">
-                </div>
             </div>
             <div class="hpanel col-sm-3 col-lg-2 text-center">
-                <div class="panel-body strategies-top-menu" data-ng-click="vm.goToSecondMarket()">
+                <div class="panel-body strategies-top-menu" data-ng-click="vm.goToSecondMarket()" data-ng-class="{'blue-box': vm.market == 'secondary'}">
                     <p>Strategy</p>
                     <p>Secondary market</p>
-                </div>
-                <div class="panel-footer" data-ng-class="{'blue-footer': vm.market == 'secondary'}">
                 </div>
             </div>
             <div class="hpanel col-sm-3 col-lg-2 text-center">
@@ -33,14 +29,10 @@
                     <p>Strategy</p>
                     <p>Sell</p>
                 </div>
-                <div class="panel-footer">
-                </div>
             </div>
             <div class="hpanel col-sm-3 col-lg-2 text-center">
                 <div class="panel-body strategies-top-menu">
                     <p>History</p>
-                </div>
-                <div class="panel-footer">
                 </div>
             </div>
         </div>
@@ -53,15 +45,15 @@
                                 <h4>#{{ $index + 1 }} {{ rule.name | titlecase }}</h4>
 
                                 <div class="row m-t-md">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="project-label font-uppercase">Estimated Return</div>
                                         <small>{{ rule.expectedReturn.percent | percent : 2 }} ± {{ rule.expectedReturn.margin | percent : 2 }}</small>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="project-label font-uppercase">Loans available per week</div>
                                         <small>{{ rule.loansAvailablePerWeek }}</small>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="project-label font-uppercase">$ available per week</div>
                                         <small>{{ rule.moneyAvailablePerWeek | currency }}</small>
                                     </div>

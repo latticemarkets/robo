@@ -33,7 +33,7 @@
 
                 userService.userData(authenticationService.getCurrentUsersEmail(), response => scope.username = `${response.data.firstName} ${response.data.lastName}`);
                 dashboardDataService.expectedReturns(response => scope.expectedReturns = response.data.expectedReturns);
-                dashboardDataService.lastLoanMaturity(response => scope.lastLoanMaturity = moment(response.data.lastLoanMaturity).fromNow());
+                userService.userData(authenticationService.getCurrentUsersEmail(), response => scope.platforms = response.data.platforms.length);
             }
         };
     }

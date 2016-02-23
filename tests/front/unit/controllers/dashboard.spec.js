@@ -30,7 +30,7 @@ describe('DashboardController', () => {
         $location = jasmine.createSpyObj('$location', ['path']);
         authenticationService = jasmine.createSpyObj('authenticationService', ['logout', 'getCurrentUsersEmail']);
         cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
-        dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital', 'averageMaturity', 'averageIntRate', 'expectedReturns', 'lastLoanMaturity', 'currentRoiRate', 'expectedRoiRate', 'currentLoansPromise', 'loansAcquiredPerDayLastWeek', 'loansAcquiredLastWeek', 'loansAcquiredToday', 'platformAllocationPromise', 'riskDiversificationPromise']);
+        dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital', 'averageIntRate', 'expectedReturns', 'lastLoanMaturity', 'currentRoiRate', 'expectedRoiRate', 'currentLoansPromise', 'loansAcquiredPerDayLastWeek', 'loansAcquiredLastWeek', 'loansAcquiredToday', 'platformAllocationPromise', 'riskDiversificationPromise']);
         userService = jasmine.createSpyObj('userService', ['userData']);
         loansAcquiredService = jasmine.createSpyObj('loansAcquiredService', ['prepare', 'barChartOptions']);
         $scope = jasmine.createSpyObj('$scope', ['$on']);
@@ -48,13 +48,6 @@ describe('DashboardController', () => {
     beforeEach(() => {
         allocatedCapital = 2000;
         dashboardDataService.allocatedCapital.and.callFake(callback => callback({data: { allocatedCapital: allocatedCapital } }));
-    });
-
-    let averageMaturity;
-    beforeEach(() => {
-        jasmine.clock().mockDate(new Date("2016-08-01"));
-        averageMaturity = "2016-10-11";
-        dashboardDataService.averageMaturity.and.callFake(callback => callback({data: { averageMaturity: averageMaturity } }));
     });
 
     let averageIntRate;
@@ -137,11 +130,6 @@ describe('DashboardController', () => {
 
             it('should set the current date', () => {
                 expect(dashboardController.lastUpdate).not.toBeUndefined();
-            });
-
-            it('should load average maturity from API', () => {
-                expect(dashboardDataService.averageMaturity).toHaveBeenCalled();
-                expect(dashboardController.averageMaturity).toBe("2 months");
             });
 
             it('should load average interest rate from API', () => {

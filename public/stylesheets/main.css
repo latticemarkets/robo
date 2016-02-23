@@ -2379,6 +2379,16 @@ div .portfolio-simulation-chart .portfolio-simulation-tooltip {
 div.flot-chart.platform-allocation-chart {
     margin-top: 40px;
 }
+.logo.sidebar{
+  background-color: #F7F9FA;
+  border-bottom: 1px solid #E4E5E7;
+  text-align: center;
+  -moz-user-select: none;
+  float: left;
+  width: 180px;
+  height: 56px;
+  padding: 5px 40px 5px 40px;
+}
 /*------------------------
  * ACCOUNT CONFIGURATION
  *----------------------*/
@@ -2417,6 +2427,9 @@ div button.btn.primary-button.erase-user:hover {
     color: white;
     border: 1px solid #e74c3c;
 }
+.text-center.small{
+  font-size: 15px;
+}
 /*------------------------
  * PLATFORMS
  *----------------------*/
@@ -2432,9 +2445,17 @@ div button.btn.primary-button.erase-user:hover {
 }
 img.ticked {
     -webkit-filter: grayscale(1);
+    filter: gray;
+    filter: grayscale(1);
 }
-.hpanel >  .panel-footer.blue-footer {
-    background-color: #3498db;
+img.not-ticked {
+    margin-top: 13px;
+}
+.hpanel >  .panel-body.blue-box {
+    border: 2px solid #3498DB;
+}
+.fa.fa-check-square-o{
+color: green;
 }
 /*------------------------
  * STRATEGIES

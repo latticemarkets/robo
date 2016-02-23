@@ -18,7 +18,6 @@ POST    /api/user/platform                              controllers.Users.addPla
 
 GET     /api/dashboard/capital/available                controllers.Users.availableCapital
 GET     /api/dashboard/capital/allocated                controllers.Users.allocatedCapital
-GET     /api/dashboard/averageMaturity                  controllers.Users.averageMaturity
 GET     /api/dashboard/averageIntRate                   controllers.Users.averageIntRate
 GET     /api/dashboard/expectedReturns                  controllers.Users.expectedReturns
 GET     /api/dashboard/lastLoanMaturity                 controllers.Users.lastLoanMaturity
