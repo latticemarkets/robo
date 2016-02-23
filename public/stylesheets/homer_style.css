@@ -2118,6 +2118,9 @@ body.fullscreen-panel-mode {
   color: #3498db;
 }
 .text-success {
+  color: #62cb31;
+}
+.text-successful{
   color: #1080F2;
 }
 .text-warning {
