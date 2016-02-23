@@ -130,6 +130,7 @@
                 checkPlatform();
                 checkMarket();
                 checkRuleId();
+                checkRuleId();
 
                 function checkPlatform() {
                     if (!constantsService.platforms().some(realPlatform => realPlatform == platform)) {

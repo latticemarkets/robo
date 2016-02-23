@@ -15,7 +15,7 @@
     'use strict';
     
     class AutomatedStrategyEditController {
-        constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, automatedStrategyEditService) {
+        constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, $routeParams, constantsService, spinnerService, strategiesService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
