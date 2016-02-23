@@ -229,7 +229,18 @@ describe('StrategyEditController', () => {
                     expect($cookieStore.put).toHaveBeenCalledWith('newCriteriaSuccess', true);
                 });
 
-                it('should go back to the platform page', () => {
+                it('should go back to the strategies page', () => {
+                    expect($location.path).toHaveBeenCalledWith(`/platforms/strategies/${urlOriginator}/primary`);
+                });
+            });
+
+            describe('cancel', () => {
+                beforeEach(() => {
+                    strategyEditController.cancel();
+                });
+
+                it('should go back to strategies page with no cookie', () => {
+                    expect($cookieStore.put).not.toHaveBeenCalled();
                     expect($location.path).toHaveBeenCalledWith(`/platforms/strategies/${urlOriginator}/primary`);
                 });
             });
