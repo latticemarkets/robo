@@ -159,19 +159,39 @@ describe('StrategyEditController', () => {
             });
         });
 
-        describe('addRule', () => {
+        describe('controller methods', () => {
             beforeEach(() => {
                 getPlatformsCallback({ data: [{ originator: urlOriginator, primary: { buyStrategies: [{id: urlRuleId, rules: []}] } }] });
-                strategyEditController.addRule(baseCriterion);
             });
 
-            it('should add the criterion in the strategy\'s list', () => {
-                expect(strategyEditController.strategy.rules.length).toBe(1);
-                expect(strategyEditController.strategy.rules[0]).toEqual(expendedBaseCriterion);
+            describe('addRule', () => {
+                beforeEach(() => {
+                    strategyEditController.addRule(baseCriterion);
+                });
+
+                it('should add the criterion in the strategy\'s list', () => {
+                    expect(strategyEditController.strategy.rules.length).toBe(1);
+                    expect(strategyEditController.strategy.rules[0]).toEqual(expendedBaseCriterion);
+                });
+
+                it('should remove the criterion of base criteria\'s list', () => {
+                    expect(strategyEditController.baseCriteria.length).toBe(0);
+                });
             });
 
-            it('should remove the criterion of base criteria\'s list', () => {
-                expect(strategyEditController.baseCriteria.length).toBe(0);
+            describe('remove', () => {
+                beforeEach(() => {
+                    strategyEditController.remove(expendedBaseCriterion);
+                });
+
+                it('should remove the rule from the list', () => {
+                    expect(strategyEditController.strategy.rules.length).toBe(0);
+                });
+
+                it('should add the rule into the base criteria list', () => {
+                    expect(strategyEditController.baseCriteria.length).toBe(1);
+                    expect(strategyEditController.baseCriteria[0]).toEqual(baseCriterion);
+                });
             });
         });
     });
