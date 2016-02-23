@@ -13,4 +13,4 @@ package models
   * Created on 22/02/2016
   */
 
-case class SecondaryMarket(buyStrategies: Set[ManualStrategy], sellStrategies: Set[ManualStrategy], isEnabled: Boolean)
+case class SecondaryMarket(buyStrategies: Seq[ManualStrategy], sellStrategies: Seq[ManualStrategy], isEnabled: Boolean)

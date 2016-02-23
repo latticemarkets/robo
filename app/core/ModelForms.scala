@@ -9,7 +9,6 @@
 package core
 
 import models._
-import play.api.data.Form
 import play.api.data.Forms._
 
 /**
@@ -18,22 +17,6 @@ import play.api.data.Forms._
   */
 
 object ModelForms {
-  def registerForm = Form(
-    mapping (
-      "_id" -> email,
-      "password" -> nonEmptyText,
-      "terms" -> nonEmptyText,
-      "reason" -> nonEmptyText,
-      "income" -> nonEmptyText,
-      "timeline" -> nonEmptyText,
-      "birthday" -> date("MM/dd/yyyy"),
-      "platforms" -> seq(platformMapping),
-      "firstName" -> nonEmptyText,
-      "lastName" -> nonEmptyText,
-      "token" -> ignored(Hash.createToken)
-    )(User.apply)(User.unapply)
-  )
-
   def primaryMarketMapping = mapping(
     "buyStrategies" -> set(manualStrategyMapping),
     "isEnabled" -> boolean

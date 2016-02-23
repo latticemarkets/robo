@@ -23,31 +23,16 @@
         register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, firstName, lastName, successCallback, errorCallback) {
             this.$http
                 .post('/api/register', angular.toJson({
-                    _id: email,
+                    email: email,
                     password: password,
                     terms: terms,
                     reason: reason,
                     income: income,
                     timeline: timeline,
                     birthday: birthday,
-                    platforms: [{
-                        originator: platform,
-                        accountId: accountId,
-                        apiKey: apiKey,
-                        primary: {
-                            buyStrategies: [],
-                            isEnabled: true
-                        },
-                        secondary: {
-                            buyStrategies: [],
-                            sellStrategies: [],
-                            isEnabled: false
-                        },
-                        automatedStrategy: {
-                            aggressivity: 0.5
-                        },
-                        mode: 'automated'
-                    }],
+                    originator: platform,
+                    accountId: accountId,
+                    apiKey: apiKey,
                     firstName: firstName,
                     lastName: lastName
                 }))

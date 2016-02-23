@@ -8,7 +8,9 @@
 
 package controllers.users
 
-import models.{DestroyAccount, UpdatePersonalData, UpdatePassword, Login}
+import java.util.Date
+
+import models._
 import play.api.data.Form
 import play.api.data.Forms._
 
@@ -48,4 +50,35 @@ object UsersForms {
       "password" -> nonEmptyText
     )(DestroyAccount.apply)(DestroyAccount.unapply)
   )
+
+  def registerForm = Form(
+    mapping (
+      "email" -> email,
+      "password" -> nonEmptyText,
+      "terms" -> nonEmptyText,
+      "reason" -> nonEmptyText,
+      "income" -> nonEmptyText,
+      "timeline" -> nonEmptyText,
+      "birthday" -> date("MM/dd/yyyy"),
+      "firstName" -> nonEmptyText,
+      "lastName" -> nonEmptyText,
+      "originator" -> nonEmptyText,
+      "accountId" -> nonEmptyText,
+      "apiKey" -> nonEmptyText
+    )(RegisterForm.apply)(RegisterForm.unapply)
+  )
 }
+
+case class RegisterForm(
+       email: String,
+       password: String,
+       terms: String,
+       reason: String,
+       income: String,
+       timeline: String,
+       birthday: Date,
+       firstName: String,
+       lastName: String,
+       originator: String,
+       accountId: String,
+       apiKey: String)

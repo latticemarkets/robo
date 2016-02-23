@@ -32,8 +32,8 @@ object Platform {
       OriginatorEnum.withName(originator).toString,
       accountId,
       apiKey,
-      PrimaryMarket(Set[ManualStrategy](), isEnabled = true),
-      SecondaryMarket(Set[ManualStrategy](), Set[ManualStrategy](), isEnabled = false),
+      PrimaryMarket(Seq[ManualStrategy](), isEnabled = true),
+      SecondaryMarket(Seq[ManualStrategy](), Seq[ManualStrategy](), isEnabled = false),
       AutomatedStrategy(5),
       PlatformModeEnum.automated.toString
     )

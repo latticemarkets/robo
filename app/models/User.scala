@@ -10,6 +10,7 @@ package models
 
 import java.util.Date
 
+import controllers.users.RegisterForm
 import core.{DbUtil, Hash}
 import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.json._
@@ -91,4 +92,26 @@ object User {
   }
 
   def delete(email: String): Future[Boolean] = usersTable.remove(Json.obj("_id" -> email)) map (_.ok)
+
+  def factory(form: RegisterForm): User = User(
+    form.email,
+    form.password,
+    form.terms,
+    form.reason,
+    form.income,
+    form.timeline,
+    form.birthday,
+    Seq[Platform](Platform(
+      form.originator,
+      form.accountId,
+      form.apiKey,
+      PrimaryMarket(Seq[ManualStrategy](), isEnabled = true),
+      SecondaryMarket(Seq[ManualStrategy](), Seq[ManualStrategy](), isEnabled = false),
+      AutomatedStrategy(5),
+      PlatformModeEnum.automated.toString
+    )),
+    form.firstName,
+    form.lastName,
+    Hash.createToken
+  )
 }

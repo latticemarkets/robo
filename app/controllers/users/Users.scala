@@ -10,7 +10,7 @@ package controllers.users
 
 import controllers.Security.HasToken
 import controllers.Utils
-import core.{Hash, ModelForms}
+import core.Hash
 import models.User
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -26,21 +26,23 @@ import scala.concurrent.Future
 class Users extends Controller {
 
   def register = Action.async { implicit request =>
-    ModelForms.registerForm.bindFromRequest.fold(
-      formWithErrors => {
-        Future.successful( Utils.responseOnWrongDataSent )
-      },
+    UsersForms.registerForm.bindFromRequest.fold(
+      Utils.badRequestOnError,
       providedInfos => {
-        User.store(providedInfos) map (optUser => optUser.map(user => Ok(Json.obj("token" -> user.token))).getOrElse(BadRequest("An error occurred when inserting data")))
+        User.store(
+          User.factory(providedInfos)
+        ) map (optUser =>
+          optUser.map(user =>
+            Ok(Json.obj("token" -> user.token))
+          )
+            getOrElse BadRequest("An error occurred when inserting data"))
       }
     )
   }
 
   def login = Action.async { implicit request =>
     UsersForms.loginForm.bindFromRequest.fold(
-      formWithErrors => {
-        Future.successful( Utils.responseOnWrongDataSent )
-      },
+      Utils.badRequestOnError,
       login => {
         User.findByEmail(login.email) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(login.password, user.password)) {
@@ -72,9 +74,7 @@ class Users extends Controller {
 
   def updatePassword() = HasToken.async { implicit request =>
     UsersForms.updatePasswordForm.bindFromRequest.fold(
-      formWithErrors => {
-        Future.successful( Utils.responseOnWrongDataSent )
-      },
+      Utils.badRequestOnError,
       infos => {
         User.findByEmail(infos.email) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(infos.oldPassword, user.password)) {
@@ -92,7 +92,7 @@ class Users extends Controller {
 
   def updatePersonalData() = HasToken.async { implicit request =>
     UsersForms.updatePersonalData.bindFromRequest.fold(
-      formWithErrors => Future.successful( Utils.responseOnWrongDataSent ),
+      Utils.badRequestOnError,
       data => {
         User.findByEmail(data.email) flatMap (_.map (user => {
           User.update(user.copy(firstName = data.firstName, lastName = data.lastName, birthday = data.birthday)) map (user => Ok(""))
@@ -103,7 +103,7 @@ class Users extends Controller {
 
   def destroyAccount() = HasToken.async { implicit request =>
     UsersForms.destroyAccountForm.bindFromRequest.fold(
-      _ => Future.successful( Utils.responseOnWrongDataSent ),
+      Utils.badRequestOnError,
       data => {
         User.findByEmail(data.email) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(data.password, user.password)) {

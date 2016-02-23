@@ -13,4 +13,4 @@ package models
   * Created on 22/02/2016
   */
 
-case class PrimaryMarket(buyStrategies: Set[ManualStrategy], isEnabled: Boolean)
+case class PrimaryMarket(buyStrategies: Seq[ManualStrategy], isEnabled: Boolean)
