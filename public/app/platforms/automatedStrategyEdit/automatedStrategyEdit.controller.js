@@ -27,6 +27,8 @@
 
             strategiesService.getAutomatedStrategy(email, platform, response => {
                 vm.strategyValue = response.data.aggressivity * 10;
+                vm.primaryMarketEnabled = response.data.primaryMarketEnabled;
+                vm.secondaryMarketEnabled = response.data.secondaryMarketEnabled;
 
                 $timeout(function () {
                     generateCharts();
@@ -58,7 +60,7 @@
             vm.cancel = () => $location.path('/platforms');
             vm.save = () => {
                 spinnerService.on();
-                strategiesService.updateAutomatedStrategy(email, platform, vm.strategyValue / 10,
+                strategiesService.updateAutomatedStrategy(email, platform, vm.strategyValue / 10, vm.primaryMarketEnabled, vm.secondaryMarketEnabled,
                     () => {
                         spinnerService.off();
                         $location.path('/platforms');

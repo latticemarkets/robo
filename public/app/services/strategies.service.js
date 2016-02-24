@@ -30,8 +30,16 @@
             }
         }
 
-        updateAutomatedStrategy(email, platform, aggressivity, callback) {
-            this.$http.put('/api/strategies/auto', { email: email, platform: platform, autoStrategy: { aggressivity: aggressivity } })
+        updateAutomatedStrategy(email, platform, aggressivity, primaryMarketEnabled, secondaryMarketEnabled, callback) {
+            this.$http.put('/api/strategies/auto', {
+                    email: email,
+                    platform: platform,
+                    autoStrategy: {
+                        aggressivity: aggressivity,
+                        primaryMarketEnabled: primaryMarketEnabled,
+                        secondaryMarketEnabled: secondaryMarketEnabled
+                    }
+                })
                 .then(callback, this.notificationService.apiError());
         }
 
