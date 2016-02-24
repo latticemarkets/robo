@@ -3656,7 +3656,7 @@ ul.h-list li:hover a {
     margin-left: 10px;
   }
 }
-.switch{
+.market-mode{
 margin: 14px 0px 0px 50px;
 }
 .strategy-switch{
@@ -3668,4 +3668,7 @@ margin: 14px 0px 0px 50px;
 }
 .switch {
   background: #D0D2D5;
+}
+.platform-mode{
+  margin-left: 41.5%;
 }
