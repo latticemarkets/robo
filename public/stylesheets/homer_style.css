@@ -3659,8 +3659,12 @@ ul.h-list li:hover a {
 .market-mode{
 margin: 14px 0px 0px 50px;
 }
-.strategy-switch{
+h4.strategy-switch{
   float:left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: 100;
+    vertical-align: middle;
 }
 .switch.checked {
   background: #1080f2;

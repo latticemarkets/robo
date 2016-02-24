@@ -41,7 +41,7 @@
             <div class="row">
               <div class="hpanel hblue col-sm-12 col-md-6">
                   <div class="panel-body">
-                      <h2 class="strategy-switch"> Strategy primary market</h2>
+                      <h4 class="strategy-switch"> Strategy primary market</h4>
                       <form>
                           <switch id="market-mode" class="market-mode" ng-model="vm.primaryMarketEnabled"></switch>
                       </form>
@@ -49,7 +49,7 @@
               </div>
               <div class="hpanel hblue col-sm-12 col-md-6">
                   <div class="panel-body">
-                      <h2 class="strategy-switch"> Strategy secondary market</h2>
+                      <h4 class="strategy-switch"> Strategy secondary market</h4>
                       <form>
                           <switch id="market-mode" class="market-mode" ng-model="vm.secondaryMarketEnabled"></switch>
                       </form>
@@ -58,7 +58,7 @@
             </div>
             <div class="hpanel hblue col-sm-12">
                 <div class="panel-body">
-                    <rzslider rz-slider-model="vm.strategyValue" rz-slider-options="vm.strategySliderOptions"></rzslider>
+                    <rzslider rz-slider-model="vm.strategyValue" rz-slider-options="vm.strategySliderOptions" class="aggressivity-slider"></rzslider>
                     <div class="pull-left"><h2>Conservative</h2></div>
                     <div class="pull-right"><h2>Aggressive</h2></div>
                 </div>

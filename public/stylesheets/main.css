@@ -2544,3 +2544,10 @@ a.remove-button {
     height: 70px;
     vertical-align: middle;
 }
+.market-mode.switch.checked {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+rzslider.aggressivity-slider .rz-pointer {
+    background-color: #3498db;
+}
