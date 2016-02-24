@@ -2477,6 +2477,11 @@ color: green;
     height: 100px;
     vertical-align: middle;
 }
+.strategy-switch{
+  font-family: "WorkSans", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: normal !important;
+}
 /*------------------------
  * CRITERIA
  *----------------------*/
