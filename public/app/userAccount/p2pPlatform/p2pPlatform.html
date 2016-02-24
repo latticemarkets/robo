@@ -8,13 +8,6 @@
         <div class="form-group">
             <input type="text" class="form-control password" id="apiKey" placeholder="API Key" data-ng-model="platform.apiKey">
         </div>
-        <div class="form-group col-md-12">
-          <select class="form-control birthday candle" name="mySelect" id="mySelect"
-                  ng-options="option for option in availableOptions track by option"
-                  ng-model="platform.strategy">
-          </select>
-        </div>
-
       <div class="row">
       <div class="form-group col-md-6">
         <button class="btn primary-button" data-ng-click="submit()" data-ng-disabled="disableSubmitButton()">Modify</button>

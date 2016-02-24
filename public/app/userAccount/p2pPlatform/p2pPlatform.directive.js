@@ -6,9 +6,9 @@
         .directive('p2pPlatform', p2pPlatform);
 
 
-    p2pPlatform.$inject = ['notificationService', 'authenticationService','portfolioSimulationService', 'spinnerService', 'platformService'];
+    p2pPlatform.$inject = ['notificationService', 'authenticationService', 'spinnerService', 'platformService'];
 
-    function p2pPlatform(notificationService, authenticationService, portfolioSimulationService, spinnerService, platformService) {
+    function p2pPlatform(notificationService, authenticationService, spinnerService, platformService) {
         return {
             replace: true,
             restrict: 'E',
@@ -17,7 +17,6 @@
             },
             templateUrl: '/assets/app/userAccount/p2pPlatform/p2pPlatform.html',
             link(scope) {
-                scope.availableOptions = portfolioSimulationService.portfolioKeysValues;
 
                 scope.userPromise.then(response => {
                     scope.platforms = response.data.platforms;
