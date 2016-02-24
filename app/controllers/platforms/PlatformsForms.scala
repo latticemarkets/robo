@@ -40,9 +40,18 @@ object PlatformsForms {
       "platforms" -> seq(ModelForms.platformMapping)
     )(UpdatePlatforms.apply)(UpdatePlatforms.unapply)
   )
+
+  def updatePlatformForm = Form(
+    mapping(
+      "email" -> email,
+      "platform" -> ModelForms.platformMapping
+    )(UpdatePlatform.apply)(UpdatePlatform.unapply)
+  )
 }
 
 case class UpdatePlatforms(email: String, platforms: Seq[Platform])
+
+case class UpdatePlatform(email: String, platform: Platform)
 
 case class AddPlatform(email: String, platform: NewPlatform)
 

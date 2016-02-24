@@ -31,10 +31,12 @@
     }
 
     class PlatformSettingsModalController {
-        constructor($scope, $uibModalInstance, $timeout, platform) {
+        constructor($scope, $uibModalInstance, $timeout, authenticationService, platformService, platform) {
             $scope.originator = platform.originator;
 
-            $timeout(() => $scope.maximumDailyInvestment = platform.maximumDailyInvestment);
+            $timeout(() => $scope.platform= platform);
+
+            $scope.save = () => platformService.updatePlatform(authenticationService.getCurrentUsersEmail(), $scope.platform, () => $uibModalInstance.close('save'));
 
             $scope.cancel = () => {
                 $uibModalInstance.dismiss('cancel');

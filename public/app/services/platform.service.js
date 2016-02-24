@@ -32,6 +32,10 @@
         updatePlatforms(email, platforms, callback, errorCallback) {
             this.$http.put('/api/user/p2pPlatforms', { email: email, platforms: platforms }).then(callback, this.notificationService.apiError(errorCallback));
         }
+
+        updatePlatform(email, platform, callback) {
+            this.$http.put('/api/user/platform', { email: email, platform: platform }).then(callback, this.notificationService.apiError());
+        }
     }
 
     angular

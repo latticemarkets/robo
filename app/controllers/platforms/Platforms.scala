@@ -50,4 +50,18 @@ class Platforms extends Controller {
   def getPlatforms(email: String) = HasToken.async {
     User.findByEmail(email) map (_.map(user => Ok(Json.toJson(user.platforms))) getOrElse Utils.responseOnWrongDataSent)
   }
+
+  def updatePlatform() = HasToken.async { implicit request =>
+    PlatformsForms.updatePlatformForm.bindFromRequest.fold(
+      Utils.badRequestOnError[UpdatePlatform],
+      data => {
+        User.findByEmail(data.email) flatMap (_.map (user => {
+          User.update(user.copy(platforms = user.platforms.map(p =>
+            if (p.originator == data.platform.originator) data.platform else p)
+          )) map (user => Ok(""))
+        }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
+      }
+    )
+  }
+
 }
