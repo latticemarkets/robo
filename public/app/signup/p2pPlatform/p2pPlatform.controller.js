@@ -48,7 +48,7 @@
 
             vm.submit = platform => {
                 if (Object.keys(vm.platforms).indexOf(platform) >= 0 && !vm.alreadyAdded(platform)) {
-                    $cookieStore.put('signup.platform', platform);
+                    $cookieStore.put('signup.originator', platform);
                     $cookieStore.put('signup.extension', vm.platforms[platform]);
                     $location.path('/signup/p2pCredentials');
                 }

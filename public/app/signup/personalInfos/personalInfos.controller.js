@@ -68,10 +68,8 @@
                             $cookieStore.remove('signup.income');
                             $cookieStore.remove('signup.timeline');
                             $cookieStore.remove('signup.birthday');
-                            $cookieStore.remove('signup.platform');
+                            $cookieStore.remove('signup.originator');
                             $cookieStore.remove('signup.platforms');
-                            $cookieStore.remove('signup.accountId');
-                            $cookieStore.remove('signup.apiKey');
                             $location.path('/signup/registered');
                         },
                         response => {

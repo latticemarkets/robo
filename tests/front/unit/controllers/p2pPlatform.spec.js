@@ -81,7 +81,7 @@ describe('SignupP2pPlatformController', () => {
             });
 
             it('should store the platform in a cookie', () => {
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.platform', platform);
+                expect($cookieStore.put).toHaveBeenCalledWith('signup.originator', platform);
             });
 
             it('should go to the yearly income page', () => {
