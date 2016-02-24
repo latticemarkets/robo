@@ -65,7 +65,8 @@ module.exports = function(grunt) {
                     "public/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css",
                     "public/stylesheets/spinners.css",
                     "public/stylesheets/main.css",
-                    "bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css"
+                    "bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css",
+                    "bower_components/angular-ui-switch/angular-ui-switch.css"
                 ],
                 dest: "public/dist/dist.css"
             }
