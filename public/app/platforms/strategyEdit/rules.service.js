@@ -591,7 +591,7 @@
                     return rule;
                 case 'loanPurpose':
                     rule.type = 'multi';
-                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : this.loansPurposes;
+                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : 'Any';
                     rule.multi = {};
                     rule.multi.name = this.getCriteriaName(rule.attribute);
                     rule.multi.list = this.loansPurposes;
@@ -603,7 +603,7 @@
                     return rule;
                 case 'homeOwnership':
                     rule.type = 'multi';
-                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : this.homeOwnerships;
+                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : 'Any';
                     rule.multi = {};
                     rule.multi.name = this.getCriteriaName(rule.attribute);
                     rule.multi.list = this.homeOwnerships;
@@ -614,7 +614,7 @@
                     return rule;
                 case 'verifiedIncome':
                     rule.type = 'multi';
-                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : this.verifiedIncomes;
+                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : 'Any';
                     rule.multi = {};
                     rule.multi.name = this.getCriteriaName(rule.attribute);
                     rule.multi.list = this.verifiedIncomes;
@@ -625,7 +625,7 @@
                     return rule;
                 case 'state':
                     rule.type = 'multi';
-                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : this.states;
+                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : 'Any';
                     rule.multi = {};
                     rule.multi.name = this.getCriteriaName(rule.attribute);
                     rule.multi.list = this.states;
@@ -637,7 +637,7 @@
                     return rule;
                 case 'term':
                     rule.type = 'multi';
-                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : this.terms;
+                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : 'Any';
                     rule.multi = {};
                     rule.multi.name = this.getCriteriaName(rule.attribute);
                     rule.multi.list = this.terms;
@@ -648,7 +648,7 @@
                     return rule;
                 case 'loanStatus':
                     rule.type = 'multi';
-                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : this.terms;
+                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : 'Any';
                     rule.multi = {};
                     rule.multi.name = this.getCriteriaName(rule.attribute);
                     rule.multi.list = this.loanStatus;
@@ -659,7 +659,7 @@
                     return rule;
                 case 'creditScoreTrend':
                     rule.type = 'multi';
-                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : this.terms;
+                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : 'Any';
                     rule.multi = {};
                     rule.multi.name = this.getCriteriaName(rule.attribute);
                     rule.multi.list = this.creditScores;
@@ -670,7 +670,7 @@
                     return rule;
                 case 'recentCreditScore':
                     rule.type = 'multi';
-                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : this.terms;
+                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : 'Any';
                     rule.multi = {};
                     rule.multi.name = this.getCriteriaName(rule.attribute);
                     rule.multi.list = this.creditScores;
@@ -681,7 +681,7 @@
                     return rule;
                 case 'daysPastDue':
                     rule.type = 'multi';
-                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : this.terms;
+                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : 'Any';
                     rule.multi = {};
                     rule.multi.name = this.getCriteriaName(rule.attribute);
                     rule.multi.list = this.daysPastDues;
@@ -692,7 +692,7 @@
                     return rule;
                 case 'paymentNeverLate':
                     rule.type = 'multi';
-                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : this.terms;
+                    rule.ruleParams = rule.ruleParams ? this.splitValues(rule.ruleParams) : 'Any';
                     rule.multi = {};
                     rule.multi.name = this.getCriteriaName(rule.attribute);
                     rule.multi.list = this.boolean;
