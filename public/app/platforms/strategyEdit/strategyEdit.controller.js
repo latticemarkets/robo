@@ -28,9 +28,9 @@
             checkUrlParameters();
             injectCss();
 
-            vm.addRule = criterion => {
-                vm.strategy.rules.push(rulesService.expendStrategyObject(criterion));
-                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => criterion.attribute !== baseCriterion.attribute);
+            vm.addRule = rule => {
+                vm.strategy.rules.push(rulesService.expendRule(rule));
+                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => rule.attribute !== baseCriterion.attribute);
             };
 
             vm.remove = attribute => {
