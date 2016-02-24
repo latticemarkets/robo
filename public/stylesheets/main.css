@@ -2435,7 +2435,6 @@ div button.btn.primary-button.erase-user:hover {
 }
 img.ticked {
     -webkit-filter: grayscale(1);
-    filter: gray;
     filter: grayscale(1);
 }
 img.not-ticked {
@@ -2452,6 +2451,11 @@ color: green;
 }
 .toggle-switch .switch-left {
     background-color: #3498db;
+}
+.platform-settings {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 /*------------------------
  * STRATEGIES
