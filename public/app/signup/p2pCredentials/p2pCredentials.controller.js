@@ -20,8 +20,14 @@
 
             vm.pageClass = 'signup-login blue';
 
-            vm.pageNo = 7;
-            $timeout(() => vm.pageNo++, 1000);
+            const platforms = $cookieStore.get('signup.platforms');
+            if (platforms) {
+                vm.pageNo = 8;
+            }
+            else {
+                vm.pageNo = 7;
+                $timeout(() => vm.pageNo++, 1000);
+            }
 
             (() => {
                 const email = $cookieStore.get('signup.email');
@@ -61,7 +67,6 @@
             function submit(uri) {
                 if (allConditionsSatisfied()) {
                     const platform = {originator: vm.originator, apiKey: vm.apiKey, accountId: vm.accountId};
-                    const platforms = $cookieStore.get('signup.platforms');
 
                     if (platforms) {
                         platforms.push(platform);

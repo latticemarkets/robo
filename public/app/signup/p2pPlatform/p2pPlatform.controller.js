@@ -21,7 +21,7 @@
             const platforms = $cookieStore.get('signup.platforms');
 
             if (platforms) {
-                vm.pageNo = 7;
+                vm.pageNo = 8;
             }
             else {
                 vm.pageNo = 6;
