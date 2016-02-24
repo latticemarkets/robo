@@ -314,7 +314,11 @@ body.modal-open {
     overflow: visible;
     background: #1080f2
 }
-
+.sk-spinner-circle.sk-spinner{
+  right: 0px;
+  position: absolute;
+  top: 0px;
+}
 .spinner {
     opacity: 0.9;
     width: 50px;
