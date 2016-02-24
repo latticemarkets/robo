@@ -3656,3 +3656,16 @@ ul.h-list li:hover a {
     margin-left: 10px;
   }
 }
+.switch{
+margin: 14px 0px 0px 50px;
+}
+.strategy-switch{
+  float:left;
+}
+.switch.checked {
+  background: #1080f2;
+  border-color: #1080f2;
+}
+.switch {
+  background: #D0D2D5;
+}

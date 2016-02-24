@@ -38,6 +38,24 @@
                     <div id="{{ vm.barChartId }}" class="automated-strategy-settings-chart"></div>
                 </div>
             </div>
+            <div class="row">
+              <div class="hpanel hblue col-sm-12 col-md-6">
+                  <div class="panel-body">
+                      <h2 class="strategy-switch"> Strategy primary market</h2>
+                      <form>
+                          <switch id="enabled" name="enabled" ng-model="primaryMarket.isEnable"></switch>
+                      </form>
+                  </div>
+              </div>
+              <div class="hpanel hblue col-sm-12 col-md-6">
+                  <div class="panel-body">
+                      <h2 class="strategy-switch"> Strategy secondary market</h2>
+                      <form>
+                          <switch id="enabled" name="enabled" ng-model="secondaryMarket.isEnable"></switch>
+                      </form>
+                  </div>
+              </div>
+            </div>
             <div class="hpanel hblue col-sm-12">
                 <div class="panel-body">
                     <rzslider rz-slider-model="vm.strategyValue" rz-slider-options="vm.strategySliderOptions"></rzslider>

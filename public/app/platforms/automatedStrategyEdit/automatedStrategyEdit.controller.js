@@ -13,7 +13,7 @@
 
 (() => {
     'use strict';
-    
+
     class AutomatedStrategyEditController {
         constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, $routeParams, constantsService, spinnerService, strategiesService) {
             var vm = this;
@@ -89,7 +89,7 @@
             }
         }
     }
-    
+
     angular
         .module('app')
         .controller('AutomatedStrategyEditController', AutomatedStrategyEditController);

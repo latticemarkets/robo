@@ -28,7 +28,8 @@
             'multiStepForm',
             'jkuri.touchspin',
             'xeditable',
-            'toggle-switch'])
+            'toggle-switch',
+            'uiSwitch'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);
