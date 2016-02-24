@@ -98,11 +98,6 @@
                 controller: "SignupRegisteredController",
                 controllerAs: 'vm'
             })
-            .when('/signup/portfolio', {
-                templateUrl: "assets/app/signup/portfolio/portfolio.html",
-                controller: "SignupPortfolioController",
-                controllerAs: 'vm'
-            })
             .when('/dashboard', {
                 templateUrl: "assets/app/dashboard/dashboard.html",
                 controller: "DashboardController",
@@ -155,7 +150,6 @@
                 '/signup/p2pCredentials',
                 '/signup/personalInfos',
                 '/signup/registered',
-                '/signup/portfolio',
                 '/signin']
             ) > -1; }
 

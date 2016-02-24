@@ -17,7 +17,6 @@
             },
             templateUrl: '/assets/app/userAccount/p2pPlatform/p2pPlatform.html',
             link(scope) {
-                scope.availableOptions = portfolioSimulationService.portfolioKeysValues;
 
                 scope.userPromise.then(response => {
                     scope.platforms = response.data.platforms;

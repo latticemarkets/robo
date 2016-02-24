@@ -20,7 +20,7 @@
 
             vm.pageClass = 'signup-login blue';
 
-            vm.pageNo = 7;
+            vm.pageNo = 6;
             $timeout(() => vm.pageNo++, 1000);
 
             vm.platforms = constantsService.platformsImgExtensions;
