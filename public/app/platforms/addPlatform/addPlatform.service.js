@@ -21,20 +21,21 @@
             this.$uibModal = $uibModal;
         }
 
-        newPlatformModal(platforms) {
+        newPlatformModal(platforms, callback) {
             var modalInstance = this.$uibModal.open({
                 templateUrl: 'assets/app/platforms/addPlatform/addPlatform.modal.html',
                 controller: AddPlatformModalController,
                 resolve: {
                     constantsService: () => this.constantsService,
-                    platforms: () => platforms
+                    platforms: () => platforms,
+                    callback: () => callback
                 }
             });
         }
     }
 
     class AddPlatformModalController {
-        constructor($scope, $uibModalInstance, constantsService, platformService, authenticationService, $location, platforms) {
+        constructor($scope, $uibModalInstance, constantsService, platformService, authenticationService, $timeout, platforms, callback) {
             $scope.platforms = constantsService.platformsImgExtensions;
 
             $scope.cancel = () => {
@@ -72,7 +73,7 @@
                 platformService.addPlatform(authenticationService.getCurrentUsersEmail(), $scope.chosePlatform, accountId, apiKey,
                     () => {
                         finish();
-                        $location.path(`/platforms/strategies/${$scope.chosePlatform}/primary`);
+                        $timeout(() => callback(), 300);
                 });
             };
 
