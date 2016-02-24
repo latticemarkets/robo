@@ -63,7 +63,8 @@ describe('StrategyEditController', () => {
         sliderName,
         newStrategy,
         unexpendedBaseCriterion,
-        unexpendedStrategyObj;
+        unexpendedStrategyObj,
+        expendedRule;
     beforeEach(() => {
         baseCriteriaName = 'name1';
         baseCriteriaAttribute = 'attr1';
@@ -87,15 +88,17 @@ describe('StrategyEditController', () => {
         };
 
         baseCriterion = { attribute: baseCriteriaAttribute, name: baseCriteriaName};
-        expendedBaseCriterion = { id: urlRuleId, rules: [], attribute: baseCriteriaAttribute, name: baseCriteriaName, type: 'slider', ruleParams: 5, slider: { name: sliderName, min: 0, max: 10, format: () => jasmine.any(String)}};
+        expendedBaseCriterion = { id: urlRuleId, rules: [], attribute: baseCriteriaAttribute, name: baseCriteriaName, type: 'slider', ruleParams: 5, slider: { name: sliderName, min: 0, max: 10, step: 1, format: () => jasmine.any(String)}};
         unexpendedBaseCriterion = { ruleType: 'InRange', ruleParams: 5 };
         unexpendedStrategyObj = { rules: [unexpendedBaseCriterion] };
+        expendedRule = {"attribute":baseCriteriaAttribute,"name":baseCriteriaName, "type":"slider", "ruleParams":5 ,"slider":{"name":sliderName, "min":0, "max":10," step":1, format: () => jasmine.any(String)}};
 
-        rulesService = jasmine.createSpyObj('rulesService', ['baseCriteria', 'expendStrategyObject', 'initializeStrategy', 'unexpendStrategyObject']);
+        rulesService = jasmine.createSpyObj('rulesService', ['baseCriteria', 'expendStrategyObject', 'initializeStrategy', 'unexpendStrategyObject', 'expendRule']);
         rulesService.baseCriteria.and.returnValue([baseCriterion]);
         rulesService.expendStrategyObject.and.returnValue(expendedBaseCriterion);
         rulesService.initializeStrategy.and.returnValue(newStrategy);
-        rulesService.unexpendStrategyObject.and.returnValue(unexpendedStrategyObj)
+        rulesService.unexpendStrategyObject.and.returnValue(unexpendedStrategyObj);
+        rulesService.expendRule.and.returnValue(expendedRule);
     });
 
     beforeEach(() => {
@@ -193,7 +196,7 @@ describe('StrategyEditController', () => {
 
                 it('should add the criterion in the strategy\'s list', () => {
                     expect(strategyEditController.strategy.rules.length).toBe(1);
-                    expect(strategyEditController.strategy.rules[0]).toEqual(expendedBaseCriterion);
+                    expect(strategyEditController.strategy.rules[0]).toEqual(expendedRule);
                 });
 
                 it('should remove the criterion of base criteria\'s list', () => {
