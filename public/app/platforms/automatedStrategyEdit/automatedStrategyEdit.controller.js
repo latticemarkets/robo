@@ -27,6 +27,7 @@
 
             strategiesService.getAutomatedStrategy(email, platform, response => {
                 vm.strategyValue = response.data.aggressivity * 10;
+                console.log(vm.strategyValue);
 
                 $timeout(function () {
                     generateCharts();
@@ -58,7 +59,7 @@
             vm.cancel = () => $location.path('/platforms');
             vm.save = () => {
                 spinnerService.on();
-                strategiesService.updateAutomatedStrategy(email, platform, vm.strategyValue,
+                strategiesService.updateAutomatedStrategy(email, platform, vm.strategyValue / 10,
                     () => {
                         spinnerService.off();
                         $location.path('/platforms');

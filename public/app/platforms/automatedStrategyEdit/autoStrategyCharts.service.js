@@ -45,11 +45,11 @@
         }
 
         simulatedBarChartDataForStrategy(n) {
-            return (n < this.barChartData.length && n > 0) ? this.barChartData[n] : [];
+            return (n < this.barChartData.length && n >= 0) ? this.barChartData[n] : [];
         }
 
         simulatedSplineChartDataForStrategy(n) {
-            return (n < this.splineChartData.length && n > 0) ? this.splineChartData[n] : [];
+            return (n < this.splineChartData.length && n >= 0) ? this.splineChartData[n] : [];
         }
 
         splineChartOptions(id, strategyValue) {

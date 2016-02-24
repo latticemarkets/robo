@@ -31,7 +31,7 @@
         }
 
         updateAutomatedStrategy(email, platform, aggressivity, callback) {
-            this.$http.put('/api/strategies/auto', { email: email, platform: platform, autoStrategy: { aggressivity: aggressivity / 10 } })
+            this.$http.put('/api/strategies/auto', { email: email, platform: platform, autoStrategy: { aggressivity: aggressivity } })
                 .then(callback, this.notificationService.apiError());
         }
 
