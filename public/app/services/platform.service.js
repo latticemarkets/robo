@@ -26,7 +26,7 @@
         }
 
         addPlatform(email, originator, accountId, apiKey, callback) {
-            this.$http.post('/api/user/platform', { email: email, originator: originator, accountId: accountId, apiKey: apiKey, callback: callback }).then(callback, this.notificationService.apiError());
+            this.$http.post('/api/user/platform', { email: email, platform: {originator: originator, accountId: accountId, apiKey: apiKey}, callback: callback }).then(callback, this.notificationService.apiError());
         }
 
         updatePlatforms(email, platforms, callback, errorCallback) {

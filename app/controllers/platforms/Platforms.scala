@@ -40,7 +40,7 @@ class Platforms extends Controller {
       Utils.badRequestOnError[AddPlatform],
       data => {
         User.findByEmail(data.email) flatMap (_.map (user => {
-          val newPlatform = Platform.factory(data.originator, data.accountId, data.apiKey)
+          val newPlatform = Platform.factory(data.platform.originator, data.platform.accountId, data.platform.apiKey)
           User.update(user.copy(platforms = user.platforms :+ newPlatform)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
       }

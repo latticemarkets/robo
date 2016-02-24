@@ -60,7 +60,7 @@
 
             function submit(uri) {
                 if (allConditionsSatisfied()) {
-                    const platform = {name: vm.platform, apiKey: vm.apiKey, accountId: vm.accountId};
+                    const platform = {originator: vm.platform, apiKey: vm.apiKey, accountId: vm.accountId};
                     const platforms = $cookieStore.get('signup.platforms');
 
                     if (platforms) {
