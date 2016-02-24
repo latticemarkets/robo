@@ -22,7 +22,7 @@
                     scope.platforms = response.data.platforms;
                     scope.platforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
                 });
-                console.log("coucou");
+
                 scope.submit = () => {
                     const filledPlatforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
                     if (filledPlatforms.length > 0) {
