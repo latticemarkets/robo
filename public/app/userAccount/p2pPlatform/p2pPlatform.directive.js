@@ -6,9 +6,9 @@
         .directive('p2pPlatform', p2pPlatform);
 
 
-    p2pPlatform.$inject = ['notificationService', 'authenticationService','portfolioSimulationService', 'spinnerService', 'platformService'];
+    p2pPlatform.$inject = ['notificationService', 'authenticationService', 'spinnerService', 'platformService'];
 
-    function p2pPlatform(notificationService, authenticationService, portfolioSimulationService, spinnerService, platformService) {
+    function p2pPlatform(notificationService, authenticationService, spinnerService, platformService) {
         return {
             replace: true,
             restrict: 'E',
@@ -22,7 +22,7 @@
                     scope.platforms = response.data.platforms;
                     scope.platforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
                 });
-
+                console.log("coucou");
                 scope.submit = () => {
                     const filledPlatforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
                     if (filledPlatforms.length > 0) {
