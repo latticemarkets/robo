@@ -15,9 +15,10 @@
     'use strict';
 
     class platformService {
-        constructor($http, notificationService) {
+        constructor($http, notificationService, authenticationService) {
             this.$http = $http;
             this.notificationService = notificationService;
+            this.authenticationService = authenticationService;
         }
 
         getPlatforms(email, callback) {
@@ -33,7 +34,8 @@
             this.$http.put('/api/user/p2pPlatforms', { email: email, platforms: platforms }).then(callback, this.notificationService.apiError(errorCallback));
         }
 
-        updatePlatform(email, platform, callback) {
+        updatePlatform(platform, callback) {
+            const email = this.authenticationService.getCurrentUsersEmail();
             this.$http.put('/api/user/platform', { email: email, platform: platform }).then(callback, this.notificationService.apiError());
         }
     }
