@@ -92,15 +92,7 @@ object User {
     form.income,
     form.timeline,
     form.birthday,
-    Seq[Platform](Platform(
-      form.originator,
-      form.accountId,
-      form.apiKey,
-      PrimaryMarket(Seq[ManualStrategy](), isEnabled = true),
-      SecondaryMarket(Seq[ManualStrategy](), Seq[ManualStrategy](), isEnabled = false),
-      AutomatedStrategy(.5),
-      PlatformModeEnum.automated.toString
-    )),
+    Seq[Platform](Platform.factory(form.originator, form.accountId, form.apiKey)),
     form.firstName,
     form.lastName,
     Hash.createToken
