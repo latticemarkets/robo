@@ -114,6 +114,9 @@
                     item: {
                         onclick: () => {}
                     }
+                },
+                tooltip: {
+                    show: false
                 }
             };
         }

@@ -27,7 +27,6 @@
 
             strategiesService.getAutomatedStrategy(email, platform, response => {
                 vm.strategyValue = response.data.aggressivity * 10;
-                console.log(vm.strategyValue);
 
                 $timeout(function () {
                     generateCharts();
