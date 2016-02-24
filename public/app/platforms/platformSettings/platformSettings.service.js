@@ -31,8 +31,10 @@
     }
 
     class PlatformSettingsModalController {
-        constructor($scope, $uibModalInstance, platform) {
-            $scope.platform = platform;
+        constructor($scope, $uibModalInstance, $timeout, platform) {
+            $scope.originator = platform.originator;
+
+            $timeout(() => $scope.maximumDailyInvestment = platform.maximumDailyInvestment);
 
             $scope.cancel = () => {
                 $uibModalInstance.dismiss('cancel');

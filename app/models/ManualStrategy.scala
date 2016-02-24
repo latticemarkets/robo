@@ -23,8 +23,7 @@ case class ManualStrategy(
                            rules: Seq[Rule],
                            isEnabled: Boolean,
                            minNoteAmount: BigDecimal,
-                           maxNoteAmount: BigDecimal,
-                           maximumDailyInvestment: BigDecimal
+                           maxNoteAmount: BigDecimal
     ) {
   def originatorEnum = OriginatorEnum.withName(originator)
 }

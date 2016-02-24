@@ -20,8 +20,8 @@ case class Platform(
        primary: PrimaryMarket,
        secondary: SecondaryMarket,
        automatedStrategy: AutomatedStrategy,
-       mode: String
-     ) {
+       mode: String,
+       maximumDailyInvestment: BigDecimal) {
   def originatorEnum = OriginatorEnum.withName(originator)
   def platformModeEnum = PlatformModeEnum.withName(mode)
 }
@@ -35,7 +35,8 @@ object Platform {
       PrimaryMarket(Seq[ManualStrategy]()),
       SecondaryMarket(Seq[ManualStrategy](), Seq[ManualStrategy]()),
       AutomatedStrategy.factory(),
-      PlatformModeEnum.automated.toString
+      PlatformModeEnum.automated.toString,
+      maximumDailyInvestment = 250
     )
 }
 
