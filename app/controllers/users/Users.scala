@@ -10,11 +10,11 @@ package controllers.users
 
 import controllers.Security.HasToken
 import controllers.Utils
+import core.Formatters._
 import core.Hash
 import models.User
 import play.api.libs.json.Json
 import play.api.mvc._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

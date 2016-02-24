@@ -10,8 +10,8 @@ package controllers.platforms
 
 import controllers.Security.HasToken
 import controllers.Utils
-import controllers.users.UsersForms
 import models._
+import core.Formatters._
 import play.api.libs.json.Json
 import play.api.mvc.Controller
 
@@ -24,17 +24,6 @@ import scala.concurrent.Future
   */
 
 class Platforms extends Controller {
-  implicit val inSetParamsFormat = Json.format[InSetParams]
-  implicit val inRangeParamsIntFormat = Json.format[InRangeParams]
-  implicit val expectedReturnFormat = Json.format[ExpectedReturn]
-  implicit val ruleFormat = Json.format[Rule]
-  implicit val manualStrategyFormat = Json.format[ManualStrategy]
-  implicit val automatedStrategyFormat = Json.format[AutomatedStrategy]
-  implicit val primaryMarketFormat = Json.format[PrimaryMarket]
-  implicit val secondaryMarketFormat = Json.format[SecondaryMarket]
-  implicit val platformFormat = Json.format[Platform]
-  implicit val userFormat = Json.format[User]
-
   def updatePlatforms() = HasToken.async { implicit request =>
     PlatformsForms.updatePlatformsForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdatePlatforms],

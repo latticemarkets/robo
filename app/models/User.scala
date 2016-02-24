@@ -16,6 +16,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.json._
 import play.modules.reactivemongo.json.collection.JSONCollection
 
+import core.Formatters._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -52,16 +53,6 @@ case class DestroyAccount(email: String, password: String)
 object User {
 
   val collectionName = "user"
-  implicit val inSetParamsFormat = Json.format[InSetParams]
-  implicit val inRangeParamsIntFormat = Json.format[InRangeParams]
-  implicit val expectedReturnFormat = Json.format[ExpectedReturn]
-  implicit val ruleFormat = Json.format[Rule]
-  implicit val manualStrategyFormat = Json.format[ManualStrategy]
-  implicit val automatedStrategyFormat = Json.format[AutomatedStrategy]
-  implicit val primaryMarketFormat = Json.format[PrimaryMarket]
-  implicit val secondaryMarketFormat = Json.format[SecondaryMarket]
-  implicit val platformFormat = Json.format[Platform]
-  implicit val userFormat = Json.format[User]
 
   val usersTable: JSONCollection = DbUtil.db.collection(collectionName)
 
