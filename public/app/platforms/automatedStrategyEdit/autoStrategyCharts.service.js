@@ -109,6 +109,11 @@
                     y: {
                         show: false
                     }
+                },
+                legend: {
+                    item: {
+                        onclick: () => {}
+                    }
                 }
             };
         }
