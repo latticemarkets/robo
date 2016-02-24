@@ -98,7 +98,7 @@ object User {
       form.apiKey,
       PrimaryMarket(Seq[ManualStrategy](), isEnabled = true),
       SecondaryMarket(Seq[ManualStrategy](), Seq[ManualStrategy](), isEnabled = false),
-      AutomatedStrategy(5),
+      AutomatedStrategy(.5),
       PlatformModeEnum.automated.toString
     )),
     form.firstName,
