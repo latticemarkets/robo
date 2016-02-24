@@ -2348,6 +2348,12 @@ div .signup .chose-platform {
 .simulation label, .simulation label.active, .simulation label:hover, .simulation label.active:hover {
     color: #1080f2;
 }
+button.btn.primary-button.button-inverse.border-button {
+    border: 2px solid #fff;
+}
+img.ticked {
+    -webkit-filter: grayscale(1);
+}
 /*------------------------
  * DASHBOARD
  *----------------------*/

@@ -10,6 +10,7 @@ package controllers.users
 
 import java.util.Date
 
+import controllers.platforms.{NewPlatform, PlatformsForms}
 import models._
 import play.api.data.Form
 import play.api.data.Forms._
@@ -62,9 +63,7 @@ object UsersForms {
       "birthday" -> date("MM/dd/yyyy"),
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
-      "originator" -> nonEmptyText,
-      "accountId" -> nonEmptyText,
-      "apiKey" -> nonEmptyText
+      "platforms" -> seq(PlatformsForms.newPlatformForm)
     )(RegisterForm.apply)(RegisterForm.unapply)
   )
 }
@@ -79,6 +78,4 @@ case class RegisterForm(
        birthday: Date,
        firstName: String,
        lastName: String,
-       originator: String,
-       accountId: String,
-       apiKey: String)
+       platforms: Seq[NewPlatform])

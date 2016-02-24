@@ -20,8 +20,16 @@
 
             vm.pageClass = 'signup-login blue';
 
-            vm.pageNo = 7;
-            $timeout(() => vm.pageNo++, 1000);
+            (() => {
+                const platforms = $cookieStore.get('signup.platforms');
+                if (platforms) {
+                    vm.pageNo = 8;
+                }
+                else {
+                    vm.pageNo = 7;
+                    $timeout(() => vm.pageNo++, 1000);
+                }
+            })();
 
             (() => {
                 const email = $cookieStore.get('signup.email');
@@ -31,14 +39,14 @@
                 const income = $cookieStore.get('signup.income');
                 const timeline = $cookieStore.get('signup.timeline');
                 const birthday = $cookieStore.get('signup.birthday');
-                const platform = $cookieStore.get('signup.platform');
+                const originator = $cookieStore.get('signup.originator');
                 const extension = $cookieStore.get('signup.extension');
 
-                if (!(email && password && terms && reason && income && timeline && birthday && platform)) {
+                if (!(email && password && terms && reason && income && timeline && birthday && originator)) {
                     $location.path('/signup');
                 }
 
-                vm.platform = platform;
+                vm.originator = originator;
                 vm.extension = extension;
             })();
 
@@ -51,12 +59,29 @@
             };
 
             vm.submit = () => {
-                if (allConditionsSatisfied()) {
-                    $cookieStore.put('signup.accountId', vm.accountId);
-                    $cookieStore.put('signup.apiKey', vm.apiKey);
-                    $location.path('/signup/personalInfos');
-                }
+                submit('/signup/personalInfos');
             };
+
+            vm.add = () => {
+                submit('/signup/p2pPlatform');
+            };
+
+            function submit(uri) {
+                if (allConditionsSatisfied()) {
+                    const platform = {originator: vm.originator, apiKey: vm.apiKey, accountId: vm.accountId};
+                    const platforms = $cookieStore.get('signup.platforms');
+
+                    if (platforms) {
+                        platforms.push(platform);
+                        $cookieStore.put('signup.platforms', platforms);
+                    }
+                    else {
+                        $cookieStore.put('signup.platforms', [platform]);
+                    }
+
+                    $location.path(uri);
+                }
+            }
         }
     }
 

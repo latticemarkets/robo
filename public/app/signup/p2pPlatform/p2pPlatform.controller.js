@@ -18,10 +18,17 @@
         constructor($location, $cookieStore, $timeout, constantsService) {
             const vm = this;
 
-            vm.pageClass = 'signup-login blue';
+            const platforms = $cookieStore.get('signup.platforms');
 
-            vm.pageNo = 6;
-            $timeout(() => vm.pageNo++, 1000);
+            if (platforms) {
+                vm.pageNo = 8;
+            }
+            else {
+                vm.pageNo = 6;
+                $timeout(() => vm.pageNo++, 1000);
+            }
+
+            vm.pageClass = 'signup-login blue';
 
             vm.platforms = constantsService.platformsImgExtensions;
 
@@ -40,11 +47,25 @@
             })();
 
             vm.submit = platform => {
-                if (Object.keys(vm.platforms).indexOf(platform) >= 0) {
-                    $cookieStore.put('signup.platform', platform);
+                if (Object.keys(vm.platforms).indexOf(platform) >= 0 && !vm.alreadyAdded(platform)) {
+                    $cookieStore.put('signup.originator', platform);
                     $cookieStore.put('signup.extension', vm.platforms[platform]);
                     $location.path('/signup/p2pCredentials');
                 }
+            };
+
+            vm.alreadyAdded = platformName => {
+                if (platforms) {
+                    return platforms.some(addedPlatform => addedPlatform.originator == platformName);
+                }
+                return false;
+            };
+
+            vm.someAlreadyAdded = () => Object.keys(vm.platforms).some(platform => vm.alreadyAdded(platform));
+
+            vm.skip = () => {
+                $cookieStore.put('signup.platforms', platforms);
+                $location.path('/signup/personalInfos');
             };
         }
     }

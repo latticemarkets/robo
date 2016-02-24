@@ -44,7 +44,7 @@ describe('SignupP2pCredentialsController', () => {
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.birthday');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.platform');
+                expect($cookieStore.get).toHaveBeenCalledWith('signup.originator');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.extension');
             });
         });
@@ -62,7 +62,7 @@ describe('SignupP2pCredentialsController', () => {
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.birthday');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.platform');
+                expect($cookieStore.get).toHaveBeenCalledWith('signup.originator');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.extension');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
@@ -108,20 +108,56 @@ describe('SignupP2pCredentialsController', () => {
 
     describe('submit', () => {
         describe('with good values', () => {
+            let newPlatform;
+
             beforeEach(() => {
                 p2pCredentialsController.accountId = "18974";
                 p2pCredentialsController.apiKey = "1394";
-                p2pCredentialsController.submit();
+                p2pCredentialsController.originator = 'originator1';
+                newPlatform = {originator: p2pCredentialsController.originator, apiKey: p2pCredentialsController.apiKey, accountId: p2pCredentialsController.accountId};
             });
 
-            it('should add values to cookies', () => {
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.accountId', p2pCredentialsController.accountId);
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.apiKey', p2pCredentialsController.apiKey);
+            describe('if platforms have already been filled', () => {
+                let previouslyAddedPlatform;
+
+                beforeEach(() => {
+                    previouslyAddedPlatform = { originator: 'previously added platform'};
+                    $cookieStore.get.and.returnValue([previouslyAddedPlatform]);
+                    p2pCredentialsController.submit();
+                });
+
+                it('should get the platforms previously entered', () => {
+                    expect($cookieStore.get).toHaveBeenCalledWith('signup.platforms');
+                });
+
+                it('should add the new platform to the previous ones and put the cookie', () => {
+                    expect($cookieStore.put).toHaveBeenCalledWith('signup.platforms', [previouslyAddedPlatform, newPlatform]);
+                });
+
+                it('should go to the personal infos page', () => {
+                    expect($location.path).toHaveBeenCalledWith('/signup/personalInfos');
+                });
             });
 
-            it('should go to the personal infos page', () => {
-                expect($location.path).toHaveBeenCalledWith('/signup/personalInfos');
+            describe('if platforms have not been already filled', () => {
+                beforeEach(() => {
+                    $cookieStore.get.and.returnValue(undefined);
+                    p2pCredentialsController.submit();
+                });
+
+                it('should get the platforms previously entered', () => {
+                    expect($cookieStore.get).toHaveBeenCalledWith('signup.platforms');
+                });
+
+                it('should create an array with the new platform put the cookie', () => {
+                    expect($cookieStore.put).toHaveBeenCalledWith('signup.platforms', [newPlatform]);
+                });
+
+                it('should go to the personal infos page', () => {
+                    expect($location.path).toHaveBeenCalledWith('/signup/personalInfos');
+                });
             });
+
         });
 
         describe('with bad values', () => {
@@ -129,6 +165,7 @@ describe('SignupP2pCredentialsController', () => {
                 beforeEach(() => {
                     p2pCredentialsController.apiKey = "2452";
                     p2pCredentialsController.accountId = undefined;
+                    p2pCredentialsController.originator = 'originator1';
                     p2pCredentialsController.submit();
                 });
 
@@ -146,6 +183,7 @@ describe('SignupP2pCredentialsController', () => {
                 beforeEach(() => {
                     p2pCredentialsController.apiKey = undefined;
                     p2pCredentialsController.accountId = "89725";
+                    p2pCredentialsController.originator = 'originator1';
                     p2pCredentialsController.submit();
                 });
 

@@ -33,12 +33,10 @@ describe('userService', () => {
             income,
             timeline,
             birthday,
-            platform,
-            accountId,
+            platforms,
             firstName,
             lastName,
-            portfolio,
-            apiKey;
+            portfolio;
 
         beforeEach(() => {
             email = 'email';
@@ -48,16 +46,14 @@ describe('userService', () => {
             income = 'income';
             timeline = 'timeline';
             birthday = 'birthday';
-            platform = 'platform';
-            accountId = 'accountId';
+            platforms = 'platforms';
             firstName = 'firstName';
             lastName = 'lastName';
-            apiKey = 'apiKey';
             portfolio = 'portfolio';
 
             _$httpBackend.when('POST', '/api/register').respond();
 
-            _userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, portfolio, firstName, lastName);
+            _userService.register(email, password, terms, reason, income, timeline, birthday, platforms, portfolio, firstName, lastName);
         });
 
         it('should call the API', () => {
@@ -69,9 +65,7 @@ describe('userService', () => {
                 "income": "income",
                 "timeline": "timeline",
                 "birthday": "birthday",
-                "originator": "platform",
-                "accountId": "accountId",
-                "apiKey": "apiKey",
+                "platforms": "platforms",
                 "firstName": "portfolio",
                 "lastName": "firstName"
             });

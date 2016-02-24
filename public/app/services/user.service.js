@@ -20,7 +20,7 @@
             this.notificationService = notificationService;
         }
 
-        register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, firstName, lastName, successCallback, errorCallback) {
+        register(email, password, terms, reason, income, timeline, birthday, platforms, firstName, lastName, successCallback, errorCallback) {
             this.$http
                 .post('/api/register', angular.toJson({
                     email: email,
@@ -30,9 +30,7 @@
                     income: income,
                     timeline: timeline,
                     birthday: birthday,
-                    originator: platform,
-                    accountId: accountId,
-                    apiKey: apiKey,
+                    platforms: platforms,
                     firstName: firstName,
                     lastName: lastName
                 }))

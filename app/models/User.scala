@@ -92,7 +92,7 @@ object User {
     form.income,
     form.timeline,
     form.birthday,
-    Seq[Platform](Platform.factory(form.originator, form.accountId, form.apiKey)),
+    form.platforms.map(p => Platform.factory(p.originator, p.accountId, p.apiKey)),
     form.firstName,
     form.lastName,
     Hash.createToken

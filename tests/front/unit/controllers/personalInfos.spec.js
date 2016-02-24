@@ -53,9 +53,7 @@ describe('SignupPersonalInfosController', () => {
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.birthday');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.platform');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.accountId');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.apiKey');
+                expect($cookieStore.get).toHaveBeenCalledWith('signup.platforms');
             });
         });
 
@@ -72,9 +70,7 @@ describe('SignupPersonalInfosController', () => {
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
                 expect($cookieStore.get).toHaveBeenCalledWith('signup.birthday');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.platform');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.accountId');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.apiKey');
+                expect($cookieStore.get).toHaveBeenCalledWith('signup.platforms');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
         });
@@ -138,9 +134,7 @@ describe('SignupPersonalInfosController', () => {
                          income,
                          timeline,
                          birthday,
-                         platform,
-                         accountId,
-                         apiKey,
+                         platforms,
                          firstName,
                          lastName,
                          successCallback,
@@ -162,9 +156,8 @@ describe('SignupPersonalInfosController', () => {
                     expect($cookieStore.remove).toHaveBeenCalledWith('signup.income');
                     expect($cookieStore.remove).toHaveBeenCalledWith('signup.timeline');
                     expect($cookieStore.remove).toHaveBeenCalledWith('signup.birthday');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.platform');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.accountId');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.apiKey');
+                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.originator');
+                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.platforms');
                 });
 
                 it('should go to success register page', () => {
@@ -190,9 +183,7 @@ describe('SignupPersonalInfosController', () => {
                          income,
                          timeline,
                          birthday,
-                         platform,
-                         accountId,
-                         apiKey,
+                         platforms,
                          firstName,
                          lastName,
                          successCallback,

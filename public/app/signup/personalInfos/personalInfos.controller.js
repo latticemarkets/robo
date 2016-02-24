@@ -25,9 +25,7 @@
                 income,
                 timeline,
                 birthday,
-                platform,
-                accountId,
-                apiKey;
+                platforms;
 
             vm.pageClass = 'signup-login blue';
 
@@ -42,15 +40,11 @@
                 income = $cookieStore.get('signup.income');
                 timeline = $cookieStore.get('signup.timeline');
                 birthday = $cookieStore.get('signup.birthday');
-                platform = $cookieStore.get('signup.platform');
-                accountId = $cookieStore.get('signup.accountId');
-                apiKey = $cookieStore.get('signup.apiKey');
+                platforms = $cookieStore.get('signup.platforms');
 
-                if (!(email && password && terms && reason && income && timeline && birthday && platform && accountId && apiKey)) {
+                if (!(email && password && terms && reason && income && timeline && birthday && platforms)) {
                     $location.path('/signup');
                 }
-
-                vm.platform = platform;
             })();
 
             function allConditionsSatisfied() { // TODO : build Regex to check API key and account ID
@@ -63,7 +57,7 @@
 
             vm.submit = () => {
                 if (allConditionsSatisfied()) {
-                    userService.register(email, password, terms, reason, income, timeline, birthday, platform, accountId, apiKey, vm.firstName, vm.lastName,
+                    userService.register(email, password, terms, reason, income, timeline, birthday, platforms, vm.firstName, vm.lastName,
                         response => {
                             authenticationService.authenticate(response.data.token, email);
                             $cookieStore.put('guidedTour', true);
@@ -74,9 +68,8 @@
                             $cookieStore.remove('signup.income');
                             $cookieStore.remove('signup.timeline');
                             $cookieStore.remove('signup.birthday');
-                            $cookieStore.remove('signup.platform');
-                            $cookieStore.remove('signup.accountId');
-                            $cookieStore.remove('signup.apiKey');
+                            $cookieStore.remove('signup.originator');
+                            $cookieStore.remove('signup.platforms');
                             $location.path('/signup/registered');
                         },
                         response => {
