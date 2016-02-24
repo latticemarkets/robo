@@ -57,7 +57,9 @@
                 "closeButton": true,
                 "debug": false,
                 "progressBar": true,
-                "preventDuplicates": false,
+                "maxOpened": 3,
+                "preventDuplicates": true,
+                "preventOpenDuplicates": true,
                 "positionClass": "toast-top-center",
                 "onclick": null,
                 "showDuration": "400",
@@ -68,6 +70,6 @@
                 "hideEasing": "linear",
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
-            })
+                })
         );
 })();
