@@ -2,19 +2,20 @@
 
 <div id="wrapper">
     <div class="content">
+        <spinner></spinner>
         <div class="row">
             <div class="col-sm-3 platform-strategy" data-ng-repeat="platform in vm.platforms">
                 <div class="hpanel plan-box hblue active">
                     <div class="panel-heading hbuilt text-center">
-                        <h4 class="font-bold">{{ vm.fromCamelCaseToTitle(platform.name) }}</h4>
+                        <h4 class="font-bold">{{ vm.fromCamelCaseToTitle(platform.originator) }}</h4>
                     </div>
                     <div class="panel-body">
                         <p class="text-muted text-center">
-                            Current Primary Strategy : <u>{{ vm.fromCamelCaseToTitle(platform.primary.strategy) }}</u>
+                            Current Strategy : <toggle-switch data-ng-model="platform.isAuto" on-label="Auto" off-label="Manual"><toggle-switch>
                         </p>
 
                         <div class="text-center">
-                            <img width="120px" src="assets/img/platforms/{{ platform.name }}.{{ vm.platformsImgExtensions[platform.name] }}" class="img-rounded platform">
+                            <img width="120px" src="assets/img/platforms/{{ platform.originator }}.{{ vm.platformsImgExtensions[platform.originator] }}" class="img-rounded platform">
                         </div>
 
                         <h3 class="font-bold text-center">
@@ -22,7 +23,7 @@
                         </h3>
 
                         <div class="text-center">
-                            <a href="/#/platforms/strategies/{{ platform.name }}/primary" class="btn btn-info btn-sm m-t-xs">Edit Strategy</a>
+                            <a data-ng-click="vm.editStrategy(platform.mode, platform.originator)" class="btn btn-info btn-sm m-t-xs">Edit Strategy</a>
                         </div>
                     </div>
                 </div>

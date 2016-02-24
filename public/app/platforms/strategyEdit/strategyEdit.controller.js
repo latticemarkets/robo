@@ -15,37 +15,37 @@
     'use strict';
 
     class StrategyEditController {
-        constructor(authenticationService, $routeParams, constantsService, userService, $location, cssInjector, criteriaService, $cookieStore, spinnerService, $timeout) {
+        constructor(authenticationService, $routeParams, constantsService, $location, cssInjector, rulesService, $cookieStore, spinnerService, $timeout, platformService, notificationService, SweetAlert) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
 
             const platform = $routeParams.platform;
-            const ruleId = $routeParams.ruleId;
+            const strategyId = $routeParams.strategyId;
             const market = $routeParams.market;
 
             getCriteria();
             checkUrlParameters();
             injectCss();
 
-            vm.addCriterion = criterion => {
-                vm.rule.criteria.push(criteriaService.expendCriterion(criterion));
-                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => criterion.attribute !== baseCriterion.attribute);
+            vm.addRule = rule => {
+                vm.strategy.rules.push(rulesService.expendRule(rule));
+                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => rule.attribute !== baseCriterion.attribute);
             };
 
             vm.remove = attribute => {
-                vm.rule.criteria = vm.rule.criteria.filter(criterion => criterion.attribute !== attribute);
-                criteriaService.baseCriteria(market).some(criterion => {
+                vm.strategy.rules = vm.strategy.rules.filter(criterion => criterion.attribute !== attribute);
+                rulesService.baseCriteria(market).some(criterion => {
                     if (criterion.attribute == attribute) {
                         vm.baseCriteria.push(criterion);
                     }
                 });
             };
 
-            vm.saveCriteria = () => {
+            vm.saveRule = () => {
                 updatePlatforms();
                 spinnerService.on();
-                userService.updatePlatforms(email, vm.platforms, () => {
+                platformService.updatePlatforms(email, vm.platforms, () => {
                     spinnerService.off();
                     $cookieStore.put('newCriteriaSuccess', true);
                     $location.path(`/platforms/strategies/${platform}/${market}`);
@@ -53,7 +53,7 @@
             };
 
             vm.cancel = () => {
-              swal({
+                SweetAlert.swal({
                     title: "Are you sure?",
                     type: "warning",
                     showCancelButton: true,
@@ -70,22 +70,26 @@
             };
 
             vm.showGhostBox = () => {
-                if (vm.rule) {
-                    if (vm.rule.criteria) {
-                        return vm.rule.criteria.length === 0;
+                if (vm.strategy) {
+                    if (vm.strategy.rules) {
+                        return vm.strategy.rules.length === 0;
                     }
                 }
             };
 
             vm.onMinChange = min => {
-                if (parseInt(min) > parseInt(vm.rule.maxNoteAmount)) {
-                    vm.rule.maxNoteAmount = parseInt(min);
+                if (vm.strategy) {
+                    if (parseInt(min) > parseInt(vm.strategy.maxNoteAmount)) {
+                        vm.strategy.maxNoteAmount = parseInt(min);
+                    }
                 }
             };
 
             vm.onMaxChange = max => {
-                if (parseInt(max) < parseInt(vm.rule.minNoteAmount)) {
-                    vm.rule.minNoteAmount = parseInt(max);
+                if (vm.strategy) {
+                    if (parseInt(max) < parseInt(vm.strategy.minNoteAmount)) {
+                        vm.strategy.minNoteAmount = parseInt(max);
+                    }
                 }
             };
 
@@ -99,17 +103,17 @@
 
             function updatePlatforms() {
                 vm.platforms.forEach(p => {
-                    if (p.name === platform) {
-                        if (p[market].rules.length === 0) {
-                            p[market].rules = [criteriaService.unexpendCriteriaObject(vm.rule)];
+                    if (p.originator === platform) {
+                        if (p[market].buyStrategies.length === 0) {
+                            p[market].buyStrategies = [rulesService.unexpendStrategyObject(vm.strategy)];
                         }
-                        else if (!ruleId) {
-                            p[market].rules.push(criteriaService.unexpendCriteriaObject(vm.rule));
+                        else if (!strategyId) {
+                            p[market].buyStrategies.push(rulesService.unexpendStrategyObject(vm.strategy));
                         }
                         else {
-                            p[market].rules = p[market].rules.map(r => {
-                                if (r.id === ruleId) {
-                                    return criteriaService.unexpendCriteriaObject(vm.rule);
+                            p[market].buyStrategies = p[market].buyStrategies.map(r => {
+                                if (r.id === strategyId) {
+                                    return rulesService.unexpendStrategyObject(vm.strategy);
                                 }
                                 return r;
                             });
@@ -119,7 +123,7 @@
             }
 
             function getCriteria() {
-                vm.baseCriteria = criteriaService.baseCriteria(market);
+                vm.baseCriteria = rulesService.baseCriteria(market);
                 if (!vm.baseCriteria) {
                     notificationService.error('An error occured, you will be redirected');
                     $timeout(() => $location.path('/platforms'), 1000);
@@ -144,15 +148,15 @@
 
                 function checkRuleId() {
                     spinnerService.on();
-                    userService.userData(email, response => {
-                        response.data.platforms.some(p => {
-                            if (p.name == platform) {
-                                vm.platforms = response.data.platforms;
-                                if (ruleId) {
-                                    if (!p[market].rules.some(rule => {
-                                            if (rule.id == ruleId) {
-                                                vm.rule = criteriaService.expendCriteriaObject(JSON.parse(JSON.stringify(rule)));
-                                                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => vm.rule.criteria.every(criterion => criterion.attribute !== baseCriterion.attribute));
+                    platformService.getPlatforms(email, response => {
+                        response.data.some(p => {
+                            if (p.originator == platform) {
+                                vm.platforms = response.data;
+                                if (strategyId) {
+                                    if (!p[market].buyStrategies.some(strategy => {
+                                            if (strategy.id == strategyId) {
+                                                vm.strategy = rulesService.expendStrategyObject(JSON.parse(JSON.stringify(strategy)));
+                                                vm.baseCriteria = vm.baseCriteria.filter(baseCriterion => vm.strategy.rules.every(rule => rule.attribute !== baseCriterion.attribute));
                                                 return true;
                                             }
                                         })) {
@@ -160,7 +164,7 @@
                                     }
                                 }
                                 else {
-                                    vm.rule = criteriaService.initializeRule(platform);
+                                    vm.strategy = rulesService.initializeStrategy(platform);
                                 }
                                 return true;
                             }

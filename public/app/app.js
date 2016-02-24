@@ -27,7 +27,8 @@
             'ui.bootstrap.modal',
             'multiStepForm',
             'jkuri.touchspin',
-            'xeditable'])
+            'xeditable',
+            'toggle-switch'])
         .config(config)
         .config(function(cssInjectorProvider){
             cssInjectorProvider.setSinglePageMode(true);
@@ -117,12 +118,17 @@
                 controller: "PlatformsController",
                 controllerAs: 'vm'
             })
+            .when('/platforms/strategies/:platform/auto', {
+                templateUrl: "assets/app/platforms/automatedStrategyEdit/automatedStrategyEdit.html",
+                controller: "AutomatedStrategyEditController",
+                controllerAs: 'vm'
+            })
             .when('/platforms/strategies/:platform/:market', {
                 templateUrl: "assets/app/platforms/strategies/strategies.html",
                 controller: "StrategiesController",
                 controllerAs: 'vm'
             })
-            .when('/platforms/strategies/:platform/:market/strategyEdit/:ruleId?', {
+            .when('/platforms/strategies/:platform/:market/strategyEdit/:strategyId?', {
                 templateUrl: "assets/app/platforms/strategyEdit/strategyEdit.html",
                 controller: "StrategyEditController",
                 controllerAs: 'vm'

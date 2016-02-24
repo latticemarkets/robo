@@ -5,30 +5,37 @@
 # Home page
 GET     /                                               controllers.Application.index
 
-POST    /api/register                                   controllers.Users.register
-POST    /api/login                                      controllers.Users.login
-PUT     /api/user/password                              controllers.Users.updatePassword
-PUT     /api/user/p2pPlatforms                          controllers.Users.updatePlatforms
-PUT     /api/user/personalData                          controllers.Users.updatePersonalData
-GET     /api/user/:email                                controllers.Users.isUsed(email)
-GET     /api/user/infos/:email                          controllers.Users.userData(email)
-POST    /api/user/destroy                               controllers.Users.destroyAccount
-PUT     /api/user/rules                                 controllers.Users.updateRules
-POST    /api/user/platform                              controllers.Users.addPlatform
+POST    /api/register                                   controllers.users.Users.register
+POST    /api/login                                      controllers.users.Users.login
+PUT     /api/user/password                              controllers.users.Users.updatePassword
+PUT     /api/user/personalData                          controllers.users.Users.updatePersonalData
+GET     /api/user/check/:email                          controllers.users.Users.isUsed(email)
+GET     /api/user/infos/:email                          controllers.users.Users.userData(email)
+POST    /api/user/destroy                               controllers.users.Users.destroyAccount
 
-GET     /api/dashboard/capital/available                controllers.Users.availableCapital
-GET     /api/dashboard/capital/allocated                controllers.Users.allocatedCapital
-GET     /api/dashboard/averageIntRate                   controllers.Users.averageIntRate
-GET     /api/dashboard/expectedReturns                  controllers.Users.expectedReturns
-GET     /api/dashboard/lastLoanMaturity                 controllers.Users.lastLoanMaturity
-GET     /api/dashboard/currentRoiRate                   controllers.Users.currentRoiRate
-GET     /api/dashboard/expectedRoiRate                  controllers.Users.expectedRoiRate
-GET     /api/dashboard/currentLoans                     controllers.Users.currentLoans
-GET     /api/dashboard/loansAcquiredPerDayLastWeek      controllers.Users.loansAcquiredPerDayLastWeek
-GET     /api/dashboard/platformAllocation               controllers.Users.platformAllocation
-GET     /api/dashboard/riskDiversification              controllers.Users.riskDiversification
+GET     /api/user/platforms/:email                      controllers.platforms.Platforms.getPlatforms(email)
+POST    /api/user/platform                              controllers.platforms.Platforms.addPlatform
+PUT     /api/user/p2pPlatforms                          controllers.platforms.Platforms.updatePlatforms
 
-GET     /api/portfolio/suggestion                       controllers.Users.portfolioSuggestion
+PUT     /api/strategies/primary/buy                     controllers.strategies.Strategies.updatePrimaryMarketBuyStrategies
+PUT     /api/strategies/secondary/buy                   controllers.strategies.Strategies.updateSecondaryMarketBuyStrategies
+PUT     /api/strategies/secondary/sell                  controllers.strategies.Strategies.updateSecondaryMarketSellStrategies
+PUT     /api/strategies/auto                            controllers.strategies.Strategies.updateAutomatedStrategy
+GET     /api/strategies/auto/:email/:originator         controllers.strategies.Strategies.getAutomatedStrategy(email, originator)
+
+GET     /api/dashboard/capital/available                controllers.portfolioMetrics.PortfolioMetrics.availableCapital
+GET     /api/dashboard/capital/allocated                controllers.portfolioMetrics.PortfolioMetrics.allocatedCapital
+GET     /api/dashboard/averageIntRate                   controllers.portfolioMetrics.PortfolioMetrics.averageIntRate
+GET     /api/dashboard/expectedReturns                  controllers.portfolioMetrics.PortfolioMetrics.expectedReturns
+GET     /api/dashboard/lastLoanMaturity                 controllers.portfolioMetrics.PortfolioMetrics.lastLoanMaturity
+GET     /api/dashboard/currentRoiRate                   controllers.portfolioMetrics.PortfolioMetrics.currentRoiRate
+GET     /api/dashboard/expectedRoiRate                  controllers.portfolioMetrics.PortfolioMetrics.expectedRoiRate
+GET     /api/dashboard/currentLoans                     controllers.portfolioMetrics.PortfolioMetrics.currentLoans
+GET     /api/dashboard/loansAcquiredPerDayLastWeek      controllers.portfolioMetrics.PortfolioMetrics.loansAcquiredPerDayLastWeek
+GET     /api/dashboard/platformAllocation               controllers.portfolioMetrics.PortfolioMetrics.platformAllocation
+GET     /api/dashboard/riskDiversification              controllers.portfolioMetrics.PortfolioMetrics.riskDiversification
+
+GET     /api/portfolio/suggestion                       controllers.users.Users.portfolioSuggestion
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

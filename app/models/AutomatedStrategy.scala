@@ -10,14 +10,7 @@ package models
 
 /**
   * @author : julienderay
-  * Created on 18/02/2016
+  * Created on 22/02/2016
   */
-object MarketType extends Enumeration {
-  type MarketType = Value
-  val primary, secondary = Value
-}
 
-case class Market(
-                 strategy: String,
-                 rules: Seq[Rule]
-                 )
+case class AutomatedStrategy(aggressivity: BigDecimal)

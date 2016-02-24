@@ -15,22 +15,48 @@
     'use strict';
 
     class PlatformsController {
-        constructor(cssInjector, userService, authenticationService, constantsService, $filter, addPlatformService) {
+        constructor(cssInjector, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location, platformService) {
             var vm = this;
+
+            const email = authenticationService.getCurrentUsersEmail();
 
             cssInjector.add("assets/stylesheets/homer_style.css");
 
-            userService.userData(authenticationService.getCurrentUsersEmail(), response => vm.platforms = response.data.platforms);
+            getPlatforms();
 
             vm.platformsImgExtensions = constantsService.platformsImgExtensions;
 
-            vm.totalExpected = platform => computeExpectedReturn(platform.primary) + computeExpectedReturn(platform.secondary);
-            vm.fromCamelCaseToTitle = str => $filter('titlecase')($filter('camelCaseToHuman')(str));
+            vm.totalExpected = platform => computeExpectedReturn(platform.primary);
 
-            vm.newPlatform = () => addPlatformService.newPlatformModal(vm.platforms);
+            vm.fromCamelCaseToTitle = str => $filter('titlecase')($filter('camelCaseToHuman')(str));
+            vm.newPlatform = () => addPlatformService.newPlatformModal(vm.platforms, () => getPlatforms());
+
+            vm.editStrategy = (mode, name) => mode === 'automated' ? $location.path(`platforms/strategies/${name}/auto`) : $location.path(`platforms/strategies/${name}/primary`);
 
             function computeExpectedReturn(market) {
-                return market.rules.reduce((prev, rule) => rule.expectedReturn.value + prev, 0);
+                return market.buyStrategies.reduce((prev, strategy) => strategy.expectedReturn.value + prev, 0);
+            }
+
+            function getPlatforms() {
+                platformService.getPlatforms(email, response => {
+                    vm.platforms = response.data;
+                    vm.platforms.forEach(platform => {
+                        platform.isAuto = platform.mode === 'automated';
+
+                        $scope.$watch(() => platform.isAuto, () => {
+                            spinnerService.on();
+                            platform.mode = platform.isAuto ? 'automated' : 'manual';
+                            const tmpPlatforms = JSON.parse(JSON.stringify(vm.platforms)).map(p => {
+                                delete p.isAuto;
+                                return p;
+                            });
+                            platformService.updatePlatforms(email, tmpPlatforms, () => spinnerService.off(), () => {
+                                platform.mode = platform.isAuto ? 'automated' : 'manual';
+                                platform.isAuto = !platform.isAuto;
+                            });
+                        });
+                    });
+                });
             }
         }
     }

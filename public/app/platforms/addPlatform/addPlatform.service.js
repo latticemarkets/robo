@@ -21,20 +21,21 @@
             this.$uibModal = $uibModal;
         }
 
-        newPlatformModal(platforms) {
+        newPlatformModal(platforms, callback) {
             var modalInstance = this.$uibModal.open({
                 templateUrl: 'assets/app/platforms/addPlatform/addPlatform.modal.html',
                 controller: AddPlatformModalController,
                 resolve: {
                     constantsService: () => this.constantsService,
-                    platforms: () => platforms
+                    platforms: () => platforms,
+                    callback: () => callback
                 }
             });
         }
     }
 
     class AddPlatformModalController {
-        constructor($scope, $uibModalInstance, constantsService, userService, authenticationService, $location, platforms) {
+        constructor($scope, $uibModalInstance, constantsService, platformService, authenticationService, $timeout, platforms, callback) {
             $scope.platforms = constantsService.platformsImgExtensions;
 
             $scope.cancel = () => {
@@ -69,16 +70,15 @@
                 const accountId = $('#accountId').val();
                 const apiKey = $('#apiKey').val();
 
-                var newPlatform = { name: $scope.chosePlatform, accountId: accountId, apiKey: apiKey, primary: { rules: [], strategy: 'moderate' }, secondary: { rules: [], strategy: 'moderate' } };
-                userService.addPlatform(authenticationService.getCurrentUsersEmail(), newPlatform,
+                platformService.addPlatform(authenticationService.getCurrentUsersEmail(), $scope.chosePlatform, accountId, apiKey,
                     () => {
                         finish();
-                        $location.path(`/platforms/strategies/${$scope.chosePlatform}/primary`);
+                        $timeout(() => callback(), 300);
                 });
             };
 
             $scope.alreadyAdded = platformName => {
-                return platforms.some(platform => platform.name == platformName);
+                return platforms.some(platform => platform.originator == platformName);
             };
         }
     }

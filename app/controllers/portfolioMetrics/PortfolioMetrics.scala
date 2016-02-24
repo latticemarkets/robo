@@ -6,67 +6,20 @@
  * PDX Technology, except with written permission of PDX Technology.
  */
 
-package controllers
+package controllers.portfolioMetrics
 
 import java.time.LocalDate
 
-import controllers.Security.HasToken
-import core.{Forms, Hash}
-import models.{MarketType, Market, User}
+import controllers.Security._
 import play.api.libs.json.Json
-import play.api.mvc._
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import play.api.mvc.Controller
 
 /**
   * @author : julienderay
-  * Created on 27/01/2016
+  * Created on 22/02/2016
   */
 
-class Users extends Controller {
-
-  def respondWrongDataSent: Result = {
-    BadRequest("Wrong data sent.")
-  }
-
-  def register = Action.async { implicit request =>
-    Forms.registerForm.bindFromRequest.fold(
-      formWithErrors => {
-        Future.successful( respondWrongDataSent )
-      },
-      providedInfos => {
-        User.store(providedInfos) map (optUser => optUser.map(user => Ok(Json.obj("token" -> user.token))).getOrElse(BadRequest("An error occurred when inserting data")))
-      }
-    )
-  }
-
-  def login = Action.async { implicit request =>
-    Forms.loginForm.bindFromRequest.fold(
-      formWithErrors => {
-        Future.successful( respondWrongDataSent )
-      },
-      login => {
-        User.findByEmail(login.email) flatMap (optUser => optUser map (user =>
-          if (Hash.checkPassword(login.password, user.password)) {
-            User.generateAndStoreNewToken(user) map (user => Ok(Json.obj("token" -> user.token)))
-          }
-          else {
-            Future.successful( BadRequest("Wrong password") )
-          }
-        ) getOrElse Future.successful( BadRequest("Wrong email") )
-        )
-      }
-    )
-  }
-
-  def isUsed(email: String) = Action.async {
-    User.findByEmail(email) map {
-      case None => Ok(Json.obj("ok" -> true))
-      case Some(user) => Ok(Json.obj("ok" -> false))
-    }
-  }
-
+class PortfolioMetrics extends Controller {
   def availableCapital() = HasToken {
     Ok(Json.obj("availableCapital" -> 200000))
   }
@@ -93,10 +46,6 @@ class Users extends Controller {
 
   def expectedRoiRate() = HasToken {
     Ok(Json.obj("expectedRoiRate" -> 0.12))
-  }
-
-  def userData(email: String) = HasToken.async {
-    User.findByEmail(email) map ( _.map (user => Ok(Json.toJson(user))) getOrElse respondWrongDataSent)
   }
 
   def currentLoans() = HasToken {
@@ -176,30 +125,6 @@ class Users extends Controller {
     ))
   }
 
-  def portfolioSuggestion() = Action {
-    Ok(Json.obj("portfolio" -> "moderate"))
-  }
-
-  def updatePassword() = HasToken.async { implicit request =>
-    Forms.updatePasswordForm.bindFromRequest.fold(
-      formWithErrors => {
-        Future.successful( respondWrongDataSent )
-      },
-      infos => {
-        User.findByEmail(infos.email) flatMap (optUser => optUser map (user =>
-          if (Hash.checkPassword(infos.oldPassword, user.password)) {
-            User.update(user.copy(password = Hash.createPassword(infos.newPassword)))
-              .map (user => Ok(""))
-          }
-          else {
-            Future.successful( BadRequest("Old password incorrect") )
-          }
-          ) getOrElse Future.successful( BadRequest("Wrong email") )
-          )
-      }
-    )
-  }
-
   def riskDiversification() = HasToken {
     Ok(Json.arr(
       Json.obj("grade" -> "A", "value" -> 240),
@@ -208,75 +133,5 @@ class Users extends Controller {
       Json.obj("grade" -> "D", "value" -> 140),
       Json.obj("grade" -> "E", "value" -> 200)
     ))
-  }
-
-  def updatePlatforms() = HasToken.async { implicit request =>
-    Forms.updatePlatforms.bindFromRequest.fold(
-      formWithErrors => Future.successful( respondWrongDataSent ),
-      data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
-          User.update(user.copy(platforms = data.platforms)) map (user => Ok(""))
-        }) getOrElse Future.successful( respondWrongDataSent ))
-      }
-    )
-  }
-
-  def addPlatform() = HasToken.async { implicit request =>
-    Forms.addPlatformForm.bindFromRequest.fold(
-      formWithErrors => Future.successful( respondWrongDataSent ),
-      data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
-          User.update(user.copy(platforms = user.platforms :+ data.platform)) map (user => Ok(""))
-        }) getOrElse Future.successful( respondWrongDataSent ))
-      }
-    )
-  }
-
-  def updatePersonalData() = HasToken.async { implicit request =>
-    Forms.updatePersonalData.bindFromRequest.fold(
-      formWithErrors => Future.successful( respondWrongDataSent ),
-      data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
-          User.update(user.copy(firstName = data.firstName, lastName = data.lastName, birthday = data.birthday)) map (user => Ok(""))
-        }) getOrElse Future.successful( respondWrongDataSent ))
-      }
-    )
-  }
-
-  def destroyAccount() = HasToken.async { implicit request =>
-    Forms.destroyAccountForm.bindFromRequest.fold(
-      _ => Future.successful( respondWrongDataSent ),
-      data => {
-        User.findByEmail(data.email) flatMap (optUser => optUser map (user =>
-          if (Hash.checkPassword(data.password, user.password)) {
-            User.delete(data.email) map (deleted => if (deleted) Ok("") else BadGateway(""))
-          }
-          else {
-            Future.successful( BadRequest("Incorrect password") )
-          }
-          ) getOrElse Future.successful( BadGateway("") )
-          )
-      }
-    )
-  }
-
-  def updateRules() = HasToken.async { implicit request =>
-    Forms.updateRules.bindFromRequest.fold(
-      formWithErrors => Future.successful( respondWrongDataSent ),
-      data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
-          user.platforms.find(_.name == data.platform) map (platform => {
-            val updatedPlatform =
-              if (data.market == MarketType.primary.toString) platform.copy(primary = platform.primary.copy(rules = data.rules))
-              else platform.copy(secondary = platform.secondary.copy(rules = data.rules))
-            val platforms = user.platforms.map {
-              case p if p.name == data.platform => updatedPlatform
-              case p => p
-            }
-            User.update(user.copy(platforms = platforms)) map (user => Ok(""))
-          }) getOrElse Future.successful( BadGateway("") )
-        }) getOrElse Future.successful( BadGateway("") ))
-      }
-    )
   }
 }

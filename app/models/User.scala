@@ -9,13 +9,16 @@
 package models
 
 import java.util.Date
-import core.{ DbUtil, Hash }
-import play.api.libs.json.{ JsObject, Json }
+
+import controllers.users.RegisterForm
+import core.{DbUtil, Hash}
+import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.json._
 import play.modules.reactivemongo.json.collection.JSONCollection
+
+import core.Formatters._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import de.sciss.play.json.AutoFormat
 
 /**
  * @author : julienderay
@@ -37,41 +40,19 @@ case class User(
   def withEncryptedPassword: User = this.copy(password = Hash.createPassword(this.password))
 }
 
-case class Platform(
-                     name: String,
-                     accountId: String,
-                     apiKey: String,
-                     primary: Market,
-                     secondary: Market
-                   )
-
 case class Login(
   email: String,
   password: String)
 
 case class UpdatePassword(email: String, oldPassword: String, newPassword: String)
 
-case class UpdatePlatforms(email: String, platforms: Seq[Platform])
-
 case class UpdatePersonalData(email: String, firstName: String, lastName: String, birthday: Date)
 
 case class DestroyAccount(email: String, password: String)
 
-case class UpdateRules(email: String, rules: Seq[Rule], platform: String, market: String)
-
-case class AddPlatform(email: String, platform: Platform)
-
 object User {
 
   val collectionName = "user"
-  implicit val inSetParamsFormat = Json.format[InSetParams]
-  implicit val inRangeParamsIntFormat = Json.format[InRangeParams]
-  implicit val criterionFormat = Json.format[Criterion]
-  implicit val expectedReturnFormat = Json.format[ExpectedReturn]
-  implicit val ruleFormat = Json.format[Rule]
-  implicit val marketFormat = Json.format[Market]
-  implicit val platformFormat = Json.format[Platform]
-  implicit val accountSummaryFormat = Json.format[User]
 
   val usersTable: JSONCollection = DbUtil.db.collection(collectionName)
 
@@ -102,4 +83,18 @@ object User {
   }
 
   def delete(email: String): Future[Boolean] = usersTable.remove(Json.obj("_id" -> email)) map (_.ok)
+
+  def factory(form: RegisterForm): User = User(
+    form.email,
+    form.password,
+    form.terms,
+    form.reason,
+    form.income,
+    form.timeline,
+    form.birthday,
+    Seq[Platform](Platform.factory(form.originator, form.accountId, form.apiKey)),
+    form.firstName,
+    form.lastName,
+    Hash.createToken
+  )
 }

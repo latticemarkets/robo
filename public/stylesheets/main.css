@@ -2457,6 +2457,12 @@ img.not-ticked {
 .fa.fa-check-square-o{
 color: green;
 }
+.toggle-switch {
+    border-radius: 9px;
+}
+.toggle-switch .switch-left {
+    background-color: #3498db;
+}
 /*------------------------
  * STRATEGIES
  *----------------------*/
@@ -2531,4 +2537,20 @@ color: green;
 }
 a.remove-button {
     color: white!important;
+}
+/*------------------------
+ * AUTOMATED STRATEGY
+ *----------------------*/
+.strategy-slider-label {
+    position: absolute;
+}
+.automated-strategy-settings-chart {
+    height: 200px;
+}
+.panel-body.automated-strategy-settings-chart-container {
+    height: 230px;
+}
+.auto-strategies-top-menu {
+    height: 70px;
+    vertical-align: middle;
 }
