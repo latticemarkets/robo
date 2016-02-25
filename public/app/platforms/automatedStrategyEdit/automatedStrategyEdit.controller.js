@@ -81,6 +81,7 @@
 
             function generateCharts() {
                 splineChart = c3.generate(getSplineChartOptions(vm.strategyValue));
+                console.log(getBarChartOptions(vm.strategyValue));
                 barChart = c3.generate(getBarChartOptions(vm.strategyValue));
             }
 
@@ -89,7 +90,7 @@
                     columns: autoStrategyChartsService.prepareSplineChartColumns(getSplineChartOptions(sliderValue))
                 });
                 barChart.load({
-                    columns: autoStrategyChartsService.prepareSplineChartColumns(getBarChartOptions(sliderValue))
+                    columns: autoStrategyChartsService.prepareBarChartColum(getBarChartOptions(sliderValue))
                 });
             }
 

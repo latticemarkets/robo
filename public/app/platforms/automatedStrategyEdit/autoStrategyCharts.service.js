@@ -33,6 +33,10 @@
             return ['x'].concat(xValues);
         }
 
+        prepareBarChartColum(values) {
+            return ['Expected Loans Distribution'].concat(values);
+        }
+
         splineChartOptions(id, initValues) {
             return {
                 bindto: `#${id}`,
@@ -74,7 +78,7 @@
             return {
                 bindto: `#${id}`,
                 data: {
-                    columns: initValues,
+                    columns: [this.prepareBarChartColum(initValues)],
                     type: 'bar',
                     colors: {
                         'Estimated Loan Distribution': '#3498db'
