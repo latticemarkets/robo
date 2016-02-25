@@ -39,7 +39,7 @@
             function refreshAllPlatformLinked(){
               const platformsName = constantsService.platforms();
               const userPlatforms = vm.platforms.map(p => p.originator);
-              vm.allPlatformLinked = !platformsName.some(p => userPlatforms.indexOf(p) < 0);
+              vm.allPlatformLinked = platformsName.some(p => userPlatforms.indexOf(p) < 0);
             }
 
             function computeExpectedReturn(market) {
