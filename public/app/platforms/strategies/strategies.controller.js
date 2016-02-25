@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategiesController {
-        constructor($routeParams, constantsService, $location, cssInjector, strategiesService, platformService, authenticationService, notificationService, spinnerService, $cookieStore) {
+        constructor($routeParams, constantsService, $location, cssInjector, strategiesService, platformService, authenticationService, notificationService, spinnerService, $cookieStore, SweetAlert) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -70,10 +70,23 @@
             };
 
             vm.delete = rule => {
+              SweetAlert.swal({
+                  title: "Are you sure?",
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonText: "Yes",
+                  cancelButtonText: "No",
+                  closeOnConfirm: true,
+                  closeOnCancel: true
+            },
+            function(isConfirm) {
+              if (isConfirm) {
                 updateOneRule(rule, (rules, index) => {
                     rules.splice(index, 1);
                     return rules;
                 });
+              }
+            });
             };
 
             vm.editStrategy = id => $location.path(`/platforms/strategies/${platform}/${market}/strategyEdit/${id}`);
