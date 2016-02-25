@@ -15,7 +15,7 @@
     'use strict';
 
     class PlatformsController {
-        constructor(cssInjector, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location, platformService) {
+        constructor(cssInjector, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location, platformService, platformSettingsService) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
@@ -32,6 +32,8 @@
             vm.newPlatform = () => addPlatformService.newPlatformModal(vm.platforms, () => getPlatforms());
 
             vm.editStrategy = (mode, name) => mode === 'automated' ? $location.path(`platforms/strategies/${name}/auto`) : $location.path(`platforms/strategies/${name}/primary`);
+
+            vm.platformSettings = platform => platformSettingsService.platformSettingsModal(platform);
 
             function computeExpectedReturn(market) {
                 return market.buyStrategies.reduce((prev, strategy) => strategy.expectedReturn.value + prev, 0);

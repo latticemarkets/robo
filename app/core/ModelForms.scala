@@ -36,8 +36,7 @@ object ModelForms {
     "rules" -> seq(ruleMapping),
     "isEnabled" -> boolean,
     "minNoteAmount" -> bigDecimal,
-    "maxNoteAmount" -> bigDecimal,
-    "maximumDailyInvestment" -> bigDecimal
+    "maxNoteAmount" -> bigDecimal
   )(ManualStrategy.apply)(ManualStrategy.unapply)
 
   def automatedStrategyMapping = mapping(
@@ -53,7 +52,8 @@ object ModelForms {
     "primary" -> ModelForms.primaryMarketMapping,
     "secondary" -> ModelForms.secondaryMarketMapping,
     "automatedStrategy" -> ModelForms.automatedStrategyMapping,
-    "mode" -> nonEmptyText
+    "mode" -> nonEmptyText,
+    "maximumDailyInvestment" -> bigDecimal
   )(Platform.apply)(Platform.unapply)
 
   def expectedReturnMapping = mapping(

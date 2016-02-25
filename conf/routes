@@ -15,6 +15,7 @@ POST    /api/user/destroy                               controllers.users.Users.
 
 GET     /api/user/platforms/:email                      controllers.platforms.Platforms.getPlatforms(email)
 POST    /api/user/platform                              controllers.platforms.Platforms.addPlatform
+PUT     /api/user/platform                              controllers.platforms.Platforms.updatePlatform
 PUT     /api/user/p2pPlatforms                          controllers.platforms.Platforms.updatePlatforms
 
 PUT     /api/strategies/primary/buy                     controllers.strategies.Strategies.updatePrimaryMarketBuyStrategies

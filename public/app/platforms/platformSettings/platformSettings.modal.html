@@ -1,0 +1,25 @@
+<!--
+  ~ Copyright (c) 2015 PDX Technology, All rights reserved.
+  ~
+  ~ Unpublished copyright. All rights reserved. This material contains
+  ~ proprietary information that shall be used or copied only with
+  ~ PDX Technology, except with written permission of PDX Technology.
+  -->
+
+<div class="inmodal">
+    <div class="modal-header">
+        <h4 class="modal-title">{{ originator | camelCaseToHuman | titlecase }} Settings</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-sm-6 col-sm-offset-3">
+                <label for="dailyInvestment">Maximum Daily Investment :</label>
+                <input id="dailyInvestment" class="form-control" type="text" ng-touch-spin ng-model="platform.maximumDailyInvestment" prefix="$" step="1" min="1" max="100000">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-info" type="button" ng-click="save()">Save</button>
+        <button class="btn btn-danger2" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</div>
