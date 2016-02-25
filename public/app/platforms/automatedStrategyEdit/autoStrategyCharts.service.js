@@ -18,10 +18,27 @@
         constructor() {
         }
 
-        prepareSplineChartColumns(values) {
+        getSplineChartValuesFromSlider(sliderValue, simulationSteps) {
+            return simulationSteps[sliderValue].strategyReturns;
+        }
+
+        getBarChartValuesFromSlider(sliderValue, simulationSteps) {
+            return $.map(simulationSteps[sliderValue].portfolioComposition, elem => elem);
+        }
+
+        getSplineChartOptions(sliderValue, splineChartId, simulationSteps) {
+            return this.generateSplineChartOptions(splineChartId, this.prepareSplineChartColumns(sliderValue, simulationSteps));
+        }
+
+        getBarChartOptions(sliderValue, barChartId, simulationSteps) {
+            return this.barChartOptions(barChartId, this.prepareBarChartColumn(sliderValue, simulationSteps));
+        }
+
+        prepareSplineChartColumns(sliderValue, simulationSteps) {
+            const stepValues = this.getSplineChartValuesFromSlider(sliderValue, simulationSteps);
             return [
-                this.prepareSplineChartXValues(values.map(strategyReturn => strategyReturn.expectedReturn)),
-                this.prepareSplineChartYValues(values.map(strategyReturn => strategyReturn.quantity))
+                this.prepareSplineChartXValues(stepValues.map(strategyReturn => strategyReturn.expectedReturn)),
+                this.prepareSplineChartYValues(stepValues.map(strategyReturn => strategyReturn.quantity))
             ];
         }
 
@@ -33,18 +50,19 @@
             return ['x'].concat(xValues);
         }
 
-        prepareBarChartColum(values) {
-            return ['Estimated Loan Distribution'].concat(values);
+        prepareBarChartColumn(sliderValue, simulationSteps) {
+            const stepValues = this.getBarChartValuesFromSlider(sliderValue, simulationSteps);
+            return [['Estimated Loan Distribution'].concat(stepValues)];
         }
 
-        splineChartOptions(id, initValues) {
+        generateSplineChartOptions(id, values) {
             return {
                 bindto: `#${id}`,
                 data: {
                     xs: {
                         'distribution': 'x'
                     },
-                    columns: this.prepareSplineChartColumns(initValues),
+                    columns: values,
                     types: {
                         distribution: 'area-spline'
                     },
@@ -78,7 +96,7 @@
             return {
                 bindto: `#${id}`,
                 data: {
-                    columns: [this.prepareBarChartColum(initValues)],
+                    columns: initValues,
                     type: 'bar',
                     colors: {
                         'Estimated Loan Distribution': '#3498db'

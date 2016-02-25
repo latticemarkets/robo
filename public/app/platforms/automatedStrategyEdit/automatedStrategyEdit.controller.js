@@ -75,33 +75,17 @@
                 );
             };
 
-            function getSplineChartValuesFromSlider(sliderValue) {
-                return vm.simulationSteps[sliderValue].strategyReturns;
-            }
-
-            function getBarCharValuesFromSlider(sliderValue) {
-                return $.map(vm.simulationSteps[sliderValue].portfolioComposition, elem => elem);
-            }
-
-            function getSplineChartOptions(sliderValue) {
-                return autoStrategyChartsService.splineChartOptions(vm.splineChartId, getSplineChartValuesFromSlider(sliderValue));
-            }
-
-            function getBarChartOptions(sliderValue) {
-                return autoStrategyChartsService.barChartOptions(vm.barChartId, getBarCharValuesFromSlider(sliderValue));
-            }
-
             function generateCharts() {
-                splineChart = c3.generate(getSplineChartOptions(vm.strategyValue));
-                barChart = c3.generate(getBarChartOptions(vm.strategyValue));
+                splineChart = c3.generate(autoStrategyChartsService.getSplineChartOptions(vm.strategyValue, vm.splineChartId, vm.simulationSteps));
+                barChart = c3.generate(autoStrategyChartsService.getBarChartOptions(vm.strategyValue, vm.barChartId, vm.simulationSteps));
             }
 
             function updateDistributionChart(sliderValue) {
                 splineChart.load({
-                    columns: autoStrategyChartsService.prepareSplineChartColumns((getSplineChartValuesFromSlider(sliderValue)))
+                    columns: autoStrategyChartsService.prepareSplineChartColumns(sliderValue, vm.simulationSteps)
                 });
                 barChart.load({
-                    columns: [autoStrategyChartsService.prepareBarChartColum((getBarCharValuesFromSlider(sliderValue)))]
+                    columns: autoStrategyChartsService.prepareBarChartColumn(sliderValue, vm.simulationSteps)
                 });
             }
 
