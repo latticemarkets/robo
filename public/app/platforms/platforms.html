@@ -11,7 +11,10 @@
                     </div>
                     <div class="panel-body">
                         <p class="text-muted text-center">
-                            Current Strategy : <toggle-switch data-ng-model="platform.isAuto" on-label="Auto" off-label="Manual"><toggle-switch>
+                            Current Strategy :
+                            <form>
+                                <switch id="platform-mode" class="platform-mode" data-ng-model="platform.isAuto"></switch>
+                            </form>
                         </p>
 
                         <div class="text-center">

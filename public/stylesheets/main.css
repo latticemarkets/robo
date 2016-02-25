@@ -2477,6 +2477,11 @@ color: green;
     height: 100px;
     vertical-align: middle;
 }
+.strategy-switch{
+  font-family: "WorkSans", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: normal !important;
+}
 /*------------------------
  * CRITERIA
  *----------------------*/
@@ -2543,4 +2548,11 @@ a.remove-button {
 .auto-strategies-top-menu {
     height: 70px;
     vertical-align: middle;
+}
+.market-mode.switch.checked {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+rzslider.aggressivity-slider .rz-pointer {
+    background-color: #3498db;
 }

@@ -13,4 +13,8 @@ package models
   * Created on 22/02/2016
   */
 
-case class AutomatedStrategy(aggressivity: BigDecimal)
+case class AutomatedStrategy(aggressivity: BigDecimal, primaryMarketEnabled: Boolean, secondaryMarketEnabled: Boolean)
+
+object AutomatedStrategy {
+  def factory(): AutomatedStrategy = AutomatedStrategy(.5, primaryMarketEnabled = true, secondaryMarketEnabled = false)
+}

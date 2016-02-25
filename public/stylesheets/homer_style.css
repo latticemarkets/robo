@@ -3656,3 +3656,23 @@ ul.h-list li:hover a {
     margin-left: 10px;
   }
 }
+.market-mode{
+margin: 7px 0px 0px 50px;
+}
+h4.strategy-switch{
+  float:left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: 100;
+    vertical-align: middle;
+}
+.switch.checked {
+  background: #1080f2;
+  border-color: #1080f2;
+}
+.switch {
+  background: #D0D2D5;
+}
+.platform-mode{
+  margin-left: 41.5%;
+}

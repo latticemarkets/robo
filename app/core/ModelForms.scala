@@ -18,14 +18,12 @@ import play.api.data.Forms._
 
 object ModelForms {
   def primaryMarketMapping = mapping(
-    "buyStrategies" -> seq(manualStrategyMapping),
-    "isEnabled" -> boolean
+    "buyStrategies" -> seq(manualStrategyMapping)
   )(PrimaryMarket.apply)(PrimaryMarket.unapply)
 
   def secondaryMarketMapping = mapping(
     "buyStrategies" -> seq(manualStrategyMapping),
-    "sellStrategies" -> seq(manualStrategyMapping),
-    "isEnabled" -> boolean
+    "sellStrategies" -> seq(manualStrategyMapping)
   )(SecondaryMarket.apply)(SecondaryMarket.unapply)
 
   def manualStrategyMapping = mapping(
@@ -43,7 +41,9 @@ object ModelForms {
   )(ManualStrategy.apply)(ManualStrategy.unapply)
 
   def automatedStrategyMapping = mapping(
-    "aggressivity" -> bigDecimal
+    "aggressivity" -> bigDecimal,
+    "primaryMarketEnabled" -> boolean,
+    "secondaryMarketEnabled" -> boolean
   )(AutomatedStrategy.apply)(AutomatedStrategy.unapply)
 
   def platformMapping = mapping(
