@@ -29,11 +29,18 @@
             vm.totalExpected = platform => computeExpectedReturn(platform.primary);
 
             vm.fromCamelCaseToTitle = str => $filter('titlecase')($filter('camelCaseToHuman')(str));
+
             vm.newPlatform = () => addPlatformService.newPlatformModal(vm.platforms, () => getPlatforms());
 
             vm.editStrategy = (mode, name) => mode === 'automated' ? $location.path(`platforms/strategies/${name}/auto`) : $location.path(`platforms/strategies/${name}/primary`);
 
             vm.platformSettings = platform => platformSettingsService.platformSettingsModal(platform);
+
+            function refreshAllPlatformLinked(){
+              const platformsName = constantsService.platforms();
+              const userPlatforms = vm.platforms.map(p => p.originator);
+              vm.allPlatformLinked = !platformsName.some(p => userPlatforms.indexOf(p) < 0);
+            }
 
             function computeExpectedReturn(market) {
                 return market.buyStrategies.reduce((prev, strategy) => strategy.expectedReturn.value + prev, 0);
@@ -42,6 +49,7 @@
             function getPlatforms() {
                 platformService.getPlatforms(email, response => {
                     vm.platforms = response.data;
+                    refreshAllPlatformLinked();
                     vm.platforms.forEach(platform => {
                         platform.isAuto = platform.mode === 'automated';
 

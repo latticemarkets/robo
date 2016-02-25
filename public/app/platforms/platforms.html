@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3 platform-strategy">
+            <div class="col-sm-3 platform-strategy" ng-if="vm.allPlatformLinked == false">
               <div class="ui-sortable-placeholder new-platform" data-ng-click="vm.newPlatform()">
                   <h1 class="new-platform-title">Add a platform</h1>
               </div>
