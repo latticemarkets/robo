@@ -2549,8 +2549,9 @@ a.remove-button {
 .panel-body.automated-strategy-settings-chart-container {
     height: 230px;
 }
-.auto-strategies-top-menu {
-    height: 70px;
+div.panel-body.auto-strategies-top-menu {
+    height: 50px;
+    min-height: 50px;
     vertical-align: middle;
 }
 .market-mode.switch.checked {
