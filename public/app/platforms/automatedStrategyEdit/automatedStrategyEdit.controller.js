@@ -15,7 +15,7 @@
     'use strict';
 
     class AutomatedStrategyEditController {
-        constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, $routeParams, constantsService, spinnerService, strategiesService) {
+        constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, $routeParams, constantsService, spinnerService, strategiesService, automatedStrategyEditService) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
@@ -25,30 +25,33 @@
             const platform = getPlatform();
             const email = authenticationService.getCurrentUsersEmail();
 
-            strategiesService.getAutomatedStrategy(email, platform, response => {
-                vm.strategyValue = response.data.aggressivity * 10;
-                vm.primaryMarketEnabled = response.data.primaryMarketEnabled;
-                vm.secondaryMarketEnabled = response.data.secondaryMarketEnabled;
+            strategiesService.getAutomatedStrategy(email, platform, strategyResponse =>
+                automatedStrategyEditService.getStrategySimulations(platform, simulationResponse => {
+                    vm.strategyValue = strategyResponse.data.aggressivity * 10;
+                    vm.primaryMarketEnabled = strategyResponse.data.primaryMarketEnabled;
+                    vm.secondaryMarketEnabled = strategyResponse.data.secondaryMarketEnabled;
 
-                $timeout(function () {
-                    generateCharts();
-                    $scope.$broadcast('reCalcViewDimensions');
-                }, 500);
+                    vm.simulationSteps = simulationResponse.data.steps;
 
-                onResizeService.addOnResizeCallback(() => {
-                    generateCharts();
-                }, vm.splineChartId);
+                    $timeout(function () {
+                        generateCharts();
+                        $scope.$broadcast('reCalcViewDimensions');
+                    }, 500);
 
-                vm.strategySliderOptions = {
-                    floor: 0,
-                    ceil: 10,
-                    step: 1,
-                    translate: () => "",
-                    onChange: (id, value) => updateDistributionChart(value),
-                    onEnd: (id, value) => updateDistributionChart(value),
-                    hideLimitLabels: true
-                };
-            });
+                    onResizeService.addOnResizeCallback(() => {
+                        generateCharts();
+                    }, vm.splineChartId);
+
+                    vm.strategySliderOptions = {
+                        floor: 0,
+                        ceil: 100,
+                        step: 1,
+                        translate: () => "",
+                        onChange: (id, value) => updateDistributionChart(value),
+                        onEnd: (id, value) => updateDistributionChart(value),
+                        hideLimitLabels: true
+                    };
+            }));
 
             let splineChart;
             let barChart;
@@ -68,17 +71,25 @@
                 );
             };
 
-            function generateCharts() {
-                splineChart = c3.generate(autoStrategyChartsService.splineChartOptions(vm.splineChartId, vm.strategyValue));
-                barChart = c3.generate(autoStrategyChartsService.barChartOptions(vm.barChartId, vm.strategyValue));
+            function getSplineChartOptions(sliderValue) {
+                return autoStrategyChartsService.splineChartOptions(vm.splineChartId, vm.simulationSteps[sliderValue].strategyReturns);
             }
 
-            function updateDistributionChart(value) {
+            function getBarChartOptions(sliderValue) {
+                return autoStrategyChartsService.barChartOptions(vm.barChartId, $.map(vm.simulationSteps[sliderValue].portfolioComposition, elem => elem));
+            }
+
+            function generateCharts() {
+                splineChart = c3.generate(getSplineChartOptions(vm.strategyValue));
+                barChart = c3.generate(getBarChartOptions(vm.strategyValue));
+            }
+
+            function updateDistributionChart(sliderValue) {
                 splineChart.load({
-                    columns: autoStrategyChartsService.simulatedSplineChartDataForStrategy(value)
+                    columns: autoStrategyChartsService.prepareSplineChartColumns(getSplineChartOptions(sliderValue))
                 });
                 barChart.load({
-                    columns: autoStrategyChartsService.simulatedBarChartDataForStrategy(value)
+                    columns: autoStrategyChartsService.prepareSplineChartColumns(getBarChartOptions(sliderValue))
                 });
             }
 
