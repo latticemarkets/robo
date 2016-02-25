@@ -34,7 +34,7 @@
         }
 
         prepareBarChartColum(values) {
-            return ['Expected Loans Distribution'].concat(values);
+            return ['Estimated Loan Distribution'].concat(values);
         }
 
         splineChartOptions(id, initValues) {
