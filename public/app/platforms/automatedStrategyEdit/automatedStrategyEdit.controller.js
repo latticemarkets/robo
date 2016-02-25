@@ -71,26 +71,33 @@
                 );
             };
 
+            function getSplineChartValuesFromSlider(sliderValue) {
+                return vm.simulationSteps[sliderValue].strategyReturns;
+            }
+
+            function getBarCharValuesFromSlider(sliderValue) {
+                return $.map(vm.simulationSteps[sliderValue].portfolioComposition, elem => elem);
+            }
+
             function getSplineChartOptions(sliderValue) {
-                return autoStrategyChartsService.splineChartOptions(vm.splineChartId, vm.simulationSteps[sliderValue].strategyReturns);
+                return autoStrategyChartsService.splineChartOptions(vm.splineChartId, getSplineChartValuesFromSlider(sliderValue));
             }
 
             function getBarChartOptions(sliderValue) {
-                return autoStrategyChartsService.barChartOptions(vm.barChartId, $.map(vm.simulationSteps[sliderValue].portfolioComposition, elem => elem));
+                return autoStrategyChartsService.barChartOptions(vm.barChartId, getBarCharValuesFromSlider(sliderValue));
             }
 
             function generateCharts() {
                 splineChart = c3.generate(getSplineChartOptions(vm.strategyValue));
-                console.log(getBarChartOptions(vm.strategyValue));
                 barChart = c3.generate(getBarChartOptions(vm.strategyValue));
             }
 
             function updateDistributionChart(sliderValue) {
                 splineChart.load({
-                    columns: autoStrategyChartsService.prepareSplineChartColumns(getSplineChartOptions(sliderValue))
+                    columns: autoStrategyChartsService.prepareSplineChartColumns((getSplineChartValuesFromSlider(sliderValue)))
                 });
                 barChart.load({
-                    columns: autoStrategyChartsService.prepareBarChartColum(getBarChartOptions(sliderValue))
+                    columns: [autoStrategyChartsService.prepareBarChartColum((getBarCharValuesFromSlider(sliderValue)))]
                 });
             }
 
