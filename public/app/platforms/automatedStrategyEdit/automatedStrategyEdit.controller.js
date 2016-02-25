@@ -33,6 +33,10 @@
 
                     vm.simulationSteps = simulationResponse.data.steps;
 
+                    vm.median = () => vm.simulationSteps[vm.strategyValue].median;
+                    vm.min95 = () => vm.simulationSteps[vm.strategyValue].min95;
+                    vm.max95 = () => vm.simulationSteps[vm.strategyValue].max95;
+
                     $timeout(function () {
                         generateCharts();
                         $scope.$broadcast('reCalcViewDimensions');

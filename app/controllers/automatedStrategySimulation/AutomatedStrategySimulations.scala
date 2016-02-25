@@ -50,7 +50,7 @@ class AutomatedStrategySimulations extends Controller {
     Ok(Json.toJson(AutomatedStrategySimulation(
       email,
       originator,
-      for (i <- 1 to 100) yield SimulationStep(
+      for (i <- 1 to 101) yield SimulationStep(
         strategyReturns,
         i * (-0.045/100) - 0.075,
         i * (0.0765/100) + 0.11,

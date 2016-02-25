@@ -36,7 +36,7 @@ case class SimulationStep(
                            max95: BigDecimal,
                            median: BigDecimal,
                            portfolioComposition: PortfolioComposition
-                                      )
+                          )
 
 case class PortfolioComposition(
                                 gradeRatioA: BigDecimal,
