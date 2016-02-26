@@ -12,7 +12,7 @@
                     </div>
                     <div class="panel-body">
                         <p class="text-muted text-center">
-                            Current Strategy :
+                            Automatic mode {{ platform.isAuto ? 'enabled' : 'disabled' }}
                             <form>
                                 <switch id="platform-mode" class="platform-mode" data-ng-model="platform.isAuto"></switch>
                             </form>
