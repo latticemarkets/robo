@@ -15,40 +15,47 @@
     'use strict';
 
     class AutomatedStrategyEditController {
-        constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, $routeParams, constantsService, spinnerService, strategiesService) {
+        constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, spinnerService, strategiesService, automatedStrategyEditService, c3) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
             vm.splineChartId = "expectedReturnDistribution";
             vm.barChartId = "gradesDistributionChart";
 
-            const platform = getPlatform();
+            const platform = automatedStrategyEditService.getPlatformFromUrl();
             const email = authenticationService.getCurrentUsersEmail();
 
-            strategiesService.getAutomatedStrategy(email, platform, response => {
-                vm.strategyValue = response.data.aggressivity * 10;
-                vm.primaryMarketEnabled = response.data.primaryMarketEnabled;
-                vm.secondaryMarketEnabled = response.data.secondaryMarketEnabled;
+            strategiesService.getAutomatedStrategy(email, platform, strategyResponse =>
+                automatedStrategyEditService.getStrategySimulations(platform, simulationResponse => {
+                    vm.strategyValue = strategyResponse.data.aggressivity * 10;
+                    vm.primaryMarketEnabled = strategyResponse.data.primaryMarketEnabled;
+                    vm.secondaryMarketEnabled = strategyResponse.data.secondaryMarketEnabled;
 
-                $timeout(function () {
-                    generateCharts();
-                    $scope.$broadcast('reCalcViewDimensions');
-                }, 500);
+                    vm.simulationSteps = simulationResponse.data.steps;
 
-                onResizeService.addOnResizeCallback(() => {
-                    generateCharts();
-                }, vm.splineChartId);
+                    vm.median = () => vm.simulationSteps[vm.strategyValue].median;
+                    vm.min95 = () => vm.simulationSteps[vm.strategyValue].min95;
+                    vm.max95 = () => vm.simulationSteps[vm.strategyValue].max95;
 
-                vm.strategySliderOptions = {
-                    floor: 0,
-                    ceil: 10,
-                    step: 1,
-                    translate: () => "",
-                    onChange: (id, value) => updateDistributionChart(value),
-                    onEnd: (id, value) => updateDistributionChart(value),
-                    hideLimitLabels: true
-                };
-            });
+                    $timeout(function () {
+                        generateCharts();
+                        $scope.$broadcast('reCalcViewDimensions');
+                    }, 500);
+
+                    onResizeService.addOnResizeCallback(() => {
+                        generateCharts();
+                    }, vm.splineChartId);
+
+                    vm.strategySliderOptions = {
+                        floor: 0,
+                        ceil: 100,
+                        step: 1,
+                        translate: () => "",
+                        onChange: (id, value) => updateDistributionChart(value),
+                        onEnd: (id, value) => updateDistributionChart(value),
+                        hideLimitLabels: true
+                    };
+            }));
 
             let splineChart;
             let barChart;
@@ -69,25 +76,17 @@
             };
 
             function generateCharts() {
-                splineChart = c3.generate(autoStrategyChartsService.splineChartOptions(vm.splineChartId, vm.strategyValue));
-                barChart = c3.generate(autoStrategyChartsService.barChartOptions(vm.barChartId, vm.strategyValue));
+                splineChart = c3.generate(autoStrategyChartsService.getSplineChartOptions(vm.strategyValue, vm.splineChartId, vm.simulationSteps));
+                barChart = c3.generate(autoStrategyChartsService.getBarChartOptions(vm.strategyValue, vm.barChartId, vm.simulationSteps));
             }
 
-            function updateDistributionChart(value) {
+            function updateDistributionChart(sliderValue) {
                 splineChart.load({
-                    columns: autoStrategyChartsService.simulatedSplineChartDataForStrategy(value)
+                    columns: autoStrategyChartsService.prepareSplineChartColumns(sliderValue, vm.simulationSteps)
                 });
                 barChart.load({
-                    columns: autoStrategyChartsService.simulatedBarChartDataForStrategy(value)
+                    columns: autoStrategyChartsService.prepareBarChartColumn(sliderValue, vm.simulationSteps)
                 });
-            }
-
-            function getPlatform() {
-                const platform = $routeParams.platform;
-                if (!constantsService.platforms().some(realPlatform => realPlatform == platform)) {
-                    $location.path('/platforms');
-                }
-                return platform;
             }
         }
     }

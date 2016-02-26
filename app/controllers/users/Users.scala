@@ -68,10 +68,6 @@ class Users extends Controller {
     User.findByEmail(email) map ( _.map (user => Ok(Json.toJson(user))) getOrElse Utils.responseOnWrongDataSent)
   }
 
-  def portfolioSuggestion() = Action {
-    Ok(Json.obj("portfolio" -> "moderate"))
-  }
-
   def updatePassword() = HasToken.async { implicit request =>
     UsersForms.updatePasswordForm.bindFromRequest.fold(
       Utils.badRequestOnError,

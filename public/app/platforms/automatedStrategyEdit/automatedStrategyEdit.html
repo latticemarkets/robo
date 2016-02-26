@@ -13,54 +13,65 @@
         <spinner></spinner>
         <div class="row">
             <div class="hpanel col-sm-3 col-sm-offset-3 col-lg-2 col-lg-offset-4 text-center">
-                <div class="panel-body auto-strategies-top-menu">
+                <div class="panel-body auto-strategies-top-menu blue-box">
                     <p>Strategy</p>
-                </div>
-                <div class="panel-footer blue-footer">
                 </div>
             </div>
             <div class="hpanel col-sm-3 col-lg-2 text-center">
                 <div class="panel-body auto-strategies-top-menu">
                     <p>History</p>
                 </div>
-                <div class="panel-footer">
-                </div>
             </div>
         </div>
         <div class="row">
-            <div class="hpanel hblue col-sm-12 col-md-6">
-                <div class="panel-body automated-strategy-settings-chart-container">
-                    <div id="{{ vm.splineChartId }}" class="automated-strategy-settings-chart"></div>
+            <div class="row">
+                <div class="hpanel hblue col-sm-12 col-md-6">
+                    <div class="panel-body automated-strategy-settings-chart-container">
+                        <div id="{{ vm.splineChartId }}" class="automated-strategy-settings-chart"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="hpanel hblue col-sm-12 col-md-6">
-                <div class="panel-body automated-strategy-settings-chart-container">
-                    <div id="{{ vm.barChartId }}" class="automated-strategy-settings-chart"></div>
+                <div class="hpanel hblue col-sm-12 col-md-6">
+                    <div class="panel-body automated-strategy-settings-chart-container">
+                        <div id="{{ vm.barChartId }}" class="automated-strategy-settings-chart"></div>
+                    </div>
                 </div>
             </div>
             <div class="row">
-              <div class="hpanel hblue col-sm-12 col-md-6">
-                  <div class="panel-body">
-                      <h4 class="strategy-switch"> Strategy primary market</h4>
-                      <form>
-                          <switch id="market-mode" class="market-mode" ng-model="vm.primaryMarketEnabled"></switch>
-                      </form>
-                  </div>
-              </div>
-              <div class="hpanel hblue col-sm-12 col-md-6">
-                  <div class="panel-body">
-                      <h4 class="strategy-switch"> Strategy secondary market</h4>
-                      <form>
-                          <switch id="market-mode" class="market-mode" ng-model="vm.secondaryMarketEnabled"></switch>
-                      </form>
-                  </div>
-              </div>
+                <div class="hpanel hblue col-sm-12 col-md-6 col-lg-3">
+                    <div class="panel-body">
+                        <h3 class="pull-left">Expected Return : <span class="font-extra-bold m-b-xs fat-font">{{ vm.median() | percent : 2}}</span></h3>
+                    </div>
+                </div>
+                <div class="hpanel hblue col-sm-12 col-md-6 col-lg-3">
+                    <div class="panel-body">
+                        <h3>Between <span class="font-extra-bold fat-font">{{ vm.min95() | percent : 2 }}</span> and <span class="font-extra-bold fat-font">{{ vm.max95() | percent : 2 }}</span> with 95% confidence</>
+                    </div>
+                </div>
+                <div class="hpanel hblue col-sm-12 col-md-6 col-lg-3">
+                    <div class="panel-body">
+                        <h4 class="strategy-switch"> Strategy primary market</h4>
+                        <form>
+                            <switch class="pull-right" ng-model="vm.primaryMarketEnabled"></switch>
+                        </form>
+                    </div>
+                </div>
+                <div class="hpanel hblue col-sm-12 col-md-6 col-lg-3">
+                    <div class="panel-body">
+                        <h4 class="strategy-switch"> Strategy secondary market</h4>
+                        <form>
+                            <switch class="pull-right" ng-model="vm.secondaryMarketEnabled"></switch>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="hpanel hblue col-sm-12">
-                <div class="panel-body">
-                    <rzslider rz-slider-model="vm.strategyValue" rz-slider-options="vm.strategySliderOptions" class="aggressivity-slider"></rzslider>
-                    <div class="pull-left"><h2>Conservative</h2></div>
-                    <div class="pull-right"><h2>Aggressive</h2></div>
+            <div class="row">
+                <div class="hpanel hblue col-sm-12">
+                    <div class="panel-body">
+                        <rzslider rz-slider-model="vm.strategyValue" rz-slider-options="vm.strategySliderOptions"
+                                  class="aggressivity-slider"></rzslider>
+                        <div class="pull-left"><h2>Conservative</h2></div>
+                        <div class="pull-right"><h2>Aggressive</h2></div>
+                    </div>
                 </div>
             </div>
         </div>
