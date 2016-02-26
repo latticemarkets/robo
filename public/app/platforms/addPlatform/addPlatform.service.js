@@ -70,11 +70,13 @@
                 const accountId = $('#accountId').val();
                 const apiKey = $('#apiKey').val();
 
-                platformService.addPlatform(authenticationService.getCurrentUsersEmail(), $scope.chosePlatform, accountId, apiKey,
-                    () => {
-                        finish();
-                        $timeout(() => callback(), 300);
-                });
+                if (accountId && apiKey) {
+                    platformService.addPlatform(authenticationService.getCurrentUsersEmail(), $scope.chosePlatform, accountId, apiKey,
+                        () => {
+                            finish();
+                            $timeout(() => callback(), 300);
+                    });
+                }
             };
 
             $scope.alreadyAdded = platformName => {
