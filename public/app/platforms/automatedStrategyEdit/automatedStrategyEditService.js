@@ -33,6 +33,7 @@
             const platform = this.$routeParams.platform;
             if (!this.constantsService.platforms().some(realPlatform => realPlatform == platform)) {
                 this.$location.path('/platforms');
+                return undefined;
             }
             return platform;
         }
