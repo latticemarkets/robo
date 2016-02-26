@@ -38,6 +38,15 @@ body {
     font-weight: normal;
     padding: 0;
 }
+body > div{
+  height: 100%;
+}
+.content{
+  min-height: 100%;
+}
+#wrapper{
+  min-height:100%;
+}
 a,
 a:hover,
 a:focus,
@@ -1613,6 +1622,7 @@ footer {
     padding: 50px 0 40px 0;
     text-align: center;
     background-color: #273140;
+    position: relative;
 }
 .lower-footer span,
 .lower-footer a {
