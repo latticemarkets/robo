@@ -15,13 +15,21 @@
     'use strict';
 
     class SignupRegisteredController {
-        constructor($timeout, $location) {
+        constructor($timeout, $location, $interval) {
             const vm = this;
 
             vm.pageNo = 9;
             $timeout(() => vm.pageNo++, 1000);
 
-            $timeout(() => $location.path('/dashboard'), 5000);
+            vm.countdown = 5;
+            $interval(() => {
+                if (!vm.countdown) {
+                    $location.path('/dashboard');
+                }
+                else {
+                    vm.countdown--;
+                }
+            }, 1000);
         }
     }
 
