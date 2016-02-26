@@ -20,7 +20,8 @@ describe('StrategiesController', () => {
         authenticationService,
         strategiesService,
         spinnerService,
-        platformService;
+        platformService,
+        SweetAlert;
 
     beforeEach(module('app'));
 
@@ -60,6 +61,10 @@ describe('StrategiesController', () => {
         ]}));
     });
 
+    beforeEach(() => {
+        SweetAlert = jasmine.createSpyObj('SweetAlert', ['swal']);
+    });
+
     describe('called with good URL parameter', () => {
         beforeEach(() => {
             constantsService = jasmine.createSpyObj('constantsService', ['platforms', 'markets']);
@@ -76,7 +81,8 @@ describe('StrategiesController', () => {
                 authenticationService: authenticationService,
                 strategiesService: strategiesService,
                 spinnerService: spinnerService,
-                platformService: platformService
+                platformService: platformService,
+                SweetAlert: SweetAlert
             });
         }));
 
@@ -160,45 +166,79 @@ describe('StrategiesController', () => {
         });
 
         describe('delete', () => {
-            describe('on success', () => {
-                beforeEach(() => {
-                    strategiesService.updateStrategies.and.callFake((rules, email, platform, market, success, error) => success());
-                    expect(strategiesController.strategies.length).toBe(3);
-                    strategiesController.delete(strategiesController.strategies[2]);
-                });
+          describe('the user confirms', () => {
+              beforeEach(() => {
+                  SweetAlert.swal.and.callFake((obj, callback) => callback(true));
+                  strategiesController.delete({name:'rule1'});
+              });
 
-                it('should call rules service to update the list', () => {
-                    expect(strategiesService.updateStrategies).toHaveBeenCalled();
-                });
+              it('should call the sweet alert', () => {
+                  expect(SweetAlert.swal).toHaveBeenCalled();
+              });
 
-                it('should stop the spinner', () => {
-                    expect(spinnerService.off).toHaveBeenCalled();
-                });
+              describe('on success', () => {
+                  beforeEach(() => {
+                      strategiesService.updateStrategies.and.callFake((rules, email, platform, market, success, error) => success());
+                      expect(strategiesController.strategies.length).toBe(3);
+                      strategiesController.delete(strategiesController.strategies[2]);
+                  });
 
-                it('should update the scoped list of rules', () => {
-                    expect(strategiesController.strategies.length).toBe(2);
-                });
-            });
+                  it('should call rules service to update the list', () => {
+                      expect(strategiesService.updateStrategies).toHaveBeenCalled();
+                  });
 
-            describe('on error', () => {
-                beforeEach(() => {
-                    strategiesService.updateStrategies.and.callFake((rules, email, platform, market, success, error) => error());
-                    expect(strategiesController.strategies.length).toBe(3);
-                    strategiesController.delete(strategiesController.strategies[2]);
-                });
+                  it('should stop the spinner', () => {
+                      expect(spinnerService.off).toHaveBeenCalled();
+                  });
 
-                it('should call rules service to update the list', () => {
-                    expect(strategiesService.updateStrategies).toHaveBeenCalled();
-                });
+                  it('should update the scoped list of rules', () => {
+                      expect(strategiesController.strategies.length).toBe(2);
+                  });
+              });
 
-                it('should stop the spinner', () => {
-                    expect(spinnerService.off).toHaveBeenCalled();
-                });
+              describe('on error', () => {
+                  beforeEach(() => {
+                      strategiesService.updateStrategies.and.callFake((rules, email, platform, market, success, error) => error());
+                      expect(strategiesController.strategies.length).toBe(3);
+                      strategiesController.delete(strategiesController.strategies[2]);
+                  });
 
-                it('should not update the scoped list of rules', () => {
-                    expect(strategiesController.strategies.length).toBe(3);
-                });
-            });
+                  it('should call rules service to update the list', () => {
+                      expect(strategiesService.updateStrategies).toHaveBeenCalled();
+                  });
+
+                  it('should stop the spinner', () => {
+                      expect(spinnerService.off).toHaveBeenCalled();
+                  });
+
+                  it('should not update the scoped list of rules', () => {
+                      expect(strategiesController.strategies.length).toBe(3);
+                  });
+              });
+
+              it('should stay on the page', () => {
+                  expect($location.path).not.toHaveBeenCalled();
+              });
+          });
+
+          describe('the user doesn\'t confirm the cancellation', () => {
+              beforeEach(() => {
+                  SweetAlert.swal.and.callFake((obj, callback) => callback(false));
+                  strategiesController.delete();
+              });
+
+              it('should call the sweet alert', () => {
+                  expect(SweetAlert.swal).toHaveBeenCalled();
+              });
+
+              it('should stay on the page', () => {
+                  expect($location.path).not.toHaveBeenCalled();
+              });
+          });
+
+
+
+
         });
 
         describe('rearrange priority', () => {
