@@ -15,14 +15,14 @@
     'use strict';
 
     class AutomatedStrategyEditController {
-        constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, $routeParams, constantsService, spinnerService, strategiesService, automatedStrategyEditService) {
+        constructor(cssInjector, $timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, spinnerService, strategiesService, automatedStrategyEditService, c3) {
             var vm = this;
             cssInjector.add("assets/stylesheets/homer_style.css");
 
             vm.splineChartId = "expectedReturnDistribution";
             vm.barChartId = "gradesDistributionChart";
 
-            const platform = getPlatform();
+            const platform = automatedStrategyEditService.getPlatformFromUrl();
             const email = authenticationService.getCurrentUsersEmail();
 
             strategiesService.getAutomatedStrategy(email, platform, strategyResponse =>
@@ -87,14 +87,6 @@
                 barChart.load({
                     columns: autoStrategyChartsService.prepareBarChartColumn(sliderValue, vm.simulationSteps)
                 });
-            }
-
-            function getPlatform() {
-                const platform = $routeParams.platform;
-                if (!constantsService.platforms().some(realPlatform => realPlatform == platform)) {
-                    $location.path('/platforms');
-                }
-                return platform;
             }
         }
     }
