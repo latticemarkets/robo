@@ -85,34 +85,6 @@ module.exports = function(grunt) {
                 options: {
                     atBegin: true
                 }
-            },
-            "test-controllers": {
-                files: [ 'Gruntfile.js', 'public/app/**/*.controller.js', 'public/**/*.html', 'tests/front/unit/controllers/*.spec.js' ],
-                tasks: [ 'test-controllers' ],
-                options: {
-                    atBegin: true
-                }
-            },
-            "test-directives": {
-                files: [ 'Gruntfile.js', 'public/app/**/*.directive.js', 'public/**/*.html', 'tests/front/unit/directives/*.spec.js' ],
-                tasks: [ 'test_directives' ],
-                options: {
-                    atBegin: true
-                }
-            },
-            "test-services": {
-                files: [ 'Gruntfile.js', 'public/app/**/*.service.js', 'public/**/*.html', 'tests/front/unit/services/*.spec.js' ],
-                tasks: [ 'test-services' ],
-                options: {
-                    atBegin: true
-                }
-            },
-            "test-filters": {
-                files: [ 'Gruntfile.js', 'public/app/filters/*.js', 'public/**/*.html', 'tests/front/unit/filters/*.spec.js' ],
-                tasks: [ 'test-filters' ],
-                options: {
-                    atBegin: true
-                }
             }
         },
         bowercopy: {
