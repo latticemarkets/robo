@@ -71,7 +71,7 @@
                   <div class="currentStategy">
                     <div class="panel-body text-center h-200">
                         <div class="stats-icon pull-right">
-                            <i class="pe-7s-science fa-4x"></i>
+                            <i class="pe-7s-science fa-3x"></i>
                         </div>
 
                         <h1 class="font-extra-bold fat-font current-roi-rate"><compare-numbers compare="vm.currentRoiRate" to="vm.expectedRoiRate">{{ vm.currentRoiRate | percent : 2 }}</compare-numbers></h1>
@@ -92,10 +92,10 @@
                             <h4>Investments this week</h4>
                         </div>
                         <div class="stats-icon pull-right">
-                            <i class="pe-7s-search fa-4x"></i>
+                            <i class="pe-7s-search fa-3x"></i>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="flot-chart">
+                        <div class="flot-chart chart-investment-Week">
                             <div loans-acquired-per-day promise="vm.loansAcquiredPerDayPromise" style="width:300px;height:200px"></div>
                         </div>
                         <div class="loans-acquired-per-day-legend">
@@ -124,7 +124,7 @@
                             <h4>Platform Allocation</h4>
                         </div>
                         <div class="stats-icon pull-right">
-                            <i class="pe-7s-cash fa-4x"></i>
+                            <i class="pe-7s-cash fa-3x"></i>
                         </div>
                         <div class="flot-chart platform-allocation-chart">
                             <div platform-allocation identifier="allocation-pie" data="vm.platformAllocationPromise"></div>
@@ -141,10 +141,10 @@
                             <h4>Risk Diversification</h4>
                         </div>
                         <div class="stats-icon pull-right">
-                            <i class="pe-7s-portfolio fa-4x"></i>
+                            <i class="pe-7s-portfolio fa-3x"></i>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="flot-chart">
+                        <div class="flot-chart chart-risk-diversification">
                             <div risk-diversification identifier="risk-diversification-donut" data="vm.riskDiversificationPromise"></div>
                         </div>
                     </div>

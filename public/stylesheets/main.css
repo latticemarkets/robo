@@ -2401,6 +2401,15 @@ div.flot-chart.platform-allocation-chart {
 #navigation #side-menu li.active>a{
   color: #34495e;
 }
+h1.current-roi-rate{
+  margin-top: 70px;
+}
+.chart-investment-Week{
+  margin-top: 25px;
+}
+.chart-risk-diversification{
+  margin-top: 5px;
+}
 /*------------------------
  * ACCOUNT CONFIGURATION
  *----------------------*/
