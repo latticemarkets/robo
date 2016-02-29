@@ -85,6 +85,34 @@ module.exports = function(grunt) {
                 options: {
                     atBegin: true
                 }
+            },
+            "test-controllers": {
+                files: [ 'Gruntfile.js', 'public/app/**/*.controller.js', 'public/**/*.html', 'tests/front/unit/controllers/*.spec.js' ],
+                tasks: [ 'test-controllers' ],
+                options: {
+                    atBegin: true
+                }
+            },
+            "test-directives": {
+                files: [ 'Gruntfile.js', 'public/app/**/*.directive.js', 'public/**/*.html', 'tests/front/unit/directives/*.spec.js' ],
+                tasks: [ 'test_directives' ],
+                options: {
+                    atBegin: true
+                }
+            },
+            "test-services": {
+                files: [ 'Gruntfile.js', 'public/app/**/*.service.js', 'public/**/*.html', 'tests/front/unit/services/*.spec.js' ],
+                tasks: [ 'test-services' ],
+                options: {
+                    atBegin: true
+                }
+            },
+            "test-filters": {
+                files: [ 'Gruntfile.js', 'public/app/filters/*.js', 'public/**/*.html', 'tests/front/unit/filters/*.spec.js' ],
+                tasks: [ 'test-filters' ],
+                options: {
+                    atBegin: true
+                }
             }
         },
         bowercopy: {
@@ -138,10 +166,43 @@ module.exports = function(grunt) {
             }
         },
         jasmine : {
-            src : ['public/dist/bower.js', 'public/dist/app.js'],
-            options: {
-                specs : 'tests/front/unit/*.js',
-                summary: true
+            test: {
+              src : ['public/dist/bower.js', 'public/dist/app.js'],
+              options: {
+                  specs : 'tests/front/unit/*.js',
+                  summary: true
+              }
+            },
+            controllers: {
+                src : ['public/dist/bower.js', 'public/dist/app.js'],
+                options: {
+                    specs : 'tests/front/unit/controllers.js',
+                    summary: true
+                }
+            },
+
+            directives: {
+                src : ['public/dist/bower.js', 'public/dist/app.js'],
+                options: {
+                    specs : 'tests/front/unit/directives.js',
+                    summary: true
+                }
+            },
+
+            services: {
+                src : ['public/dist/bower.js', 'public/dist/app.js'],
+                options: {
+                    specs : 'tests/front/unit/services.js',
+                    summary: true
+                }
+            },
+
+            filters: {
+                src : ['public/dist/bower.js', 'public/dist/app.js'],
+                options: {
+                    specs : 'tests/front/unit/filters.js',
+                    summary: true
+                }
             }
         }
     });
@@ -159,7 +220,11 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['build']);
     grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat', 'bowercopy', 'jshint', 'babel']);
-    grunt.registerTask('test', ['build', 'concat:test', 'babel:test', 'jasmine']);
+    grunt.registerTask('test', ['build', 'concat:test', 'babel:test', 'jasmine:test']);
+    grunt.registerTask('test-controllers', ['build', 'concat:test', 'babel:test', 'jasmine:controllers']);
+    grunt.registerTask('test-services', ['build', 'concat:test', 'babel:test', 'jasmine:services']);
+    grunt.registerTask('test-directives', ['build', 'concat:test', 'babel:test', 'jasmine:directives']);
+    grunt.registerTask('test-filters', ['build', 'concat:test', 'babel:test', 'jasmine:filters']);
     grunt.registerTask('dev-test', ['build', 'watch:test']);
     grunt.registerTask('dev', ['build', 'watch:dev']);
 };
