@@ -34,6 +34,10 @@ module.exports = function(grunt) {
                 mainFiles: {
                     Flot: ['jquery.flot.js', 'jquery.flot.pie.js']
                 }
+            },
+            landpage: {
+                dest: 'public/dist/landpage.js',
+                include: ['particles.js']
             }
         },
         bower: {
