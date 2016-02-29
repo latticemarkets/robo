@@ -13,7 +13,6 @@
 
 describe('DashboardController', () => {
     let dashboardController,
-        cssInjector,
         authenticationService,
         $location,
         dashboardDataService,
@@ -29,7 +28,6 @@ describe('DashboardController', () => {
 
         $location = jasmine.createSpyObj('$location', ['path']);
         authenticationService = jasmine.createSpyObj('authenticationService', ['logout', 'getCurrentUsersEmail']);
-        cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
         dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital', 'averageIntRate', 'expectedReturns', 'lastLoanMaturity', 'currentRoiRate', 'expectedRoiRate', 'currentLoansPromise', 'loansAcquiredPerDayLastWeek', 'loansAcquiredLastWeek', 'loansAcquiredToday', 'platformAllocationPromise', 'riskDiversificationPromise']);
         userService = jasmine.createSpyObj('userService', ['userData']);
         loansAcquiredService = jasmine.createSpyObj('loansAcquiredService', ['prepare', 'barChartOptions']);
@@ -98,7 +96,6 @@ describe('DashboardController', () => {
             dashboardController = $controller('DashboardController', {
                 $location : $location,
                 authenticationService: authenticationService,
-                cssInjector: cssInjector,
                 dashboardDataService: dashboardDataService,
                 userService: userService,
                 loansAcquiredService: loansAcquiredService,
@@ -110,12 +107,6 @@ describe('DashboardController', () => {
 
             $timeout = _$timeout_;
         }));
-
-        describe('cssInjection', () => {
-            it('should inject Homer css stylesheet on initialization', () => {
-                expect(cssInjector.add).toHaveBeenCalledWith('assets/stylesheets/homer_style.css');
-            });
-        });
 
         describe('data initialisation', () => {
             it('should load available capital from API', () => {
@@ -195,7 +186,6 @@ describe('DashboardController', () => {
             dashboardController = $controller('DashboardController', {
                 $location : $location,
                 authenticationService: authenticationService,
-                cssInjector: cssInjector,
                 dashboardDataService: dashboardDataService,
                 userService: userService,
                 loansAcquiredService: loansAcquiredService,

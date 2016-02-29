@@ -91,13 +91,38 @@ describe('authenticationService', () => {
     describe('getCurrentUsersEmail', () => {
         let email;
 
-        beforeEach(() => {
-            email = "email";
-            $rootScope.globals = { currentUser : { email: email } };
+        describe('user connected', () => {
+            beforeEach(() => {
+                email = "email";
+                $rootScope.globals = { currentUser : { email: email } };
+            });
+
+            it('should return the current user\'s email', () => {
+                expect(_authenticationService.getCurrentUsersEmail()).toBe(email);
+            });
         });
 
-        it('should return the current user\'s email', () => {
-            expect(_authenticationService.getCurrentUsersEmail()).toBe(email);
+        describe('user not connected', () => {
+            describe('email not set', () => {
+                beforeEach(() => {
+                    email = undefined;
+                    $rootScope.globals = { currentUser : { email: email } };
+                });
+
+                it('should return the current user\'s email', () => {
+                    expect(_authenticationService.getCurrentUsersEmail()).toBeUndefined();
+                });
+            });
+
+            describe('current user not set', () => {
+                beforeEach(() => {
+                    $rootScope.globals = { currentUser : undefined };
+                });
+
+                it('should return the current user\'s email', () => {
+                    expect(_authenticationService.getCurrentUsersEmail()).toBeUndefined();
+                });
+            });
         });
     });
 });

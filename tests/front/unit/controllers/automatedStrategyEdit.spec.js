@@ -12,7 +12,6 @@
  */
 describe('AutomatedStrategyEditController', () => {
     let automatedStrategyEditController,
-        cssInjector,
         $timeout,
         onResizeService,
         $scope,
@@ -40,7 +39,6 @@ describe('AutomatedStrategyEditController', () => {
 
     let onDestroyCallback;
     beforeEach(() => {
-        cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
         $location = jasmine.createSpyObj('$location', ['path']);
 
         spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
@@ -83,7 +81,6 @@ describe('AutomatedStrategyEditController', () => {
 
     beforeEach(inject(($controller, _$timeout_) => {
         automatedStrategyEditController = $controller('AutomatedStrategyEditController', {
-            cssInjector: cssInjector,
             $timeout: _$timeout_,
             onResizeService: onResizeService,
             $scope: $scope,
@@ -97,12 +94,6 @@ describe('AutomatedStrategyEditController', () => {
         });
         $timeout = _$timeout_;
     }));
-
-    describe('cssInjection', () => {
-        it('should inject Homer css stylesheet on initialization', () => {
-            expect(cssInjector.add).toHaveBeenCalledWith('assets/stylesheets/homer_style.css');
-        });
-    });
 
     describe('email initialisation', () => {
         it('should call authentication service', () => {

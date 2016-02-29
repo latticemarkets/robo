@@ -13,7 +13,6 @@
 
 describe('StrategiesController', () => {
     let strategiesController,
-        cssInjector,
         $routeParams,
         constantsService,
         $location,
@@ -26,7 +25,6 @@ describe('StrategiesController', () => {
     beforeEach(module('app'));
 
     beforeEach(() => {
-        cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
         $location = jasmine.createSpyObj('$location', ['path']);
         $routeParams = { platform: 'a', market: 'primary' };
 
@@ -74,7 +72,6 @@ describe('StrategiesController', () => {
 
         beforeEach(inject(($controller) => {
             strategiesController = $controller('StrategiesController', {
-                cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
@@ -85,12 +82,6 @@ describe('StrategiesController', () => {
                 SweetAlert: SweetAlert
             });
         }));
-
-        describe('cssInjection', () => {
-            it('should inject Homer css stylesheet on initialization', () => {
-                expect(cssInjector.add).toHaveBeenCalledWith('assets/stylesheets/homer_style.css');
-            });
-        });
 
         describe('parameter test', () => {
             it('should get the platforms list from constant\'s service', () => {
@@ -288,7 +279,6 @@ describe('StrategiesController', () => {
 
         beforeEach(inject(($controller) => {
             strategiesController = $controller('StrategiesController', {
-                cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
