@@ -113,4 +113,8 @@ class Users extends Controller {
       }
     )
   }
+
+  def checkToken() = HasToken {
+    Ok("")
+  }
 }

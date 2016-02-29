@@ -128,8 +128,8 @@
             .otherwise({ redirectTo: '/404' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$window', '$cookieStore', '$http', 'editableOptions'];
-    function run($rootScope, $location, $window, $cookieStore, $http, editableOptions) {
+    run.$inject = ['$rootScope', '$location', '$window', '$cookieStore', '$http', 'editableOptions', 'userService'];
+    function run($rootScope, $location, $window, $cookieStore, $http, editableOptions, userService) {
         editableOptions.theme = 'bs3';
         $rootScope.globals = $cookieStore.get('globals') || {};
 
@@ -150,9 +150,15 @@
                 '/signin']
             ) > -1; }
 
-        if ($rootScope.globals.currentUser && !authorizedPage()) {
+        if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['X-TOKEN'] = $rootScope.globals.currentUser.token; // jshint ignore:line
             $http.defaults.headers.common['USER'] = $rootScope.globals.currentUser.email; // jshint ignore:line
+
+            if ($location.path() === '/signin') {
+                userService.checkUserToken($rootScope.globals.currentUser.email, $rootScope.globals.currentUser.token, () => {
+                    $location.path('/dashboard');
+                });
+            }
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {

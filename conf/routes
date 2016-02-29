@@ -13,6 +13,7 @@ PUT     /api/user/personalData                                      controllers.
 GET     /api/user/check/:email                                      controllers.users.Users.isUsed(email)
 GET     /api/user/infos/:email                                      controllers.users.Users.userData(email)
 POST    /api/user/destroy                                           controllers.users.Users.destroyAccount
+POST    /api/user/token                                             controllers.users.Users.checkToken
 
 GET     /api/user/platforms/:email                                  controllers.platforms.Platforms.getPlatforms(email)
 POST    /api/user/platform                                          controllers.platforms.Platforms.addPlatform

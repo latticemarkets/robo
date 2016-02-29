@@ -15,9 +15,10 @@
     'use strict';
 
     class userService {
-        constructor($http, notificationService) {
+        constructor($http, notificationService, $window) {
             this.$http = $http;
             this.notificationService = notificationService;
+            this.$window = $window;
         }
 
         register(email, password, terms, reason, income, timeline, birthday, platforms, firstName, lastName, successCallback, errorCallback) {
@@ -65,6 +66,10 @@
 
         destroyUser(email, password, callback) {
             this.$http.post('/api/user/destroy', { email: email, password: password }).then(callback, this.notificationService.apiError());
+        }
+
+        checkUserToken(email, token, callback) {
+            this.$http.post('/api/user/token', { email: email, token: token }).then(callback, () => this.$window.location.href = '/');
         }
     }
 
