@@ -26,6 +26,26 @@ module.exports = function(grunt) {
                     'tests/front/unit/filters.jsx': ['tests/front/unit/filters/*.js'],
                     'tests/front/unit/services.jsx': ['tests/front/unit/services/*.js']
                 }
+            },
+            'test-controllers': {
+                files: {
+                    'tests/front/unit/controllers.jsx': ['tests/front/unit/controllers/*.js']
+                }
+            },
+            'test-services': {
+                files: {
+                    'tests/front/unit/services.jsx': ['tests/front/unit/services/*.js']
+                }
+            },
+            'test-directives': {
+                files: {
+                    'tests/front/unit/directives.jsx': ['tests/front/unit/directives/*.js']
+                }
+            },
+            'test-filters': {
+                files: {
+                    'tests/front/unit/filters.jsx': ['tests/front/unit/filters/*.js']
+                }
             }
         },
         bower_concat: {
@@ -85,6 +105,34 @@ module.exports = function(grunt) {
                 options: {
                     atBegin: true
                 }
+            },
+            'test-controllers': {
+                files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'tests/front/unit/controllers/*.spec.js' ],
+                tasks: [ 'test-controllers' ],
+                options: {
+                    atBegin: true
+                }
+            },
+            'test-services': {
+                files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'tests/front/unit/services/*.spec.js' ],
+                tasks: [ 'test-services' ],
+                options: {
+                    atBegin: true
+                }
+            },
+            'test-directives': {
+                files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'tests/front/unit/directives/*.spec.js' ],
+                tasks: [ 'test-directives' ],
+                options: {
+                    atBegin: true
+                }
+            },
+            'test-filters': {
+                files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'tests/front/unit/filters/*.spec.js' ],
+                tasks: [ 'test-filters' ],
+                options: {
+                    atBegin: true
+                }
             }
         },
         bowercopy: {
@@ -134,6 +182,26 @@ module.exports = function(grunt) {
                     'tests/front/unit/directives.js' : 'tests/front/unit/directives.jsx',
                     'tests/front/unit/filters.js' : 'tests/front/unit/filters.jsx',
                     'tests/front/unit/services.js' : 'tests/front/unit/services.jsx'
+                }
+            },
+            'test-controllers': {
+                files: {
+                    'tests/front/unit/controllers.js': 'tests/front/unit/controllers.jsx'
+                }
+            },
+            'test-services': {
+                files: {
+                    'tests/front/unit/services.js' : 'tests/front/unit/services.jsx'
+                }
+            },
+            'test-directives': {
+                files: {
+                    'tests/front/unit/directives.js' : 'tests/front/unit/directives.jsx'
+                }
+            },
+            'test-filters': {
+                files: {
+                    'tests/front/unit/filters.js' : 'tests/front/unit/filters.jsx'
                 }
             }
         },
@@ -192,11 +260,18 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['build']);
     grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat', 'bowercopy', 'jshint', 'babel']);
+
     grunt.registerTask('test', ['build', 'concat:test', 'babel:test', 'jasmine:test']);
-    grunt.registerTask('test-controllers', ['build', 'concat:test', 'babel:test', 'jasmine:controllers']);
-    grunt.registerTask('test-services', ['build', 'concat:test', 'babel:test', 'jasmine:services']);
-    grunt.registerTask('test-directives', ['build', 'concat:test', 'babel:test', 'jasmine:directives']);
-    grunt.registerTask('test-filters', ['build', 'concat:test', 'babel:test', 'jasmine:filters']);
+    grunt.registerTask('test-controllers', ['build', 'concat:test-controllers', 'babel:test-controllers', 'jasmine:controllers']);
+    grunt.registerTask('test-services', ['build', 'concat:test-services', 'babel:test-services', 'jasmine:services']);
+    grunt.registerTask('test-directives', ['build', 'concat:test-directives', 'babel:test-directives', 'jasmine:directives']);
+    grunt.registerTask('test-filters', ['build', 'concat:test-filters', 'babel:test-filters', 'jasmine:filters']);
+
     grunt.registerTask('dev-test', ['build', 'watch:test']);
+    grunt.registerTask('dev-test-controllers', ['build', 'watch:test-controllers']);
+    grunt.registerTask('dev-test-services', ['build', 'watch:test-services']);
+    grunt.registerTask('dev-test-directives', ['build', 'watch:test-directives']);
+    grunt.registerTask('dev-test-filters', ['build', 'watch:test-filters']);
+
     grunt.registerTask('dev', ['build', 'watch:dev']);
 };
