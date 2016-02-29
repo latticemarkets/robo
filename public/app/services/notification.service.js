@@ -15,10 +15,10 @@
     'use strict';
 
     class notificationService {
-        constructor(toastr, $timeout, $location) {
+        constructor(toastr, $timeout, $window) {
             this.toastr = toastr;
             this.$timeout = $timeout;
-            this.$location = $location;
+            this.$window = $window;
         }
 
         error(message) {
@@ -33,7 +33,7 @@
                         break;
                     case 401:
                         this.toastr.error('API authentication error. You will be redirected', 'Unauthorized');
-                        this.$timeout(() => this.$location.path('/'), 2000);
+                        this.$timeout(() => this.$window.location.href = '/', 2000);
                         break;
                     default:
                         this.toastr.error('The server returned an unknown error.', 'Server error');

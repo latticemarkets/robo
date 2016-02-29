@@ -31,9 +31,12 @@
                     $window.location.href = '/';
                 };
 
-                userService.userData(authenticationService.getCurrentUsersEmail(), response => scope.username = `${response.data.firstName} ${response.data.lastName}`);
+                const email = authenticationService.getCurrentUsersEmail();
+
+                // todo : cache these results
+                userService.userData(email, response => scope.username = `${response.data.firstName} ${response.data.lastName}`);
                 dashboardDataService.expectedReturns(response => scope.expectedReturns = response.data.expectedReturns);
-                userService.userData(authenticationService.getCurrentUsersEmail(), response => scope.platforms = response.data.platforms.length);
+                userService.userData(email, response => scope.platforms = response.data.platforms.length);
             }
         };
     }
