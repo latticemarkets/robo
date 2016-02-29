@@ -13,7 +13,6 @@
 
 describe('StrategyEditController', () => {
     let strategyEditController,
-        cssInjector,
         $routeParams,
         constantsService,
         $location,
@@ -39,7 +38,6 @@ describe('StrategyEditController', () => {
     });
 
     beforeEach(() => {
-        cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
         $location = jasmine.createSpyObj('$location', ['path']);
         $routeParams = { platform: urlOriginator, market: 'primary' };
 
@@ -124,7 +122,6 @@ describe('StrategyEditController', () => {
         beforeEach(inject(($controller, _$timeout_) => {
             strategyEditController = $controller('StrategyEditController', {
                 notificationService: notificationService,
-                cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
@@ -139,12 +136,6 @@ describe('StrategyEditController', () => {
 
             $timeout = _$timeout_;
         }));
-
-        describe('cssInjection', () => {
-            it('should inject Homer css stylesheet on initialization', () => {
-                expect(cssInjector.add).toHaveBeenCalledWith('assets/stylesheets/homer_style.css');
-            });
-        });
 
         describe('test parameter platform', () => {
             it('should get the platforms list from constant\'s service', () => {
@@ -360,7 +351,6 @@ describe('StrategyEditController', () => {
         beforeEach(inject(($controller) => {
             strategyEditController = $controller('StrategyEditController', {
                 notificationService: notificationService,
-                cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
@@ -392,7 +382,6 @@ describe('StrategyEditController', () => {
         beforeEach(inject(($controller) => {
             strategyEditController = $controller('StrategyEditController', {
                 notificationService: notificationService,
-                cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
@@ -429,7 +418,6 @@ describe('StrategyEditController', () => {
         beforeEach(inject(($controller) => {
             strategyEditController = $controller('StrategyEditController', {
                 notificationService: notificationService,
-                cssInjector: cssInjector,
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,

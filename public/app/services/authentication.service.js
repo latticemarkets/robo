@@ -39,7 +39,18 @@
         }
 
         getCurrentUsersEmail() {
-            return this.$rootScope.globals.currentUser.email;
+            if (this.$rootScope.globals) {
+                if (this.$rootScope.globals.currentUser) {
+                    const email = this.$rootScope.globals.currentUser.email;
+                    return email ? this.$rootScope.globals.currentUser.email : undefined;
+                }
+                else {
+                    return undefined;
+                }
+            }
+            else {
+                return undefined;
+            }
         }
     }
 

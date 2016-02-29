@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategyEditController {
-        constructor(authenticationService, $routeParams, constantsService, $location, cssInjector, rulesService, $cookieStore, spinnerService, $timeout, platformService, notificationService, SweetAlert) {
+        constructor(authenticationService, $routeParams, constantsService, $location, rulesService, $cookieStore, spinnerService, $timeout, platformService, notificationService, SweetAlert) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
@@ -26,7 +26,6 @@
 
             getCriteria();
             checkUrlParameters();
-            injectCss();
 
             vm.addRule = rule => {
                 vm.strategy.rules.push(rulesService.expendRule(rule));
@@ -96,10 +95,6 @@
             /**
              * Functions
              */
-
-            function injectCss() {
-                cssInjector.add("assets/stylesheets/homer_style.css");
-            }
 
             function updatePlatforms() {
                 vm.platforms.forEach(p => {

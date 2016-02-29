@@ -13,7 +13,6 @@
 
 describe('PlatformsController', () => {
     let platformsController,
-        cssInjector,
         authenticationService,
         $scope,
         platformService,
@@ -23,7 +22,6 @@ describe('PlatformsController', () => {
 
     let userEmail;
     beforeEach(() => {
-        cssInjector = jasmine.createSpyObj('cssInjector', ['add']);
 
         userEmail = 'toto@tata.fr';
         authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
@@ -47,19 +45,12 @@ describe('PlatformsController', () => {
 
     beforeEach(inject(($controller) => {
         platformsController = $controller('PlatformsController', {
-            cssInjector: cssInjector,
             authenticationService: authenticationService,
             $scope: $scope,
             spinnerService: spinnerService,
             platformService: platformService
         });
     }));
-
-    describe('cssInjection', () => {
-        it('should inject Homer css stylesheet on initialization', () => {
-            expect(cssInjector.add).toHaveBeenCalledWith('assets/stylesheets/homer_style.css');
-        });
-    });
 
     describe('totalExpect', () => {
         it('should return the sum of all expected returns', () => {

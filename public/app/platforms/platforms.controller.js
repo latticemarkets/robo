@@ -15,12 +15,10 @@
     'use strict';
 
     class PlatformsController {
-        constructor(cssInjector, authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location, platformService, platformSettingsService) {
+        constructor(authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location, platformService, platformSettingsService) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
-
-            cssInjector.add("assets/stylesheets/homer_style.css");
 
             getPlatforms();
 

@@ -15,9 +15,8 @@
     'use strict';
 
     class DashboardController {
-        constructor(cssInjector, dashboardDataService, flotChartService, $scope, $timeout, dashboardGuidedTourService, $cookieStore) {
+        constructor(dashboardDataService, flotChartService, $scope, $timeout, dashboardGuidedTourService, $cookieStore) {
             var vm = this;
-            cssInjector.add("assets/stylesheets/homer_style.css");
 
             initData();
 

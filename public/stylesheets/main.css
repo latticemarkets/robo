@@ -2349,6 +2349,15 @@ div .signup .chose-platform {
     left: 0;
     z-index: -1;
 }
+.particleJs-landpage {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 #progressbar {
     background-color: #455362 !important;
 }
@@ -2570,4 +2579,17 @@ div.panel-body.auto-strategies-top-menu {
 }
 rzslider.aggressivity-slider .rz-pointer {
     background-color: #3498db;
+}
+/*------------------------
+ * 404 NOT FOUND
+ *----------------------*/
+h1.notFound, h3.notFound {
+    font-size: 80px;
+}
+div.notFound {
+    margin-top: 10%;
+    margin-bottom: 30px;
+}
+div.error-desc {
+    font-size: 14px;
 }

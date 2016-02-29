@@ -14,7 +14,7 @@
 describe('notificationService', () => {
     let _toastr,
         _notificationService,
-        _$location,
+        _$window,
         _$timeout;
 
     beforeEach(() => {
@@ -27,18 +27,18 @@ describe('notificationService', () => {
                     success: jasmine.createSpy('success')
                 };
             });
-            $provide.service('$location', () => {
+            $provide.service('$window', () => {
                 return {
-                    path: jasmine.createSpy('$location')
+                    location: { href: '' }
                 };
             });
         });
     });
 
-    beforeEach(inject((notificationService, toastr, $location, $timeout) => {
+    beforeEach(inject((notificationService, toastr, $window, $timeout) => {
         _notificationService = notificationService;
         _toastr = toastr;
-        _$location = $location;
+        _$window = $window;
         _$timeout = $timeout;
     }));
 
@@ -87,7 +87,7 @@ describe('notificationService', () => {
             });
 
             it('should redirect the user on the landpage', () => {
-                expect(_$location.path).toHaveBeenCalledWith('/');
+                expect(_$window.location.href).toBe('/');
             });
         });
 

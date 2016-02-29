@@ -15,9 +15,8 @@
     'use strict';
 
     class StrategiesController {
-        constructor($routeParams, constantsService, $location, cssInjector, strategiesService, platformService, authenticationService, notificationService, spinnerService, $cookieStore, SweetAlert) {
+        constructor($routeParams, constantsService, $location, strategiesService, platformService, authenticationService, notificationService, spinnerService, $cookieStore, SweetAlert) {
             var vm = this;
-            cssInjector.add("assets/stylesheets/homer_style.css");
 
             const email = authenticationService.getCurrentUsersEmail();
             const platform = $routeParams.platform;
