@@ -52,6 +52,21 @@
                 return undefined;
             }
         }
+
+        getCurrentUsersToken() {
+            if (this.$rootScope.globals) {
+                if (this.$rootScope.globals.currentUser) {
+                    const email = this.$rootScope.globals.currentUser.token;
+                    return email ? this.$rootScope.globals.currentUser.token : undefined;
+                }
+                else {
+                    return undefined;
+                }
+            }
+            else {
+                return undefined;
+            }
+        }
     }
 
     angular

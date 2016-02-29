@@ -15,8 +15,17 @@
     'use strict';
 
     class SignInController {
-        constructor(userService, $location, authenticationService) {
+        constructor(userService, $location, authenticationService, $window) {
             const vm = this;
+
+            const email = authenticationService.getCurrentUsersEmail();
+            const token = authenticationService.getCurrentUsersToken();
+
+            if (email && token) {
+                userService.checkUserToken(email, token, () => {
+                    $location.path('/dashboard');
+                });
+            }
 
             function allConditionsSatisfied() {
                 const emailRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;

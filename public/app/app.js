@@ -128,37 +128,31 @@
             .otherwise({ redirectTo: '/404' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$window', '$cookieStore', '$http', 'editableOptions', 'userService'];
-    function run($rootScope, $location, $window, $cookieStore, $http, editableOptions, userService) {
+    run.$inject = ['$rootScope', '$location', '$window', '$cookieStore', '$http', 'editableOptions'];
+    function run($rootScope, $location, $window, $cookieStore, $http, editableOptions) {
         editableOptions.theme = 'bs3';
         $rootScope.globals = $cookieStore.get('globals') || {};
 
         function authorizedPage() {
             return $.inArray($location.path(),
-                ['',
-                '/404',
-                '/signup',
-                '/signup/termsAndConditions',
-                '/signup/reasonInvestment',
-                '/signup/yearlyIncome',
-                '/signup/timeline',
-                '/signup/birthday',
-                '/signup/p2pPlatform',
-                '/signup/p2pCredentials',
-                '/signup/personalInfos',
-                '/signup/registered',
-                '/signin']
-            ) > -1; }
+                    ['',
+                        '/404',
+                        '/signup',
+                        '/signup/termsAndConditions',
+                        '/signup/reasonInvestment',
+                        '/signup/yearlyIncome',
+                        '/signup/timeline',
+                        '/signup/birthday',
+                        '/signup/p2pPlatform',
+                        '/signup/p2pCredentials',
+                        '/signup/personalInfos',
+                        '/signup/registered',
+                        '/signin']
+                ) > -1; }
 
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['X-TOKEN'] = $rootScope.globals.currentUser.token; // jshint ignore:line
             $http.defaults.headers.common['USER'] = $rootScope.globals.currentUser.email; // jshint ignore:line
-
-            if ($location.path() === '/signin') {
-                userService.checkUserToken($rootScope.globals.currentUser.email, $rootScope.globals.currentUser.token, () => {
-                    $location.path('/dashboard');
-                });
-            }
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {

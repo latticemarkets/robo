@@ -7,9 +7,9 @@
  */
 
 /**
-* @author : julienderay
-* Created on 30/01/2016
-*/
+ * @author : julienderay
+ * Created on 30/01/2016
+ */
 
 describe('authenticationService', () => {
     let _authenticationService,
@@ -121,6 +121,44 @@ describe('authenticationService', () => {
 
                 it('should return the current user\'s email', () => {
                     expect(_authenticationService.getCurrentUsersEmail()).toBeUndefined();
+                });
+            });
+        });
+    });
+
+    describe('getCurrentUsersToken', () => {
+        let token;
+
+        describe('user connected', () => {
+            beforeEach(() => {
+                token = "token";
+                $rootScope.globals = { currentUser : { token: token } };
+            });
+
+            it('should return the current user\'s token', () => {
+                expect(_authenticationService.getCurrentUsersToken()).toBe(token);
+            });
+        });
+
+        describe('user not connected', () => {
+            describe('token not set', () => {
+                beforeEach(() => {
+                    token = undefined;
+                    $rootScope.globals = { currentUser : { token: token } };
+                });
+
+                it('should return the current user\'s token', () => {
+                    expect(_authenticationService.getCurrentUsersToken()).toBeUndefined();
+                });
+            });
+
+            describe('current user not set', () => {
+                beforeEach(() => {
+                    $rootScope.globals = { currentUser : undefined };
+                });
+
+                it('should return the current user\'s token', () => {
+                    expect(_authenticationService.getCurrentUsersToken()).toBeUndefined();
                 });
             });
         });
