@@ -22,8 +22,10 @@
             $timeout(() => vm.pageNo++, 1000);
 
             vm.countdown = 5;
-            $interval(() => {
+
+            const countDownInterval = $interval(() => {
                 if (!vm.countdown) {
+                    $interval.cancel(countDownInterval);
                     $location.path('/dashboard');
                 }
                 else {
