@@ -123,26 +123,25 @@
             .otherwise({ redirectTo: '/' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$cookieStore', '$http', 'editableOptions'];
-    function run($rootScope, $location, $cookieStore, $http, editableOptions) {
+    run.$inject = ['$rootScope', '$location', '$window', '$cookieStore', '$http', 'editableOptions'];
+    function run($rootScope, $location, $window, $cookieStore, $http, editableOptions) {
         editableOptions.theme = 'bs3';
         $rootScope.globals = $cookieStore.get('globals') || {};
 
         function authorizedPage() {
             return $.inArray($location.path(),
                 ['',
-                '/',
-                '/signup',
-                '/signup/termsAndConditions',
-                '/signup/reasonInvestment',
-                '/signup/yearlyIncome',
-                '/signup/timeline',
-                '/signup/birthday',
-                '/signup/p2pPlatform',
-                '/signup/p2pCredentials',
-                '/signup/personalInfos',
-                '/signup/registered',
-                '/signin']
+                'dashboard#/signup',
+                'dashboard#/signup/termsAndConditions',
+                'dashboard#/signup/reasonInvestment',
+                'dashboard#/signup/yearlyIncome',
+                'dashboard#/signup/timeline',
+                'dashboard#/signup/birthday',
+                'dashboard#/signup/p2pPlatform',
+                'dashboard#/signup/p2pCredentials',
+                'dashboard#/signup/personalInfos',
+                'dashboard#/signup/registered',
+                'dashboard#/signin']
             ) > -1; }
 
         if ($rootScope.globals.currentUser && !authorizedPage()) {
@@ -154,7 +153,7 @@
             // redirect to login page if not logged in and trying to access a restricted page
             var loggedIn = $rootScope.globals.currentUser;
             if (!authorizedPage() && (!loggedIn || loggedIn === undefined)) {
-                $location.path('/');
+                $window.location.href = '/';
             }
         });
     }
