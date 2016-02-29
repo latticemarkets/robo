@@ -18,9 +18,9 @@
         .module('app')
         .directive('sidebar', sidebar);
 
-    sidebar.$inject = ['authenticationService', '$window', 'userService', 'dashboardDataService'];
+    sidebar.$inject = ['authenticationService', '$window', 'userService', 'dashboardDataService','$location'];
 
-    function sidebar(authenticationService, $window, userService, dashboardDataService) {
+    function sidebar(authenticationService, $window, userService, dashboardDataService, $location) {
         return {
             replace: true,
             restrict: 'E',
@@ -30,6 +30,17 @@
                     authenticationService.logout();
                     $window.location.href = '/';
                 };
+
+                if($location.path() == '/dashboard') {
+                    scope.activeDashboard="active";
+                }
+                else if ($location.path() == '/userAccount') {
+                    scope.activeDashboard="";
+                    scope.activePlatform="";
+                }
+                else {
+                    scope.activePlatform="active";
+                }
 
                 const email = authenticationService.getCurrentUsersEmail();
 
