@@ -15,8 +15,15 @@
     'use strict';
 
     class NotFoundController {
-        constructor() {
+        constructor(authenticationService, $window, $location) {
             var vm = this;
+
+            vm.userConnected = authenticationService.getCurrentUsersEmail() !== undefined;
+
+            vm.goToLandpage = () => $window.location.href = '/';
+            vm.goToDashboard = () => {
+                if (vm.userConnected) $location.path('/dashboard');
+            };
         }
     }
 

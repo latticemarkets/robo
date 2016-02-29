@@ -136,6 +136,7 @@
         function authorizedPage() {
             return $.inArray($location.path(),
                 ['',
+                '/404',
                 '/signup',
                 '/signup/termsAndConditions',
                 '/signup/reasonInvestment',
