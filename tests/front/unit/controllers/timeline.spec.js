@@ -13,19 +13,19 @@
 
 describe('SignupTimelineController', () => {
     let timelineController,
-        $cookieStore,
+        $cookies,
         $location;
 
     beforeEach(() => {
         module('app');
 
-        $cookieStore = jasmine.createSpyObj('$cookieStore', ['get', 'put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put']);
         $location = jasmine.createSpyObj('$location', ['path']);
     });
 
     beforeEach(inject(($controller) => {
         timelineController = $controller('SignupTimelineController', {
-            $cookieStore : $cookieStore,
+            $cookies : $cookies,
             $location : $location
         });
     }));
@@ -33,29 +33,29 @@ describe('SignupTimelineController', () => {
     describe('initialization', () => {
         describe('data are present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => jasmine.any(String));
+                $cookies.get.and.callFake(() => jasmine.any(String));
             });
 
             it('should get previous data', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.reason');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.reason');
+                expect($cookies.get).toHaveBeenCalledWith('signup.income');
             });
         });
 
         describe('data are NOT present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => undefined);
+                $cookies.get.and.callFake(() => undefined);
             });
 
             it('go back to first registration page', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.reason');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.reason');
+                expect($cookies.get).toHaveBeenCalledWith('signup.income');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
         });
@@ -77,7 +77,7 @@ describe('SignupTimelineController', () => {
             });
 
             it('should store the timeline in a cookie', () => {
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.timeline', timeline);
+                expect($cookies.put).toHaveBeenCalledWith('signup.timeline', timeline);
             });
 
             it('should go to the birthday page', () => {
@@ -94,7 +94,7 @@ describe('SignupTimelineController', () => {
             });
 
             it('should NOT store the timeline in a cookie', () => {
-                expect($cookieStore.put).not.toHaveBeenCalled();
+                expect($cookies.put).not.toHaveBeenCalled();
             });
 
             it('should NOT go to the birthday page', () => {

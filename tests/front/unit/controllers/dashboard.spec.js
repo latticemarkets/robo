@@ -19,7 +19,7 @@ describe('DashboardController', () => {
         userService,
         loansAcquiredService,
         $scope,
-        $cookieStore,
+        $cookies,
         $timeout,
         dashboardGuidedTourService;
 
@@ -33,7 +33,7 @@ describe('DashboardController', () => {
         loansAcquiredService = jasmine.createSpyObj('loansAcquiredService', ['prepare', 'barChartOptions']);
         $scope = jasmine.createSpyObj('$scope', ['$on']);
         dashboardGuidedTourService = jasmine.createSpyObj('dashboardGuidedTourService', ['start', 'end', 'init']);
-        $cookieStore = jasmine.createSpyObj('$cookieStore', ['get', 'remove']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'remove']);
     });
 
     let availableCapital;
@@ -89,7 +89,7 @@ describe('DashboardController', () => {
 
     describe('no guided tour', () => {
         beforeEach(() => {
-            $cookieStore.get.and.returnValue(false);
+            $cookies.get.and.returnValue(false);
         });
 
         beforeEach(inject(($controller, _$timeout_) => {
@@ -102,7 +102,7 @@ describe('DashboardController', () => {
                 $scope: $scope,
                 dashboardGuidedTourService: dashboardGuidedTourService,
                 $timeout: _$timeout_,
-                $cookieStore: $cookieStore
+                $cookies: $cookies
             });
 
             $timeout = _$timeout_;
@@ -157,7 +157,7 @@ describe('DashboardController', () => {
             });
 
             it('should not remove the cookie', () => {
-                expect($cookieStore.remove).not.toHaveBeenCalledWith('guidedTour');
+                expect($cookies.remove).not.toHaveBeenCalledWith('guidedTour');
             });
 
             it('should not set on destroy', () => {
@@ -168,7 +168,7 @@ describe('DashboardController', () => {
 
     describe('with guided tour', () => {
         beforeEach(() => {
-            $cookieStore.get.and.returnValue(true);
+            $cookies.get.and.returnValue(true);
             $scope.$on.and.callFake((str, callback) => {
                 callback();
 
@@ -192,7 +192,7 @@ describe('DashboardController', () => {
                 $scope: $scope,
                 dashboardGuidedTourService: dashboardGuidedTourService,
                 $timeout: _$timeout_,
-                $cookieStore: $cookieStore
+                $cookies: $cookies
             });
 
             $timeout = _$timeout_;
@@ -204,7 +204,7 @@ describe('DashboardController', () => {
             })
             ;
             it('should look at the guidedTour cookie', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('guidedTour');
+                expect($cookies.get).toHaveBeenCalledWith('guidedTour');
             });
 
             it('should init the guided tour', () => {
@@ -216,7 +216,7 @@ describe('DashboardController', () => {
             });
 
             it('should remove the cookie', () => {
-                expect($cookieStore.remove).toHaveBeenCalledWith('guidedTour');
+                expect($cookies.remove).toHaveBeenCalledWith('guidedTour');
             });
         });
     });

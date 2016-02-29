@@ -15,8 +15,8 @@
     'use strict';
 
     class authenticationService {
-        constructor($cookieStore, $rootScope, $http) {
-            this.$cookieStore = $cookieStore;
+        constructor($cookies, $rootScope, $http) {
+            this.$cookies = $cookies;
             this.$rootScope = $rootScope;
             this.$http = $http;
         }
@@ -26,7 +26,7 @@
                 email: email,
                 token: token
             };
-            this.$cookieStore.put('globals', this.$rootScope.globals);
+            this.$cookies.putObject('globals', this.$rootScope.globals);
             this.$http.defaults.headers.common['X-TOKEN'] = this.$rootScope.globals.currentUser.token; // jshint ignore:line
             this.$http.defaults.headers.common['USER'] = this.$rootScope.globals.currentUser.email; // jshint ignore:line
         }
@@ -35,7 +35,7 @@
             this.$rootScope.globals = {};
             this.$http.defaults.headers.common['X-TOKEN'] = ""; // jshint ignore:line
             this.$http.defaults.headers.common['USER'] = ""; // jshint ignore:line
-            this.$cookieStore.remove('globals');
+            this.$cookies.remove('globals');
         }
 
         getCurrentUsersEmail() {

@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupBirthdayController {
-        constructor($location, $cookieStore, $timeout) {
+        constructor($location, $cookies, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
@@ -24,12 +24,12 @@
             $timeout(() => vm.pageNo++, 1000);
 
             (() => {
-                const email = $cookieStore.get('signup.email');
-                const password = $cookieStore.get('signup.password');
-                const terms = $cookieStore.get('signup.terms');
-                const reason = $cookieStore.get('signup.reason');
-                const income = $cookieStore.get('signup.income');
-                const timeline = $cookieStore.get('signup.timeline');
+                const email = $cookies.get('signup.email');
+                const password = $cookies.get('signup.password');
+                const terms = $cookies.get('signup.terms');
+                const reason = $cookies.get('signup.reason');
+                const income = $cookies.get('signup.income');
+                const timeline = $cookies.get('signup.timeline');
                 if (!(email && password && terms && reason && income && timeline)) {
                     $location.path('/signup');
                 }
@@ -52,7 +52,7 @@
 
             vm.submit = () => {
                 if (allConditionsSatisfied()) {
-                    $cookieStore.put('signup.birthday',`${vm.month}/${vm.day}/${vm.year}`);
+                    $cookies.put('signup.birthday',`${vm.month}/${vm.day}/${vm.year}`);
                     $location.path('/signup/p2pPlatform');
                 }
             };

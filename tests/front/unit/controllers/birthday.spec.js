@@ -13,19 +13,19 @@
 
 describe('SignupBirthdayController', () => {
     let birthdayController,
-        $cookieStore,
+        $cookies,
         $location;
 
     beforeEach(() => {
         module('app');
 
-        $cookieStore = jasmine.createSpyObj('$cookieStore', ['get', 'put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put']);
         $location = jasmine.createSpyObj('$location', ['path']);
     });
 
     beforeEach(inject(($controller) => {
         birthdayController = $controller('SignupBirthdayController', {
-            $cookieStore : $cookieStore,
+            $cookies : $cookies,
             $location : $location
         });
     }));
@@ -33,31 +33,31 @@ describe('SignupBirthdayController', () => {
     describe('initialization', () => {
         describe('data are present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => jasmine.any(String));
+                $cookies.get.and.callFake(() => jasmine.any(String));
             });
 
             it('should get previous data', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.reason');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.reason');
+                expect($cookies.get).toHaveBeenCalledWith('signup.income');
+                expect($cookies.get).toHaveBeenCalledWith('signup.timeline');
             });
         });
 
         describe('data are NOT present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => undefined);
+                $cookies.get.and.callFake(() => undefined);
             });
 
             it('go back to first registration page', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.reason');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.reason');
+                expect($cookies.get).toHaveBeenCalledWith('signup.income');
+                expect($cookies.get).toHaveBeenCalledWith('signup.timeline');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
         });
@@ -180,7 +180,7 @@ describe('SignupBirthdayController', () => {
         describe('bad values', () => {
             function checkNotCalled() {
                 birthdayController.submit();
-                expect($cookieStore.put).not.toHaveBeenCalled();
+                expect($cookies.put).not.toHaveBeenCalled();
                 expect($location.path).not.toHaveBeenCalledWith('/signup/p2pPlatform');
             }
 
@@ -290,7 +290,7 @@ describe('SignupBirthdayController', () => {
             });
 
             it('should add the birthdate in a cookie', () => {
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.birthday', '5/11/1992');
+                expect($cookies.put).toHaveBeenCalledWith('signup.birthday', '5/11/1992');
             });
 
             it('should go to P2P platform page', () => {

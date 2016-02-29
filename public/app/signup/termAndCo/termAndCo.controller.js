@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupTermAndCoController {
-        constructor($location, $cookieStore, $timeout) {
+        constructor($location, $cookies, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
@@ -24,8 +24,8 @@
             $timeout(() => vm.pageNo++, 1000);
 
             (() => {
-                const email = $cookieStore.get('signup.email');
-                const password = $cookieStore.get('signup.password');
+                const email = $cookies.get('signup.email');
+                const password = $cookies.get('signup.password');
 
                 if (!(email && password)) {
                     goBackToLoginRegistration();
@@ -37,7 +37,7 @@
             };
 
             vm.submit = () => {
-                $cookieStore.put('signup.terms', 'true');
+                $cookies.put('signup.terms', 'true');
                 $location.path('/signup/reasonInvestment');
             };
 

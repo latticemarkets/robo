@@ -128,10 +128,10 @@
             .otherwise({ redirectTo: '/404' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$window', '$cookieStore', '$http', 'editableOptions'];
-    function run($rootScope, $location, $window, $cookieStore, $http, editableOptions) {
+    run.$inject = ['$rootScope', '$location', '$window', '$cookies', '$http', 'editableOptions'];
+    function run($rootScope, $location, $window, $cookies, $http, editableOptions) {
         editableOptions.theme = 'bs3';
-        $rootScope.globals = $cookieStore.get('globals') || {};
+        $rootScope.globals = $cookies.getObject('globals') || {};
 
         function authorizedPage() {
             return $.inArray($location.path(),
@@ -153,6 +153,7 @@
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['X-TOKEN'] = $rootScope.globals.currentUser.token; // jshint ignore:line
             $http.defaults.headers.common['USER'] = $rootScope.globals.currentUser.email; // jshint ignore:line
+            $cookies.putObject('globals', $rootScope.globals, { expires: moment().add(30, 'minutes').toDate() });
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {

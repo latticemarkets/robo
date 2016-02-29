@@ -13,7 +13,7 @@
 
 describe('SignupPersonalInfosController', () => {
     let personalInfosController,
-        $cookieStore,
+        $cookies,
         $location,
         userService,
         notificationService,
@@ -22,7 +22,7 @@ describe('SignupPersonalInfosController', () => {
     beforeEach(() => {
         module('app');
 
-        $cookieStore = jasmine.createSpyObj('$cookieStore', ['get', 'put', 'remove']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put', 'remove']);
         $location = jasmine.createSpyObj('$location', ['path']);
         userService = jasmine.createSpyObj('userService', ['register']);
         notificationService = jasmine.createSpyObj('notificationService', ['error']);
@@ -31,7 +31,7 @@ describe('SignupPersonalInfosController', () => {
 
     beforeEach(inject(($controller) => {
         personalInfosController = $controller('SignupPersonalInfosController', {
-            $cookieStore : $cookieStore,
+            $cookies : $cookies,
             $location : $location,
             userService: userService,
             notificationService: notificationService,
@@ -42,35 +42,35 @@ describe('SignupPersonalInfosController', () => {
     describe('initialization', () => {
         describe('data are present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => jasmine.any(String));
+                $cookies.get.and.callFake(() => jasmine.any(String));
             });
 
             it('should get previous data', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.reason');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.birthday');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.platforms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.reason');
+                expect($cookies.get).toHaveBeenCalledWith('signup.income');
+                expect($cookies.get).toHaveBeenCalledWith('signup.timeline');
+                expect($cookies.get).toHaveBeenCalledWith('signup.birthday');
+                expect($cookies.get).toHaveBeenCalledWith('signup.platforms');
             });
         });
 
         describe('data are NOT present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => undefined);
+                $cookies.get.and.callFake(() => undefined);
             });
 
             it('go back to first registration page', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.reason');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.birthday');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.platforms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.reason');
+                expect($cookies.get).toHaveBeenCalledWith('signup.income');
+                expect($cookies.get).toHaveBeenCalledWith('signup.timeline');
+                expect($cookies.get).toHaveBeenCalledWith('signup.birthday');
+                expect($cookies.get).toHaveBeenCalledWith('signup.platforms');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
         });
@@ -149,15 +149,15 @@ describe('SignupPersonalInfosController', () => {
                 });
 
                 it('should remove cookies used in registering process', () => {
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.email');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.password');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.terms');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.reason');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.income');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.timeline');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.birthday');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.originator');
-                    expect($cookieStore.remove).toHaveBeenCalledWith('signup.platforms');
+                    expect($cookies.remove).toHaveBeenCalledWith('signup.email');
+                    expect($cookies.remove).toHaveBeenCalledWith('signup.password');
+                    expect($cookies.remove).toHaveBeenCalledWith('signup.terms');
+                    expect($cookies.remove).toHaveBeenCalledWith('signup.reason');
+                    expect($cookies.remove).toHaveBeenCalledWith('signup.income');
+                    expect($cookies.remove).toHaveBeenCalledWith('signup.timeline');
+                    expect($cookies.remove).toHaveBeenCalledWith('signup.birthday');
+                    expect($cookies.remove).toHaveBeenCalledWith('signup.originator');
+                    expect($cookies.remove).toHaveBeenCalledWith('signup.platforms');
                 });
 
                 it('should go to success register page', () => {
@@ -194,11 +194,11 @@ describe('SignupPersonalInfosController', () => {
                 });
 
                 it('should not add any token to cookies', () => {
-                    expect($cookieStore.put).not.toHaveBeenCalled();
+                    expect($cookies.put).not.toHaveBeenCalled();
                 });
 
                 it('should not remove cookies used in registering process', () => {
-                    expect($cookieStore.remove).not.toHaveBeenCalled();
+                    expect($cookies.remove).not.toHaveBeenCalled();
                 });
 
                 it('should stay on the current page', () => {

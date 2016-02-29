@@ -13,18 +13,18 @@
 
 describe('authenticationService', () => {
     let _authenticationService,
-        _$cookieStore,
+        _$cookies,
         $rootScope,
         $http;
 
     beforeEach(() => {
         module('app');
         module($provide => {
-            $provide.service('$cookieStore', () => {
+            $provide.service('$cookies', () => {
                 return {
-                    put: jasmine.createSpy('put'),
+                    putObject: jasmine.createSpy('putObject'),
                     remove: jasmine.createSpy('remove'),
-                    get: jasmine.createSpy('get')
+                    getObject: jasmine.createSpy('getObject')
                 };
             });
         });
@@ -35,9 +35,9 @@ describe('authenticationService', () => {
         $http = $injector.get('$http');
     }));
 
-    beforeEach(inject((authenticationService, $cookieStore) => {
+    beforeEach(inject((authenticationService, $cookies) => {
         _authenticationService = authenticationService;
-        _$cookieStore = $cookieStore;
+        _$cookies = $cookies;
     }));
 
     describe('authenticate', () => {
@@ -62,7 +62,7 @@ describe('authenticationService', () => {
         });
 
         it('should store the user\'s credentials in a cookie', () => {
-            expect(_$cookieStore.put).toHaveBeenCalledWith('globals', { currentUser: { email: email, token: token } });
+            expect(_$cookies.putObject).toHaveBeenCalledWith('globals', { currentUser: { email: email, token: token } });
         });
     });
 
@@ -84,7 +84,7 @@ describe('authenticationService', () => {
         });
 
         it('should remove the user\'s credentials from the cookies', () => {
-            expect(_$cookieStore.remove).toHaveBeenCalledWith('globals');
+            expect(_$cookies.remove).toHaveBeenCalledWith('globals');
         });
     });
 

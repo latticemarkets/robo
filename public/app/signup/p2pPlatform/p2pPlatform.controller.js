@@ -15,10 +15,10 @@
     'use strict';
 
     class SignupP2pPlatformController {
-        constructor($location, $cookieStore, $timeout, constantsService) {
+        constructor($location, $cookies, $timeout, constantsService) {
             const vm = this;
 
-            const platforms = $cookieStore.get('signup.platforms');
+            const platforms = $cookies.get('signup.platforms');
 
             if (platforms) {
                 vm.pageNo = 8;
@@ -33,13 +33,13 @@
             vm.platforms = constantsService.platformsImgExtensions;
 
             (() => {
-                const email = $cookieStore.get('signup.email');
-                const password = $cookieStore.get('signup.password');
-                const terms = $cookieStore.get('signup.terms');
-                const reason = $cookieStore.get('signup.reason');
-                const income = $cookieStore.get('signup.income');
-                const timeline = $cookieStore.get('signup.timeline');
-                const birthday = $cookieStore.get('signup.birthday');
+                const email = $cookies.get('signup.email');
+                const password = $cookies.get('signup.password');
+                const terms = $cookies.get('signup.terms');
+                const reason = $cookies.get('signup.reason');
+                const income = $cookies.get('signup.income');
+                const timeline = $cookies.get('signup.timeline');
+                const birthday = $cookies.get('signup.birthday');
 
                 if (!(email && password && terms && reason && income && timeline && birthday)) {
                     $location.path('/signup');
@@ -48,8 +48,8 @@
 
             vm.submit = platform => {
                 if (Object.keys(vm.platforms).indexOf(platform) >= 0 && !vm.alreadyAdded(platform)) {
-                    $cookieStore.put('signup.originator', platform);
-                    $cookieStore.put('signup.extension', vm.platforms[platform]);
+                    $cookies.put('signup.originator', platform);
+                    $cookies.put('signup.extension', vm.platforms[platform]);
                     $location.path('/signup/p2pCredentials');
                 }
             };
@@ -64,7 +64,7 @@
             vm.someAlreadyAdded = () => Object.keys(vm.platforms).some(platform => vm.alreadyAdded(platform));
 
             vm.skip = () => {
-                $cookieStore.put('signup.platforms', platforms);
+                $cookies.put('signup.platforms', platforms);
                 $location.path('/signup/personalInfos');
             };
         }

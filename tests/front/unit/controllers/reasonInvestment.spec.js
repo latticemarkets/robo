@@ -13,19 +13,19 @@
 
 describe('SignupReasonInvestmentController', () => {
     let reasonInvestmentController,
-        $cookieStore,
+        $cookies,
         $location;
 
     beforeEach(() => {
         module('app');
 
-        $cookieStore = jasmine.createSpyObj('$cookieStore', ['get', 'put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put']);
         $location = jasmine.createSpyObj('$location', ['path']);
     });
 
     beforeEach(inject(($controller) => {
         reasonInvestmentController = $controller('SignupReasonInvestmentController', {
-            $cookieStore : $cookieStore,
+            $cookies : $cookies,
             $location : $location
         });
     }));
@@ -33,25 +33,25 @@ describe('SignupReasonInvestmentController', () => {
     describe('initialization', () => {
         describe('data are present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => jasmine.any(String));
+                $cookies.get.and.callFake(() => jasmine.any(String));
             });
 
             it('should get previous data', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
             });
         });
 
         describe('data are NOT present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => undefined);
+                $cookies.get.and.callFake(() => undefined);
             });
 
             it('go back to first registration page', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
         });
@@ -73,7 +73,7 @@ describe('SignupReasonInvestmentController', () => {
             });
 
             it('should store the reason in a cookie', () => {
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.reason', reason);
+                expect($cookies.put).toHaveBeenCalledWith('signup.reason', reason);
             });
 
             it('should go to the yearly income page', () => {
@@ -90,7 +90,7 @@ describe('SignupReasonInvestmentController', () => {
             });
 
             it('should NOT store the reason in a cookie', () => {
-                expect($cookieStore.put).not.toHaveBeenCalled();
+                expect($cookies.put).not.toHaveBeenCalled();
             });
 
             it('should NOT go to the yearly income page', () => {

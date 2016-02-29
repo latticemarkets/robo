@@ -15,7 +15,7 @@
     'use strict';
 
     class DashboardController {
-        constructor(dashboardDataService, $scope, $timeout, dashboardGuidedTourService, $cookieStore) {
+        constructor(dashboardDataService, $scope, $timeout, dashboardGuidedTourService, $cookies) {
             var vm = this;
 
             initData();
@@ -36,7 +36,7 @@
                 vm.riskDiversificationPromise = dashboardDataService.riskDiversificationPromise();
             }
 
-            if ($cookieStore.get('guidedTour')) {
+            if ($cookies.get('guidedTour')) {
                 dashboardGuidedTourService.init();
 
                 $timeout(() => {
@@ -47,7 +47,7 @@
                     dashboardGuidedTourService.end();
                 });
 
-$cookieStore.remove('guidedTour');
+                $cookies.remove('guidedTour');
             }
         }
     }

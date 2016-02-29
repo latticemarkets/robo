@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupTimelineController {
-        constructor($location, $cookieStore, $timeout) {
+        constructor($location, $cookies, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
@@ -32,11 +32,11 @@
             };
 
             (() => {
-                const email = $cookieStore.get('signup.email');
-                const password = $cookieStore.get('signup.password');
-                const terms = $cookieStore.get('signup.terms');
-                const reason = $cookieStore.get('signup.reason');
-                const income = $cookieStore.get('signup.income');
+                const email = $cookies.get('signup.email');
+                const password = $cookies.get('signup.password');
+                const terms = $cookies.get('signup.terms');
+                const reason = $cookies.get('signup.reason');
+                const income = $cookies.get('signup.income');
 
                 if (!(email && password && terms && reason && income)) {
                     $location.path('/signup');
@@ -45,7 +45,7 @@
 
             vm.submit = timeline => {
                 if (Object.keys(vm.timelines).indexOf(timeline) >= 0) {
-                    $cookieStore.put('signup.timeline', timeline);
+                    $cookies.put('signup.timeline', timeline);
                     $location.path('/signup/birthday');
                 }
             };

@@ -13,19 +13,19 @@
 
 describe('SignupP2pPlatformController', () => {
     let p2pPlatformController,
-        $cookieStore,
+        $cookies,
         $location;
 
     beforeEach(() => {
         module('app');
 
-        $cookieStore = jasmine.createSpyObj('$cookieStore', ['get', 'put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put']);
         $location = jasmine.createSpyObj('$location', ['path']);
     });
 
     beforeEach(inject(($controller) => {
         p2pPlatformController = $controller('SignupP2pPlatformController', {
-            $cookieStore : $cookieStore,
+            $cookies : $cookies,
             $location : $location
         });
     }));
@@ -33,33 +33,33 @@ describe('SignupP2pPlatformController', () => {
     describe('initialization', () => {
         describe('data are present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => jasmine.any(String));
+                $cookies.get.and.callFake(() => jasmine.any(String));
             });
 
             it('should get previous data', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.reason');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.birthday');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.reason');
+                expect($cookies.get).toHaveBeenCalledWith('signup.income');
+                expect($cookies.get).toHaveBeenCalledWith('signup.timeline');
+                expect($cookies.get).toHaveBeenCalledWith('signup.birthday');
             });
         });
 
         describe('data are NOT present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => undefined);
+                $cookies.get.and.callFake(() => undefined);
             });
 
             it('go back to first registration page', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.reason');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.birthday');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.reason');
+                expect($cookies.get).toHaveBeenCalledWith('signup.income');
+                expect($cookies.get).toHaveBeenCalledWith('signup.timeline');
+                expect($cookies.get).toHaveBeenCalledWith('signup.birthday');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
         });
@@ -81,7 +81,7 @@ describe('SignupP2pPlatformController', () => {
             });
 
             it('should store the platform in a cookie', () => {
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.originator', platform);
+                expect($cookies.put).toHaveBeenCalledWith('signup.originator', platform);
             });
 
             it('should go to the yearly income page', () => {
@@ -98,7 +98,7 @@ describe('SignupP2pPlatformController', () => {
             });
 
             it('should NOT store the platform in a cookie', () => {
-                expect($cookieStore.put).not.toHaveBeenCalled();
+                expect($cookies.put).not.toHaveBeenCalled();
             });
 
             it('should NOT go to the yearly income page', () => {

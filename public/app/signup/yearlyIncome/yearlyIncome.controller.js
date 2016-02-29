@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupYearlyIncomeController {
-        constructor($location, $cookieStore, $timeout) {
+        constructor($location, $cookies, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
@@ -32,10 +32,10 @@
             };
 
             (() => {
-                const email = $cookieStore.get('signup.email');
-                const password = $cookieStore.get('signup.password');
-                const terms = $cookieStore.get('signup.terms');
-                const reason = $cookieStore.get('signup.reason');
+                const email = $cookies.get('signup.email');
+                const password = $cookies.get('signup.password');
+                const terms = $cookies.get('signup.terms');
+                const reason = $cookies.get('signup.reason');
 
                 if (!(email && password && terms && reason)) {
                     $location.path('/signup');
@@ -44,7 +44,7 @@
 
             vm.submit = income => {
                 if (Object.keys(vm.incomeRanges).indexOf(income) >= 0) {
-                    $cookieStore.put('signup.income', income);
+                    $cookies.put('signup.income', income);
                     $location.path('/signup/timeline');
                 }
             };
