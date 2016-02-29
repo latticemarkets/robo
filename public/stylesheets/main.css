@@ -2571,3 +2571,16 @@ div.panel-body.auto-strategies-top-menu {
 rzslider.aggressivity-slider .rz-pointer {
     background-color: #3498db;
 }
+/*------------------------
+ * 404 NOT FOUND
+ *----------------------*/
+h1.notFound, h3.notFound {
+    font-size: 80px;
+}
+div.notFound {
+    margin-top: 10%;
+    margin-bottom: 30px;
+}
+div.error-desc {
+    font-size: 14px;
+}

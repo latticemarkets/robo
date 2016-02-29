@@ -120,7 +120,12 @@
                 controller: "StrategyEditController",
                 controllerAs: 'vm'
             })
-            .otherwise({ redirectTo: '/' });
+            .when('/404', {
+                templateUrl: "assets/app/notFound/notFound.html",
+                controller: "NotFoundController",
+                controllerAs: 'vm'
+            })
+            .otherwise({ redirectTo: '/404' });
     }
 
     run.$inject = ['$rootScope', '$location', '$window', '$cookieStore', '$http', 'editableOptions'];
@@ -131,17 +136,17 @@
         function authorizedPage() {
             return $.inArray($location.path(),
                 ['',
-                'dashboard#/signup',
-                'dashboard#/signup/termsAndConditions',
-                'dashboard#/signup/reasonInvestment',
-                'dashboard#/signup/yearlyIncome',
-                'dashboard#/signup/timeline',
-                'dashboard#/signup/birthday',
-                'dashboard#/signup/p2pPlatform',
-                'dashboard#/signup/p2pCredentials',
-                'dashboard#/signup/personalInfos',
-                'dashboard#/signup/registered',
-                'dashboard#/signin']
+                '/signup',
+                '/signup/termsAndConditions',
+                '/signup/reasonInvestment',
+                '/signup/yearlyIncome',
+                '/signup/timeline',
+                '/signup/birthday',
+                '/signup/p2pPlatform',
+                '/signup/p2pCredentials',
+                '/signup/personalInfos',
+                '/signup/registered',
+                '/signin']
             ) > -1; }
 
         if ($rootScope.globals.currentUser && !authorizedPage()) {
