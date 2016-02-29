@@ -38,7 +38,7 @@ body {
     font-weight: normal;
     padding: 0;
 }
-body > div{
+.body-content{
   height: 100%;
 }
 .content{
