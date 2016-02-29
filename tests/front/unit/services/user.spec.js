@@ -13,16 +13,27 @@
 
 describe('userService', () => {
     let _$httpBackend,
-        _userService;
+        _userService,
+        _$window;
 
     beforeEach(() => {
         module('app');
     });
 
-    beforeEach(inject((userService, $httpBackend) => {
+    beforeEach(() => {
+        module($provide => {
+            $provide.service('$window', () => {
+                return {
+                    location: { href: '' }
+                };
+            });
+        });
+    });
+
+    beforeEach(inject((userService, $httpBackend, $window) => {
         _userService = userService;
         _$httpBackend = $httpBackend;
-
+        _$window = $window;
     }));
 
     describe('register', () => {
@@ -237,6 +248,55 @@ describe('userService', () => {
         it('should should call the API', () => {
             _$httpBackend.expectPOST('/api/user/destroy', { email: email, password: password });
             expect(_$httpBackend.flush).not.toThrow();
+        });
+
+        afterEach(() => {
+            _$httpBackend.verifyNoOutstandingExpectation();
+            _$httpBackend.verifyNoOutstandingRequest();
+        });
+    });
+
+    describe('checkUserToken', () => {
+        let email,
+            token,
+            callback;
+
+        beforeEach(() => {
+            email = 'toto@tata.fr';
+            token = 'myToken';
+            callback = jasmine.createSpy('callback');
+        });
+
+        describe('on success', () => {
+            beforeEach(() => {
+                _$httpBackend.when('POST', '/api/user/token').respond(200);
+                _userService.checkUserToken(email, token, callback);
+            });
+
+            it('should call success callback', () => {
+                _$httpBackend.expectPOST('/api/user/token', { email: email, token: token });
+                _$httpBackend.flush();
+                expect(callback).toHaveBeenCalled();
+            });
+
+            it('should not redirect the user', () => {
+                _$httpBackend.expectPOST('/api/user/token', { email: email, token: token });
+                _$httpBackend.flush();
+                expect(_$window.location.href).toBe('');
+            });
+        });
+
+        describe('on error', () => {
+            beforeEach(() => {
+                _$httpBackend.when('POST', '/api/user/token').respond(401);
+                _userService.checkUserToken(email, token, callback);
+            });
+
+            it('should redirect the user to the landpage', () => {
+                _$httpBackend.expectPOST('/api/user/token', { email: email, token: token });
+                _$httpBackend.flush();
+                expect(_$window.location.href).toBe('/');
+            });
         });
 
         afterEach(() => {
