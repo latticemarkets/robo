@@ -1,0 +1,22 @@
+@()
+<!DOCTYPE html>
+
+<html data-ng-app="app">
+    <head>
+        <title>PDX Robo</title>
+
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("img/icons/favicon.png")">
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="@routes.Assets.versioned("dist/dist.css")">
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/homer_style.css")">
+    </head>
+    <body>
+        <div class="body-content {{ vm.pageClass }}" data-ng-view></div>
+
+        <script src="@routes.Assets.versioned("dist/bower.js")"></script>
+        <script src="@routes.Assets.versioned("dist/app.js")"></script>
+    </body>
+</html>

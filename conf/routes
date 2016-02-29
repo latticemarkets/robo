@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                                                           controllers.Application.index
+GET     /dashboard                                                  controllers.Application.dashboard
 
 POST    /api/register                                               controllers.users.Users.register
 POST    /api/login                                                  controllers.users.Users.login

@@ -17,7 +17,6 @@
             'ngAnimate',
             'toastr',
             'ui.bootstrap',
-            'angular.css.injector',
             'angular-flot',
             'camelCaseToHuman',
             'oitozero.ngSweetAlert',
@@ -31,19 +30,11 @@
             'toggle-switch',
             'uiSwitch'])
         .config(config)
-        .config(function(cssInjectorProvider){
-            cssInjectorProvider.setSinglePageMode(true);
-        })
         .run(run);
 
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider) {
         $routeProvider
-            .when('/', {
-                templateUrl: "assets/app/landpage/landpage.html",
-                controller: "LandpageController",
-                controllerAs: 'vm'
-            })
             .when('/signin', {
                 templateUrl: "assets/app/signin/signin.html",
                 controller: "SignInController",
