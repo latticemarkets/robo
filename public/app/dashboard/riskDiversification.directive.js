@@ -18,30 +18,34 @@
         .module('app')
         .directive('riskDiversification', riskDiversification);
 
-    riskDiversification.$inject = ['flotChartService', '$timeout', 'onResizeService'];
+    riskDiversification.$inject = ['$timeout', 'onResizeService', 'chartService'];
 
-    function riskDiversification(flotChartService, $timeout, onResizeService) {
+    function riskDiversification($timeout, onResizeService, chartService) {
         return {
-            restrict: 'A',
+            replace: true,
+            restrict: 'E',
             scope: {
                 data: "=",
                 identifier: "@"
             },
+            template: '<div id="{{identifier}}"></div>',
             link: (scope, elem) => {
                 const onResizeCallbackId = 'riskDiversification';
-                const options = flotChartService.donutChartOptions;
+                const parentDir = elem.parent();
 
                 scope.data.then(response => {
-                    const data = flotChartService.prepareDataRiskDiversification(response.data);
+                    const data = response.data.map(platform => [platform.grade, platform.value]);
+                    const colors = data.reduce((prev, column, index) => {
+                        prev[column[0]] = chartService.blueDegraded[index];
+                        return prev;
+                    }, {});
 
                     $timeout(() => {
-                        setComputedDimensions();
-                        $.plot(elem, data, options);
+                        generateDonutChart(data, scope.identifier, parentDir.width(), colors);
                     }, 500);
 
                     onResizeService.addOnResizeCallback(() => {
-                        setComputedDimensions();
-                        $.plot(elem, data, options);
+                        generateDonutChart(data, scope.identifier, parentDir.width(), colors);
                     }, onResizeCallbackId);
                 });
 
@@ -49,10 +53,18 @@
                     onResizeService.removeOnResizeCallback(onResizeCallbackId);
                 });
 
-                function setComputedDimensions() {
-                    const parentDir = elem.parent();
-                    const style = `width:${parentDir.width()}px;height:180px`;
-                    elem.attr('style', style);
+                function generateDonutChart(data, id, width, colors) {
+                    c3.generate({
+                        bindto: `#${id}`,
+                        data: {
+                            columns: data,
+                            type: 'donut',
+                            colors: colors
+                        },
+                        size: {
+                            width: width
+                        }
+                    });
                 }
             }
         };
