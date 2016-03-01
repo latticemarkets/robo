@@ -2468,16 +2468,14 @@ img.not-ticked {
 .fa.fa-check-square-o{
 color: green;
 }
-.toggle-switch {
-    border-radius: 9px;
-}
-.toggle-switch .switch-left {
-    background-color: #3498db;
-}
 .platform-settings {
     position: absolute;
     top: 5px;
     right: 5px;
+}
+.switch.checked.platform-mode {
+    background-color: #3498db;
+    border-color: #3498db;
 }
 /*------------------------
  * STRATEGIES
