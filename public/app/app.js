@@ -159,6 +159,11 @@
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
             var loggedIn = $rootScope.globals.currentUser;
+
+            if (!loggedIn) {
+                $window.location.href = '/?flag=unauthorized';
+            }
+
             if (!authorizedPage() && (!loggedIn || loggedIn === undefined)) {
                 $injector.invoke(['$route', $route => {
                     if (Object.keys($route.routes).some(route => route === $location.path())) {
