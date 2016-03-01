@@ -18,30 +18,30 @@
         .module('app')
         .directive('platformAllocation', platformAllocation);
 
-    platformAllocation.$inject = ['flotChartService', '$timeout', 'onResizeService'];
+    platformAllocation.$inject = ['$timeout', 'onResizeService', 'chartService'];
 
-    function platformAllocation(flotChartService, $timeout, onResizeService) {
+    function platformAllocation($timeout, onResizeService, chartService) {
         return {
-            restrict: 'A',
+            replace: true,
+            restrict: 'E',
             scope: {
                 data: "=",
                 identifier: "@"
             },
+            template: '<div id="{{identifier}}"></div>',
             link: (scope, elem) => {
                 const onResizeCallbackId = 'platformAllocation';
-                const options = flotChartService.pieChartOptions;
+                const parentDir = elem.parent();
 
                 scope.data.then(response => {
-                    const data = flotChartService.prepareDataPlatformAllocation(response.data);
+                    const data = response.data.map(platform => [platform.originator, platform.loansAcquired]);
 
                     $timeout(() => {
-                        setComputedDimensions();
-                        $.plot(elem, data, options);
+                        generatePieChart(data, scope.identifier, parentDir.width(), parentDir.height());
                     }, 500);
 
                     onResizeService.addOnResizeCallback(() => {
-                        setComputedDimensions();
-                        $.plot(elem, data, options);
+                        generatePieChart(data, scope.identifier, parentDir.width(), parentDir.height());
                     }, onResizeCallbackId);
                 });
 
@@ -49,10 +49,18 @@
                     onResizeService.removeOnResizeCallback(onResizeCallbackId);
                 });
 
-                function setComputedDimensions() {
-                    const parentDir = elem.parent();
-                    const style = `width:${parentDir.width()}px;height:200px`;
-                    elem.attr('style', style);
+                function generatePieChart(data, id, width) {
+                    console.log(data);
+                    c3.generate({
+                        bindto: `#${id}`,
+                        data: {
+                            columns: data,
+                            type: 'pie'
+                        },
+                        size: {
+                            width: width
+                        }
+                    });
                 }
             }
         };
