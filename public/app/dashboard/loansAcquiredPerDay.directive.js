@@ -18,9 +18,9 @@
         .module('app')
         .directive('loansAcquiredPerDay', loansAcquiredPerDay);
 
-    loansAcquiredPerDay.$inject = ['$timeout', 'onResizeService', 'notificationService'];
+    loansAcquiredPerDay.$inject = ['$timeout', 'onResizeService', 'notificationService', '$filter'];
 
-    function loansAcquiredPerDay($timeout, onResizeService, notificationService) {
+    function loansAcquiredPerDay($timeout, onResizeService, notificationService, $filter) {
         return {
             replace: true,
             restrict: 'E',
@@ -34,7 +34,7 @@
                 const parentDir = elem.parent();
 
                 scope.data.then(response => {
-                    const data = ['Investment this week'].concat(response.data);
+                    const data = response.data;
 
                     $timeout(() => {
                         generateBarChart(data, scope.identifier, parentDir.width(), parentDir.height());
@@ -53,8 +53,11 @@
                     c3.generate({
                         bindto: `#${id}`,
                         data: {
-                            columns: [data],
-                            type: 'bar'
+                            columns: [['Investment this week'].concat(data)],
+                            type: 'bar',
+                            colors: {
+                                'Investment this week': '#3498db'
+                            }
                         },
                         bar: {
                             width: {
@@ -64,7 +67,26 @@
                         size: {
                             width: width,
                             height: height
+                        },
+                        legend: {
+                            show: false
+                        },
+                        axis: {
+                            x: {
+                                tick: {
+                                    format: x => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][x]
+                                }
+                            },
+                            y: {
+                                show: false
+                            }
+                        },
+                        tooltip: {
+                            format: {
+                                value: value => $filter('currency')(value)
+                            }
                         }
+
                     });
                 }
             }
