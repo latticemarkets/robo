@@ -162,6 +162,7 @@
 
             if (!loggedIn) {
                 $window.location.href = '/?flag=unauthorized';
+                return;
             }
 
             if (!authorizedPage() && (!loggedIn || loggedIn === undefined)) {
