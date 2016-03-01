@@ -18,9 +18,9 @@
         .module('app')
         .directive('platformAllocation', platformAllocation);
 
-    platformAllocation.$inject = ['$timeout', 'onResizeService', 'chartService'];
+    platformAllocation.$inject = ['$timeout', 'onResizeService', 'chartService', '$filter'];
 
-    function platformAllocation($timeout, onResizeService, chartService) {
+    function platformAllocation($timeout, onResizeService, chartService, $filter) {
         return {
             replace: true,
             restrict: 'E',
@@ -34,7 +34,7 @@
                 const parentDir = elem.parent();
 
                 scope.data.then(response => {
-                    const data = response.data.map(platform => [platform.originator, platform.loansAcquired]);
+                    const data = response.data.map(platform => [camelCaseToTitle(platform.originator), platform.loansAcquired]);
                     const colors = data.reduce((prev, column, index) => {
                         prev[column[0]] = chartService.blueDegraded[index];
                         return prev;
@@ -54,7 +54,6 @@
                 });
 
                 function generatePieChart(data, id, width, colors) {
-                    console.log(colors);
                     c3.generate({
                         bindto: `#${id}`,
                         data: {
@@ -66,6 +65,10 @@
                             width: width
                         }
                     });
+                }
+
+                function camelCaseToTitle(str) {
+                    return $filter('titlecase')($filter('camelCaseToHuman')(str));
                 }
             }
         };
