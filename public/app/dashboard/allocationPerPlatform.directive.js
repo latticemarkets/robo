@@ -35,13 +35,17 @@
 
                 scope.data.then(response => {
                     const data = response.data.map(platform => [platform.originator, platform.loansAcquired]);
+                    const colors = data.reduce((prev, column, index) => {
+                        prev[column[0]] = chartService.blueDegraded[index];
+                        return prev;
+                    }, {});
 
                     $timeout(() => {
-                        generatePieChart(data, scope.identifier, parentDir.width(), parentDir.height());
+                        generatePieChart(data, scope.identifier, parentDir.width(), colors);
                     }, 500);
 
                     onResizeService.addOnResizeCallback(() => {
-                        generatePieChart(data, scope.identifier, parentDir.width(), parentDir.height());
+                        generatePieChart(data, scope.identifier, parentDir.width(), colors);
                     }, onResizeCallbackId);
                 });
 
@@ -49,13 +53,14 @@
                     onResizeService.removeOnResizeCallback(onResizeCallbackId);
                 });
 
-                function generatePieChart(data, id, width) {
-                    console.log(data);
+                function generatePieChart(data, id, width, colors) {
+                    console.log(colors);
                     c3.generate({
                         bindto: `#${id}`,
                         data: {
                             columns: data,
-                            type: 'pie'
+                            type: 'pie',
+                            colors: colors
                         },
                         size: {
                             width: width
