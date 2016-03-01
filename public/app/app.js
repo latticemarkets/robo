@@ -128,8 +128,8 @@
             .otherwise({ redirectTo: '/404' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$window', '$cookies', '$http', 'editableOptions', '$route'];
-    function run($rootScope, $location, $window, $cookies, $http, editableOptions, $route) {
+    run.$inject = ['$rootScope', '$location', '$window', '$cookies', '$http', 'editableOptions', '$injector'];
+    function run($rootScope, $location, $window, $cookies, $http, editableOptions, $injector) {
         editableOptions.theme = 'bs3';
         $rootScope.globals = $cookies.getObject('globals') || {};
 
@@ -160,12 +160,14 @@
             // redirect to login page if not logged in and trying to access a restricted page
             var loggedIn = $rootScope.globals.currentUser;
             if (!authorizedPage() && (!loggedIn || loggedIn === undefined)) {
-                if (Object.keys($route.routes).some(route => route === $location.path())) {
-                    $window.location.href = '/';
-                }
-                else {
-                    $location.path('/404');
-                }
+                $injector.invoke(['$route', $route => {
+                    if (Object.keys($route.routes).some(route => route === $location.path())) {
+                        $window.location.href = '/';
+                    }
+                    else {
+                        $location.path('/404');
+                    }
+                }]);
             }
         });
     }
