@@ -29,7 +29,7 @@
                 comparedTo: '=to'
             },
             template: '<span class="{{ result }}" data-ng-transclude></span>',
-            link: (scope) => $timeout(() => scope.result = (scope.compared < scope.comparedTo) ? "text-danger" : "text-successful")
+            link: (scope) => $timeout(() => scope.result = (scope.compared < scope.comparedTo) ? "text-danger" : "text-info")
         };
     }
 })();
