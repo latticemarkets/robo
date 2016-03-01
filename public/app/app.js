@@ -160,15 +160,15 @@
             // redirect to login page if not logged in and trying to access a restricted page
             var loggedIn = $rootScope.globals.currentUser;
 
-            if (!loggedIn) {
-                $window.location.href = '/?flag=unauthorized';
-                return;
-            }
-
             if (!authorizedPage() && (!loggedIn || loggedIn === undefined)) {
                 $injector.invoke(['$route', $route => {
                     if (Object.keys($route.routes).some(route => route === $location.path())) {
-                        $window.location.href = '/';
+                        if ($cookies.get('connected')) {
+                            $window.location.href = '/?flag=expired';
+                        }
+                        else {
+                            $window.location.href = '/?flag=unauthorized';
+                        }
                     }
                     else {
                         $location.path('/404');
