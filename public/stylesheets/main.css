@@ -2574,12 +2574,12 @@ div.panel-body.auto-strategies-top-menu {
     min-height: 50px;
     vertical-align: middle;
 }
-.market-mode.switch.checked {
-    background-color: #3498db;
-    border-color: #3498db;
-}
 rzslider.aggressivity-slider .rz-pointer {
     background-color: #3498db;
+}
+.strategy-switch > .switch.checked {
+    background-color: #3498db;
+    border-color: #3498db;
 }
 /*------------------------
  * 404 NOT FOUND
