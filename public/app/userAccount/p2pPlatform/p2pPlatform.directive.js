@@ -21,6 +21,16 @@
                 scope.userPromise.then(response => {
                     scope.platforms = response.data.platforms;
                     scope.platforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
+
+                    scope.platforms.status ={
+                      isOpen: []
+                    };
+                    var i;
+                    const openArr = scope.platforms.status.isOpen;
+                    openArr[0] = true;
+                    for (i = 1; i < scope.platforms.length; i++) {
+                      openArr[i] = false;
+                    }
                 });
 
                 scope.submit = () => {

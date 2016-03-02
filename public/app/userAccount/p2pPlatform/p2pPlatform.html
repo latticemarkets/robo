@@ -1,6 +1,6 @@
 <div class="signup account-configuration">
   <uib-accordion>
-      <uib-accordion-group ng-repeat="platform in platforms" heading="{{ platform.originator | camelCaseToHuman | titlecase }}">
+      <uib-accordion-group ng-repeat="platform in platforms" heading="{{ platform.originator | camelCaseToHuman | titlecase }}" is-open="platforms.status.isOpen[$index]">
         <form>
         <div class="form-group">
             <input type="text" class="form-control user" id="accountId" placeholder="Account Id" data-ng-model="platform.accountId">
