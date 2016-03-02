@@ -74,7 +74,7 @@
                         axis: {
                             x: {
                                 tick: {
-                                    format: x => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][x]
+                                    format: x => ['M', 'T', 'W', 'T', 'F', 'S', 'S'][x]
                                 }
                             },
                             y: {
