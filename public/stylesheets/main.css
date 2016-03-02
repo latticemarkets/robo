@@ -305,6 +305,23 @@ body.modal-open {
     color: #273140;
     text-decoration: none;
 }
+.sweet-alert .sa-button-container button.cancel {
+    background-color: #c0392b;
+    border-color: #c0392b;
+    color: white;
+}
+.sweet-alert .sa-button-container button.cancel:hover {
+    background-color: #d24637;
+}
+.sweet-alert .sa-confirm-button-container button.confirm {
+    border: 1px solid #1080f2 !important;
+    background-color: #fff !important;
+    color: #1080f2 !important;
+}
+.sweet-alert .sa-confirm-button-container button.confirm:hover {
+    background-color: #0067D9 !important;
+    color: #fff !important;
+}
 /*3.2 LOGO*/
 
 .logo img {
