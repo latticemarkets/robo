@@ -5,9 +5,9 @@
         .module('app')
         .directive('personalInfos', personalInfos);
 
-    personalInfos.$inject = ['userService', 'notificationService','authenticationService','spinnerService'];
+    personalInfos.$inject = ['userService', 'notificationService','authenticationService','spinnerService', '$filter'];
 
-      function personalInfos(userService, notificationService, authenticationService,spinnerService) {
+      function personalInfos(userService, notificationService, authenticationService,spinnerService, $filter) {
         return {
             replace: true,
             restrict: 'E',
@@ -33,8 +33,8 @@
               ];
 
               scope.userPromise.then(response => {
-                  scope.firstName = response.data.firstName;
-                  scope.lastName = response.data.lastName;
+                  scope.firstName = $filter('capitalizeFirstLetter')(response.data.firstName);
+                  scope.lastName = $filter('capitalizeFirstLetter')(response.data.lastName);
                   scope.birthday = response.data.birthday;
                   scope.timeStamp = scope.birthday;
                   scope.date = new Date(scope.timeStamp);

@@ -60,11 +60,10 @@ describe('userService', () => {
             platforms = 'platforms';
             firstName = 'firstName';
             lastName = 'lastName';
-            portfolio = 'portfolio';
 
             _$httpBackend.when('POST', '/api/register').respond();
 
-            _userService.register(email, password, terms, reason, income, timeline, birthday, platforms, portfolio, firstName, lastName);
+            _userService.register(email, password, terms, reason, income, timeline, birthday, platforms, firstName, lastName);
         });
 
         it('should call the API', () => {
@@ -77,8 +76,8 @@ describe('userService', () => {
                 "timeline": "timeline",
                 "birthday": "birthday",
                 "platforms": "platforms",
-                "firstName": "portfolio",
-                "lastName": "firstName"
+                "firstName": "firstname",
+                "lastName": "lastname"
             });
             expect(_$httpBackend.flush).not.toThrow();
         });
@@ -222,7 +221,7 @@ describe('userService', () => {
         });
 
         it('should should call the API', () => {
-            _$httpBackend.expectPUT('/api/user/personalData', { email: email, firstName: firstName, lastName: lastName, birthday: birthday });
+            _$httpBackend.expectPUT('/api/user/personalData', { email: email, firstName: 'firstname', lastName: 'lastname', birthday: birthday });
             expect(_$httpBackend.flush).not.toThrow();
         });
 

@@ -32,8 +32,8 @@
                     timeline: timeline,
                     birthday: birthday,
                     platforms: platforms,
-                    firstName: firstName,
-                    lastName: lastName
+                    firstName: firstName.toLowerCase(),
+                    lastName: lastName.toLowerCase()
                 }))
                 .then(successCallback, errorCallback);
         }
@@ -61,7 +61,7 @@
         }
 
         updatePersonalData(email, firstName, lastName, birthday, callback) {
-            this.$http.put('/api/user/personalData', { email: email, firstName: firstName, lastName: lastName, birthday: birthday }).then(callback, this.notificationService.apiError());
+            this.$http.put('/api/user/personalData', { email: email, firstName: firstName.toLowerCase(), lastName: lastName.toLowerCase(), birthday: birthday }).then(callback, this.notificationService.apiError());
         }
 
         destroyUser(email, password, callback) {
