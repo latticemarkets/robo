@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategiesController {
-        constructor($routeParams, constantsService, $location, strategiesService, platformService, authenticationService, notificationService, spinnerService, $cookieStore, SweetAlert) {
+        constructor($routeParams, constantsService, $location, strategiesService, platformService, authenticationService, notificationService, spinnerService, $cookies, SweetAlert) {
             var vm = this;
 
             const email = authenticationService.getCurrentUsersEmail();
@@ -28,9 +28,9 @@
                 $location.path('/platforms');
             }
 
-            if ($cookieStore.get('newCriteriaSuccess')) {
+            if ($cookies.get('newCriteriaSuccess')) {
                 notificationService.success("Your criteria have been updated");
-                $cookieStore.remove('newCriteriaSuccess');
+                $cookies.remove('newCriteriaSuccess');
             }
 
             spinnerService.on();

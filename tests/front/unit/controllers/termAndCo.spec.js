@@ -13,19 +13,19 @@
 
 describe('SignupTermAndCoController', () => {
     let termAndCoController,
-        $cookieStore,
+        $cookies,
         $location;
 
     beforeEach(() => {
         module('app');
 
-        $cookieStore = jasmine.createSpyObj('$cookieStore', ['get', 'put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put']);
         $location = jasmine.createSpyObj('$location', ['path']);
     });
 
     beforeEach(inject(($controller) => {
         termAndCoController = $controller('SignupTermAndCoController', {
-            $cookieStore : $cookieStore,
+            $cookies : $cookies,
             $location : $location
         });
     }));
@@ -33,23 +33,23 @@ describe('SignupTermAndCoController', () => {
     describe('initialization', () => {
         describe('data are present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => jasmine.any(String));
+                $cookies.get.and.callFake(() => jasmine.any(String));
             });
 
             it('should get previous data', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
             });
         });
 
         describe('data are NOT present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => undefined);
+                $cookies.get.and.callFake(() => undefined);
             });
 
             it('go back to first registration page', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
         });
@@ -67,7 +67,7 @@ describe('SignupTermAndCoController', () => {
         });
 
         it('should store a true value in a cookie', () => {
-            expect($cookieStore.put).toHaveBeenCalledWith('signup.terms', 'true');
+            expect($cookies.put).toHaveBeenCalledWith('signup.terms', 'true');
         });
 
         it('should go to the reason of investment page', () => {

@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupPersonalInfosController {
-        constructor($location, $cookieStore, userService, notificationService, authenticationService, $timeout) {
+        constructor($location, $cookies, userService, notificationService, authenticationService, $timeout) {
             const vm = this;
 
             let email,
@@ -33,14 +33,14 @@
             $timeout(() => vm.pageNo++, 1000);
 
             (() => {
-                email = $cookieStore.get('signup.email');
-                password = $cookieStore.get('signup.password');
-                terms = $cookieStore.get('signup.terms');
-                reason = $cookieStore.get('signup.reason');
-                income = $cookieStore.get('signup.income');
-                timeline = $cookieStore.get('signup.timeline');
-                birthday = $cookieStore.get('signup.birthday');
-                platforms = $cookieStore.get('signup.platforms');
+                email = $cookies.get('signup.email');
+                password = $cookies.get('signup.password');
+                terms = $cookies.get('signup.terms');
+                reason = $cookies.get('signup.reason');
+                income = $cookies.get('signup.income');
+                timeline = $cookies.get('signup.timeline');
+                birthday = $cookies.get('signup.birthday');
+                platforms = $cookies.get('signup.platforms');
 
                 if (!(email && password && terms && reason && income && timeline && birthday && platforms)) {
                     $location.path('/signup');
@@ -60,16 +60,16 @@
                     userService.register(email, password, terms, reason, income, timeline, birthday, platforms, vm.firstName, vm.lastName,
                         response => {
                             authenticationService.authenticate(response.data.token, email);
-                            $cookieStore.put('guidedTour', true);
-                            $cookieStore.remove('signup.email');
-                            $cookieStore.remove('signup.password');
-                            $cookieStore.remove('signup.terms');
-                            $cookieStore.remove('signup.reason');
-                            $cookieStore.remove('signup.income');
-                            $cookieStore.remove('signup.timeline');
-                            $cookieStore.remove('signup.birthday');
-                            $cookieStore.remove('signup.originator');
-                            $cookieStore.remove('signup.platforms');
+                            $cookies.put('guidedTour', true);
+                            $cookies.remove('signup.email');
+                            $cookies.remove('signup.password');
+                            $cookies.remove('signup.terms');
+                            $cookies.remove('signup.reason');
+                            $cookies.remove('signup.income');
+                            $cookies.remove('signup.timeline');
+                            $cookies.remove('signup.birthday');
+                            $cookies.remove('signup.originator');
+                            $cookies.remove('signup.platforms');
                             $location.path('/signup/registered');
                         },
                         response => {

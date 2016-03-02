@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupLoginController {
-        constructor($location, $cookieStore, userService, notificationService, patternCheckerService) {
+        constructor($location, $cookies, userService, notificationService, patternCheckerService) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
@@ -45,8 +45,8 @@
                         vm.email,
                         response => {
                             if (response.data.ok) {
-                                $cookieStore.put('signup.email', vm.email);
-                                $cookieStore.put('signup.password', vm.password);
+                                $cookies.put('signup.email', vm.email);
+                                $cookies.put('signup.password', vm.password);
                                 $location.path('/signup/termsAndConditions');
                             }
                             else {

@@ -21,7 +21,7 @@ describe('StrategyEditController', () => {
         platformService,
         rulesService,
         notificationService,
-        $cookieStore,
+        $cookies,
         SweetAlert,
         $timeout;
 
@@ -104,7 +104,7 @@ describe('StrategyEditController', () => {
     });
 
     beforeEach(() => {
-        $cookieStore = jasmine.createSpyObj('$cookieStore', ['put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['put']);
     });
 
     beforeEach(() => {
@@ -129,7 +129,7 @@ describe('StrategyEditController', () => {
                 rulesService: rulesService,
                 spinnerService: spinnerService,
                 platformService: platformService,
-                $cookieStore: $cookieStore,
+                $cookies: $cookies,
                 $timeout: _$timeout_,
                 SweetAlert: SweetAlert
             });
@@ -230,7 +230,7 @@ describe('StrategyEditController', () => {
                 });
 
                 it('should add a cookie to notif the success to the next page', () => {
-                    expect($cookieStore.put).toHaveBeenCalledWith('newCriteriaSuccess', true);
+                    expect($cookies.put).toHaveBeenCalledWith('newCriteriaSuccess', true);
                 });
 
                 it('should go back to the strategies page', () => {
@@ -251,7 +251,7 @@ describe('StrategyEditController', () => {
                     });
 
                     it('should go back to strategies page with no cookie', () => {
-                        expect($cookieStore.put).not.toHaveBeenCalled();
+                        expect($cookies.put).not.toHaveBeenCalled();
                         expect($location.path).toHaveBeenCalledWith(`/platforms/strategies/${urlOriginator}/primary`);
                     });
                 });

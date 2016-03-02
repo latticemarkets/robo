@@ -7,24 +7,24 @@
  */
 
 /**
-* @author : julienderay
-* Created on 30/01/2016
-*/
+ * @author : julienderay
+ * Created on 30/01/2016
+ */
 
 describe('authenticationService', () => {
     let _authenticationService,
-        _$cookieStore,
+        _$cookies,
         $rootScope,
         $http;
 
     beforeEach(() => {
         module('app');
         module($provide => {
-            $provide.service('$cookieStore', () => {
+            $provide.service('$cookies', () => {
                 return {
-                    put: jasmine.createSpy('put'),
+                    putObject: jasmine.createSpy('putObject'),
                     remove: jasmine.createSpy('remove'),
-                    get: jasmine.createSpy('get')
+                    getObject: jasmine.createSpy('getObject')
                 };
             });
         });
@@ -35,9 +35,9 @@ describe('authenticationService', () => {
         $http = $injector.get('$http');
     }));
 
-    beforeEach(inject((authenticationService, $cookieStore) => {
+    beforeEach(inject((authenticationService, $cookies) => {
         _authenticationService = authenticationService;
-        _$cookieStore = $cookieStore;
+        _$cookies = $cookies;
     }));
 
     describe('authenticate', () => {
@@ -62,7 +62,7 @@ describe('authenticationService', () => {
         });
 
         it('should store the user\'s credentials in a cookie', () => {
-            expect(_$cookieStore.put).toHaveBeenCalledWith('globals', { currentUser: { email: email, token: token } });
+            expect(_$cookies.putObject).toHaveBeenCalledWith('globals', { currentUser: { email: email, token: token } });
         });
     });
 
@@ -84,7 +84,7 @@ describe('authenticationService', () => {
         });
 
         it('should remove the user\'s credentials from the cookies', () => {
-            expect(_$cookieStore.remove).toHaveBeenCalledWith('globals');
+            expect(_$cookies.remove).toHaveBeenCalledWith('globals');
         });
     });
 
@@ -121,6 +121,44 @@ describe('authenticationService', () => {
 
                 it('should return the current user\'s email', () => {
                     expect(_authenticationService.getCurrentUsersEmail()).toBeUndefined();
+                });
+            });
+        });
+    });
+
+    describe('getCurrentUsersToken', () => {
+        let token;
+
+        describe('user connected', () => {
+            beforeEach(() => {
+                token = "token";
+                $rootScope.globals = { currentUser : { token: token } };
+            });
+
+            it('should return the current user\'s token', () => {
+                expect(_authenticationService.getCurrentUsersToken()).toBe(token);
+            });
+        });
+
+        describe('user not connected', () => {
+            describe('token not set', () => {
+                beforeEach(() => {
+                    token = undefined;
+                    $rootScope.globals = { currentUser : { token: token } };
+                });
+
+                it('should return the current user\'s token', () => {
+                    expect(_authenticationService.getCurrentUsersToken()).toBeUndefined();
+                });
+            });
+
+            describe('current user not set', () => {
+                beforeEach(() => {
+                    $rootScope.globals = { currentUser : undefined };
+                });
+
+                it('should return the current user\'s token', () => {
+                    expect(_authenticationService.getCurrentUsersToken()).toBeUndefined();
                 });
             });
         });

@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupReasonInvestmentController {
-        constructor($location, $cookieStore, $timeout) {
+        constructor($location, $cookies, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
@@ -32,9 +32,9 @@
             };
 
             (() => {
-                const email = $cookieStore.get('signup.email');
-                const password = $cookieStore.get('signup.password');
-                const terms = $cookieStore.get('signup.terms');
+                const email = $cookies.get('signup.email');
+                const password = $cookies.get('signup.password');
+                const terms = $cookies.get('signup.terms');
                 if (!(email && password && terms)) {
                     $location.path('/signup');
                 }
@@ -42,7 +42,7 @@
 
             vm.submit = reason => {
                 if (Object.keys(vm.reasons).indexOf(reason) >= 0) {
-                    $cookieStore.put('signup.reason', reason);
+                    $cookies.put('signup.reason', reason);
                     $location.path('/signup/yearlyIncome');
                 }
             };

@@ -14,7 +14,7 @@
 describe('SignupLoginController', () => {
     let signUpLoginController,
         userService,
-        $cookieStore,
+        $cookies,
         $location,
         notificationService,
         notificationCallbackError,
@@ -24,7 +24,7 @@ describe('SignupLoginController', () => {
         module('app');
 
         userService = jasmine.createSpyObj('userService', ['isEmailUsed']);
-        $cookieStore = jasmine.createSpyObj('$cookieStore', ['put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['put']);
         $location = jasmine.createSpyObj('$location', ['path']);
         patternCheckerService = jasmine.createSpyObj('patternCheckerService', ['isEmail', 'charLengthGreaterThan8', 'hasLowercase', 'hasUppercase', 'hasSpecialChar']);
 
@@ -38,7 +38,7 @@ describe('SignupLoginController', () => {
     beforeEach(inject(($controller) => {
         signUpLoginController = $controller('SignupLoginController', {
             userService: userService,
-            $cookieStore : $cookieStore,
+            $cookies : $cookies,
             $location : $location,
             notificationService: notificationService,
             patternCheckerService: patternCheckerService
@@ -78,8 +78,8 @@ describe('SignupLoginController', () => {
             });
 
             it('should add email and password to cookies', () => {
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.email', signUpLoginController.email);
-                expect($cookieStore.put).toHaveBeenCalledWith('signup.password', signUpLoginController.password);
+                expect($cookies.put).toHaveBeenCalledWith('signup.email', signUpLoginController.email);
+                expect($cookies.put).toHaveBeenCalledWith('signup.password', signUpLoginController.password);
             });
 
             it('should move to terms and conditions page', () => {
@@ -98,7 +98,7 @@ describe('SignupLoginController', () => {
             });
 
             it('should not add anything to cookies', () => {
-                expect($cookieStore.put).not.toHaveBeenCalled();
+                expect($cookies.put).not.toHaveBeenCalled();
             });
 
             it('should stay in the page', () => {
@@ -119,7 +119,7 @@ describe('SignupLoginController', () => {
             });
 
             it('should not add anything to cookies', () => {
-                expect($cookieStore.put).not.toHaveBeenCalled();
+                expect($cookies.put).not.toHaveBeenCalled();
             });
 
             it('should stay in the page', () => {

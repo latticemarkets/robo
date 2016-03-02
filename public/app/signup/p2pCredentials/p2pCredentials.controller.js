@@ -15,13 +15,13 @@
     'use strict';
 
     class SignupP2pCredentialsController {
-        constructor($cookieStore, $location, $timeout) {
+        constructor($cookies, $location, $timeout) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
 
             (() => {
-                const platforms = $cookieStore.get('signup.platforms');
+                const platforms = $cookies.get('signup.platforms');
                 if (platforms) {
                     vm.pageNo = 8;
                 }
@@ -32,15 +32,15 @@
             })();
 
             (() => {
-                const email = $cookieStore.get('signup.email');
-                const password = $cookieStore.get('signup.password');
-                const terms = $cookieStore.get('signup.terms');
-                const reason = $cookieStore.get('signup.reason');
-                const income = $cookieStore.get('signup.income');
-                const timeline = $cookieStore.get('signup.timeline');
-                const birthday = $cookieStore.get('signup.birthday');
-                const originator = $cookieStore.get('signup.originator');
-                const extension = $cookieStore.get('signup.extension');
+                const email = $cookies.get('signup.email');
+                const password = $cookies.get('signup.password');
+                const terms = $cookies.get('signup.terms');
+                const reason = $cookies.get('signup.reason');
+                const income = $cookies.get('signup.income');
+                const timeline = $cookies.get('signup.timeline');
+                const birthday = $cookies.get('signup.birthday');
+                const originator = $cookies.get('signup.originator');
+                const extension = $cookies.get('signup.extension');
 
                 if (!(email && password && terms && reason && income && timeline && birthday && originator)) {
                     $location.path('/signup');
@@ -69,14 +69,14 @@
             function submit(uri) {
                 if (allConditionsSatisfied()) {
                     const platform = {originator: vm.originator, apiKey: vm.apiKey, accountId: vm.accountId};
-                    const platforms = $cookieStore.get('signup.platforms');
+                    const platforms = $cookies.get('signup.platforms');
 
                     if (platforms) {
                         platforms.push(platform);
-                        $cookieStore.put('signup.platforms', platforms);
+                        $cookies.put('signup.platforms', platforms);
                     }
                     else {
-                        $cookieStore.put('signup.platforms', [platform]);
+                        $cookies.put('signup.platforms', [platform]);
                     }
 
                     $location.path(uri);

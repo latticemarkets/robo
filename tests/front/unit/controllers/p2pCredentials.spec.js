@@ -13,19 +13,19 @@
 
 describe('SignupP2pCredentialsController', () => {
     let p2pCredentialsController,
-        $cookieStore,
+        $cookies,
         $location;
 
     beforeEach(() => {
         module('app');
 
-        $cookieStore = jasmine.createSpyObj('$cookieStore', ['get', 'put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put']);
         $location = jasmine.createSpyObj('$location', ['path']);
     });
 
     beforeEach(inject(($controller) => {
         p2pCredentialsController = $controller('SignupP2pCredentialsController', {
-            $cookieStore : $cookieStore,
+            $cookies : $cookies,
             $location : $location
         });
     }));
@@ -33,37 +33,37 @@ describe('SignupP2pCredentialsController', () => {
     describe('initialization', () => {
         describe('data are present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => jasmine.any(String));
+                $cookies.get.and.callFake(() => jasmine.any(String));
             });
 
             it('should get previous data', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.reason');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.birthday');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.originator');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.extension');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.reason');
+                expect($cookies.get).toHaveBeenCalledWith('signup.income');
+                expect($cookies.get).toHaveBeenCalledWith('signup.timeline');
+                expect($cookies.get).toHaveBeenCalledWith('signup.birthday');
+                expect($cookies.get).toHaveBeenCalledWith('signup.originator');
+                expect($cookies.get).toHaveBeenCalledWith('signup.extension');
             });
         });
 
         describe('data are NOT present', () => {
             beforeEach(() => {
-                $cookieStore.get.and.callFake(() => undefined);
+                $cookies.get.and.callFake(() => undefined);
             });
 
             it('go back to first registration page', () => {
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.email');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.password');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.terms');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.reason');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.income');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.timeline');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.birthday');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.originator');
-                expect($cookieStore.get).toHaveBeenCalledWith('signup.extension');
+                expect($cookies.get).toHaveBeenCalledWith('signup.email');
+                expect($cookies.get).toHaveBeenCalledWith('signup.password');
+                expect($cookies.get).toHaveBeenCalledWith('signup.terms');
+                expect($cookies.get).toHaveBeenCalledWith('signup.reason');
+                expect($cookies.get).toHaveBeenCalledWith('signup.income');
+                expect($cookies.get).toHaveBeenCalledWith('signup.timeline');
+                expect($cookies.get).toHaveBeenCalledWith('signup.birthday');
+                expect($cookies.get).toHaveBeenCalledWith('signup.originator');
+                expect($cookies.get).toHaveBeenCalledWith('signup.extension');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
         });
@@ -122,16 +122,16 @@ describe('SignupP2pCredentialsController', () => {
 
                 beforeEach(() => {
                     previouslyAddedPlatform = { originator: 'previously added platform'};
-                    $cookieStore.get.and.returnValue([previouslyAddedPlatform]);
+                    $cookies.get.and.returnValue([previouslyAddedPlatform]);
                     p2pCredentialsController.submit();
                 });
 
                 it('should get the platforms previously entered', () => {
-                    expect($cookieStore.get).toHaveBeenCalledWith('signup.platforms');
+                    expect($cookies.get).toHaveBeenCalledWith('signup.platforms');
                 });
 
                 it('should add the new platform to the previous ones and put the cookie', () => {
-                    expect($cookieStore.put).toHaveBeenCalledWith('signup.platforms', [previouslyAddedPlatform, newPlatform]);
+                    expect($cookies.put).toHaveBeenCalledWith('signup.platforms', [previouslyAddedPlatform, newPlatform]);
                 });
 
                 it('should go to the personal infos page', () => {
@@ -141,16 +141,16 @@ describe('SignupP2pCredentialsController', () => {
 
             describe('if platforms have not been already filled', () => {
                 beforeEach(() => {
-                    $cookieStore.get.and.returnValue(undefined);
+                    $cookies.get.and.returnValue(undefined);
                     p2pCredentialsController.submit();
                 });
 
                 it('should get the platforms previously entered', () => {
-                    expect($cookieStore.get).toHaveBeenCalledWith('signup.platforms');
+                    expect($cookies.get).toHaveBeenCalledWith('signup.platforms');
                 });
 
                 it('should create an array with the new platform put the cookie', () => {
-                    expect($cookieStore.put).toHaveBeenCalledWith('signup.platforms', [newPlatform]);
+                    expect($cookies.put).toHaveBeenCalledWith('signup.platforms', [newPlatform]);
                 });
 
                 it('should go to the personal infos page', () => {
@@ -170,8 +170,8 @@ describe('SignupP2pCredentialsController', () => {
                 });
 
                 it('should not add anything to cookies', () => {
-                    expect($cookieStore.put).not.toHaveBeenCalled();
-                    expect($cookieStore.put).not.toHaveBeenCalled();
+                    expect($cookies.put).not.toHaveBeenCalled();
+                    expect($cookies.put).not.toHaveBeenCalled();
                 });
 
                 it('should stay on the current page', () => {
@@ -188,8 +188,8 @@ describe('SignupP2pCredentialsController', () => {
                 });
 
                 it('should not add anything to cookies', () => {
-                    expect($cookieStore.put).not.toHaveBeenCalled();
-                    expect($cookieStore.put).not.toHaveBeenCalled();
+                    expect($cookies.put).not.toHaveBeenCalled();
+                    expect($cookies.put).not.toHaveBeenCalled();
                 });
 
                 it('should stay on the current page', () => {
