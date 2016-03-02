@@ -33,10 +33,10 @@
         </div>
 
         <ul class="nav" id="side-menu">
-            <li class="{{ activeDashboard }}">
+            <li ng-class="{'active' : isActive('/dashboard')}">
                 <a href="#/dashboard"> <span class="nav-label">Dashboard</span> </a>
             </li>
-            <li class="{{ activePlatform }}">
+            <li ng-class="{'active' : isActive('/platforms')}">
                 <a href="#/platforms"> <span class="nav-label">Platforms</span> </a>
             </li>
         </ul>

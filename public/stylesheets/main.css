@@ -2398,6 +2398,9 @@ div.flot-chart.platform-allocation-chart {
   height: 56px;
   padding: 5px 40px 5px 40px;
 }
+#navigation #side-menu li.active>a{
+  color: #34495e;
+}
 /*------------------------
  * ACCOUNT CONFIGURATION
  *----------------------*/

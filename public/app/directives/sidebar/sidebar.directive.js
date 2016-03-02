@@ -31,16 +31,7 @@
                     $window.location.href = '/';
                 };
 
-                if($location.path() == '/dashboard') {
-                    scope.activeDashboard="active";
-                }
-                else if ($location.path() == '/userAccount') {
-                    scope.activeDashboard="";
-                    scope.activePlatform="";
-                }
-                else {
-                    scope.activePlatform="active";
-                }
+                scope.isActive = url => $location.path() === url;
 
                 const email = authenticationService.getCurrentUsersEmail();
 
