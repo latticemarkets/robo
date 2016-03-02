@@ -164,6 +164,7 @@
                 $injector.invoke(['$route', $route => {
                     if (Object.keys($route.routes).some(route => route === $location.path())) {
                         if ($cookies.get('connected')) {
+                            $cookies.remove('connected');
                             $window.location.href = '/?flag=expired';
                         }
                         else {
