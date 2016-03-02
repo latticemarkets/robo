@@ -2385,9 +2385,6 @@ img.ticked {
 .loansMaturity {
     margin-bottom: 10px;
 }
-div.flot-chart.platform-allocation-chart {
-    margin-top: 40px;
-}
 .logo.sidebar{
   background-color: #F7F9FA;
   border-bottom: 1px solid #E4E5E7;
@@ -2403,12 +2400,6 @@ div.flot-chart.platform-allocation-chart {
 }
 h1.current-roi-rate{
   margin-top: 70px;
-}
-.chart-investment-Week{
-  margin-top: 25px;
-}
-.chart-risk-diversification{
-  margin-top: 5px;
 }
 /*------------------------
  * ACCOUNT CONFIGURATION
