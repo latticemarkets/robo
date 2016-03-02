@@ -70,6 +70,7 @@
                             $cookies.remove('signup.birthday');
                             $cookies.remove('signup.originator');
                             $cookies.remove('signup.platforms');
+                            $cookies.remove('signup.extension');
                             $location.path('/signup/registered');
                         },
                         response => {
