@@ -23,6 +23,7 @@ describe('authenticationService', () => {
             $provide.service('$cookies', () => {
                 return {
                     putObject: jasmine.createSpy('putObject'),
+                    put: jasmine.createSpy('put'),
                     remove: jasmine.createSpy('remove'),
                     getObject: jasmine.createSpy('getObject')
                 };
@@ -64,6 +65,10 @@ describe('authenticationService', () => {
         it('should store the user\'s credentials in a cookie', () => {
             expect(_$cookies.putObject).toHaveBeenCalledWith('globals', { currentUser: { email: email, token: token } });
         });
+
+        it('should store a "connected" cookie', () => {
+            expect(_$cookies.put).toHaveBeenCalledWith('connected', true);
+        });
     });
 
     describe('logout', () => {
@@ -85,6 +90,10 @@ describe('authenticationService', () => {
 
         it('should remove the user\'s credentials from the cookies', () => {
             expect(_$cookies.remove).toHaveBeenCalledWith('globals');
+        });
+
+        it('should remove the "connected" cookie', () => {
+            expect(_$cookies.remove).toHaveBeenCalledWith('connected');
         });
     });
 
