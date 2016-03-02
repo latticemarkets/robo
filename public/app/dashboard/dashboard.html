@@ -69,7 +69,7 @@
             <div class="col-md-3">
                 <div class="hpanel">
                   <div class="currentStategy">
-                    <div class="panel-body text-center h-200">
+                    <div class="panel-body text-center h-400">
                         <div class="stats-icon pull-right">
                             <i class="pe-7s-science fa-3x"></i>
                         </div>
@@ -87,7 +87,7 @@
             <div class="col-md-3">
                 <div class="hpanel stats">
                   <div class="investmentsWeek">
-                    <div class="panel-body h-200">
+                    <div class="panel-body h-400">
                         <div class="stats-title pull-left">
                             <h4>Investments this week</h4>
                         </div>
@@ -95,12 +95,8 @@
                             <i class="pe-7s-search fa-3x"></i>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="flot-chart chart-investment-Week">
-                            <div loans-acquired-per-day promise="vm.loansAcquiredPerDayPromise" style="width:300px;height:200px"></div>
-                        </div>
-                        <div class="loans-acquired-per-day-legend">
-                            <div class="pull-left"><small class="stat-label">Monday</small></div>
-                            <div class="pull-right"><small class="stat-label">Sunday</small></div>
+                        <div class="flot-chart">
+                            <loans-acquired-per-day data="vm.loansAcquiredPerDayPromise" identifier="loansAcquiredPerDay"></loans-acquired-per-day>
                         </div>
                         <div class="loans-metrics">
                             <div class="row">
@@ -119,15 +115,15 @@
             <div class="col-md-3">
                 <div class="hpanel stats">
                   <div class="platformAllocation">
-                    <div class="panel-body h-200">
+                    <div class="panel-body h-400">
                         <div class="stats-title pull-left">
                             <h4>Platform Allocation</h4>
                         </div>
                         <div class="stats-icon pull-right">
                             <i class="pe-7s-cash fa-3x"></i>
                         </div>
-                        <div class="flot-chart platform-allocation-chart">
-                            <div platform-allocation identifier="allocation-pie" data="vm.platformAllocationPromise"></div>
+                        <div class="flot-chart">
+                            <platform-allocation identifier="allocation-pie" data="vm.platformAllocationPromise"></platform-allocation>
                         </div>
                     </div>
                   </div>
@@ -136,7 +132,7 @@
             <div class="col-md-3">
                 <div class="hpanel stats">
                   <div class="riskDiversification">
-                    <div class="panel-body h-200">
+                    <div class="panel-body h-400">
                         <div class="stats-title pull-left">
                             <h4>Risk Diversification</h4>
                         </div>
@@ -144,8 +140,8 @@
                             <i class="pe-7s-portfolio fa-3x"></i>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="flot-chart chart-risk-diversification">
-                            <div risk-diversification identifier="risk-diversification-donut" data="vm.riskDiversificationPromise"></div>
+                        <div class="flot-chart">
+                            <risk-diversification identifier="risk-diversification-donut" data="vm.riskDiversificationPromise"></risk-diversification>
                         </div>
                     </div>
                   </div>

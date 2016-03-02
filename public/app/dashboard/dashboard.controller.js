@@ -15,7 +15,7 @@
     'use strict';
 
     class DashboardController {
-        constructor(dashboardDataService, flotChartService, $scope, $timeout, dashboardGuidedTourService, $cookieStore) {
+        constructor(dashboardDataService, $scope, $timeout, dashboardGuidedTourService, $cookieStore) {
             var vm = this;
 
             initData();
@@ -35,8 +35,6 @@
                 vm.platformAllocationPromise = dashboardDataService.platformAllocationPromise();
                 vm.riskDiversificationPromise = dashboardDataService.riskDiversificationPromise();
             }
-
-            vm.loansAcquiredPerDayOption = flotChartService.barChartOptions;
 
             if ($cookieStore.get('guidedTour')) {
                 dashboardGuidedTourService.init();

@@ -18,30 +18,34 @@
         .module('app')
         .directive('platformAllocation', platformAllocation);
 
-    platformAllocation.$inject = ['flotChartService', '$timeout', 'onResizeService'];
+    platformAllocation.$inject = ['$timeout', 'onResizeService', 'chartService', '$filter'];
 
-    function platformAllocation(flotChartService, $timeout, onResizeService) {
+    function platformAllocation($timeout, onResizeService, chartService, $filter) {
         return {
-            restrict: 'A',
+            replace: true,
+            restrict: 'E',
             scope: {
                 data: "=",
                 identifier: "@"
             },
+            template: '<div id="{{identifier}}"></div>',
             link: (scope, elem) => {
                 const onResizeCallbackId = 'platformAllocation';
-                const options = flotChartService.pieChartOptions;
+                const parentDir = elem.parent();
 
                 scope.data.then(response => {
-                    const data = flotChartService.prepareDataPlatformAllocation(response.data);
+                    const data = response.data.map(platform => [camelCaseToTitle(platform.originator), platform.loansAcquired]);
+                    const colors = data.reduce((prev, column, index) => {
+                        prev[column[0]] = chartService.blueDegraded[index];
+                        return prev;
+                    }, {});
 
                     $timeout(() => {
-                        setComputedDimensions();
-                        $.plot(elem, data, options);
+                        generatePieChart(data, scope.identifier, parentDir.width(), colors);
                     }, 500);
 
                     onResizeService.addOnResizeCallback(() => {
-                        setComputedDimensions();
-                        $.plot(elem, data, options);
+                        generatePieChart(data, scope.identifier, parentDir.width(), colors);
                     }, onResizeCallbackId);
                 });
 
@@ -49,10 +53,22 @@
                     onResizeService.removeOnResizeCallback(onResizeCallbackId);
                 });
 
-                function setComputedDimensions() {
-                    const parentDir = elem.parent();
-                    const style = `width:${parentDir.width()}px;height:200px`;
-                    elem.attr('style', style);
+                function generatePieChart(data, id, width, colors) {
+                    c3.generate({
+                        bindto: `#${id}`,
+                        data: {
+                            columns: data,
+                            type: 'pie',
+                            colors: colors
+                        },
+                        size: {
+                            width: width
+                        }
+                    });
+                }
+
+                function camelCaseToTitle(str) {
+                    return $filter('titlecase')($filter('camelCaseToHuman')(str));
                 }
             }
         };

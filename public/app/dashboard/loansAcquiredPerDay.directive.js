@@ -18,40 +18,76 @@
         .module('app')
         .directive('loansAcquiredPerDay', loansAcquiredPerDay);
 
-    loansAcquiredPerDay.$inject = ['flotChartService', '$timeout', 'onResizeService'];
+    loansAcquiredPerDay.$inject = ['$timeout', 'onResizeService', 'notificationService', '$filter'];
 
-    function loansAcquiredPerDay(flotChartService, $timeout, onResizeService) {
+    function loansAcquiredPerDay($timeout, onResizeService, notificationService, $filter) {
         return {
-            restrict: 'A',
+            replace: true,
+            restrict: 'E',
             scope: {
-                promise: '='
+                identifier: '@',
+                data: '='
             },
+            template: '<div id="{{identifier}}"></div>',
             link (scope, elem) {
                 const onResizeCallbackId = 'loansAcquiredPerDay';
+                const parentDir = elem.parent();
 
-                scope.promise.then(response => {
-                    const data = flotChartService.prepareDataLoansAcquiredPerDay(response.data);
-                    const options = flotChartService.barChartOptions;
+                scope.data.then(response => {
+                    const data = response.data;
 
                     $timeout(() => {
-                        setComputedDimensions();
-                        $.plot(elem, data, options);
+                        generateBarChart(data, scope.identifier, parentDir.width(), parentDir.height());
                     }, 500);
 
                     onResizeService.addOnResizeCallback(() => {
-                        setComputedDimensions();
-                        $.plot(elem, data, options);
+                        generateBarChart(data, scope.identifier, parentDir.width(), parentDir.height());
                     }, onResizeCallbackId);
 
                     scope.$on('$destroy', function() {
                         onResizeService.removeOnResizeCallback(onResizeCallbackId);
                     });
-                });
+                }, notificationService.apiError());
 
-                function setComputedDimensions() {
-                    const parentDir = elem.parent();
-                    const style = `width:${parentDir.width()}px;height:80px`;
-                    elem.attr('style', style);
+                function generateBarChart(data, id, width, height) {
+                    c3.generate({
+                        bindto: `#${id}`,
+                        data: {
+                            columns: [['Investment this week'].concat(data)],
+                            type: 'bar',
+                            colors: {
+                                'Investment this week': '#3498db'
+                            }
+                        },
+                        bar: {
+                            width: {
+                                ratio: 0.5
+                            }
+                        },
+                        size: {
+                            width: width,
+                            height: height
+                        },
+                        legend: {
+                            show: false
+                        },
+                        axis: {
+                            x: {
+                                tick: {
+                                    format: x => ['M', 'T', 'W', 'T', 'F', 'S', 'S'][x]
+                                }
+                            },
+                            y: {
+                                show: false
+                            }
+                        },
+                        tooltip: {
+                            format: {
+                                value: value => $filter('currency')(value)
+                            }
+                        }
+
+                    });
                 }
             }
         };
