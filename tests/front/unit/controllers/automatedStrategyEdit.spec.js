@@ -21,7 +21,8 @@ describe('AutomatedStrategyEditController', () => {
         spinnerService,
         strategiesService,
         automatedStrategyEditService,
-        c3;
+        c3,
+        SweetAlert;
 
     beforeEach(module('app'));
 
@@ -79,6 +80,10 @@ describe('AutomatedStrategyEditController', () => {
         c3 = jasmine.createSpyObj('c3', ['generate']);
     });
 
+    beforeEach(() => {
+        SweetAlert = jasmine.createSpyObj('SweetAlert', ['swal']);
+    });
+
     beforeEach(inject(($controller, _$timeout_) => {
         automatedStrategyEditController = $controller('AutomatedStrategyEditController', {
             $timeout: _$timeout_,
@@ -90,7 +95,8 @@ describe('AutomatedStrategyEditController', () => {
             spinnerService: spinnerService,
             strategiesService: strategiesService,
             automatedStrategyEditService: automatedStrategyEditService,
-            c3: c3
+            c3: c3,
+            SweetAlert
         });
         $timeout = _$timeout_;
     }));
@@ -237,12 +243,32 @@ describe('AutomatedStrategyEditController', () => {
     });
 
     describe('cancel', () => {
+        let alertCallback;
         beforeEach(() => {
+            SweetAlert.swal.and.callFake((opt, callback) => alertCallback = callback);
             automatedStrategyEditController.cancel();
         });
 
-        it('should go back to platforms', () => {
-            expect($location.path).toHaveBeenCalledWith('/platforms');
+        describe('the user confirms', () => {
+            beforeEach(() => {
+                const confirmed = true;
+                alertCallback(confirmed);
+            });
+
+            it('should go back to platforms', () => {
+                expect($location.path).toHaveBeenCalledWith('/platforms');
+            });
+        });
+
+        describe('the user does not confirm', () => {
+            beforeEach(() => {
+                const notConfirmed = false;
+                alertCallback(notConfirmed);
+            });
+
+            it('should not go back to platforms', () => {
+                expect($location.path).not.toHaveBeenCalled();
+            });
         });
     });
 
