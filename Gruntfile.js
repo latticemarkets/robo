@@ -57,7 +57,8 @@ module.exports = function(grunt) {
             },
             landpage: {
                 dest: 'public/dist/landpage.js',
-                include: ['particles.js']
+                cssDest: 'public/dist/landpage.css',
+                include: ['jquery', 'particles.js', 'toastr']
             }
         },
         bower: {

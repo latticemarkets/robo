@@ -29,6 +29,7 @@
             this.$cookies.putObject('globals', this.$rootScope.globals);
             this.$http.defaults.headers.common['X-TOKEN'] = this.$rootScope.globals.currentUser.token; // jshint ignore:line
             this.$http.defaults.headers.common['USER'] = this.$rootScope.globals.currentUser.email; // jshint ignore:line
+            this.$cookies.put('connected', true);
         }
 
         logout() {
@@ -36,6 +37,7 @@
             this.$http.defaults.headers.common['X-TOKEN'] = ""; // jshint ignore:line
             this.$http.defaults.headers.common['USER'] = ""; // jshint ignore:line
             this.$cookies.remove('globals');
+            this.$cookies.remove('connected');
         }
 
         getCurrentUsersEmail() {
