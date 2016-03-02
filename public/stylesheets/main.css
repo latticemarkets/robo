@@ -240,7 +240,7 @@ body.modal-open {
     padding: 0 20px;
     background-color: white;
     border-radius: 2px;
-    color: #1080f2;
+    color: #3498db;
     font-family: PTSans, sans-serif;
     display: inline-block;
     text-align: center;
@@ -248,7 +248,7 @@ body.modal-open {
     font-weight: 400;
     line-height: 36px;
     margin: 0 10px;
-    border: 1px solid #1080f2;
+    border: 1px solid #3498db;
     -webkit-transition: 0.3s;
     -o-transition: 0.3s;
     transition: 0.3s;
@@ -314,12 +314,12 @@ body.modal-open {
     background-color: #d24637;
 }
 .sweet-alert .sa-confirm-button-container button.confirm {
-    border: 1px solid #1080f2 !important;
+    border: 1px solid #3498db !important;
     background-color: #fff !important;
-    color: #1080f2 !important;
+    color: #3498db !important;
 }
 .sweet-alert .sa-confirm-button-container button.confirm:hover {
-    background-color: #0067D9 !important;
+    background-color: #3498db !important;
     color: #fff !important;
 }
 /*3.2 LOGO*/
@@ -2458,6 +2458,16 @@ div button.btn.primary-button.erase-user:hover {
 }
 .text-center.small{
   font-size: 15px;
+}
+.btn.primary-button.erase-platform{
+  background-color: #fff;
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+}
+.btn.primary-button.erase-platform:hover{
+  background-color: #e74c3c;
+  border: 1px solid #e74c3c;
+  color: #fff;
 }
 /*------------------------
  * PLATFORMS
