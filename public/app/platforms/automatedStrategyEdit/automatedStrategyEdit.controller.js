@@ -15,7 +15,7 @@
     'use strict';
 
     class AutomatedStrategyEditController {
-        constructor($timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, spinnerService, strategiesService, automatedStrategyEditService, c3) {
+        constructor($timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, spinnerService, strategiesService, automatedStrategyEditService, c3, SweetAlert) {
             var vm = this;
 
             vm.splineChartId = "expectedReturnDistribution";
@@ -63,7 +63,22 @@
                 onResizeService.removeOnResizeCallback(vm.splineChartId);
             });
 
-            vm.cancel = () => $location.path('/platforms');
+            vm.cancel = () =>
+                SweetAlert.swal({
+                    title: "Are you sure?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                }, isConfirm => {
+                    if (isConfirm) {
+                        $location.path('/platforms');
+                    }
+                }
+            );
+
             vm.save = () => {
                 spinnerService.on();
                 strategiesService.updateAutomatedStrategy(email, platform, vm.strategyValue / 10, vm.primaryMarketEnabled, vm.secondaryMarketEnabled,
