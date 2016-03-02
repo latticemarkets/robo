@@ -6,9 +6,9 @@
         .directive('p2pPlatform', p2pPlatform);
 
 
-    p2pPlatform.$inject = ['notificationService', 'authenticationService', 'spinnerService', 'platformService'];
+    p2pPlatform.$inject = ['notificationService', 'authenticationService', 'spinnerService', 'platformService','SweetAlert'];
 
-    function p2pPlatform(notificationService, authenticationService, spinnerService, platformService) {
+    function p2pPlatform(notificationService, authenticationService, spinnerService, platformService, SweetAlert) {
         return {
             replace: true,
             restrict: 'E',
@@ -52,6 +52,17 @@
                 };
 
                 scope.delete = (platform) => {
+                  SweetAlert.swal({
+                      title: "Are you sure?",
+                      type: "warning",
+                      showCancelButton: true,
+                      confirmButtonText: "Yes",
+                      cancelButtonText: "No",
+                      closeOnConfirm: true,
+                      closeOnCancel: true
+                },
+                function(isConfirm) {
+                  if (isConfirm) {
                   const name = platform.originator;
                   spinnerService.on();
                   const newPlatforms = scope.platforms.filter(platform => platform.originator !== name );
@@ -64,6 +75,8 @@
                           scope.platforms = newPlatforms;
                       }
                   );
+                }
+              });
                 };
             }
         };
