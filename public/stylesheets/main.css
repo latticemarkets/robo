@@ -2380,7 +2380,7 @@ img.ticked {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .text-blue {
-    color: #1080f2;
+    color: #3498db;
 }
 .loansMaturity {
     margin-bottom: 10px;
@@ -2468,16 +2468,14 @@ img.not-ticked {
 .fa.fa-check-square-o{
 color: green;
 }
-.toggle-switch {
-    border-radius: 9px;
-}
-.toggle-switch .switch-left {
-    background-color: #3498db;
-}
 .platform-settings {
     position: absolute;
     top: 5px;
     right: 5px;
+}
+.switch.checked.platform-mode {
+    background-color: #3498db;
+    border-color: #3498db;
 }
 /*------------------------
  * STRATEGIES
@@ -2576,12 +2574,12 @@ div.panel-body.auto-strategies-top-menu {
     min-height: 50px;
     vertical-align: middle;
 }
-.market-mode.switch.checked {
-    background-color: #3498db;
-    border-color: #3498db;
-}
 rzslider.aggressivity-slider .rz-pointer {
     background-color: #3498db;
+}
+.strategy-switch > .switch.checked {
+    background-color: #3498db;
+    border-color: #3498db;
 }
 /*------------------------
  * 404 NOT FOUND

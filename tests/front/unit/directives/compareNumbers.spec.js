@@ -49,10 +49,10 @@ describe('directive: compare-numbers', function() {
             scope.$digest();
         });
 
-        it('should be green', () => {
+        it('should be blue', () => {
             const isolateScope = element.isolateScope();
             $timeout.flush();
-            expect(isolateScope.result).toBe('text-successful');
+            expect(isolateScope.result).toBe('text-info');
         });
     });
 });
