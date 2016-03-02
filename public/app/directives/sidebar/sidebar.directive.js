@@ -18,9 +18,9 @@
         .module('app')
         .directive('sidebar', sidebar);
 
-    sidebar.$inject = ['authenticationService', '$window', 'userService', 'dashboardDataService'];
+    sidebar.$inject = ['authenticationService', '$window', 'userService', 'dashboardDataService','$location'];
 
-    function sidebar(authenticationService, $window, userService, dashboardDataService) {
+    function sidebar(authenticationService, $window, userService, dashboardDataService, $location) {
         return {
             replace: true,
             restrict: 'E',
@@ -30,6 +30,8 @@
                     authenticationService.logout();
                     $window.location.href = '/';
                 };
+
+                scope.isActive = url => $location.path() === url;
 
                 const email = authenticationService.getCurrentUsersEmail();
 

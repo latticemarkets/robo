@@ -1,7 +1,7 @@
 <aside id="menu">
     <div class="logo sidebar">
         <span>
-          <a class="logo page-scroll" href="#header">
+          <a class="logo page-scroll" href="#/dashboard">
             <img class="img-responsive" alt="PDX markets logo" src="assets/img/logos/pdx-logo.png"></img>
           </a>
         </span>
@@ -33,10 +33,10 @@
         </div>
 
         <ul class="nav" id="side-menu">
-            <li class="active">
+            <li ng-class="{'active' : isActive('/dashboard')}">
                 <a href="#/dashboard"> <span class="nav-label">Dashboard</span> </a>
             </li>
-            <li>
+            <li ng-class="{'active' : isActive('/platforms')}">
                 <a href="#/platforms"> <span class="nav-label">Platforms</span> </a>
             </li>
         </ul>
