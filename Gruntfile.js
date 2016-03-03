@@ -303,7 +303,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['build']);
 
     grunt.registerTask('build-bower', ['bower', 'bower_concat', 'uglify:bower', 'bowercopy']);
-    grunt.registerTask('build-app', ['concat:dist', 'babel:dist']);
+    grunt.registerTask('build-app', ['concat:dist', 'babel:dist', 'uglify:app']);
     grunt.registerTask('build', ['concurrent:dist']);
 
     grunt.registerTask('build-tests', ['build', 'concat:test', 'babel:test']);
