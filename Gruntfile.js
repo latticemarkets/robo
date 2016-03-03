@@ -260,6 +260,11 @@ module.exports = function(grunt) {
                     'public/dist/app.min.js': ['public/dist/app.js']
                 }
             }
+        },
+        concurrent: {
+            dist: {
+                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint']
+            }
         }
     });
 
@@ -274,9 +279,17 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-concurrent');
+
+    /**
+     * Tasks
+     */
 
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('build', ['bower', 'bower_concat', 'uglify', 'concat_css', 'concat', 'bowercopy', 'jshint', 'babel']);
+
+    grunt.registerTask('build-bower', ['bower', 'bower_concat', 'uglify:bower', 'bowercopy']);
+    grunt.registerTask('build-app', ['concat:dist', 'babel']);
+    grunt.registerTask('build', ['concurrent:dist']);
 
     grunt.registerTask('test', ['build', 'concat:test', 'babel:test', 'jasmine:test']);
     grunt.registerTask('test-controllers', ['build', 'concat:test-controllers', 'babel:test-controllers', 'jasmine:controllers']);
