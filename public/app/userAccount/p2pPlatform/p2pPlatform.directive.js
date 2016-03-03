@@ -21,7 +21,9 @@
                 scope.userPromise.then(response => {
                     scope.platforms = response.data.platforms;
                     scope.platforms = scope.platforms.filter(platform => platform.apiKey.length > 0);
-
+                    if(scope.platforms.length === 0){
+                    scope.anyPlatform = true;
+                    }
                     scope.platforms.status ={
                       isOpen: []
                     };
@@ -73,10 +75,9 @@
                           spinnerService.off();
                           notificationService.success('Delete platform');
                           scope.platforms = newPlatforms;
-                      }
-                  );
-                }
-              });
+                          });
+                        }
+                    });
                 };
             }
         };
