@@ -5,9 +5,9 @@
         .module('app')
         .directive('eraseAccount', eraseAccount);
 
-    eraseAccount.$inject = ['userService','authenticationService', '$timeout', '$location', 'SweetAlert'];
+    eraseAccount.$inject = ['userService','authenticationService', '$timeout', '$window', 'SweetAlert','$cookies'];
 
-      function eraseAccount(userService, authenticationService, $timeout, $location, SweetAlert) {
+      function eraseAccount(userService, authenticationService, $timeout, $window, SweetAlert, $cookies) {
         return {
             replace: true,
             restrict: 'E',
@@ -23,7 +23,7 @@
                         showCancelButton: true,
                         closeOnConfirm: false,
                         animation: "slide-from-top",
-                        inputPlaceholder: "Write something"
+                        inputPlaceholder: "Your password"
                     },
                     password => {
                         if (password === false) return false;
@@ -34,9 +34,16 @@
                                 title: "Deleted !",
                                 text: "Your account has been successfully deleted. You will be redirected to the main page.",
                                 type: "success",
-                                timer: 5000
+                                closeOnConfirm: false
+                            },
+                            function(isConfirm) {
+                              $cookies.getObject('globals');
+                              $cookies.remove('globals');
+                              if (isConfirm) {
+                                $timeout(() => $window.location.href = '/', 100);
+                              }
                             });
-                            $timeout(() => $location.path('/'), 5000);
+
                         });
                     });
                 };
