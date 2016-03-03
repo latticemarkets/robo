@@ -37,10 +37,9 @@
                                 closeOnConfirm: false
                             },
                             function(isConfirm) {
-                              $cookies.getObject('globals');
-                              $cookies.remove('globals');
                               if (isConfirm) {
-                                $timeout(() => $window.location.href = '/', 100);
+                                authenticationService.logout();
+                                $window.location.href = '/';
                               }
                             });
 
