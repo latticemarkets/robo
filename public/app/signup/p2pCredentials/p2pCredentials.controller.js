@@ -69,14 +69,14 @@
             function submit(uri) {
                 if (allConditionsSatisfied()) {
                     const platform = {originator: vm.originator, apiKey: vm.apiKey, accountId: vm.accountId};
-                    const platforms = $cookies.get('signup.platforms');
+                    const platforms = $cookies.getObject('signup.platforms');
 
                     if (platforms) {
                         platforms.push(platform);
-                        $cookies.put('signup.platforms', platforms);
+                        $cookies.putObject('signup.platforms', platforms);
                     }
                     else {
-                        $cookies.put('signup.platforms', [platform]);
+                        $cookies.putObject('signup.platforms', [platform]);
                     }
 
                     $location.path(uri);
