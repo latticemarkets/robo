@@ -247,9 +247,17 @@ module.exports = function(grunt) {
             }
         },
         uglify: {
-            dist: {
+            bower: {
                 files: {
                     'public/dist/bower.min.js': ['public/dist/bower.js']
+                }
+            },
+            app: {
+                options: {
+                    mangle: false
+                },
+                files: {
+                    'public/dist/app.min.js': ['public/dist/app.js']
                 }
             }
         }
