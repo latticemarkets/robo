@@ -264,6 +264,21 @@ module.exports = function(grunt) {
         concurrent: {
             dist: {
                 tasks: ['build-bower', 'build-app', 'concat_css', 'jshint']
+            },
+            tests: {
+                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint', 'build-tests']
+            },
+            testControllers: {
+                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint', 'build-tests-controllers']
+            },
+            testServices: {
+                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint', 'build-tests-services']
+            },
+            testDirectives: {
+                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint', 'build-tests-directives']
+            },
+            testFilters: {
+                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint', 'build-tests-filters']
             }
         }
     });
@@ -288,20 +303,26 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['build']);
 
     grunt.registerTask('build-bower', ['bower', 'bower_concat', 'uglify:bower', 'bowercopy']);
-    grunt.registerTask('build-app', ['concat:dist', 'babel']);
+    grunt.registerTask('build-app', ['concat:dist', 'babel:dist']);
     grunt.registerTask('build', ['concurrent:dist']);
 
-    grunt.registerTask('test', ['build', 'concat:test', 'babel:test', 'jasmine:test']);
-    grunt.registerTask('test-controllers', ['build', 'concat:test-controllers', 'babel:test-controllers', 'jasmine:controllers']);
-    grunt.registerTask('test-services', ['build', 'concat:test-services', 'babel:test-services', 'jasmine:services']);
-    grunt.registerTask('test-directives', ['build', 'concat:test-directives', 'babel:test-directives', 'jasmine:directives']);
-    grunt.registerTask('test-filters', ['build', 'concat:test-filters', 'babel:test-filters', 'jasmine:filters']);
+    grunt.registerTask('build-tests', ['build', 'concat:test', 'babel:test']);
+    grunt.registerTask('build-tests-controllers', ['build', 'concat:test-controllers', 'babel:test-controllers']);
+    grunt.registerTask('build-tests-services', ['build', 'concat:test-services', 'babel:test-services']);
+    grunt.registerTask('build-tests-directives', ['build', 'concat:test-directives', 'babel:test-directives']);
+    grunt.registerTask('build-tests-filters', ['build', 'concat:test-filters', 'babel:test-filters']);
 
-    grunt.registerTask('dev-test', ['build', 'watch:test']);
-    grunt.registerTask('dev-test-controllers', ['build', 'watch:test-controllers']);
-    grunt.registerTask('dev-test-services', ['build', 'watch:test-services']);
-    grunt.registerTask('dev-test-directives', ['build', 'watch:test-directives']);
-    grunt.registerTask('dev-test-filters', ['build', 'watch:test-filters']);
+    grunt.registerTask('test', ['concurrent:tests', 'jasmine:test']);
+    grunt.registerTask('test-controllers', ['concurrent:testControllers', 'jasmine:controllers']);
+    grunt.registerTask('test-services', ['concurrent:testServices', 'jasmine:services']);
+    grunt.registerTask('test-directives', ['concurrent:testDirectives', 'jasmine:directives']);
+    grunt.registerTask('test-filters', ['concurrent:testFilters', 'jasmine:filters']);
+
+    grunt.registerTask('dev-test', ['watch:test']);
+    grunt.registerTask('dev-test-controllers', ['watch:test-controllers']);
+    grunt.registerTask('dev-test-services', ['watch:test-services']);
+    grunt.registerTask('dev-test-directives', ['watch:test-directives']);
+    grunt.registerTask('dev-test-filters', ['watch:test-filters']);
 
     grunt.registerTask('dev', ['build', 'watch:dev']);
 };
