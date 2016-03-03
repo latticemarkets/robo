@@ -19,18 +19,18 @@ describe('SignupP2pPlatformController', () => {
     beforeEach(() => {
         module('app');
 
-        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put', 'putObject', 'getObject']);
         $location = jasmine.createSpyObj('$location', ['path']);
     });
 
-    beforeEach(inject(($controller) => {
-        p2pPlatformController = $controller('SignupP2pPlatformController', {
-            $cookies : $cookies,
-            $location : $location
-        });
-    }));
-
     describe('initialization', () => {
+        beforeEach(inject(($controller) => {
+            p2pPlatformController = $controller('SignupP2pPlatformController', {
+                $cookies : $cookies,
+                $location : $location
+            });
+        }));
+
         describe('data are present', () => {
             beforeEach(() => {
                 $cookies.get.and.callFake(() => jasmine.any(String));
@@ -66,12 +66,26 @@ describe('SignupP2pPlatformController', () => {
     });
 
     describe('transitions', () => {
+        beforeEach(inject(($controller) => {
+            p2pPlatformController = $controller('SignupP2pPlatformController', {
+                $cookies : $cookies,
+                $location : $location
+            });
+        }));
+
         it('should specify the classes used for transition', () => {
             expect(p2pPlatformController.pageClass).toBe('signup-login blue');
         });
     });
 
     describe('submit', () => {
+        beforeEach(inject(($controller) => {
+            p2pPlatformController = $controller('SignupP2pPlatformController', {
+                $cookies : $cookies,
+                $location : $location
+            });
+        }));
+
         describe('chose platform is part of the list', () => {
             let platform;
 
@@ -104,6 +118,96 @@ describe('SignupP2pPlatformController', () => {
             it('should NOT go to the yearly income page', () => {
                 expect($location.path).not.toHaveBeenCalledWith('/signup/p2pCredentials');
             });
+        });
+    });
+
+    describe('alreadyAdded', () => {
+        describe('no platform added', () => {
+            beforeEach(() => {
+                $cookies.getObject.and.returnValue([]);
+            });
+
+            beforeEach(inject(($controller) => {
+                p2pPlatformController = $controller('SignupP2pPlatformController', {
+                    $cookies : $cookies,
+                    $location : $location
+                });
+            }));
+
+            let result;
+            beforeEach(() => {
+                result = p2pPlatformController.alreadyAdded('platform1');
+            });
+
+            it('should return false', () => {
+                expect(result).toBeFalsy();
+            });
+        });
+
+        describe('platforms added', () => {
+            let rightPlatform,
+                wrongPlatform;
+            beforeEach(() => {
+                rightPlatform = 'platform1';
+                wrongPlatform = 'platform2';
+
+                $cookies.getObject.and.returnValue([{originator: rightPlatform}]);
+            });
+
+            beforeEach(inject(($controller) => {
+                p2pPlatformController = $controller('SignupP2pPlatformController', {
+                    $cookies : $cookies,
+                    $location : $location
+                });
+            }));
+
+            describe('check wrong platform', () => {
+                let result;
+                beforeEach(() => {
+                    result = p2pPlatformController.alreadyAdded(wrongPlatform);
+                });
+
+                it('should return false', () => {
+                    expect(result).toBeFalsy();
+                });
+            });
+
+            describe('check right platform', () => {
+                let result;
+                beforeEach(() => {
+                    result = p2pPlatformController.alreadyAdded(rightPlatform);
+                });
+
+                it('should return true', () => {
+                    expect(result).toBeTruthy();
+                });
+            });
+        });
+    });
+
+    describe('skip', () => {
+        let platforms;
+
+        beforeEach(inject(($controller) => {
+            platforms = [{originator: 'platform'}];
+            $cookies.getObject.and.returnValue([platforms]);
+
+            p2pPlatformController = $controller('SignupP2pPlatformController', {
+                $cookies : $cookies,
+                $location : $location
+            });
+        }));
+
+        beforeEach(() => {
+            p2pPlatformController.skip();
+        });
+
+        it('should update the platforms cookie', () => {
+            expect($cookies.putObject).toHaveBeenCalled();
+        });
+
+        it('should redirect the user to personal infos', () => {
+            expect($location.path).toHaveBeenCalledWith('/signup/personalInfos');
         });
     });
 });

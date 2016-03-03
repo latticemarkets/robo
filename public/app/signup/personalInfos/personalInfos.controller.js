@@ -40,7 +40,7 @@
                 income = $cookies.get('signup.income');
                 timeline = $cookies.get('signup.timeline');
                 birthday = $cookies.get('signup.birthday');
-                platforms = $cookies.get('signup.platforms');
+                platforms = $cookies.getObject('signup.platforms');
 
                 if (!(email && password && terms && reason && income && timeline && birthday && platforms)) {
                     $location.path('/signup');

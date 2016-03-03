@@ -19,7 +19,7 @@ describe('SignupP2pCredentialsController', () => {
     beforeEach(() => {
         module('app');
 
-        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put', 'getObject', 'putObject']);
         $location = jasmine.createSpyObj('$location', ['path']);
     });
 
@@ -122,16 +122,16 @@ describe('SignupP2pCredentialsController', () => {
 
                 beforeEach(() => {
                     previouslyAddedPlatform = { originator: 'previously added platform'};
-                    $cookies.get.and.returnValue([previouslyAddedPlatform]);
+                    $cookies.getObject.and.returnValue([previouslyAddedPlatform]);
                     p2pCredentialsController.submit();
                 });
 
                 it('should get the platforms previously entered', () => {
-                    expect($cookies.get).toHaveBeenCalledWith('signup.platforms');
+                    expect($cookies.getObject).toHaveBeenCalledWith('signup.platforms');
                 });
 
                 it('should add the new platform to the previous ones and put the cookie', () => {
-                    expect($cookies.put).toHaveBeenCalledWith('signup.platforms', [previouslyAddedPlatform, newPlatform]);
+                    expect($cookies.putObject).toHaveBeenCalledWith('signup.platforms', [previouslyAddedPlatform, newPlatform]);
                 });
 
                 it('should go to the personal infos page', () => {
@@ -141,16 +141,16 @@ describe('SignupP2pCredentialsController', () => {
 
             describe('if platforms have not been already filled', () => {
                 beforeEach(() => {
-                    $cookies.get.and.returnValue(undefined);
+                    $cookies.getObject.and.returnValue(undefined);
                     p2pCredentialsController.submit();
                 });
 
                 it('should get the platforms previously entered', () => {
-                    expect($cookies.get).toHaveBeenCalledWith('signup.platforms');
+                    expect($cookies.getObject).toHaveBeenCalledWith('signup.platforms');
                 });
 
                 it('should create an array with the new platform put the cookie', () => {
-                    expect($cookies.put).toHaveBeenCalledWith('signup.platforms', [newPlatform]);
+                    expect($cookies.putObject).toHaveBeenCalledWith('signup.platforms', [newPlatform]);
                 });
 
                 it('should go to the personal infos page', () => {

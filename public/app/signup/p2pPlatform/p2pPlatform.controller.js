@@ -18,7 +18,7 @@
         constructor($location, $cookies, $timeout, constantsService) {
             const vm = this;
 
-            const platforms = $cookies.get('signup.platforms');
+            const platforms = $cookies.getObject('signup.platforms');
 
             if (platforms) {
                 vm.pageNo = 8;
@@ -54,7 +54,7 @@
                 }
             };
 
-            vm.alreadyAdded = platformName => {
+            vm.alreadyAdded = (platformName) => {
                 if (platforms) {
                     return platforms.some(addedPlatform => addedPlatform.originator == platformName);
                 }
@@ -64,7 +64,7 @@
             vm.someAlreadyAdded = () => Object.keys(vm.platforms).some(platform => vm.alreadyAdded(platform));
 
             vm.skip = () => {
-                $cookies.put('signup.platforms', platforms);
+                $cookies.putObject('signup.platforms', platforms);
                 $location.path('/signup/personalInfos');
             };
         }
