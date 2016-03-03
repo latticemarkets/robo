@@ -17,7 +17,6 @@
             'ngAnimate',
             'toastr',
             'ui.bootstrap',
-            'angular-flot',
             'camelCaseToHuman',
             'oitozero.ngSweetAlert',
             'ui.sortable',
@@ -27,7 +26,6 @@
             'multiStepForm',
             'jkuri.touchspin',
             'xeditable',
-            'toggle-switch',
             'uiSwitch'])
         .config(config)
         .run(run);
