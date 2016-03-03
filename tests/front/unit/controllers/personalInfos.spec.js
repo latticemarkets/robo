@@ -22,7 +22,7 @@ describe('SignupPersonalInfosController', () => {
     beforeEach(() => {
         module('app');
 
-        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put', 'remove']);
+        $cookies = jasmine.createSpyObj('$cookies', ['get', 'put', 'remove', 'getObject']);
         $location = jasmine.createSpyObj('$location', ['path']);
         userService = jasmine.createSpyObj('userService', ['register']);
         notificationService = jasmine.createSpyObj('notificationService', ['error']);
@@ -43,6 +43,7 @@ describe('SignupPersonalInfosController', () => {
         describe('data are present', () => {
             beforeEach(() => {
                 $cookies.get.and.callFake(() => jasmine.any(String));
+                $cookies.getObject.and.callFake(() => jasmine.any(String));
             });
 
             it('should get previous data', () => {
@@ -53,13 +54,14 @@ describe('SignupPersonalInfosController', () => {
                 expect($cookies.get).toHaveBeenCalledWith('signup.income');
                 expect($cookies.get).toHaveBeenCalledWith('signup.timeline');
                 expect($cookies.get).toHaveBeenCalledWith('signup.birthday');
-                expect($cookies.get).toHaveBeenCalledWith('signup.platforms');
+                expect($cookies.getObject).toHaveBeenCalledWith('signup.platforms');
             });
         });
 
         describe('data are NOT present', () => {
             beforeEach(() => {
                 $cookies.get.and.callFake(() => undefined);
+                $cookies.getObject.and.callFake(() => undefined);
             });
 
             it('go back to first registration page', () => {
@@ -70,7 +72,7 @@ describe('SignupPersonalInfosController', () => {
                 expect($cookies.get).toHaveBeenCalledWith('signup.income');
                 expect($cookies.get).toHaveBeenCalledWith('signup.timeline');
                 expect($cookies.get).toHaveBeenCalledWith('signup.birthday');
-                expect($cookies.get).toHaveBeenCalledWith('signup.platforms');
+                expect($cookies.getObject).toHaveBeenCalledWith('signup.platforms');
                 expect($location.path).toHaveBeenCalledWith('/signup');
             });
         });

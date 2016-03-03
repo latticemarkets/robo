@@ -54,7 +54,7 @@
                 }
             };
 
-            vm.alreadyAdded = platformName => {
+            vm.alreadyAdded = (platformName) => {
                 if (platforms) {
                     return platforms.some(addedPlatform => addedPlatform.originator == platformName);
                 }

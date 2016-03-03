@@ -21,7 +21,7 @@
             vm.pageClass = 'signup-login blue';
 
             (() => {
-                const platforms = $cookies.get('signup.platforms');
+                const platforms = $cookies.getObject('signup.platforms');
                 if (platforms) {
                     vm.pageNo = 8;
                 }
