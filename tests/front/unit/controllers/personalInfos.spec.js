@@ -25,7 +25,7 @@ describe('SignupPersonalInfosController', () => {
         $cookies = jasmine.createSpyObj('$cookies', ['get', 'put', 'remove', 'getObject']);
         $location = jasmine.createSpyObj('$location', ['path']);
         userService = jasmine.createSpyObj('userService', ['register']);
-        notificationService = jasmine.createSpyObj('notificationService', ['error']);
+        notificationService = jasmine.createSpyObj('notificationService', ['apiError']);
         authenticationService = jasmine.createSpyObj('authenticationService', ['authenticate']);
     });
 
@@ -166,32 +166,13 @@ describe('SignupPersonalInfosController', () => {
                     expect($location.path).toHaveBeenCalledWith('/signup/registered');
                 });
 
-                it('should not display any error message', () => {
-                    expect(notificationService.error).not.toHaveBeenCalled();
+                it('should insert api error callback', () => {
+                    expect(notificationService.apiError).toHaveBeenCalled();
                 });
             });
 
             describe('data insertion failed', () => {
-                let errorMessage;
-
                 beforeEach(() => {
-                    errorMessage = "error";
-
-                    userService.register.and.callFake(
-                        (email,
-                         password,
-                         terms,
-                         reason,
-                         income,
-                         timeline,
-                         birthday,
-                         platforms,
-                         firstName,
-                         lastName,
-                         successCallback,
-                         errorCallback) => errorCallback({ data: errorMessage })
-                    );
-
                     personalInfosController.submit();
                 });
 
@@ -207,8 +188,8 @@ describe('SignupPersonalInfosController', () => {
                     expect($location.path).not.toHaveBeenCalledWith('/signup/registered');
                 });
 
-                it('should display any error message', () => {
-                    expect(notificationService.error).toHaveBeenCalledWith(errorMessage);
+                it('should insert api error callback', () => {
+                    expect(notificationService.apiError).toHaveBeenCalled();
                 });
             });
         });
@@ -224,6 +205,10 @@ describe('SignupPersonalInfosController', () => {
                 it('should not call register', () => {
                     expect(userService.register).not.toHaveBeenCalled();
                 });
+
+                it('should not insert api error callback', () => {
+                    expect(notificationService.apiError).not.toHaveBeenCalled();
+                });
             });
 
             describe('empty first name', () => {
@@ -235,6 +220,10 @@ describe('SignupPersonalInfosController', () => {
 
                 it('should not call register', () => {
                     expect(userService.register).not.toHaveBeenCalled();
+                });
+
+                it('should not insert api error callback', () => {
+                    expect(notificationService.apiError).not.toHaveBeenCalled();
                 });
             });
         });
