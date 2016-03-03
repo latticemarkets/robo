@@ -245,6 +245,13 @@ module.exports = function(grunt) {
                     summary: true
                 }
             }
+        },
+        uglify: {
+            dist: {
+                files: {
+                    'public/dist/bower.min.js': ['public/dist/bower.js']
+                }
+            }
         }
     });
 
@@ -258,9 +265,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-babel');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('build', ['bower', 'bower_concat', 'concat_css', 'concat', 'bowercopy', 'jshint', 'babel']);
+    grunt.registerTask('build', ['bower', 'bower_concat', 'uglify', 'concat_css', 'concat', 'bowercopy', 'jshint', 'babel']);
 
     grunt.registerTask('test', ['build', 'concat:test', 'babel:test', 'jasmine:test']);
     grunt.registerTask('test-controllers', ['build', 'concat:test-controllers', 'babel:test-controllers', 'jasmine:controllers']);
