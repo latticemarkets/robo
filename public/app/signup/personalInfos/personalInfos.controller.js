@@ -73,9 +73,7 @@
                             $cookies.remove('signup.extension');
                             $location.path('/signup/registered');
                         },
-                        response => {
-                            notificationService.error(response.data);
-                        }
+                        notificationService.apiError()
                     );
                 }
             };
