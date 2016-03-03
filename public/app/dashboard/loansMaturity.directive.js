@@ -50,7 +50,7 @@
                     });
 
                     function generateScatterChart() {
-                        c3.generate(loansMaturityUtilsService.chartOptions(scope.identifier, preparedData, xs, parentDir.width()));
+                        c3.generate(loansMaturityUtilsService.chartOptions(scope.identifier, preparedData, xs, parentDir[0].clientWidth));
                     }
 
                 }, notificationService.apiError());

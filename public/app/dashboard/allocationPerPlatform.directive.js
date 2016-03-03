@@ -41,11 +41,11 @@
                     }, {});
 
                     $timeout(() => {
-                        generatePieChart(data, scope.identifier, parentDir.width(), colors);
+                        generatePieChart(data, scope.identifier, parentDir[0].clientWidth, colors);
                     }, 500);
 
                     onResizeService.addOnResizeCallback(() => {
-                        generatePieChart(data, scope.identifier, parentDir.width(), colors);
+                        generatePieChart(data, scope.identifier, parentDir[0].clientWidth, colors);
                     }, onResizeCallbackId);
                 });
 

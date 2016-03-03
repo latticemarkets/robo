@@ -37,11 +37,11 @@
                     const data = response.data;
 
                     $timeout(() => {
-                        generateBarChart(data, scope.identifier, parentDir.width(), parentDir.height());
+                        generateBarChart(data, scope.identifier, parentDir[0].clientWidth, parentDir[0].clientHeight);
                     }, 500);
 
                     onResizeService.addOnResizeCallback(() => {
-                        generateBarChart(data, scope.identifier, parentDir.width(), parentDir.height());
+                        generateBarChart(data, scope.identifier, parentDir[0].clientWidth, parentDir[0].clientHeight);
                     }, onResizeCallbackId);
 
                     scope.$on('$destroy', function() {

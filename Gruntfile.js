@@ -263,22 +263,22 @@ module.exports = function(grunt) {
         },
         concurrent: {
             dist: {
-                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint']
+                tasks: ['build-bower', 'build-app', 'jshint']
             },
             tests: {
-                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint', 'build-tests']
+                tasks: ['build-bower', 'build-app', 'jshint', 'build-tests']
             },
             testControllers: {
-                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint', 'build-tests-controllers']
+                tasks: ['build-bower', 'build-app', 'jshint', 'build-tests-controllers']
             },
             testServices: {
-                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint', 'build-tests-services']
+                tasks: ['build-bower', 'build-app', 'jshint', 'build-tests-services']
             },
             testDirectives: {
-                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint', 'build-tests-directives']
+                tasks: ['build-bower', 'build-app', 'jshint', 'build-tests-directives']
             },
             testFilters: {
-                tasks: ['build-bower', 'build-app', 'concat_css', 'jshint', 'build-tests-filters']
+                tasks: ['build-bower', 'build-app', 'jshint', 'build-tests-filters']
             }
         }
     });
@@ -302,7 +302,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['build']);
 
-    grunt.registerTask('build-bower', ['bower', 'bower_concat', 'uglify:bower', 'bowercopy']);
+    grunt.registerTask('build-bower', ['bower', 'bower_concat', 'uglify:bower', 'bowercopy', 'concat_css']);
     grunt.registerTask('build-app', ['concat:dist', 'babel:dist', 'uglify:app']);
     grunt.registerTask('build', ['concurrent:dist']);
 
