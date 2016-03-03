@@ -49,9 +49,7 @@
                         title: months => `Mature in ${months} months`
                     }
                 },
-                size: {
-                    width: width
-                }
+
             };
         }
 

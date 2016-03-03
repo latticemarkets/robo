@@ -41,11 +41,11 @@
                     }, {});
 
                     $timeout(() => {
-                        generateDonutChart(data, scope.identifier, parentDir.width(), colors);
+                        generateDonutChart(data, scope.identifier, parentDir[0].clientWidth, colors);
                     }, 500);
 
                     onResizeService.addOnResizeCallback(() => {
-                        generateDonutChart(data, scope.identifier, parentDir.width(), colors);
+                        generateDonutChart(data, scope.identifier, parentDir[0].clientWidth, colors);
                     }, onResizeCallbackId);
                 });
 
