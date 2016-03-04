@@ -126,8 +126,8 @@
             .otherwise({ redirectTo: '/404' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$window', '$cookies', '$http', 'editableOptions', '$injector', 'responsiveService', '$timeout'];
-    function run($rootScope, $location, $window, $cookies, $http, editableOptions, $injector, responsiveService, $timeout) {
+    run.$inject = ['$rootScope', '$location', '$window', '$cookies', '$http', 'editableOptions', '$injector', 'responsiveService', '$timeout', 'authenticationService'];
+    function run($rootScope, $location, $window, $cookies, $http, editableOptions, $injector, responsiveService, $timeout, authenticationService) {
         editableOptions.theme = 'bs3';
         $rootScope.globals = $cookies.getObject('globals') || {};
 
@@ -161,8 +161,8 @@
             if (!authorizedPage() && (!loggedIn || loggedIn === undefined)) {
                 $injector.invoke(['$route', $route => {
                     if (Object.keys($route.routes).some(route => route === $location.path())) {
+                        authenticationService.logout();
                         if ($cookies.get('connected')) {
-                            $cookies.remove('connected');
                             $window.location.href = '/?flag=expired';
                         }
                         else {
