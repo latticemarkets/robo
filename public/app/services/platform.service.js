@@ -30,8 +30,8 @@
             this.$http.post('/api/user/platform', { email: email, platform: {originator: originator, accountId: accountId, apiKey: apiKey}, callback: callback }).then(callback, this.notificationService.apiError());
         }
 
-        updatePlatforms(email, platforms, callback, errorCallback) {
-            this.$http.put('/api/user/p2pPlatforms', { email: email, platforms: platforms }).then(callback, this.notificationService.apiError(errorCallback));
+        updatePlatforms(platforms, callback, errorCallback) {
+            this.$http.put('/api/user/p2pPlatforms', { platforms: platforms }).then(callback, this.notificationService.apiError(errorCallback));
         }
 
         updatePlatform(platform, callback) {

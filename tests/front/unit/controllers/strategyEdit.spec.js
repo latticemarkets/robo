@@ -16,7 +16,6 @@ describe('StrategyEditController', () => {
         $routeParams,
         constantsService,
         $location,
-        authenticationService,
         spinnerService,
         platformService,
         rulesService,
@@ -41,17 +40,14 @@ describe('StrategyEditController', () => {
         $location = jasmine.createSpyObj('$location', ['path']);
         $routeParams = { platform: urlOriginator, market: 'primary' };
 
-        authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
-        authenticationService.getCurrentUsersEmail.and.returnValue('toto@tata.fr');
-
         spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
     });
 
     let getPlatformsCallback;
     beforeEach(() => {
         platformService = jasmine.createSpyObj('platformService', ['getPlatforms', 'updatePlatforms']);
-        platformService.getPlatforms.and.callFake((callback) => getPlatformsCallback = callback);
-        platformService.updatePlatforms.and.callFake((email, platforms, callback) => callback());
+        platformService.getPlatforms.and.callFake(callback => getPlatformsCallback = callback);
+        platformService.updatePlatforms.and.callFake((platforms, callback) => callback());
     });
 
     let baseCriteriaName,
@@ -125,7 +121,6 @@ describe('StrategyEditController', () => {
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
-                authenticationService: authenticationService,
                 rulesService: rulesService,
                 spinnerService: spinnerService,
                 platformService: platformService,
@@ -166,12 +161,6 @@ describe('StrategyEditController', () => {
                 it('should stop the spinner on success', () => {
                     expect(spinnerService.off).toHaveBeenCalled();
                 });
-            });
-        });
-
-        describe('email initialisation', () => {
-            it('should call authentication service', () => {
-                expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
             });
         });
 
@@ -354,7 +343,6 @@ describe('StrategyEditController', () => {
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
-                authenticationService: authenticationService,
                 platformService: platformService,
                 rulesService: rulesService
             });
@@ -385,7 +373,6 @@ describe('StrategyEditController', () => {
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
-                authenticationService: authenticationService,
                 spinnerService: spinnerService,
                 platformService: platformService,
                 rulesService: rulesService
@@ -421,7 +408,6 @@ describe('StrategyEditController', () => {
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
-                authenticationService: authenticationService,
                 spinnerService: spinnerService,
                 platformService: platformService,
                 rulesService: rulesService

@@ -13,20 +13,11 @@
 
 describe('PlatformsController', () => {
     let platformsController,
-        authenticationService,
         $scope,
         platformService,
         spinnerService;
 
     beforeEach(module('app'));
-
-    let userEmail;
-    beforeEach(() => {
-
-        userEmail = 'toto@tata.fr';
-        authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
-        authenticationService.getCurrentUsersEmail.and.callFake(() => userEmail);
-    });
 
     let watcher;
     beforeEach(() => {
@@ -45,7 +36,6 @@ describe('PlatformsController', () => {
 
     beforeEach(inject(($controller) => {
         platformsController = $controller('PlatformsController', {
-            authenticationService: authenticationService,
             $scope: $scope,
             spinnerService: spinnerService,
             platformService: platformService
@@ -66,10 +56,6 @@ describe('PlatformsController', () => {
     });
 
     describe('data initialisation', () => {
-        it('should retrieve the user\'s email', () => {
-            expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
-        });
-
         it('should get the platforms', () => {
             expect(platformService.getPlatforms).toHaveBeenCalled();
         });
@@ -85,12 +71,10 @@ describe('PlatformsController', () => {
 
     describe('watch', () => {
 
-        let email,
-            tmpPlatforms,
+        let tmpPlatforms,
             updatePlatformCallback;
         beforeEach(() => {
-            platformService.updatePlatforms.and.callFake((_email_, _tmpPlatforms_, callback) => {
-                email = _email_;
+            platformService.updatePlatforms.and.callFake((_tmpPlatforms_, callback) => {
                 tmpPlatforms = _tmpPlatforms_;
                 updatePlatformCallback = callback;
             });
@@ -103,10 +87,6 @@ describe('PlatformsController', () => {
 
         it('should change mode to the good value', () => {
             expect(platformsController.platforms[0].mode).toBe('automated');
-        });
-
-        it('should send the good email', () => {
-            expect(email).toBe(userEmail);
         });
 
         it('should remove isAuto from the platform object', () => {

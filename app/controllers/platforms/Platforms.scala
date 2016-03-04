@@ -28,7 +28,7 @@ class Platforms extends Controller {
     PlatformsForms.updatePlatformsForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdatePlatforms],
       data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
+        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
           User.update(user.copy(platforms = data.platforms)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
       }

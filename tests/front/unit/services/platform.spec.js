@@ -35,20 +35,18 @@ describe('platformService', () => {
     }));
 
     describe('updatePlatforms', () => {
-        let email,
-            platforms;
+        let platforms;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             platforms = [{name: 'name', apiKey: 'apiKey', accountId: 'accountId'}];
 
             $httpBackend.when('PUT', '/api/user/p2pPlatforms').respond();
 
-            platformService.updatePlatforms(email, platforms);
+            platformService.updatePlatforms(platforms);
         });
 
         it('should call the API', () => {
-            $httpBackend.expectPUT('/api/user/p2pPlatforms', { email: email, platforms: platforms });
+            $httpBackend.expectPUT('/api/user/p2pPlatforms', { platforms: platforms });
             expect($httpBackend.flush).not.toThrow();
         });
 

@@ -36,7 +36,6 @@ object PlatformsForms {
 
   def updatePlatformsForm = Form(
     mapping(
-      "email" -> email,
       "platforms" -> seq(ModelForms.platformMapping)
     )(UpdatePlatforms.apply)(UpdatePlatforms.unapply)
   )
@@ -49,7 +48,7 @@ object PlatformsForms {
   )
 }
 
-case class UpdatePlatforms(email: String, platforms: Seq[Platform])
+case class UpdatePlatforms(platforms: Seq[Platform])
 
 case class UpdatePlatform(email: String, platform: Platform)
 
