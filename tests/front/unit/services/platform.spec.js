@@ -75,24 +75,22 @@ describe('platformService', () => {
     });
 
     describe('addPlatform', () => {
-        let email,
-            originator,
+        let originator,
             accountId,
             apiKey;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             originator = 'originator1';
             accountId = 'accountId1';
             apiKey = 'apiKey1';
 
             $httpBackend.when('POST', '/api/user/platform').respond();
 
-            platformService.addPlatform(email, originator, accountId, apiKey);
+            platformService.addPlatform(originator, accountId, apiKey);
         });
 
         it('should call the API', () => {
-            $httpBackend.expectPOST('/api/user/platform', { email: email, platform: { originator: originator, accountId: accountId, apiKey: apiKey } });
+            $httpBackend.expectPOST('/api/user/platform', { platform: { originator: originator, accountId: accountId, apiKey: apiKey } });
             expect($httpBackend.flush).not.toThrow();
         });
 

@@ -35,7 +35,7 @@
     }
 
     class AddPlatformModalController {
-        constructor($scope, $uibModalInstance, constantsService, platformService, authenticationService, $timeout, platforms, callback) {
+        constructor($scope, $uibModalInstance, constantsService, platformService, $timeout, platforms, callback) {
             $scope.platforms = constantsService.platformsImgExtensions;
 
             $scope.cancel = () => {
@@ -71,7 +71,7 @@
                 const apiKey = $('#apiKey').val();
 
                 if (accountId && apiKey) {
-                    platformService.addPlatform(authenticationService.getCurrentUsersEmail(), $scope.chosePlatform, accountId, apiKey,
+                    platformService.addPlatform($scope.chosePlatform, accountId, apiKey,
                         () => {
                             finish();
                             $timeout(() => callback(), 300);
