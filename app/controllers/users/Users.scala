@@ -101,9 +101,10 @@ class Users extends Controller {
     UsersForms.destroyAccountForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       data => {
-        User.findByEmail(data.email) flatMap (optUser => optUser map (user =>
+        val email = request.headers.get("USER").getOrElse("")
+        User.findByEmail(email) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(data.password, user.password)) {
-            User.delete(data.email) map (deleted => if (deleted) Ok("") else BadGateway(""))
+            User.delete(email) map (deleted => if (deleted) Ok("") else BadGateway(""))
           }
           else {
             Future.successful( BadRequest("Incorrect password") )

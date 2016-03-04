@@ -48,7 +48,7 @@ case class UpdatePassword(oldPassword: String, newPassword: String)
 
 case class UpdatePersonalData(firstName: String, lastName: String, birthday: Date)
 
-case class DestroyAccount(email: String, password: String)
+case class DestroyAccount(password: String)
 
 object User {
 

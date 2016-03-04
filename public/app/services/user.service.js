@@ -64,8 +64,8 @@
             this.$http.put('/api/user/personalData', { firstName: firstName.toLowerCase(), lastName: lastName.toLowerCase(), birthday: birthday }).then(callback, this.notificationService.apiError());
         }
 
-        destroyUser(email, password, callback) {
-            this.$http.post('/api/user/destroy', { email: email, password: password }).then(callback, this.notificationService.apiError());
+        destroyUser(password, callback) {
+            this.$http.post('/api/user/destroy', { password: password }).then(callback, this.notificationService.apiError());
         }
 
         checkUserToken(email, token, callback) {

@@ -45,7 +45,6 @@ object UsersForms {
 
   def destroyAccountForm = Form(
     mapping(
-      "email" -> email,
       "password" -> nonEmptyText
     )(DestroyAccount.apply)(DestroyAccount.unapply)
   )
