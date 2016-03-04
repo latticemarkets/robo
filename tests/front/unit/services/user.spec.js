@@ -153,22 +153,20 @@ describe('userService', () => {
     });
 
     describe('updatePassword', () => {
-        let email,
-            oldPassword,
+        let oldPassword,
             newPassword;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             oldPassword = '0ldPassword';
             newPassword = "NewPassw0rd";
 
             _$httpBackend.when('PUT', '/api/user/password').respond();
 
-            _userService.updatePassword(email, oldPassword, newPassword);
+            _userService.updatePassword(oldPassword, newPassword);
         });
 
         it('should should call the API', () => {
-            _$httpBackend.expectPUT('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword });
+            _$httpBackend.expectPUT('/api/user/password', { oldPassword: oldPassword, newPassword: newPassword });
             expect(_$httpBackend.flush).not.toThrow();
         });
 

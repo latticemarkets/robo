@@ -68,11 +68,11 @@ class Users extends Controller {
     User.findByEmail(request.headers.get("USER").getOrElse("")) map ( _.map (user => Ok(Json.toJson(user))) getOrElse Utils.responseOnWrongDataSent)
   }
 
-  def updatePassword() = HasToken.async { implicit request =>
+  def updatePassword = HasToken.async { implicit request =>
     UsersForms.updatePasswordForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       infos => {
-        User.findByEmail(infos.email) flatMap (optUser => optUser map (user =>
+        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(infos.oldPassword, user.password)) {
             User.update(user.copy(password = Hash.createPassword(infos.newPassword)))
               .map (user => Ok(""))

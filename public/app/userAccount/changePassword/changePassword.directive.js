@@ -18,9 +18,9 @@
         .module('app')
         .directive('changePassword', changePassword);
 
-    changePassword.$inject = ['patternCheckerService', 'notificationService', 'authenticationService', 'userService','spinnerService'];
+    changePassword.$inject = ['patternCheckerService', 'notificationService', 'userService','spinnerService'];
 
-    function changePassword(patternCheckerService, notificationService, authenticationService, userService, spinnerService) {
+    function changePassword(patternCheckerService, notificationService, userService, spinnerService) {
         return {
             replace: true,
             restrict: 'E',
@@ -47,7 +47,6 @@
                     if (allConditionsSatisfied()) {
                         spinnerService.on();
                         userService.updatePassword(
-                            authenticationService.getCurrentUsersEmail(),
                             scope.oldPassword,
                             scope.newPassword,
                             () => {

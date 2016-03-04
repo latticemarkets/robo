@@ -30,7 +30,6 @@ object UsersForms {
 
   def updatePasswordForm = Form(
     mapping(
-      "email" -> email,
       "oldPassword" -> nonEmptyText,
       "newPassword" -> nonEmptyText
     )(UpdatePassword.apply)(UpdatePassword.unapply)

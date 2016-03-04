@@ -44,7 +44,7 @@ case class Login(
   email: String,
   password: String)
 
-case class UpdatePassword(email: String, oldPassword: String, newPassword: String)
+case class UpdatePassword(oldPassword: String, newPassword: String)
 
 case class UpdatePersonalData(email: String, firstName: String, lastName: String, birthday: Date)
 
