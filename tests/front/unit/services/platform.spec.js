@@ -15,23 +15,11 @@ describe('platformService', () => {
     beforeEach(module('app'));
 
     let platformService,
-        $httpBackend,
-        authenticationService;
+        $httpBackend;
 
-    beforeEach(() => {
-        module($provide => {
-            $provide.service('authenticationService', () => {
-                return {
-                    getCurrentUsersEmail: jasmine.createSpy('getCurrentUsersEmail')
-                };
-            });
-        });
-    });
-
-    beforeEach(inject((_platformService_, _$httpBackend_, _authenticationService_) => {
+    beforeEach(inject((_platformService_, _$httpBackend_) => {
         platformService = _platformService_;
         $httpBackend = _$httpBackend_;
-        authenticationService = _authenticationService_;
     }));
 
     describe('updatePlatforms', () => {
@@ -101,25 +89,18 @@ describe('platformService', () => {
     });
 
     describe('updatePlatform', () => {
-        let platform,
-            email;
+        let platform;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             platform = {};
 
             $httpBackend.when('PUT', '/api/user/platform').respond();
-            authenticationService.getCurrentUsersEmail.and.returnValue(email);
 
             platformService.updatePlatform(platform);
         });
 
-        it('should get user\'s email', () => {
-            expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
-        });
-
         it('should call the API', () => {
-            $httpBackend.expectPUT('/api/user/platform', { email: email, platform: {} });
+            $httpBackend.expectPUT('/api/user/platform', { platform: {} });
             expect($httpBackend.flush).not.toThrow();
 
             $httpBackend.verifyNoOutstandingExpectation();

@@ -55,7 +55,7 @@ class Platforms extends Controller {
     PlatformsForms.updatePlatformForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdatePlatform],
       data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
+        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
           User.update(user.copy(platforms = user.platforms.map(p =>
             if (p.originator == data.platform.originator) data.platform else p)
           )) map (user => Ok(""))
