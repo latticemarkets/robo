@@ -308,19 +308,22 @@ body.modal-open {
 .sweet-alert .sa-button-container button.cancel {
     background-color: #c0392b;
     border-color: #c0392b;
-    color: white;
+    color: #FFFFFF ;
 }
 .sweet-alert .sa-button-container button.cancel:hover {
     background-color: #d24637;
+    border-color: #d24637;
+    color: #FFFFFF ;
 }
 .sweet-alert .sa-confirm-button-container button.confirm {
-    border: 1px solid #3498db !important;
-    background-color: #fff !important;
-    color: #3498db !important;
+    background-color: #3498db !important;
+    border-color: #3498db !important;
+    color: #FFFFFF !important;
 }
 .sweet-alert .sa-confirm-button-container button.confirm:hover {
-    background-color: #3498db !important;
-    color: #fff !important;
+    background-color: #4ea5e0 !important;
+    border-color: #4ea5e0 !important;
+    color: #FFFFFF !important;
 }
 /*3.2 LOGO*/
 
