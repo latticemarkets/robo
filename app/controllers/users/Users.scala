@@ -90,7 +90,7 @@ class Users extends Controller {
     UsersForms.updatePersonalData.bindFromRequest.fold(
       Utils.badRequestOnError,
       data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
+        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
           User.update(user.copy(firstName = data.firstName, lastName = data.lastName, birthday = data.birthday)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
       }

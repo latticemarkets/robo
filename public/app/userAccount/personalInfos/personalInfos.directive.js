@@ -5,9 +5,9 @@
         .module('app')
         .directive('personalInfos', personalInfos);
 
-    personalInfos.$inject = ['userService', 'notificationService','authenticationService','spinnerService', '$filter'];
+    personalInfos.$inject = ['userService', 'notificationService','spinnerService', '$filter'];
 
-      function personalInfos(userService, notificationService, authenticationService,spinnerService, $filter) {
+      function personalInfos(userService, notificationService, spinnerService, $filter) {
         return {
             replace: true,
             restrict: 'E',
@@ -61,7 +61,6 @@
                 if (allConditionsSatisfied()) {
                     spinnerService.on();
                     userService.updatePersonalData(
-                        authenticationService.getCurrentUsersEmail(),
                         scope.firstName,
                         scope.lastName,
                         scope.birthday = scope.month.id + "/" + scope.day + "/" + scope.year,

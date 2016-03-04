@@ -177,24 +177,22 @@ describe('userService', () => {
     });
 
     describe('updatePersonalData', () => {
-        let email,
-            firstName,
+        let firstName,
             lastName,
             birthday;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             firstName = 'firstName';
             lastName = 'lastName';
             birthday = 'birthday';
 
             _$httpBackend.when('PUT', '/api/user/personalData').respond();
 
-            _userService.updatePersonalData(email, firstName, lastName, birthday);
+            _userService.updatePersonalData(firstName, lastName, birthday);
         });
 
         it('should should call the API', () => {
-            _$httpBackend.expectPUT('/api/user/personalData', { email: email, firstName: 'firstname', lastName: 'lastname', birthday: birthday });
+            _$httpBackend.expectPUT('/api/user/personalData', { firstName: 'firstname', lastName: 'lastname', birthday: birthday });
             expect(_$httpBackend.flush).not.toThrow();
         });
 
