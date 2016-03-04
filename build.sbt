@@ -14,6 +14,7 @@ libraryDependencies ++= Seq(
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
+resolvers += "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/"
 
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.
@@ -26,5 +27,7 @@ libraryDependencies ++= Seq(
   "org.scalanlp" %% "breeze" % "0.12",
   "org.scalanlp" %% "breeze-natives" % "0.12",
   "org.scalanlp" %% "breeze-viz" % "0.12",
-  "de.sciss" %% "play-json-sealed" % "0.2.0"
+  "de.sciss" %% "play-json-sealed" % "0.2.0",
+  "org.scalanlp" %% "breeze" % "0.10",
+  "org.scalanlp" %% "breeze-natives" % "0.10"
 )

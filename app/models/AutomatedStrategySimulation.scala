@@ -49,8 +49,7 @@ case class PortfolioComposition(
                                 )
 
 case class StrategyReturns(
-                          expectedReturn: BigDecimal,
-                          quantity: BigDecimal
+                          value: BigDecimal
                           )
 
 object AutomatedStrategySimulation {

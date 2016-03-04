@@ -8,12 +8,12 @@
 
 package controllers.automatedStrategySimulation
 
+import breeze.stats.distributions.Gaussian
 import controllers.Security.HasToken
-import models.{PortfolioComposition, SimulationStep, StrategyReturns, AutomatedStrategySimulation}
+import core.Formatters._
+import models.{AutomatedStrategySimulation, PortfolioComposition, SimulationStep, StrategyReturns}
 import play.api.libs.json.Json
 import play.api.mvc.Controller
-
-import core.Formatters._
 
 /**
   * @author : julienderay
@@ -24,16 +24,16 @@ class AutomatedStrategySimulations extends Controller {
 
   def getSimulation(email: String, originator: String) = HasToken {
     val r = scala.util.Random
-    val strategyReturns = Seq[StrategyReturns](
-      StrategyReturns(-7, 0),
-      StrategyReturns(-5, 0.3),
-      StrategyReturns(-2.5, 1.2),
-      StrategyReturns(0, 2.3),
-      StrategyReturns(2.5, 3.85),
-      StrategyReturns(5, 7.5),
-      StrategyReturns(8, 10),
-      StrategyReturns(13, 1),
-      StrategyReturns(13.5, 0))
+
+    val gau = Gaussian(3.0, 1.0)
+    val y = List.tabulate(40)(n => 0.3 * n - 3)
+
+    val strategyReturns = y
+      .map( d => gau.logPdf(d))
+      .map(v => {
+        StrategyReturns(v + 3)
+      })
+      .toSeq
 
     def generateRandomPortfolioComposition = {
       var rest = 100

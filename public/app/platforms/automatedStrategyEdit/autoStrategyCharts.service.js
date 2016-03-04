@@ -37,8 +37,8 @@
         prepareSplineChartColumns(sliderValue, simulationSteps) {
             const stepValues = this.getSplineChartValuesFromSlider(sliderValue, simulationSteps);
             return [
-                this.prepareSplineChartXValues(stepValues.map(strategyReturn => strategyReturn.expectedReturn)),
-                this.prepareSplineChartYValues(stepValues.map(strategyReturn => strategyReturn.quantity))
+                this.prepareSplineChartXValues(Array.apply(null, new Array(40)).map((x, i) => i-10 )),
+                this.prepareSplineChartYValues(stepValues.map(strategyReturn => strategyReturn.value))
             ];
         }
 
@@ -80,7 +80,8 @@
                             max: 20
                     },
                     y: {
-                        show: false
+                        show: false,
+                        min: 2
                     }
                 },
                 point: {
