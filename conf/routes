@@ -11,7 +11,7 @@ POST    /api/login                                                  controllers.
 PUT     /api/user/password                                          controllers.users.Users.updatePassword
 PUT     /api/user/personalData                                      controllers.users.Users.updatePersonalData
 GET     /api/user/check/:email                                      controllers.users.Users.isUsed(email)
-GET     /api/user/infos/:email                                      controllers.users.Users.userData(email)
+GET     /api/user/infos                                             controllers.users.Users.userData
 POST    /api/user/destroy                                           controllers.users.Users.destroyAccount
 POST    /api/user/token                                             controllers.users.Users.checkToken
 

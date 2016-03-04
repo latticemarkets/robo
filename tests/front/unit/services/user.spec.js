@@ -134,40 +134,15 @@ describe('userService', () => {
         });
     });
 
-    describe('userInformations', () => {
-        let email;
-
-        beforeEach(() => {
-            email = "email";
-
-            _$httpBackend.when('GET', `/api/user/infos/${email}`).respond();
-            _userService.userData(email);
-        });
-
-        it('should call the API', () => {
-            _$httpBackend.expectGET(`/api/user/infos/${email}`);
-            expect(_$httpBackend.flush).not.toThrow();
-        });
-
-        afterEach(() => {
-            _$httpBackend.verifyNoOutstandingExpectation();
-            _$httpBackend.verifyNoOutstandingRequest();
-        });
-    });
-
     describe('userData', () => {
-        let email;
-
         beforeEach(() => {
-            email = "email@domain.co.uk";
+            _$httpBackend.when('GET', '/api/user/infos').respond();
 
-            _$httpBackend.when('GET', '/api/user/infos/email@domain.co.uk').respond();
-
-            _userService.userData(email);
+            _userService.userData();
         });
 
         it('should call the API', () => {
-            _$httpBackend.expectGET('/api/user/infos/email@domain.co.uk');
+            _$httpBackend.expectGET('/api/user/infos');
             expect(_$httpBackend.flush).not.toThrow();
         });
 

@@ -64,8 +64,8 @@ class Users extends Controller {
     }
   }
 
-  def userData(email: String) = HasToken.async {
-    User.findByEmail(email) map ( _.map (user => Ok(Json.toJson(user))) getOrElse Utils.responseOnWrongDataSent)
+  def userData = HasToken.async { implicit request =>
+    User.findByEmail(request.headers.get("USER").getOrElse("")) map ( _.map (user => Ok(Json.toJson(user))) getOrElse Utils.responseOnWrongDataSent)
   }
 
   def updatePassword() = HasToken.async { implicit request =>

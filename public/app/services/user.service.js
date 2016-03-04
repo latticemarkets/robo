@@ -50,8 +50,8 @@
                 .then(successCallback, errorCallback);
         }
 
-        userData(email, callback) {
-            const promise = this.$http.get(`/api/user/infos/${email}`);
+        userData(callback) {
+            const promise = this.$http.get('/api/user/infos');
             promise.then(callback, this.notificationService.apiError());
             return promise;
         }

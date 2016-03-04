@@ -15,10 +15,9 @@
     'use strict';
 
     class UserAccountController {
-        constructor(userService, authenticationService) {
+        constructor(userService) {
             var vm = this;
-            const userId = authenticationService.getCurrentUsersEmail();
-            vm.userPromise = userService.userData(userId);
+            vm.userPromise = userService.userData();
         }
     }
 
