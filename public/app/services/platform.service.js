@@ -21,8 +21,8 @@
             this.authenticationService = authenticationService;
         }
 
-        getPlatforms(email, callback) {
-            this.$http.get(`/api/user/platforms/${email}`)
+        getPlatforms(callback) {
+            this.$http.get(`/api/user/platforms`)
                 .then(callback, this.notificationService.apiError());
         }
 

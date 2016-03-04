@@ -36,7 +36,7 @@ describe('StrategiesController', () => {
         spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
 
         platformService = jasmine.createSpyObj('platformService', ['getPlatforms']);
-        platformService.getPlatforms.and.callFake((email, callback) => callback(
+        platformService.getPlatforms.and.callFake((callback) => callback(
         { data: [
             {
                 originator: 'a',

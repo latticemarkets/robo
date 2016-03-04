@@ -45,7 +45,7 @@
             }
 
             function getPlatforms() {
-                platformService.getPlatforms(email, response => {
+                platformService.getPlatforms(response => {
                     vm.platforms = response.data;
                     refreshAllPlatformLinked();
                     vm.platforms.forEach(platform => {

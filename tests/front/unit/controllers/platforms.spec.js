@@ -36,7 +36,7 @@ describe('PlatformsController', () => {
 
     beforeEach(() => {
         platformService = jasmine.createSpyObj('platformService', ['getPlatforms', 'updatePlatforms']);
-        platformService.getPlatforms.and.callFake((email, callback) => callback({ data: [{ mode: 'automated' }] }));
+        platformService.getPlatforms.and.callFake(callback => callback({ data: [{ mode: 'automated' }] }));
     });
 
     beforeEach(() => {

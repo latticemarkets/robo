@@ -34,7 +34,7 @@
             }
 
             spinnerService.on();
-            platformService.getPlatforms(email, response => {
+            platformService.getPlatforms(response => {
                 response.data.some(p => {
                     if (p.originator == platform) {
                         vm.strategies = p[market].buyStrategies;

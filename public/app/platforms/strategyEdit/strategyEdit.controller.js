@@ -143,7 +143,7 @@
 
                 function checkRuleId() {
                     spinnerService.on();
-                    platformService.getPlatforms(email, response => {
+                    platformService.getPlatforms(response => {
                         response.data.some(p => {
                             if (p.originator == platform) {
                                 vm.platforms = response.data;

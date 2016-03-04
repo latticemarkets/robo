@@ -50,7 +50,7 @@ describe('StrategyEditController', () => {
     let getPlatformsCallback;
     beforeEach(() => {
         platformService = jasmine.createSpyObj('platformService', ['getPlatforms', 'updatePlatforms']);
-        platformService.getPlatforms.and.callFake((email, callback) => getPlatformsCallback = callback);
+        platformService.getPlatforms.and.callFake((callback) => getPlatformsCallback = callback);
         platformService.updatePlatforms.and.callFake((email, platforms, callback) => callback());
     });
 

@@ -59,18 +59,14 @@ describe('platformService', () => {
     });
 
     describe('getPlatforms', () => {
-        let email;
-
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
+            $httpBackend.when('GET', '/api/user/platforms').respond();
 
-            $httpBackend.when('GET', `/api/user/platforms/${email}`).respond();
-
-            platformService.getPlatforms(email);
+            platformService.getPlatforms();
         });
 
         it('should call the API', () => {
-            $httpBackend.expectGET(`/api/user/platforms/${email}`);
+            $httpBackend.expectGET('/api/user/platforms');
             expect($httpBackend.flush).not.toThrow();
         });
 
