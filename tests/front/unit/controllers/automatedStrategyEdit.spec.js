@@ -16,7 +16,6 @@ describe('AutomatedStrategyEditController', () => {
         onResizeService,
         $scope,
         autoStrategyChartsService,
-        authenticationService,
         $location,
         spinnerService,
         strategiesService,
@@ -29,13 +28,6 @@ describe('AutomatedStrategyEditController', () => {
     let urlOriginator;
     beforeEach(() => {
         urlOriginator = 'a';
-    });
-
-    let email;
-    beforeEach(() => {
-        email = 'toto@tata.fr';
-        authenticationService = jasmine.createSpyObj('authenticationService', ['getCurrentUsersEmail']);
-        authenticationService.getCurrentUsersEmail.and.returnValue(email);
     });
 
     let onDestroyCallback;
@@ -52,8 +44,8 @@ describe('AutomatedStrategyEditController', () => {
         updateAutomatedStrategyCallback;
     beforeEach(() => {
         strategiesService = jasmine.createSpyObj('strategiesService', ['getAutomatedStrategy', 'updateAutomatedStrategy']);
-        strategiesService.getAutomatedStrategy.and.callFake((email, platform, callback) => getAutomatedStrategyCallback = callback);
-        strategiesService.updateAutomatedStrategy.and.callFake((email, platform, aggressivity, primaryMarketEnabled, secondaryMarketEnabled, callback) => updateAutomatedStrategyCallback = callback);
+        strategiesService.getAutomatedStrategy.and.callFake((platform, callback) => getAutomatedStrategyCallback = callback);
+        strategiesService.updateAutomatedStrategy.and.callFake((platform, aggressivity, primaryMarketEnabled, secondaryMarketEnabled, callback) => updateAutomatedStrategyCallback = callback);
     });
 
     let getStrategySimulationsCallback,
@@ -90,7 +82,6 @@ describe('AutomatedStrategyEditController', () => {
             onResizeService: onResizeService,
             $scope: $scope,
             autoStrategyChartsService: autoStrategyChartsService,
-            authenticationService: authenticationService,
             $location: $location,
             spinnerService: spinnerService,
             strategiesService: strategiesService,
@@ -100,12 +91,6 @@ describe('AutomatedStrategyEditController', () => {
         });
         $timeout = _$timeout_;
     }));
-
-    describe('email initialisation', () => {
-        it('should call authentication service', () => {
-            expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
-        });
-    });
 
     describe('data initialization from service', () => {
         it('should get the automated strategy', () => {
@@ -282,7 +267,7 @@ describe('AutomatedStrategyEditController', () => {
         });
 
         it('should persist the strategy', () => {
-            expect(strategiesService.updateAutomatedStrategy).toHaveBeenCalledWith(email,
+            expect(strategiesService.updateAutomatedStrategy).toHaveBeenCalledWith(
                 platform,
                 automatedStrategyEditController.strategyValue / 10,
                 automatedStrategyEditController.primaryMarketEnabled,

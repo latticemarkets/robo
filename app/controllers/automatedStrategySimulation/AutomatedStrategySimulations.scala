@@ -22,7 +22,7 @@ import core.Formatters._
 
 class AutomatedStrategySimulations extends Controller {
 
-  def getSimulation(email: String, originator: String) = HasToken {
+  def getSimulation(originator: String) = HasToken { implicit request =>
     val r = scala.util.Random
     val strategyReturns = Seq[StrategyReturns](
       StrategyReturns(-7, 0),
@@ -48,7 +48,7 @@ class AutomatedStrategySimulations extends Controller {
     }
 
     Ok(Json.toJson(AutomatedStrategySimulation(
-      email,
+      request.headers.get("USER").getOrElse(""),
       originator,
       for (i <- 1 to 101) yield SimulationStep(
         strategyReturns,

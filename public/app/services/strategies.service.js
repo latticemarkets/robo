@@ -21,18 +21,17 @@
             this.notificationService = notificationService;
         }
 
-        updateStrategies(strategies, email, platform, market, callback, errorCallback) {
+        updateStrategies(strategies, platform, market, callback, errorCallback) {
             if (market === 'primary') {
-                this.$http.put('/api/strategies/primary/buy', { strategies: strategies, email: email, platform: platform }).then(callback, this.notificationService.apiError(errorCallback));
+                this.$http.put('/api/strategies/primary/buy', { strategies: strategies, platform: platform }).then(callback, this.notificationService.apiError(errorCallback));
             }
             else {
-                this.$http.put('/api/strategies/secondary/buy', { strategies: strategies, email: email, platform: platform }).then(callback, this.notificationService.apiError(errorCallback));
+                this.$http.put('/api/strategies/secondary/buy', { strategies: strategies, platform: platform }).then(callback, this.notificationService.apiError(errorCallback));
             }
         }
 
-        updateAutomatedStrategy(email, platform, aggressivity, primaryMarketEnabled, secondaryMarketEnabled, callback) {
+        updateAutomatedStrategy(platform, aggressivity, primaryMarketEnabled, secondaryMarketEnabled, callback) {
             this.$http.put('/api/strategies/auto', {
-                    email: email,
                     platform: platform,
                     autoStrategy: {
                         aggressivity: aggressivity,
@@ -43,8 +42,8 @@
                 .then(callback, this.notificationService.apiError());
         }
 
-        getAutomatedStrategy(email, platform, callback) {
-            this.$http.get(`/api/strategies/auto/${email}/${platform}`)
+        getAutomatedStrategy(platform, callback) {
+            this.$http.get(`/api/strategies/auto/${platform}`)
                 .then(callback, this.notificationService.apiError());
         }
     }

@@ -22,9 +22,6 @@ describe('automatedStrategyEditService', () => {
             $provide.service('$location', () => ({
                 path: jasmine.createSpy('path')
             }));
-            $provide.service('authenticationService', () => ({
-                getCurrentUsersEmail: jasmine.createSpy('getCurrentUsersEmail')
-            }));
             $provide.service('constantsService', () => ({
                 platforms: jasmine.createSpy('platforms')
             }));
@@ -34,35 +31,29 @@ describe('automatedStrategyEditService', () => {
     let automatedStrategyEditService,
         $httpBackend,
         $location,
-        authenticationService,
         $routeParams,
         constantsService;
 
-    beforeEach(inject((_automatedStrategyEditService_, _$httpBackend_, _$location_, _authenticationService_, _constantsService_, _$routeParams_) => {
+    beforeEach(inject((_automatedStrategyEditService_, _$httpBackend_, _$location_, _constantsService_, _$routeParams_) => {
         automatedStrategyEditService = _automatedStrategyEditService_;
         $httpBackend = _$httpBackend_;
         $location = _$location_;
-        authenticationService = _authenticationService_;
         constantsService = _constantsService_;
         $routeParams = _$routeParams_;
     }));
 
     describe('getStrategySimulations', () => {
-        let email,
-            originator;
+        let originator;
 
         beforeEach(() => {
-            email = 'a@a.fr';
             originator = 'aaa';
-            $httpBackend.when('GET', `/api/strategies/auto/simulation/${email}/${originator}`).respond();
-            authenticationService.getCurrentUsersEmail.and.returnValue(email);
+            $httpBackend.when('GET', `/api/strategies/auto/simulation/${originator}`).respond();
 
             automatedStrategyEditService.getStrategySimulations(originator, () => {});
         });
 
-        it('should call the API with current user email', () => {
-            expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
-            $httpBackend.expectGET(`/api/strategies/auto/simulation/${email}/${originator}`);
+        it('should call the API', () => {
+            $httpBackend.expectGET(`/api/strategies/auto/simulation/${originator}`);
             expect($httpBackend.flush).not.toThrow();
         });
 
