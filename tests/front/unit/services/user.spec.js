@@ -134,40 +134,15 @@ describe('userService', () => {
         });
     });
 
-    describe('userInformations', () => {
-        let email;
-
-        beforeEach(() => {
-            email = "email";
-
-            _$httpBackend.when('GET', `/api/user/infos/${email}`).respond();
-            _userService.userData(email);
-        });
-
-        it('should call the API', () => {
-            _$httpBackend.expectGET(`/api/user/infos/${email}`);
-            expect(_$httpBackend.flush).not.toThrow();
-        });
-
-        afterEach(() => {
-            _$httpBackend.verifyNoOutstandingExpectation();
-            _$httpBackend.verifyNoOutstandingRequest();
-        });
-    });
-
     describe('userData', () => {
-        let email;
-
         beforeEach(() => {
-            email = "email@domain.co.uk";
+            _$httpBackend.when('GET', '/api/user/infos').respond();
 
-            _$httpBackend.when('GET', '/api/user/infos/email@domain.co.uk').respond();
-
-            _userService.userData(email);
+            _userService.userData();
         });
 
         it('should call the API', () => {
-            _$httpBackend.expectGET('/api/user/infos/email@domain.co.uk');
+            _$httpBackend.expectGET('/api/user/infos');
             expect(_$httpBackend.flush).not.toThrow();
         });
 
@@ -178,22 +153,20 @@ describe('userService', () => {
     });
 
     describe('updatePassword', () => {
-        let email,
-            oldPassword,
+        let oldPassword,
             newPassword;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             oldPassword = '0ldPassword';
             newPassword = "NewPassw0rd";
 
             _$httpBackend.when('PUT', '/api/user/password').respond();
 
-            _userService.updatePassword(email, oldPassword, newPassword);
+            _userService.updatePassword(oldPassword, newPassword);
         });
 
         it('should should call the API', () => {
-            _$httpBackend.expectPUT('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword });
+            _$httpBackend.expectPUT('/api/user/password', { oldPassword: oldPassword, newPassword: newPassword });
             expect(_$httpBackend.flush).not.toThrow();
         });
 
@@ -204,24 +177,22 @@ describe('userService', () => {
     });
 
     describe('updatePersonalData', () => {
-        let email,
-            firstName,
+        let firstName,
             lastName,
             birthday;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             firstName = 'firstName';
             lastName = 'lastName';
             birthday = 'birthday';
 
             _$httpBackend.when('PUT', '/api/user/personalData').respond();
 
-            _userService.updatePersonalData(email, firstName, lastName, birthday);
+            _userService.updatePersonalData(firstName, lastName, birthday);
         });
 
         it('should should call the API', () => {
-            _$httpBackend.expectPUT('/api/user/personalData', { email: email, firstName: 'firstname', lastName: 'lastname', birthday: birthday });
+            _$httpBackend.expectPUT('/api/user/personalData', { firstName: 'firstname', lastName: 'lastname', birthday: birthday });
             expect(_$httpBackend.flush).not.toThrow();
         });
 
@@ -232,20 +203,18 @@ describe('userService', () => {
     });
 
     describe('destroyUser', () => {
-        let email,
-            password;
+        let password;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             password = 'passW0rd';
 
             _$httpBackend.when('POST', '/api/user/destroy').respond();
 
-            _userService.destroyUser(email, password);
+            _userService.destroyUser(password);
         });
 
         it('should should call the API', () => {
-            _$httpBackend.expectPOST('/api/user/destroy', { email: email, password: password });
+            _$httpBackend.expectPOST('/api/user/destroy', { password: password });
             expect(_$httpBackend.flush).not.toThrow();
         });
 

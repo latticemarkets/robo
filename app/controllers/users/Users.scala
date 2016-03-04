@@ -64,15 +64,15 @@ class Users extends Controller {
     }
   }
 
-  def userData(email: String) = HasToken.async {
-    User.findByEmail(email) map ( _.map (user => Ok(Json.toJson(user))) getOrElse Utils.responseOnWrongDataSent)
+  def userData = HasToken.async { implicit request =>
+    User.findByEmail(request.headers.get("USER").getOrElse("")) map ( _.map (user => Ok(Json.toJson(user))) getOrElse Utils.responseOnWrongDataSent)
   }
 
-  def updatePassword() = HasToken.async { implicit request =>
+  def updatePassword = HasToken.async { implicit request =>
     UsersForms.updatePasswordForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       infos => {
-        User.findByEmail(infos.email) flatMap (optUser => optUser map (user =>
+        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(infos.oldPassword, user.password)) {
             User.update(user.copy(password = Hash.createPassword(infos.newPassword)))
               .map (user => Ok(""))
@@ -90,7 +90,7 @@ class Users extends Controller {
     UsersForms.updatePersonalData.bindFromRequest.fold(
       Utils.badRequestOnError,
       data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
+        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
           User.update(user.copy(firstName = data.firstName, lastName = data.lastName, birthday = data.birthday)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
       }
@@ -101,9 +101,10 @@ class Users extends Controller {
     UsersForms.destroyAccountForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       data => {
-        User.findByEmail(data.email) flatMap (optUser => optUser map (user =>
+        val email = request.headers.get("USER").getOrElse("")
+        User.findByEmail(email) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(data.password, user.password)) {
-            User.delete(data.email) map (deleted => if (deleted) Ok("") else BadGateway(""))
+            User.delete(email) map (deleted => if (deleted) Ok("") else BadGateway(""))
           }
           else {
             Future.successful( BadRequest("Incorrect password") )

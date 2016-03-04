@@ -15,16 +15,15 @@
     'use strict';
 
     class AutomatedStrategyEditController {
-        constructor($timeout, onResizeService, $scope, autoStrategyChartsService, authenticationService, $location, spinnerService, strategiesService, automatedStrategyEditService, c3, SweetAlert) {
+        constructor($timeout, onResizeService, $scope, autoStrategyChartsService, $location, spinnerService, strategiesService, automatedStrategyEditService, c3, SweetAlert) {
             var vm = this;
 
             vm.splineChartId = "expectedReturnDistribution";
             vm.barChartId = "gradesDistributionChart";
 
             const platform = automatedStrategyEditService.getPlatformFromUrl();
-            const email = authenticationService.getCurrentUsersEmail();
 
-            strategiesService.getAutomatedStrategy(email, platform, strategyResponse =>
+            strategiesService.getAutomatedStrategy(platform, strategyResponse =>
                 automatedStrategyEditService.getStrategySimulations(platform, simulationResponse => {
                     vm.strategyValue = strategyResponse.data.aggressivity * 10;
                     vm.primaryMarketEnabled = strategyResponse.data.primaryMarketEnabled;
@@ -81,7 +80,7 @@
 
             vm.save = () => {
                 spinnerService.on();
-                strategiesService.updateAutomatedStrategy(email, platform, vm.strategyValue / 10, vm.primaryMarketEnabled, vm.secondaryMarketEnabled,
+                strategiesService.updateAutomatedStrategy(platform, vm.strategyValue / 10, vm.primaryMarketEnabled, vm.secondaryMarketEnabled,
                     () => {
                         spinnerService.off();
                         $location.path('/platforms');

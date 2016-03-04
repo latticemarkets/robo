@@ -15,10 +15,8 @@
     'use strict';
 
     class PlatformsController {
-        constructor(authenticationService, constantsService, $filter, addPlatformService, $scope, spinnerService, $location, platformService, platformSettingsService) {
+        constructor(constantsService, $filter, addPlatformService, $scope, spinnerService, $location, platformService, platformSettingsService) {
             var vm = this;
-
-            const email = authenticationService.getCurrentUsersEmail();
 
             getPlatforms();
 
@@ -45,7 +43,7 @@
             }
 
             function getPlatforms() {
-                platformService.getPlatforms(email, response => {
+                platformService.getPlatforms(response => {
                     vm.platforms = response.data;
                     refreshAllPlatformLinked();
                     vm.platforms.forEach(platform => {
@@ -58,7 +56,7 @@
                                 delete p.isAuto;
                                 return p;
                             });
-                            platformService.updatePlatforms(email, tmpPlatforms, () => spinnerService.off(), () => {
+                            platformService.updatePlatforms(tmpPlatforms, () => spinnerService.off(), () => {
                                 platform.mode = platform.isAuto ? 'automated' : 'manual';
                                 platform.isAuto = !platform.isAuto;
                             });

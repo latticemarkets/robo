@@ -21,14 +21,12 @@ import play.api.data.Forms._
 object StrategiesForms {
   def updateStrategiesForm = Form(
     mapping(
-      "email" -> email,
       "platform" -> nonEmptyText,
       "strategies" -> seq(ModelForms.manualStrategyMapping)
   )(UpdateStrategies.apply)(UpdateStrategies.unapply))
 
   def updateAutomatedStrategy = Form(
     mapping(
-      "email" -> email,
       "platform" -> nonEmptyText,
       "autoStrategy" -> ModelForms.automatedStrategyMapping
     )(UpdateAutomatedStrategy.apply)(UpdateAutomatedStrategy.unapply)
@@ -36,18 +34,15 @@ object StrategiesForms {
 }
 
 sealed class UpdatePlatform(
-             val email: String,
              val platform: String
            )
 
 case class UpdateStrategies(
-           override val email: String,
            override val platform: String,
            strategies: Seq[ManualStrategy]
-             ) extends UpdatePlatform(email, platform)
+             ) extends UpdatePlatform(platform)
 
 case class UpdateAutomatedStrategy(
-            override val email: String,
             override val platform: String,
             autoStrategy: AutomatedStrategy
-            ) extends UpdatePlatform(email, platform)
+            ) extends UpdatePlatform(platform)

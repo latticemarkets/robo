@@ -11,11 +11,11 @@ POST    /api/login                                                  controllers.
 PUT     /api/user/password                                          controllers.users.Users.updatePassword
 PUT     /api/user/personalData                                      controllers.users.Users.updatePersonalData
 GET     /api/user/check/:email                                      controllers.users.Users.isUsed(email)
-GET     /api/user/infos/:email                                      controllers.users.Users.userData(email)
+GET     /api/user/infos                                             controllers.users.Users.userData
 POST    /api/user/destroy                                           controllers.users.Users.destroyAccount
 POST    /api/user/token                                             controllers.users.Users.checkToken
 
-GET     /api/user/platforms/:email                                  controllers.platforms.Platforms.getPlatforms(email)
+GET     /api/user/platforms                                         controllers.platforms.Platforms.getPlatforms
 POST    /api/user/platform                                          controllers.platforms.Platforms.addPlatform
 PUT     /api/user/platform                                          controllers.platforms.Platforms.updatePlatform
 PUT     /api/user/p2pPlatforms                                      controllers.platforms.Platforms.updatePlatforms
@@ -24,8 +24,8 @@ PUT     /api/strategies/primary/buy                                 controllers.
 PUT     /api/strategies/secondary/buy                               controllers.strategies.Strategies.updateSecondaryMarketBuyStrategies
 PUT     /api/strategies/secondary/sell                              controllers.strategies.Strategies.updateSecondaryMarketSellStrategies
 PUT     /api/strategies/auto                                        controllers.strategies.Strategies.updateAutomatedStrategy
-GET     /api/strategies/auto/simulation/:email/:originator          controllers.automatedStrategySimulation.AutomatedStrategySimulations.getSimulation(email, originator)
-GET     /api/strategies/auto/:email/:originator                     controllers.strategies.Strategies.getAutomatedStrategy(email, originator)
+GET     /api/strategies/auto/simulation/:originator                 controllers.automatedStrategySimulation.AutomatedStrategySimulations.getSimulation(originator)
+GET     /api/strategies/auto/:originator                            controllers.strategies.Strategies.getAutomatedStrategy(originator)
 
 GET     /api/dashboard/capital/available                            controllers.portfolioMetrics.PortfolioMetrics.availableCapital
 GET     /api/dashboard/capital/allocated                            controllers.portfolioMetrics.PortfolioMetrics.allocatedCapital

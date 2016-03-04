@@ -5,9 +5,9 @@
         .module('app')
         .directive('eraseAccount', eraseAccount);
 
-    eraseAccount.$inject = ['userService','authenticationService', '$timeout', '$window', 'SweetAlert','$cookies'];
+    eraseAccount.$inject = ['userService','authenticationService', '$window', 'SweetAlert'];
 
-      function eraseAccount(userService, authenticationService, $timeout, $window, SweetAlert, $cookies) {
+      function eraseAccount(userService, authenticationService, $window, SweetAlert) {
         return {
             replace: true,
             restrict: 'E',
@@ -29,7 +29,7 @@
                         if (password === false) return false;
                         if (password === "") return false;
 
-                        userService.destroyUser(authenticationService.getCurrentUsersEmail(), password, () => {
+                        userService.destroyUser(password, () => {
                             SweetAlert.swal({
                                 title: "Deleted !",
                                 text: "Your account has been successfully deleted. You will be redirected to the main page.",

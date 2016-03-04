@@ -15,10 +15,8 @@
     'use strict';
 
     class StrategyEditController {
-        constructor(authenticationService, $routeParams, constantsService, $location, rulesService, $cookies, spinnerService, $timeout, platformService, notificationService, SweetAlert) {
+        constructor($routeParams, constantsService, $location, rulesService, $cookies, spinnerService, $timeout, platformService, notificationService, SweetAlert) {
             var vm = this;
-
-            const email = authenticationService.getCurrentUsersEmail();
 
             const platform = $routeParams.platform;
             const strategyId = $routeParams.strategyId;
@@ -44,7 +42,7 @@
             vm.saveRule = () => {
                 updatePlatforms();
                 spinnerService.on();
-                platformService.updatePlatforms(email, vm.platforms, () => {
+                platformService.updatePlatforms(vm.platforms, () => {
                     spinnerService.off();
                     $cookies.put('newCriteriaSuccess', true);
                     $location.path(`/platforms/strategies/${platform}/${market}`);
@@ -143,7 +141,7 @@
 
                 function checkRuleId() {
                     spinnerService.on();
-                    platformService.getPlatforms(email, response => {
+                    platformService.getPlatforms(response => {
                         response.data.some(p => {
                             if (p.originator == platform) {
                                 vm.platforms = response.data;

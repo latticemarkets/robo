@@ -15,28 +15,26 @@
     'use strict';
 
     class platformService {
-        constructor($http, notificationService, authenticationService) {
+        constructor($http, notificationService) {
             this.$http = $http;
             this.notificationService = notificationService;
-            this.authenticationService = authenticationService;
         }
 
-        getPlatforms(email, callback) {
-            this.$http.get(`/api/user/platforms/${email}`)
+        getPlatforms(callback) {
+            this.$http.get(`/api/user/platforms`)
                 .then(callback, this.notificationService.apiError());
         }
 
-        addPlatform(email, originator, accountId, apiKey, callback) {
-            this.$http.post('/api/user/platform', { email: email, platform: {originator: originator, accountId: accountId, apiKey: apiKey}, callback: callback }).then(callback, this.notificationService.apiError());
+        addPlatform(originator, accountId, apiKey, callback) {
+            this.$http.post('/api/user/platform', { platform: {originator: originator, accountId: accountId, apiKey: apiKey}, callback: callback }).then(callback, this.notificationService.apiError());
         }
 
-        updatePlatforms(email, platforms, callback, errorCallback) {
-            this.$http.put('/api/user/p2pPlatforms', { email: email, platforms: platforms }).then(callback, this.notificationService.apiError(errorCallback));
+        updatePlatforms(platforms, callback, errorCallback) {
+            this.$http.put('/api/user/p2pPlatforms', { platforms: platforms }).then(callback, this.notificationService.apiError(errorCallback));
         }
 
         updatePlatform(platform, callback) {
-            const email = this.authenticationService.getCurrentUsersEmail();
-            this.$http.put('/api/user/platform', { email: email, platform: platform }).then(callback, this.notificationService.apiError());
+            this.$http.put('/api/user/platform', { platform: platform }).then(callback, this.notificationService.apiError());
         }
     }
 

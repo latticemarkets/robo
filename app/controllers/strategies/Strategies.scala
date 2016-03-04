@@ -37,6 +37,7 @@ class Strategies extends Controller {
       Utils.badRequestOnError[UpdateStrategies],
       data => updateStrategies[UpdateStrategies](
           data,
+          request.headers.get("USER").getOrElse(""),
           (data, platform) => platform.copy(primary = platform.primary.copy(buyStrategies = data.strategies))
       )
     )
@@ -47,6 +48,7 @@ class Strategies extends Controller {
       Utils.badRequestOnError[UpdateStrategies],
       data => updateStrategies[UpdateStrategies](
           data,
+          request.headers.get("USER").getOrElse(""),
           (data, platform) => platform.copy(secondary = platform.secondary.copy(buyStrategies = data.strategies))
       )
     )
@@ -57,6 +59,7 @@ class Strategies extends Controller {
       Utils.badRequestOnError[UpdateStrategies],
       data => updateStrategies[UpdateStrategies](
           data,
+          request.headers.get("USER").getOrElse(""),
           (data, platform) => platform.copy(secondary = platform.secondary.copy(sellStrategies = data.strategies))
       )
     )
@@ -67,13 +70,14 @@ class Strategies extends Controller {
       Utils.badRequestOnError[UpdateAutomatedStrategy],
       data => updateStrategies[UpdateAutomatedStrategy](
         data,
+        request.headers.get("USER").getOrElse(""),
         (data, platform) => platform.copy(automatedStrategy = data.autoStrategy)
       )
     )
   }
 
-  def getAutomatedStrategy(email: String, originator: String) = HasToken.async { implicit request =>
-    User.findByEmail(email) map (_.map(user => {
+  def getAutomatedStrategy(originator: String) = HasToken.async { implicit request =>
+    User.findByEmail(request.headers.get("USER").getOrElse("")) map (_.map(user => {
       val autoStrategy = user.platforms
         .filter(p => p.originatorEnum == OriginatorEnum.withName(originator))
         .head
@@ -82,8 +86,8 @@ class Strategies extends Controller {
     }) getOrElse Utils.responseOnWrongDataSent)
   }
 
-  def updateStrategies[T <: UpdatePlatform](data: T, platformUpdater: (T, Platform) => Platform): Future[Result] = {
-    User.findByEmail(data.email) flatMap (_.map(user => {
+  def updateStrategies[T <: UpdatePlatform](data: T, email: String, platformUpdater: (T, Platform) => Platform): Future[Result] = {
+    User.findByEmail(email) flatMap (_.map(user => {
       user.platforms.find(_.originator == data.platform) map (platform => {
         val updatedPlatform = platformUpdater(data, platform)
         val platforms = user.platforms.map {

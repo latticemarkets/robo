@@ -33,12 +33,12 @@
 
                 scope.isActive = url => $location.path() === url;
 
-                const email = authenticationService.getCurrentUsersEmail();
-
                 // todo : cache these results
-                userService.userData(email, response => scope.username = `${response.data.firstName} ${response.data.lastName}`);
+                userService.userData(response => {
+                    scope.username = `${response.data.firstName} ${response.data.lastName}`;
+                    scope.platforms = response.data.platforms.length;
+                });
                 dashboardDataService.expectedReturns(response => scope.expectedReturns = response.data.expectedReturns);
-                userService.userData(email, response => scope.platforms = response.data.platforms.length);
             }
         };
     }

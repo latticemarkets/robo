@@ -15,10 +15,9 @@
     'use strict';
 
     class StrategiesController {
-        constructor($routeParams, constantsService, $location, strategiesService, platformService, authenticationService, notificationService, spinnerService, $cookies, SweetAlert) {
+        constructor($routeParams, constantsService, $location, strategiesService, platformService, notificationService, spinnerService, $cookies, SweetAlert) {
             var vm = this;
 
-            const email = authenticationService.getCurrentUsersEmail();
             const platform = $routeParams.platform;
 
             const market = $routeParams.market;
@@ -34,7 +33,7 @@
             }
 
             spinnerService.on();
-            platformService.getPlatforms(email, response => {
+            platformService.getPlatforms(response => {
                 response.data.some(p => {
                     if (p.originator == platform) {
                         vm.strategies = p[market].buyStrategies;
@@ -51,7 +50,7 @@
                 },
                 stop() {
                     spinnerService.on();
-                    strategiesService.updateStrategies(vm.strategies, email, platform, market,
+                    strategiesService.updateStrategies(vm.strategies, platform, market,
                         () => spinnerService.off(),
                         () => {
                             spinnerService.off();
@@ -105,7 +104,7 @@
                         }
                     })) {
                     const transformedRules = transformation(rulesCopy, ruleToDeleteIndex);
-                    strategiesService.updateStrategies(transformedRules, email, platform, market,
+                    strategiesService.updateStrategies(transformedRules, platform, market,
                         () => {
                             vm.strategies = rulesCopy;
                             spinnerService.off();

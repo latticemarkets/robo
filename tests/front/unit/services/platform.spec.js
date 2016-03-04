@@ -15,40 +15,26 @@ describe('platformService', () => {
     beforeEach(module('app'));
 
     let platformService,
-        $httpBackend,
-        authenticationService;
+        $httpBackend;
 
-    beforeEach(() => {
-        module($provide => {
-            $provide.service('authenticationService', () => {
-                return {
-                    getCurrentUsersEmail: jasmine.createSpy('getCurrentUsersEmail')
-                };
-            });
-        });
-    });
-
-    beforeEach(inject((_platformService_, _$httpBackend_, _authenticationService_) => {
+    beforeEach(inject((_platformService_, _$httpBackend_) => {
         platformService = _platformService_;
         $httpBackend = _$httpBackend_;
-        authenticationService = _authenticationService_;
     }));
 
     describe('updatePlatforms', () => {
-        let email,
-            platforms;
+        let platforms;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             platforms = [{name: 'name', apiKey: 'apiKey', accountId: 'accountId'}];
 
             $httpBackend.when('PUT', '/api/user/p2pPlatforms').respond();
 
-            platformService.updatePlatforms(email, platforms);
+            platformService.updatePlatforms(platforms);
         });
 
         it('should call the API', () => {
-            $httpBackend.expectPUT('/api/user/p2pPlatforms', { email: email, platforms: platforms });
+            $httpBackend.expectPUT('/api/user/p2pPlatforms', { platforms: platforms });
             expect($httpBackend.flush).not.toThrow();
         });
 
@@ -59,18 +45,14 @@ describe('platformService', () => {
     });
 
     describe('getPlatforms', () => {
-        let email;
-
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
+            $httpBackend.when('GET', '/api/user/platforms').respond();
 
-            $httpBackend.when('GET', `/api/user/platforms/${email}`).respond();
-
-            platformService.getPlatforms(email);
+            platformService.getPlatforms();
         });
 
         it('should call the API', () => {
-            $httpBackend.expectGET(`/api/user/platforms/${email}`);
+            $httpBackend.expectGET('/api/user/platforms');
             expect($httpBackend.flush).not.toThrow();
         });
 
@@ -81,24 +63,22 @@ describe('platformService', () => {
     });
 
     describe('addPlatform', () => {
-        let email,
-            originator,
+        let originator,
             accountId,
             apiKey;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             originator = 'originator1';
             accountId = 'accountId1';
             apiKey = 'apiKey1';
 
             $httpBackend.when('POST', '/api/user/platform').respond();
 
-            platformService.addPlatform(email, originator, accountId, apiKey);
+            platformService.addPlatform(originator, accountId, apiKey);
         });
 
         it('should call the API', () => {
-            $httpBackend.expectPOST('/api/user/platform', { email: email, platform: { originator: originator, accountId: accountId, apiKey: apiKey } });
+            $httpBackend.expectPOST('/api/user/platform', { platform: { originator: originator, accountId: accountId, apiKey: apiKey } });
             expect($httpBackend.flush).not.toThrow();
         });
 
@@ -109,25 +89,18 @@ describe('platformService', () => {
     });
 
     describe('updatePlatform', () => {
-        let platform,
-            email;
+        let platform;
 
         beforeEach(() => {
-            email = 'toto@tata.co.uk';
             platform = {};
 
             $httpBackend.when('PUT', '/api/user/platform').respond();
-            authenticationService.getCurrentUsersEmail.and.returnValue(email);
 
             platformService.updatePlatform(platform);
         });
 
-        it('should get user\'s email', () => {
-            expect(authenticationService.getCurrentUsersEmail).toHaveBeenCalled();
-        });
-
         it('should call the API', () => {
-            $httpBackend.expectPUT('/api/user/platform', { email: email, platform: {} });
+            $httpBackend.expectPUT('/api/user/platform', { platform: {} });
             expect($httpBackend.flush).not.toThrow();
 
             $httpBackend.verifyNoOutstandingExpectation();

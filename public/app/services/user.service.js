@@ -50,22 +50,22 @@
                 .then(successCallback, errorCallback);
         }
 
-        userData(email, callback) {
-            const promise = this.$http.get(`/api/user/infos/${email}`);
+        userData(callback) {
+            const promise = this.$http.get('/api/user/infos');
             promise.then(callback, this.notificationService.apiError());
             return promise;
         }
 
-        updatePassword(email, oldPassword, newPassword, callback) {
-            this.$http.put('/api/user/password', { email: email, oldPassword: oldPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
+        updatePassword(oldPassword, newPassword, callback) {
+            this.$http.put('/api/user/password', { oldPassword: oldPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
         }
 
-        updatePersonalData(email, firstName, lastName, birthday, callback) {
-            this.$http.put('/api/user/personalData', { email: email, firstName: firstName.toLowerCase(), lastName: lastName.toLowerCase(), birthday: birthday }).then(callback, this.notificationService.apiError());
+        updatePersonalData(firstName, lastName, birthday, callback) {
+            this.$http.put('/api/user/personalData', { firstName: firstName.toLowerCase(), lastName: lastName.toLowerCase(), birthday: birthday }).then(callback, this.notificationService.apiError());
         }
 
-        destroyUser(email, password, callback) {
-            this.$http.post('/api/user/destroy', { email: email, password: password }).then(callback, this.notificationService.apiError());
+        destroyUser(password, callback) {
+            this.$http.post('/api/user/destroy', { password: password }).then(callback, this.notificationService.apiError());
         }
 
         checkUserToken(email, token, callback) {

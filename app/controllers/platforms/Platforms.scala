@@ -28,7 +28,7 @@ class Platforms extends Controller {
     PlatformsForms.updatePlatformsForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdatePlatforms],
       data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
+        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
           User.update(user.copy(platforms = data.platforms)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
       }
@@ -39,7 +39,7 @@ class Platforms extends Controller {
     PlatformsForms.addPlatformForm.bindFromRequest.fold(
       Utils.badRequestOnError[AddPlatform],
       data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
+        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
           val newPlatform = Platform.factory(data.platform.originator, data.platform.accountId, data.platform.apiKey)
           User.update(user.copy(platforms = user.platforms :+ newPlatform)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
@@ -47,15 +47,15 @@ class Platforms extends Controller {
     )
   }
 
-  def getPlatforms(email: String) = HasToken.async {
-    User.findByEmail(email) map (_.map(user => Ok(Json.toJson(user.platforms))) getOrElse Utils.responseOnWrongDataSent)
+  def getPlatforms = HasToken.async { implicit request =>
+    User.findByEmail(request.headers.get("USER").getOrElse("")) map (_.map(user => Ok(Json.toJson(user.platforms))) getOrElse Utils.responseOnWrongDataSent)
   }
 
   def updatePlatform() = HasToken.async { implicit request =>
     PlatformsForms.updatePlatformForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdatePlatform],
       data => {
-        User.findByEmail(data.email) flatMap (_.map (user => {
+        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
           User.update(user.copy(platforms = user.platforms.map(p =>
             if (p.originator == data.platform.originator) data.platform else p)
           )) map (user => Ok(""))

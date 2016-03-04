@@ -30,7 +30,6 @@ object UsersForms {
 
   def updatePasswordForm = Form(
     mapping(
-      "email" -> email,
       "oldPassword" -> nonEmptyText,
       "newPassword" -> nonEmptyText
     )(UpdatePassword.apply)(UpdatePassword.unapply)
@@ -38,7 +37,6 @@ object UsersForms {
 
   def updatePersonalData = Form(
     mapping(
-      "email" -> email,
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
       "birthday" -> date("MM/dd/yyyy")
@@ -47,7 +45,6 @@ object UsersForms {
 
   def destroyAccountForm = Form(
     mapping(
-      "email" -> email,
       "password" -> nonEmptyText
     )(DestroyAccount.apply)(DestroyAccount.unapply)
   )
