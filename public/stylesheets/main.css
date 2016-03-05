@@ -2331,6 +2331,7 @@ div .portfolios .portfolio.selected-portfolio {
 }
 div .signup .intro-second {
     font-size: 23px;
+    font-weight: bold;
 }
 div .signup .form-inline .birthday {
     margin-top: 20px;
