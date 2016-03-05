@@ -2402,6 +2402,9 @@ button.btn.primary-button.button-inverse.border-button {
 img.ticked {
     -webkit-filter: grayscale(1);
 }
+img.platform:hover {
+    -webkit-filter: grayscale(0.8);
+}
 .btn.primary-button.button-inverse.p2pCredentials {
     border-radius: 4px;
     margin-bottom: 15px;
