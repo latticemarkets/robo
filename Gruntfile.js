@@ -53,6 +53,9 @@ module.exports = function(grunt) {
                 dest: 'public/dist/bower.js',
                 mainFiles: {
                     Flot: ['jquery.flot.js', 'jquery.flot.pie.js']
+                },
+                dependencies: {
+                    'angular': 'jquery'
                 }
             },
             landpage: {
