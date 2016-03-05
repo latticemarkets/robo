@@ -2322,6 +2322,9 @@ div .reasons .reason, div .portfolios .portfolio {
 div .reasons .reason .record, div .portfolios .portfolio .record {
     margin-right: 10px;
 }
+.reason.primary-button {
+    border-radius: 4px;
+}
 .primary-button.portfolio {
     margin: 0;
 }
@@ -2393,6 +2396,13 @@ button.btn.primary-button.button-inverse.border-button {
 }
 img.ticked {
     -webkit-filter: grayscale(1);
+}
+.btn.primary-button.button-inverse.p2pCredentials {
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.personalInfos.btn.primary-button {
+    border-radius: 4px;
 }
 /*------------------------
  * DASHBOARD
