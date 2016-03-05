@@ -253,6 +253,11 @@ body.modal-open {
     -o-transition: 0.3s;
     transition: 0.3s;
 }
+.p2pPlatforms.btn-xs {
+    background-color: white;
+    color: #3498db;
+    border: 1px solid #3498db;
+}
 .primary-button.button-inverse {
     color: #fff;
     background: #1080f2;
@@ -2247,7 +2252,7 @@ div .signup .outro-text p {
 }
 div .signup .outro-text .outro-heading {
     font-family: PTSans, sans-serif;
-    font-size: 13px;
+    font-size: 20px;
     font-weight: 200;
     line-height: 10px;
     display: block;
