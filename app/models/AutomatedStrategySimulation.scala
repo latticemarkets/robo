@@ -11,7 +11,7 @@ package models
 import core.DbUtil
 import models.OriginatorEnum.OriginatorEnum
 import play.api.libs.json.{JsObject, Json}
-import play.modules.reactivemongo.json.collection.JSONCollection
+import reactivemongo.play.json.collection.JSONCollection
 import play.modules.reactivemongo.json._
 import scala.concurrent.ExecutionContext.Implicits.global
 
