@@ -15,12 +15,10 @@ libraryDependencies ++= Seq(
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 
-// Play provides two styles of routers, one expects its actions to be injected, the
-// other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
 
 libraryDependencies ++= Seq(
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.11.7.play24",
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.11.10",
   "org.mindrot" % "jbcrypt" % "0.3m",
   "org.scalaj" %% "scalaj-http" % "2.2.1",
   "org.scalanlp" %% "breeze" % "0.12",
