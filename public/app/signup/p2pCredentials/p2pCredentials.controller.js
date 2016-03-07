@@ -72,7 +72,17 @@
                     const platforms = $cookies.getObject('signup.platforms');
 
                     if (platforms) {
-                        platforms.push(platform);
+                        if (!platforms.some(p => {
+                            if (p.originator === platform.originator) {
+                                p.apiKey = platform.apiKey;
+                                p.accountId = platform.accountId;
+                                return true;
+                            }
+                            return false;
+                        })) {
+                            platforms.push(platform);
+                        }
+
                         $cookies.putObject('signup.platforms', platforms);
                     }
                     else {
