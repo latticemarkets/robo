@@ -253,6 +253,11 @@ body.modal-open {
     -o-transition: 0.3s;
     transition: 0.3s;
 }
+.p2pPlatforms.btn-xs {
+    background-color: white;
+    color: #3498db;
+    border: 1px solid #3498db;
+}
 .primary-button.button-inverse {
     color: #fff;
     background: #1080f2;
@@ -260,9 +265,9 @@ body.modal-open {
     margin: 0;
 }
 .primary-button.button-inverse:hover {
-    color: #1080f2;
-    background: transparent;
-    border: 2px solid #1080f2;
+    color: #3498db;
+    background: white;
+    border: 2px solid #3498db;
 }
 .secondary-button {
     min-width: 150px;
@@ -296,7 +301,7 @@ body.modal-open {
     opacity: 5;
 }
 .primary-button:hover {
-    background-color: #0067D9;
+    background-color: #1080f2;
     color: #fff;
     text-decoration: none;
 }
@@ -2247,7 +2252,7 @@ div .signup .outro-text p {
 }
 div .signup .outro-text .outro-heading {
     font-family: PTSans, sans-serif;
-    font-size: 13px;
+    font-size: 20px;
     font-weight: 200;
     line-height: 10px;
     display: block;
@@ -2322,6 +2327,9 @@ div .reasons .reason, div .portfolios .portfolio {
 div .reasons .reason .record, div .portfolios .portfolio .record {
     margin-right: 10px;
 }
+.reason.primary-button {
+    border-radius: 4px;
+}
 .primary-button.portfolio {
     margin: 0;
 }
@@ -2331,6 +2339,7 @@ div .portfolios .portfolio.selected-portfolio {
 }
 div .signup .intro-second {
     font-size: 23px;
+    font-weight: bold;
 }
 div .signup .form-inline .birthday {
     margin-top: 20px;
@@ -2392,6 +2401,16 @@ button.btn.primary-button.button-inverse.border-button {
 }
 img.ticked {
     -webkit-filter: grayscale(1);
+}
+img.platform:hover {
+    -webkit-filter: grayscale(0.8);
+}
+.btn.primary-button.button-inverse.p2pCredentials {
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.personalInfos.btn.primary-button {
+    border-radius: 4px;
 }
 /*------------------------
  * DASHBOARD

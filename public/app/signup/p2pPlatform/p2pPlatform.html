@@ -7,13 +7,13 @@
                 <img src="assets/img/logos/pdx-logo-white-small.png" width="60px"/>
             </div>
             <div class="signup intro-text">
-                <h1 class="intro-lead-in">Link your P2P Platform.</h1>
+                <h1 class="intro-lead-in">Link your P2P platform.</h1>
             </div>
             <div class="signup row">
                 <img width="150px" src="assets/img/platforms/{{ platform }}.{{ extension }}" class="img-rounded platform" data-ng-class="{ticked: vm.alreadyAdded(platform)}" data-ng-click="vm.submit(platform)" data-ng-repeat="(platform, extension) in vm.platforms">
             </div>
             <div class="signup outro-text">
-                <u class="outro-heading" data-ng-click="vm.skip()" data-ng-if="vm.someAlreadyAdded()">Skip</u>
+                <button class="btn p2pPlatforms btn-xs" data-ng-click="vm.skip()" data-ng-if="vm.someAlreadyAdded()">Skip</button>
             </div>
         </div>
     </div>
