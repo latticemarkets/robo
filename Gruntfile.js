@@ -75,7 +75,9 @@ module.exports = function(grunt) {
             }
         },
         concat_css: {
-            options: {},
+            options: {
+                separator: ';\n'
+            },
             all: {
                 src: [
                     "bower_components/bootstrap/dist/css/bootstrap.min.css",
@@ -96,6 +98,17 @@ module.exports = function(grunt) {
                     "bower_components/angular-ui-switch/angular-ui-switch.css"
                 ],
                 dest: "public/dist/dist.css"
+            }
+        },
+        cssmin: {
+            target: {
+                files: [{
+                    expand: true,
+                    cwd: 'public/dist/',
+                    src: ['*.css', '!*.min.css'],
+                    dest: 'public/dist/',
+                    ext: '.min.css'
+                }]
             }
         },
         watch: {
@@ -302,6 +315,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-concurrent');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     /**
      * Tasks
@@ -311,7 +325,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build-bower', ['bower', 'bower_concat', 'bowercopy', 'concat_css']);
     grunt.registerTask('build-app', ['concat:dist', 'babel:dist']);
-    grunt.registerTask('build-prod', ['concurrent:dist', 'uglify:app', 'uglify:bower']);
+    grunt.registerTask('build-prod', ['concurrent:dist', 'uglify:app', 'uglify:bower', 'cssmin']);
     grunt.registerTask('build-dev', ['concurrent:dist']);
 
     grunt.registerTask('build-tests', ['build-dev', 'concat:test', 'babel:test']);
