@@ -120,22 +120,46 @@ describe('SignupP2pCredentialsController', () => {
             describe('if platforms have already been filled', () => {
                 let previouslyAddedPlatform;
 
-                beforeEach(() => {
-                    previouslyAddedPlatform = { originator: 'previously added platform'};
-                    $cookies.getObject.and.returnValue([previouslyAddedPlatform]);
-                    p2pCredentialsController.submit();
+                describe('the new platform is different from the others', () => {
+                    beforeEach(() => {
+                        let otherOriginator = 'previously added platform';
+                        previouslyAddedPlatform = { originator: otherOriginator };
+                        $cookies.getObject.and.returnValue([previouslyAddedPlatform]);
+                        p2pCredentialsController.submit();
+                    });
+
+                    it('should get the platforms previously entered', () => {
+                        expect($cookies.getObject).toHaveBeenCalledWith('signup.platforms');
+                    });
+
+                    it('should add the new platform to the previous ones and put the cookie', () => {
+                        expect($cookies.putObject).toHaveBeenCalledWith('signup.platforms', [previouslyAddedPlatform, newPlatform]);
+                    });
+
+                    it('should go to the personal infos page', () => {
+                        expect($location.path).toHaveBeenCalledWith('/signup/personalInfos');
+                    });
                 });
 
-                it('should get the platforms previously entered', () => {
-                    expect($cookies.getObject).toHaveBeenCalledWith('signup.platforms');
-                });
+                describe('the new platform is the same as another one', () => {
+                    let oldAccountId,
+                        oldApiKey;
 
-                it('should add the new platform to the previous ones and put the cookie', () => {
-                    expect($cookies.putObject).toHaveBeenCalledWith('signup.platforms', [previouslyAddedPlatform, newPlatform]);
-                });
+                    oldAccountId = "newAccountId";
+                    oldApiKey = "newApiKey";
+                    beforeEach(() => {
+                        previouslyAddedPlatform = { originator: p2pCredentialsController.originator, apiKey: oldApiKey, accountId: oldAccountId };
+                        $cookies.getObject.and.returnValue([newPlatform]);
+                        p2pCredentialsController.submit();
+                    });
 
-                it('should go to the personal infos page', () => {
-                    expect($location.path).toHaveBeenCalledWith('/signup/personalInfos');
+                    it('should get the platforms previously entered', () => {
+                        expect($cookies.getObject).toHaveBeenCalledWith('signup.platforms');
+                    });
+
+                    it('should overwrite the previous platform', () => {
+                        expect($cookies.putObject).toHaveBeenCalledWith('signup.platforms', [newPlatform]);
+                    });
                 });
             });
 
