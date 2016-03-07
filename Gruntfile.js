@@ -251,13 +251,17 @@ module.exports = function(grunt) {
         },
         uglify: {
             bower: {
+                options: {
+                    compress: true
+                },
                 files: {
                     'public/dist/bower.min.js': ['public/dist/bower.js']
                 }
             },
             app: {
                 options: {
-                    mangle: false
+                    mangle: false,
+                    compress: true
                 },
                 files: {
                     'public/dist/app.min.js': ['public/dist/app.js']
