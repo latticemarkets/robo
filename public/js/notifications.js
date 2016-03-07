@@ -20,8 +20,7 @@
                     toastr.options = {
                         closeButton: true,
                         showMethod: 'slideDown',
-                        preventDuplicates: true,
-                        progressBar: true,
+                        preventDuplicates: false,
                         positionClass: "toast-top-center"
                     };
                     toastr.error('You tried to access a protected page without being logged in.', 'Unauthorized');
@@ -30,9 +29,8 @@
                     toastr.options = {
                         closeButton: true,
                         showMethod: 'slideDown',
-                        preventDuplicates: true,
-                        progressBar: true,
-                        positionClass: "toast-top-center"
+                        preventDuplicates: false,
+                        positionClass: "toast-top-left"
                     };
                     toastr.error('Your session has expired, please log in.', 'Session has expired');
                     break;

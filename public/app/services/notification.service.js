@@ -14,6 +14,24 @@
 (function() {
     'use strict';
 
+    const config = {
+        "closeButton": true,
+        "debug": false,
+        "maxOpened": 3,
+        "preventDuplicates": false,
+        "preventOpenDuplicates": true,
+        "positionClass": "toast-top-center",
+        "onclick": null,
+        "showDuration": "400",
+        "hideDuration": "1000",
+        "timeOut": "7000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
     class notificationService {
         constructor(toastr, $timeout, $window) {
             this.toastr = toastr;
@@ -53,23 +71,5 @@
     angular
         .module('app')
         .service('notificationService', notificationService)
-        .config((toastrConfig) => angular.extend(toastrConfig, {
-                "closeButton": true,
-                "debug": false,
-                "progressBar": true,
-                "maxOpened": 3,
-                "preventDuplicates": true,
-                "preventOpenDuplicates": true,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "showDuration": "400",
-                "hideDuration": "1000",
-                "timeOut": "7000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-                })
-        );
+        .config((toastrConfig) => angular.extend(toastrConfig, config));
 })();
