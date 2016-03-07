@@ -114,7 +114,7 @@ module.exports = function(grunt) {
         watch: {
             dev: {
                 files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'public/stylesheets/*.css' ],
-                tasks: [ 'build' ]
+                tasks: [ 'build-dev' ]
             },
             test: {
                 files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'tests/front/unit/**/*.spec.js' ],
