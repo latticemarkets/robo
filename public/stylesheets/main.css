@@ -2568,6 +2568,19 @@ color: green;
   font-size: 20px;
   font-weight: normal !important;
 }
+.coming-soon{
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 1.5;
+    font-style: italic;
+    position:absolute;
+    bottom:0;
+    margin: auto;
+}
+.row .hpanel .strategy-secondary-market, .row .hpanel .strategy-sell, .row .hpanel .strategy-history{
+    background-color: rgb(237, 238, 239);
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 17px, rgba(255,255,255,.5) 17px, rgba(255,255,255,.5) 34px);
+}
 /*------------------------
  * CRITERIA
  *----------------------*/
