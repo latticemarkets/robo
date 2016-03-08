@@ -30,7 +30,7 @@
                         closeButton: true,
                         showMethod: 'slideDown',
                         preventDuplicates: false,
-                        positionClass: "toast-top-left"
+                        positionClass: "toast-top-center"
                     };
                     toastr.error('Your session has expired, please log in.', 'Session has expired');
                     break;
