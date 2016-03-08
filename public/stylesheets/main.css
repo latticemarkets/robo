@@ -335,6 +335,7 @@ body.modal-open {
 .logo img {
     height: 44px;
     width: auto;
+    margin-top: 5px;
 }
 /*3.3 PRELOADER*/
 
@@ -642,6 +643,18 @@ body.modal-open {
         padding: 10px 0;
         background-color: #273140;
     }
+}
+.navbar-minimalize.btn.btn-info {
+    background-color: transparent;
+    border-color: transparent;
+    color: #1080f2;
+}
+#minimalize-content {
+    z-index: 9999;
+}
+#minimalize-menu {
+    margin-top: 10px;
+    float: left;
 }
 /* --------------------------------------
 5. HEADER
@@ -2432,7 +2445,6 @@ img.platform:hover {
   float: left;
   width: 180px;
   height: 56px;
-  padding: 5px 40px 5px 40px;
 }
 #navigation #side-menu li a{
   text-transform: none;
