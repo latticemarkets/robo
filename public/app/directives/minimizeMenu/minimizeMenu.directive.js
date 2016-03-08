@@ -23,7 +23,7 @@
     function minimalizaSidebar() {
         return {
             restrict: 'A',
-            template: '<a class="navbar-minimalize btn btn-info" href="" ng-click="minimalize()"><i class="fa fa-bars"></i></a>',
+            template: '<a class="navbar-minimalize btn btn-info btn-circle" href="" ng-click="minimalize()"><i class="fa fa-bars"></i></a>',
             controller: function ($scope) {
                 $scope.minimalize = function () {
                     if ($(window).width() < 769) {

@@ -645,14 +645,17 @@ body.modal-open {
     }
 }
 .navbar-minimalize.btn.btn-info {
-    background-color: transparent;
-    border-color: transparent;
     color: #1080f2;
 }
-#minimalize-content {
-    z-index: 9999;
+#minimalize-content > .navbar-minimalize.btn.btn-info {
+    position: fixed;
+    z-index: 99999;
+    float: left;
+    color: #fff;
 }
-#minimalize-menu {
+#minimalize-menu > .navbar-minimalize.btn.btn-info {
+    background-color: transparent;
+    border-color: transparent;
     margin-top: 10px;
     float: left;
 }
