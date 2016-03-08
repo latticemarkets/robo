@@ -50,6 +50,8 @@
                             scope.oldPassword,
                             scope.newPassword,
                             () => {
+                                scope.oldPassword = null;
+                                scope.newPassword = null;
                                 spinnerService.off();
                                 notificationService.success('Password changed');
                             }
