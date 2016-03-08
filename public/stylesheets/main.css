@@ -2434,8 +2434,17 @@ img.platform:hover {
   height: 56px;
   padding: 5px 40px 5px 40px;
 }
+#navigation #side-menu li a{
+  text-transform: none;
+  font-weight: normal;
+  background-color: #fff;
+}
 #navigation #side-menu li.active>a{
   color: #34495e;
+  background-color: #eee;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 15px 20px;
 }
 h1.current-roi-rate{
   margin-top: 70px;
