@@ -25,10 +25,30 @@
             $(window).bind("resize click", () => {
                 this.adaptSidebar();
 
+                $timeout(this.runCallbacks(), 300);
                 $timeout(() => {
                     this.adaptWrapperHeight();
                 }, 300);
             });
+
+            this.theCallbackPool = {};
+            window.onresize = this.runCallbacks();
+        }
+
+        runCallbacks() {
+            return () => $.map(this.theCallbackPool, (callback => callback()));
+        }
+
+        get callbackPool() {
+            return this.theCallbackPool;
+        }
+
+        addOnResizeCallback(callback, id) {
+            this.theCallbackPool[id] = callback;
+        }
+
+        removeOnResizeCallback(id) {
+            delete this.theCallbackPool[id];
         }
 
         adaptSidebar() {

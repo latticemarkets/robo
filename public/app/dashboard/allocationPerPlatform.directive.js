@@ -18,9 +18,9 @@
         .module('app')
         .directive('platformAllocation', platformAllocation);
 
-    platformAllocation.$inject = ['$timeout', 'onResizeService', 'chartService', '$filter'];
+    platformAllocation.$inject = ['$timeout', 'responsiveService', 'chartService', '$filter'];
 
-    function platformAllocation($timeout, onResizeService, chartService, $filter) {
+    function platformAllocation($timeout, responsiveService, chartService, $filter) {
         return {
             replace: true,
             restrict: 'E',
@@ -44,13 +44,13 @@
                         generatePieChart(data, scope.identifier, parentDir[0].clientWidth, colors);
                     }, 500);
 
-                    onResizeService.addOnResizeCallback(() => {
+                    responsiveService.addOnResizeCallback(() => {
                         generatePieChart(data, scope.identifier, parentDir[0].clientWidth, colors);
                     }, onResizeCallbackId);
                 });
 
                 scope.$on('$destroy', function() {
-                    onResizeService.removeOnResizeCallback(onResizeCallbackId);
+                    responsiveService.removeOnResizeCallback(onResizeCallbackId);
                 });
 
                 function generatePieChart(data, id, width, colors) {
