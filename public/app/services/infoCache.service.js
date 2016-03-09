@@ -14,11 +14,13 @@
 (() => {
     'use strict';
     class infosCacheService {
-        constructor(userService) {
+        constructor(userService, dashboardDataService) {
             this.userDataPromise = userService.userData(response => {
                 this.username = `${response.data.firstName} ${response.data.lastName}`;
                 this.platforms = response.data.platforms.length;
             });
+
+            this.dashboardDataPromise = dashboardDataService.expectedReturns(response => this.expectedReturns = response.data.expectedReturns);
         }
 
         getUsername(callback) {
@@ -36,6 +38,15 @@
             }
             else {
                 this.userDataPromise.then(response => callback(response.data.platforms.length));
+            }
+        }
+
+        getExpectedReturns(callback) {
+            if (this.expectedReturns) {
+                return callback(this.expectedReturns);
+            }
+            else {
+                this.dashboardDataPromise.then(response => callback(response.data.expectedReturns));
             }
         }
     }
