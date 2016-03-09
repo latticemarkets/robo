@@ -26,25 +26,25 @@
                 this.adaptSidebar();
 
                 $timeout(() => {
-                    this.runCallbacks()();
+                    this.runCallbacks($('#wrapper'))();
                     this.adaptWrapperHeight();
                 }, 400);
             });
 
             this.theCallbackPool = {};
-            window.onresize = this.runCallbacks();
+            window.onresize = this.runCallbacks($('#wrapper'));
 
             $timeout(() => this.currentWrapperWidth = $('#wrapper').width(), 300);
         }
 
-        runCallbacks() {
-            const $wrapper = $('#wrapper');
-            return () => $.map(this.theCallbackPool, (callback => {
-                if (this.currentWrapperWidth !== $wrapper.width()) {
-                    this.currentWrapperWidth = $wrapper.width();
-                    callback();
+        runCallbacks(container) {
+            return () => {
+                if (this.currentWrapperWidth !== container.width()) {
+                    this.currentWrapperWidth = container.width();
+
+                    $.map(this.theCallbackPool, callback => callback());
                 }
-            }));
+            };
         }
 
         get callbackPool() {

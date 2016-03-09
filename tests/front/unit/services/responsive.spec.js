@@ -67,7 +67,14 @@ describe('responsiveService', () => {
             responsiveService.addOnResizeCallback(callback1, 'callback1');
             responsiveService.addOnResizeCallback(callback2, 'callback2');
 
-            responsiveService.runCallbacks()();
+            const container = {
+                width: jasmine.createSpy('width')
+            };
+            const width = 100;
+            container.width.and.returnValue(width);
+            responsiveService.currentWrapperWidth = 99;
+
+            responsiveService.runCallbacks(container)();
         });
 
         it('should call all callbacks', () => {
