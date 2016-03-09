@@ -25,18 +25,26 @@
             $(window).bind("resize click", () => {
                 this.adaptSidebar();
 
-                $timeout(this.runCallbacks(), 300);
                 $timeout(() => {
+                    this.runCallbacks()();
                     this.adaptWrapperHeight();
-                }, 300);
+                }, 400);
             });
 
             this.theCallbackPool = {};
             window.onresize = this.runCallbacks();
+
+            $timeout(() => this.currentWrapperWidth = $('#wrapper').width(), 300);
         }
 
         runCallbacks() {
-            return () => $.map(this.theCallbackPool, (callback => callback()));
+            const $wrapper = $('#wrapper');
+            return () => $.map(this.theCallbackPool, (callback => {
+                if (this.currentWrapperWidth !== $wrapper.width()) {
+                    this.currentWrapperWidth = $wrapper.width();
+                    callback();
+                }
+            }));
         }
 
         get callbackPool() {
