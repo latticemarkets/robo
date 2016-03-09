@@ -13,7 +13,7 @@
 describe('AutomatedStrategyEditController', () => {
     let automatedStrategyEditController,
         $timeout,
-        onResizeService,
+        responsiveService,
         $scope,
         autoStrategyChartsService,
         $location,
@@ -60,8 +60,8 @@ describe('AutomatedStrategyEditController', () => {
 
     let addOnResizeCallback;
     beforeEach(() => {
-        onResizeService = jasmine.createSpyObj('onResizeService', ['addOnResizeCallback', 'removeOnResizeCallback']);
-        onResizeService.addOnResizeCallback.and.callFake((callback, id) => addOnResizeCallback = callback);
+        responsiveService = jasmine.createSpyObj('responsiveService', ['addOnResizeCallback', 'removeOnResizeCallback']);
+        responsiveService.addOnResizeCallback.and.callFake((callback, id) => addOnResizeCallback = callback);
     });
 
     beforeEach(() => {
@@ -79,7 +79,7 @@ describe('AutomatedStrategyEditController', () => {
     beforeEach(inject(($controller, _$timeout_) => {
         automatedStrategyEditController = $controller('AutomatedStrategyEditController', {
             $timeout: _$timeout_,
-            onResizeService: onResizeService,
+            responsiveService: responsiveService,
             $scope: $scope,
             autoStrategyChartsService: autoStrategyChartsService,
             $location: $location,
@@ -176,7 +176,7 @@ describe('AutomatedStrategyEditController', () => {
 
                 describe('charts resize lib init', () => {
                     it('should set a callback to redraw the charts automatically', () => {
-                        expect(onResizeService.addOnResizeCallback).toHaveBeenCalled();
+                        expect(responsiveService.addOnResizeCallback).toHaveBeenCalled();
                     });
 
                     describe('addOnResizeCallback', () => {
@@ -221,7 +221,7 @@ describe('AutomatedStrategyEditController', () => {
                 });
 
                 it('should ', () => {
-                    expect(onResizeService.removeOnResizeCallback).toHaveBeenCalledWith(automatedStrategyEditController.splineChartId);
+                    expect(responsiveService.removeOnResizeCallback).toHaveBeenCalledWith(automatedStrategyEditController.splineChartId);
                 });
             });
         });

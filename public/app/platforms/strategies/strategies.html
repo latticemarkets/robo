@@ -10,6 +10,7 @@
 
 <div id="wrapper">
     <div class="content">
+        <div id="minimalize-content" minimaliza-sidebar style="display: none;"></div>
         <spinner></spinner>
         <div class="row">
             <div class="hpanel col-sm-3 col-lg-2 col-lg-offset-2 text-center">
@@ -79,7 +80,7 @@
                         </div>
                     </div>
                     <div class="panel-footer">
-                        Based on <b>{{ strategy.criteria.length }}</b> {{ strategy.criteria.length > 1 ? 'criteria' : 'criterion' }}
+                        Based on <b>{{ strategy.rules.length }}</b> {{ strategy.rules.length > 1 ? 'rule' : 'rules' }}
                     </div>
                 </div>
             </div>

@@ -126,8 +126,8 @@
             .otherwise({ redirectTo: '/404' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$window', '$cookies', '$http', 'editableOptions', '$injector'];
-    function run($rootScope, $location, $window, $cookies, $http, editableOptions, $injector) {
+    run.$inject = ['$rootScope', '$location', '$window', '$cookies', '$http', 'editableOptions', '$injector', 'responsiveService', '$timeout'];
+    function run($rootScope, $location, $window, $cookies, $http, editableOptions, $injector, responsiveService, $timeout) {
         editableOptions.theme = 'bs3';
         $rootScope.globals = $cookies.getObject('globals') || {};
 
@@ -174,6 +174,13 @@
                     }
                 }]);
             }
+        });
+
+        $rootScope.$on('$locationChangeSuccess', () => {
+            $timeout(() => {
+                responsiveService.adaptWrapperHeight();
+                responsiveService.adaptSidebar();
+            }, 300);
         });
     }
 })();

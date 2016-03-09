@@ -18,9 +18,9 @@
         .module('app')
         .directive('riskDiversification', riskDiversification);
 
-    riskDiversification.$inject = ['$timeout', 'onResizeService', 'chartService'];
+    riskDiversification.$inject = ['$timeout', 'responsiveService', 'chartService'];
 
-    function riskDiversification($timeout, onResizeService, chartService) {
+    function riskDiversification($timeout, responsiveService, chartService) {
         return {
             replace: true,
             restrict: 'E',
@@ -44,13 +44,13 @@
                         generateDonutChart(data, scope.identifier, parentDir[0].clientWidth, colors);
                     }, 500);
 
-                    onResizeService.addOnResizeCallback(() => {
+                    responsiveService.addOnResizeCallback(() => {
                         generateDonutChart(data, scope.identifier, parentDir[0].clientWidth, colors);
                     }, onResizeCallbackId);
                 });
 
                 scope.$on('$destroy', function() {
-                    onResizeService.removeOnResizeCallback(onResizeCallbackId);
+                    responsiveService.removeOnResizeCallback(onResizeCallbackId);
                 });
 
                 function generateDonutChart(data, id, width, colors) {

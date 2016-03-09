@@ -18,9 +18,9 @@
         .module('app')
         .directive('loansAcquiredPerDay', loansAcquiredPerDay);
 
-    loansAcquiredPerDay.$inject = ['$timeout', 'onResizeService', 'notificationService', '$filter'];
+    loansAcquiredPerDay.$inject = ['$timeout', 'responsiveService', 'notificationService', '$filter'];
 
-    function loansAcquiredPerDay($timeout, onResizeService, notificationService, $filter) {
+    function loansAcquiredPerDay($timeout, responsiveService, notificationService, $filter) {
         return {
             replace: true,
             restrict: 'E',
@@ -40,12 +40,12 @@
                         generateBarChart(data, scope.identifier, parentDir[0].clientWidth, parentDir[0].clientHeight);
                     }, 500);
 
-                    onResizeService.addOnResizeCallback(() => {
+                    responsiveService.addOnResizeCallback(() => {
                         generateBarChart(data, scope.identifier, parentDir[0].clientWidth, parentDir[0].clientHeight);
                     }, onResizeCallbackId);
 
                     scope.$on('$destroy', function() {
-                        onResizeService.removeOnResizeCallback(onResizeCallbackId);
+                        responsiveService.removeOnResizeCallback(onResizeCallbackId);
                     });
                 }, notificationService.apiError());
 
