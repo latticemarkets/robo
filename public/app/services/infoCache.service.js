@@ -49,6 +49,10 @@
                 this.dashboardDataPromise.then(response => callback(response.data.expectedReturns));
             }
         }
+
+        setNumberOfPlatforms(nbPlatforms) {
+            this.nbPlatforms = nbPlatforms;
+        }
     }
     angular
         .module('app')

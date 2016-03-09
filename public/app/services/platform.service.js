@@ -15,9 +15,10 @@
     'use strict';
 
     class platformService {
-        constructor($http, notificationService) {
+        constructor($http, notificationService, infosCacheService) {
             this.$http = $http;
             this.notificationService = notificationService;
+            this.infosCacheService = infosCacheService;
         }
 
         getPlatforms(callback) {
@@ -27,10 +28,12 @@
 
         addPlatform(originator, accountId, apiKey, callback) {
             this.$http.post('/api/user/platform', { platform: {originator: originator, accountId: accountId, apiKey: apiKey}, callback: callback }).then(callback, this.notificationService.apiError());
+            this.infosCacheService.getNumberOfPlatforms(nbPlatforms => this.infosCacheService.setNumberOfPlatforms(nbPlatforms + 1));
         }
 
         updatePlatforms(platforms, callback, errorCallback) {
             this.$http.put('/api/user/p2pPlatforms', { platforms: platforms }).then(callback, this.notificationService.apiError(errorCallback));
+            this.infosCacheService.setNumberOfPlatforms(platforms.length);
         }
 
         updatePlatform(platform, callback) {
