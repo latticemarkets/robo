@@ -15,7 +15,7 @@
     'use strict';
 
     class AutomatedStrategyEditController {
-        constructor($timeout, onResizeService, $scope, autoStrategyChartsService, $location, spinnerService, strategiesService, automatedStrategyEditService, c3, SweetAlert) {
+        constructor($timeout, responsiveService, $scope, autoStrategyChartsService, $location, spinnerService, strategiesService, automatedStrategyEditService, c3, SweetAlert) {
             var vm = this;
 
             vm.splineChartId = "expectedReturnDistribution";
@@ -40,7 +40,7 @@
                         $scope.$broadcast('reCalcViewDimensions');
                     }, 500);
 
-                    onResizeService.addOnResizeCallback(() => {
+                    responsiveService.addOnResizeCallback(() => {
                         generateCharts();
                     }, vm.splineChartId);
 
@@ -59,7 +59,7 @@
             let barChart;
 
             $scope.$on('$destroy', function() {
-                onResizeService.removeOnResizeCallback(vm.splineChartId);
+                responsiveService.removeOnResizeCallback(vm.splineChartId);
             });
 
             vm.cancel = () =>
