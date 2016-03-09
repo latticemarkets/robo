@@ -652,6 +652,8 @@ body.modal-open {
     z-index: 99999;
     float: left;
     color: #fff;
+    top: 10px;
+    left: 10px;
 }
 #minimalize-menu > .navbar-minimalize.btn.btn-info {
     background-color: transparent;
