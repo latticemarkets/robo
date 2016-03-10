@@ -20,14 +20,7 @@ import scala.io.Source
   */
 object Simulations {
 
-  val indexToGrade = Map(0 -> "A", 1 -> "B", 2 -> "C", 3 -> "D", 4 -> "E", 5 -> "F", 6 -> "G") // todo : change to seq ...
-
-  val inputFile =  "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
-
-  val nbInstances = 1000
-  val weights = Weights(gradeA = 1d, gradeB = 0d, gradeC = 0d, gradeD = 0d, gradeE = 0d, gradeF = 0d, gradeG = 0d)
-  val term = 36
-  val startingDate = "Nov-14"
+  val indexToGrade = Seq("A", "B", "C", "D", "E", "F", "G")
 
   def linesToLCL(loansStr: Seq[String]): Seq[LCL] = {
     loansStr
@@ -39,7 +32,7 @@ object Simulations {
           term = Integer.parseInt(fields(1).trim.split(" ").head),
           intRate = fields(2).dropRight(1).toDouble,
           installment = BigDecimal(fields(3)),
-          grade = indexToGrade.find { case (index, grade) => fields(index + 4) == "1" }.get._2,
+          grade = indexToGrade(Seq(fields(4), fields(5), fields(6), fields(7), fields(8), fields(9), fields(10)).indexOf("1")),
           issuedMonth = fields(22),
           state = fields(23),
           outstandingPrincipal = BigDecimal(fields(59)),
@@ -69,23 +62,33 @@ object Simulations {
     }
   }
 
-  def select(initialLoans: Seq[LCL], weights: Weights, term: Int, startingDate: String): Seq[LCL] = initialLoans.filter(loan => {
-    loan.term == term && dateAfter(startingDate, loan.issuedMonth)
-  })
+  def select(initialLoans: Seq[LCL], weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int): Array[LCL] = {
+    val filtered = initialLoans.filter(loan => {
+      loan.term == term && dateAfter(startingDate, loan.issuedMonth)
+    })
+    val grades = filtered groupBy (_.grade) map { case (g, l) => g -> util.Random.shuffle(util.Random.shuffle(util.Random.shuffle(l))) }
+    grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }.toArray
+  }
 
-  def experiment(nbInstances: Int, inputFile: String): Unit = {
+  def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int): Unit = {
     val initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1))
-    val loansMeetingCriteria = select(initialLoans, weights, term, startingDate)
+    val loansMeetingCriteria = select(initialLoans, weights, term, startingDate, portfolioSize)
     println(initialLoans.size)
     println(loansMeetingCriteria.size)
   }
 
   def main(args: Array[String]): Unit = {
-    experiment(nbInstances, inputFile)
+    val inputFile =  "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
+
+    val nbInstances = 1000
+    val weights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
+    val term = 36
+    val startingDate = "Nov-14"
+    val portfolioSize = 1000
+
+    experiment(nbInstances, inputFile, weights, term, startingDate, portfolioSize)
   }
 }
-
-case class Weights(gradeA: Double, gradeB: Double, gradeC: Double, gradeD: Double, gradeE: Double, gradeF: Double, gradeG: Double)
 
 case class MonthDate(month: Int, year: Int)
 object MonthDate {
