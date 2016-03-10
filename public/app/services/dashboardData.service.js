@@ -33,7 +33,9 @@
         }
 
         expectedReturns(callback) {
-            return this.$http.get('/api/dashboard/expectedReturns').then(callback, this.notificationService.apiError());
+            const promise = this.$http.get('/api/dashboard/expectedReturns');
+            promise.then(callback, this.notificationService.apiError());
+            return promise;
         }
 
         lastLoanMaturity(callback) {
