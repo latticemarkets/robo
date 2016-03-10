@@ -49,17 +49,19 @@
                     vm.platforms.forEach(platform => {
                         platform.isAuto = platform.mode === 'automated';
 
-                        $scope.$watch(() => platform.isAuto, () => {
-                            spinnerService.on();
-                            platform.mode = platform.isAuto ? 'automated' : 'manual';
-                            const tmpPlatforms = JSON.parse(JSON.stringify(vm.platforms)).map(p => {
-                                delete p.isAuto;
-                                return p;
-                            });
-                            platformService.updatePlatforms(tmpPlatforms, () => spinnerService.off(), () => {
-                                platform.mode = platform.isAuto ? 'automated' : 'manual';
-                                platform.isAuto = !platform.isAuto;
-                            });
+                        $scope.$watch(() => platform.isAuto, (oldValue, newValue) => {
+                          if (oldValue !== null && oldValue != newValue) {
+                              spinnerService.on();
+                              platform.mode = platform.isAuto ? 'automated' : 'manual';
+                              const tmpPlatforms = JSON.parse(JSON.stringify(vm.platforms)).map(p => {
+                                  delete p.isAuto;
+                                  return p;
+                              });
+                              platformService.updatePlatforms(tmpPlatforms, () => spinnerService.off(), () => {
+                                  platform.mode = platform.isAuto ? 'automated' : 'manual';
+                                  platform.isAuto = !platform.isAuto;
+                              });
+                          }
                         });
                     });
                 });
