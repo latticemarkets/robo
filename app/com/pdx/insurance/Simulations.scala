@@ -24,7 +24,11 @@ object Simulations {
 
   def linesToLCL(loansStr: Seq[String]): Seq[LCL] = {
     loansStr
-      .filter(f => f.split(",").size == 78)
+      .filter(l => {
+        val outstandingPrincipal = try { BigDecimal(l.split(",")(59)) > -1 } catch { case _: Throwable => false }
+
+        l.split(",").size == 78 && outstandingPrincipal
+      })
       .map (line => {
         val fields = line.split(",")
 
@@ -70,11 +74,15 @@ object Simulations {
     grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }.toArray
   }
 
-  def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int): Unit = {
+  def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int, noteSize: BigDecimal): Unit = {
     val initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1))
-    val loansMeetingCriteria = select(initialLoans, weights, term, startingDate, portfolioSize)
+    val firstLoansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
+
+    val portfolioActualWeights = Seq(0, 0, 0 ,0, 0, 0, 0)
+    var portfolioBalance = 0
+
     println(initialLoans.size)
-    println(loansMeetingCriteria.size)
+    println(firstLoansInPortfolio.size)
   }
 
   def main(args: Array[String]): Unit = {
@@ -83,10 +91,11 @@ object Simulations {
     val nbInstances = 1000
     val weights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
     val term = 36
-    val startingDate = "Nov-14"
+    val startingDate = "Jun-07"
     val portfolioSize = 1000
+    val noteSize = 25
 
-    experiment(nbInstances, inputFile, weights, term, startingDate, portfolioSize)
+    experiment(nbInstances, inputFile, weights, term, startingDate, portfolioSize, noteSize)
   }
 }
 
