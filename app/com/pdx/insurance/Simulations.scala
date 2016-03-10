@@ -78,12 +78,26 @@ object Simulations {
   }
 
   def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int, noteSize: BigDecimal): Unit = {
+    val iteratedDatesStr = (0 until term) map (month => {
+      val parsedStartingDate: MonthDate = MonthDate(startingDate)
+
+      val monthNb: Int = (parsedStartingDate.month - 1 + month) % 12
+      val monthStr = MonthDate.monthsList(monthNb)
+
+      val year = ((parsedStartingDate.month - 1 + month) / 12) + parsedStartingDate.year
+
+      s"$monthStr-${if (year.toString.length > 1) year else s"0$year"}"
+    })
+
     val initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1))
     val firstLoansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
 
     val portfolioActualWeights = Seq(0, 0, 0 ,0, 0, 0, 0)
     var portfolioBalance: BigDecimal = 0
-    val defaultationCalendar = firstLoansInPortfolio.filter(l => defaultStates.contains(l.state))
+    val defaultationCalendar = firstLoansInPortfolio
+      .filter(l => defaultStates.contains(l.state))
+      .groupBy(_.lastPayment)
+      .map{ case (dateStr, loan) => dateStr -> loan }
 
     (0 until term) foreach (month => {
       firstLoansInPortfolio.foreach(l => {
