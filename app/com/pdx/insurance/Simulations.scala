@@ -9,8 +9,7 @@
 package com.pdx.insurance
 
 import java.io.File
-
-import com.pdx.insurance.Analyser.LCL
+import java.util.UUID
 
 import scala.io.Source
 
@@ -21,6 +20,7 @@ import scala.io.Source
 object Simulations {
 
   val indexToGrade = Seq("A", "B", "C", "D", "E", "F", "G")
+  val defaultStates = Set("Charged Off", "Default", "In Grace Period", "Late (16-30 days)", "Late (16-30 days)", "Late (31-120 days)")
 
   def linesToLCL(loansStr: Seq[String]): Seq[LCL] = {
     loansStr
@@ -32,7 +32,9 @@ object Simulations {
       .map (line => {
         val fields = line.split(",")
 
-        LCL(fundedAmount = BigDecimal(fields(0)),
+        LCL(
+          id = UUID.randomUUID().toString,
+          fundedAmount = BigDecimal(fields(0)),
           term = Integer.parseInt(fields(1).trim.split(" ").head),
           intRate = fields(2).dropRight(1).toDouble,
           installment = BigDecimal(fields(3)),
@@ -45,7 +47,8 @@ object Simulations {
           paidInterest = BigDecimal(fields(62)),
           lateFees = BigDecimal(fields(63)),
           recoveries = BigDecimal(fields(64)),
-          recoveryFees = BigDecimal(fields(65)))
+          recoveryFees = BigDecimal(fields(65)),
+          lastPayment = fields(66))
       })
   }
 
@@ -79,10 +82,17 @@ object Simulations {
     val firstLoansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
 
     val portfolioActualWeights = Seq(0, 0, 0 ,0, 0, 0, 0)
-    var portfolioBalance = 0
+    var portfolioBalance: BigDecimal = 0
+    val defaultationCalendar = firstLoansInPortfolio.filter(l => defaultStates.contains(l.state))
 
-    println(initialLoans.size)
-    println(firstLoansInPortfolio.size)
+    (0 until term) foreach (month => {
+      firstLoansInPortfolio.foreach(l => {
+        val interests = (l.fundedAmount * l.intRate / 36) * noteSize / l.fundedAmount
+        portfolioBalance = portfolioBalance + interests
+      })
+    })
+
+    println(portfolioBalance)
   }
 
   def main(args: Array[String]): Unit = {
@@ -108,3 +118,21 @@ object MonthDate {
     MonthDate(monthsList.indexOf(split(0)) + 1, split(1).toInt)
   }
 }
+
+case class LCL(
+                id: String,
+                fundedAmount: BigDecimal,
+                issuedMonth: String,
+                term: Int,
+                intRate: Double,
+                installment: BigDecimal,
+                grade: String,
+                state: String,
+                outstandingPrincipal: BigDecimal,
+                totalPaid: BigDecimal,
+                paidPrincipal: BigDecimal,
+                paidInterest: BigDecimal,
+                lateFees: BigDecimal,
+                recoveries: BigDecimal,
+                recoveryFees: BigDecimal,
+                lastPayment: String)
