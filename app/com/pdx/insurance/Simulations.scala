@@ -20,9 +20,14 @@ import scala.io.Source
   */
 object Simulations {
 
-  val indexToGrade = Map(0 -> "A", 1 -> "B", 2 -> "C", 3 -> "D", 4 -> "E", 5 -> "F", 6 -> "G")
+  val indexToGrade = Map(0 -> "A", 1 -> "B", 2 -> "C", 3 -> "D", 4 -> "E", 5 -> "F", 6 -> "G") // todo : change to seq ...
+
   val inputFile =  "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
+
   val nbInstances = 1000
+  val weights = Weights(gradeA = 1d, gradeB = 0d, gradeC = 0d, gradeD = 0d, gradeE = 0d, gradeF = 0d, gradeG = 0d)
+  val term = 36
+  val startingDate = "Nov-14"
 
   def linesToLCL(loansStr: Seq[String]): Seq[LCL] = {
     loansStr
@@ -47,12 +52,47 @@ object Simulations {
       })
   }
 
+  def dateAfter(startingDate: String, issuedMonth: String): Boolean = {
+    val parsedStartingDate = MonthDate(startingDate)
+    val parsedLoanDate = MonthDate(issuedMonth)
+
+    if (parsedLoanDate.year > parsedStartingDate.year) {
+      true
+    }
+    else {
+      if (parsedLoanDate.year == parsedStartingDate.year) {
+        parsedLoanDate.month >= parsedStartingDate.month
+      }
+      else {
+        false
+      }
+    }
+  }
+
+  def select(initialLoans: Seq[LCL], weights: Weights, term: Int, startingDate: String): Seq[LCL] = initialLoans.filter(loan => {
+    loan.term == term && dateAfter(startingDate, loan.issuedMonth)
+  })
+
   def experiment(nbInstances: Int, inputFile: String): Unit = {
-      val loans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1))
-      println(loans.size)
+    val initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1))
+    val loansMeetingCriteria = select(initialLoans, weights, term, startingDate)
+    println(initialLoans.size)
+    println(loansMeetingCriteria.size)
   }
 
   def main(args: Array[String]): Unit = {
     experiment(nbInstances, inputFile)
+  }
+}
+
+case class Weights(gradeA: Double, gradeB: Double, gradeC: Double, gradeD: Double, gradeE: Double, gradeF: Double, gradeG: Double)
+
+case class MonthDate(month: Int, year: Int)
+object MonthDate {
+  val monthsList = Seq("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+  def apply(str: String): MonthDate = {
+    val split = str.split("-")
+    MonthDate(monthsList.indexOf(split(0)) + 1, split(1).toInt)
   }
 }
