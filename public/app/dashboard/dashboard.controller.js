@@ -15,7 +15,7 @@
     'use strict';
 
     class DashboardController {
-        constructor(dashboardDataService, $scope, $timeout, dashboardGuidedTourService, $cookies) {
+        constructor(dashboardDataService, $scope, $timeout, dashboardGuidedTourService, $cookies, infosCacheService) {
             var vm = this;
 
             initData();
@@ -24,7 +24,7 @@
                 dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
                 dashboardDataService.allocatedCapital(response => vm.allocatedCapital = response.data.allocatedCapital);
                 vm.lastUpdate = new Date();
-                dashboardDataService.expectedReturns(response => vm.expectedReturns = response.data.expectedReturns);
+                infosCacheService.getExpectedReturns(expectedReturns => scope.expectedReturns = expectedReturns);
                 dashboardDataService.averageIntRate(response => vm.averageIntRate = response.data.averageIntRate);
                 dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
                 dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
