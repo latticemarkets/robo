@@ -33,7 +33,7 @@
                 const onResizeCallbackId = 'platformAllocation';
                 const parentDir = elem.parent();
 
-                infosCacheService.portfolioMetricsPromise.then(response => {
+                infosCacheService.dashboardDataPromise.then(response => {
                     const data = response.data.platformAllocation.map(platform => [camelCaseToTitle(platform.originator), platform.loansAcquired]);
                     const colors = data.reduce((prev, column, index) => {
                         prev[column[0]] = chartService.blueDegraded[index];

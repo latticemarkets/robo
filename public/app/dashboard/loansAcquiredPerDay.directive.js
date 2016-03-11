@@ -33,7 +33,7 @@
                 const onResizeCallbackId = 'loansAcquiredPerDay';
                 const parentDir = elem.parent();
 
-                infosCacheService.portfolioMetricsPromise.then(response => {
+                infosCacheService.dashboardDataPromise.then(response => {
                     const data = response.data.loansAcquiredPerDayLastWeek;
 
                     $timeout(() => {

@@ -20,13 +20,6 @@
                 this.platforms = response.data.platforms.length;
             });
 
-            this.portfolioMetricsPromise = dashboardDataService.portfolioMetrics(response => {
-                this.platformAllocation = response.data.platformAllocation;
-                this.currentLoans = response.data.currentLoans;
-                this.riskDiversification = response.data.riskDiversification;
-                this.loansAcquiredPerDayLastWeek = response.data.loansAcquiredPerDayLastWeek;
-            });
-
             this.dashboardDataPromise = dashboardDataService.portfolioMetrics(response => {
                 this.expectedReturns = response.data.expectedReturns;
                 this.availableCapital = response.data.availableCapital;
@@ -34,6 +27,10 @@
                 this.averageIntRate = response.data.averageIntRate;
                 this.currentRoiRate = response.data.currentRoiRate;
                 this.expectedRoiRate = response.data.expectedRoiRate;
+                this.loansAcquiredPerDayLastWeek = response.data.loansAcquiredPerDayLastWeek;
+                this.platformAllocation = response.data.platformAllocation;
+                this.currentLoans = response.data.currentLoans;
+                this.riskDiversification = response.data.riskDiversification;
                 this.loansAcquiredPerDayLastWeek = response.data.loansAcquiredPerDayLastWeek;
             });
         }

@@ -33,7 +33,7 @@
                 const onResizeCallbackId = 'riskDiversification';
                 const parentDir = elem.parent();
 
-                infosCacheService.portfolioMetricsPromise.then(response => {
+                infosCacheService.dashboardDataPromise.then(response => {
                     const data = response.data.riskDiversification.map(platform => [platform.grade, platform.value]);
                     const colors = data.reduce((prev, column, index) => {
                         prev[column[0]] = chartService.blueDegraded[index];

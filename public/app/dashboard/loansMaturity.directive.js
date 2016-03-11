@@ -33,7 +33,7 @@
                 const onResizeCallbackId = "loansMaturity";
                 const parentDir = elem.parent();
 
-                infosCacheService.portfolioMetricsPromise.then(response => {
+                infosCacheService.dashboardDataPromise.then(response => {
                     const preparedData = loansMaturityUtilsService.extractDataForScatterChart(response.data.currentLoans);
                     const xs = loansMaturityUtilsService.extractXs(preparedData);
 
