@@ -34,7 +34,7 @@
                 const parentDir = elem.parent();
 
                 scope.data.then(response => {
-                    const data = response.data.map(platform => [platform.grade, platform.value]);
+                    const data = response.data.riskDiversification.map(platform => [platform.grade, platform.value]);
                     const colors = data.reduce((prev, column, index) => {
                         prev[column[0]] = chartService.blueDegraded[index];
                         return prev;

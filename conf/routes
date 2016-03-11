@@ -27,17 +27,7 @@ PUT     /api/strategies/auto                                        controllers.
 GET     /api/strategies/auto/simulation/:originator                 controllers.automatedStrategySimulation.AutomatedStrategySimulations.getSimulation(originator)
 GET     /api/strategies/auto/:originator                            controllers.strategies.Strategies.getAutomatedStrategy(originator)
 
-GET     /api/dashboard/capital/available                            controllers.portfolioMetrics.PortfolioMetrics.availableCapital
-GET     /api/dashboard/capital/allocated                            controllers.portfolioMetrics.PortfolioMetrics.allocatedCapital
-GET     /api/dashboard/averageIntRate                               controllers.portfolioMetrics.PortfolioMetrics.averageIntRate
-GET     /api/dashboard/expectedReturns                              controllers.portfolioMetrics.PortfolioMetrics.expectedReturns
-GET     /api/dashboard/lastLoanMaturity                             controllers.portfolioMetrics.PortfolioMetrics.lastLoanMaturity
-GET     /api/dashboard/currentRoiRate                               controllers.portfolioMetrics.PortfolioMetrics.currentRoiRate
-GET     /api/dashboard/expectedRoiRate                              controllers.portfolioMetrics.PortfolioMetrics.expectedRoiRate
-GET     /api/dashboard/currentLoans                                 controllers.portfolioMetrics.PortfolioMetrics.currentLoans
-GET     /api/dashboard/loansAcquiredPerDayLastWeek                  controllers.portfolioMetrics.PortfolioMetrics.loansAcquiredPerDayLastWeek
-GET     /api/dashboard/platformAllocation                           controllers.portfolioMetrics.PortfolioMetrics.platformAllocation
-GET     /api/dashboard/riskDiversification                          controllers.portfolioMetrics.PortfolioMetrics.riskDiversification
+GET     /api/dashboard/portfolioMetrics                             controllers.portfolioMetrics.PortfolioMetrics.portfolioMetrics
 
 
 # Map static resources from the /public folder to the /assets URL path

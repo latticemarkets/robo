@@ -34,7 +34,7 @@
                 const parentDir = elem.parent();
 
                 scope.data.then(response => {
-                    const data = response.data.map(platform => [camelCaseToTitle(platform.originator), platform.loansAcquired]);
+                    const data = response.data.platformAllocation.map(platform => [camelCaseToTitle(platform.originator), platform.loansAcquired]);
                     const colors = data.reduce((prev, column, index) => {
                         prev[column[0]] = chartService.blueDegraded[index];
                         return prev;

@@ -34,7 +34,7 @@
                 const parentDir = elem.parent();
 
                 scope.data.then(response => {
-                    const preparedData = loansMaturityUtilsService.extractDataForScatterChart(response.data);
+                    const preparedData = loansMaturityUtilsService.extractDataForScatterChart(response.data.currentLoans);
                     const xs = loansMaturityUtilsService.extractXs(preparedData);
 
                     $timeout(() => {

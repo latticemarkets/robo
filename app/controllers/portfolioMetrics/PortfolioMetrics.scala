@@ -20,35 +20,7 @@ import play.api.mvc.Controller
   */
 
 class PortfolioMetrics extends Controller {
-  def availableCapital() = HasToken {
-    Ok(Json.obj("availableCapital" -> 200000))
-  }
-
-  def allocatedCapital() = HasToken {
-    Ok(Json.obj("allocatedCapital" -> 300000))
-  }
-
-  def averageIntRate() = HasToken {
-    Ok(Json.obj("averageIntRate" -> 0.12))
-  }
-
-  def expectedReturns() = HasToken {
-    Ok(Json.obj("expectedReturns" -> 34000))
-  }
-
-  def lastLoanMaturity() = HasToken {
-    Ok(Json.obj("lastLoanMaturity" -> LocalDate.parse("2018-01-07")))
-  }
-
-  def currentRoiRate() = HasToken {
-    Ok(Json.obj("currentRoiRate" -> 0.15))
-  }
-
-  def expectedRoiRate() = HasToken {
-    Ok(Json.obj("expectedRoiRate" -> 0.12))
-  }
-
-  def currentLoans() = HasToken {
+  def portfolioMetrics() = HasToken {
     val loans = Json.arr(
       Json.obj("originator" -> "lendingClub", "maturityDate" -> "2016-02-02", "intRate" -> 0.12),
       Json.obj("originator" -> "lendingClub", "maturityDate" -> "2016-02-02", "intRate" -> 0.12),
@@ -106,32 +78,31 @@ class PortfolioMetrics extends Controller {
       Json.obj("originator" -> "prosper", "maturityDate" -> "2018-12-20", "intRate" -> 0.04),
       Json.obj("originator" -> "prosper", "maturityDate" -> "2018-12-23", "intRate" -> 0.0)
     )
-
-    Ok(loans)
-  }
-
-  def loansAcquiredPerDayLastWeek() = HasToken {
-    val loans = Json.arr(10, 26, 16, 36, 32, 51, 51)
-    Ok(loans)
-  }
-
-  def platformAllocation() = HasToken {
-    Ok(Json.arr(
+    val loansAcquiredPerDayLastWeek = Json.arr(10, 26, 16, 36, 32, 51, 51)
+    val platformAllocation = Json.arr(
       Json.obj("originator" -> "lendingClub", "loansAcquired" -> 245),
       Json.obj("originator" -> "prosper", "loansAcquired" -> 18),
       Json.obj("originator" -> "bondora", "loansAcquired" -> 59),
       Json.obj("originator" -> "ratesetter", "loansAcquired" -> 195),
       Json.obj("originator" -> "fundingCircle", "loansAcquired" -> 90)
-    ))
-  }
-
-  def riskDiversification() = HasToken {
-    Ok(Json.arr(
+    )
+    val riskDiversification = Json.arr(
       Json.obj("grade" -> "A", "value" -> 240),
       Json.obj("grade" -> "B", "value" -> 49),
       Json.obj("grade" -> "C", "value" -> 189),
       Json.obj("grade" -> "D", "value" -> 140),
       Json.obj("grade" -> "E", "value" -> 200)
-    ))
+    )
+    Ok(Json.obj("availableCapital" -> 200000,
+                "allocatedCapital" -> 300000,
+                "averageIntRate" -> 0.12,
+                "lastLoanMaturity" -> LocalDate.parse("2018-01-07"),
+                "currentRoiRate" -> 0.15,
+                "expectedRoiRate" -> 0.12,
+                "expectedReturns" -> 34000,
+                "currentLoans" -> loans,
+                "loansAcquiredPerDayLastWeek" -> loansAcquiredPerDayLastWeek,
+                "platformAllocation" -> platformAllocation,
+                "riskDiversification" -> riskDiversification))
   }
 }

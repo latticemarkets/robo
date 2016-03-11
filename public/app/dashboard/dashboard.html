@@ -38,7 +38,7 @@
                                 <div class="text-center small">
                                     <i class="fa fa-suitcase"></i> Portfolio Diversification
                                 </div>
-                                <loans-maturity data="vm.loansMaturityPromise" identifier="loansMaturity"></loans-maturity>
+                                <loans-maturity data="vm.portfolioMetricsPromise" identifier="loansMaturity"></loans-maturity>
                               </div>
                             </div>
                             <div class="col-md-3 text-center">
@@ -97,7 +97,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="flot-chart">
-                            <loans-acquired-per-day data="vm.loansAcquiredPerDayPromise" identifier="loansAcquiredPerDay"></loans-acquired-per-day>
+                            <loans-acquired-per-day data="vm.portfolioMetricsPromise" identifier="loansAcquiredPerDay"></loans-acquired-per-day>
                         </div>
                         <div class="loans-metrics">
                             <div class="row">
@@ -124,7 +124,7 @@
                             <i class="pe-7s-cash fa-3x"></i>
                         </div>
                         <div class="flot-chart">
-                            <platform-allocation identifier="allocation-pie" data="vm.platformAllocationPromise"></platform-allocation>
+                            <platform-allocation identifier="allocation-pie" data="vm.portfolioMetricsPromise"></platform-allocation>
                         </div>
                     </div>
                   </div>
@@ -142,7 +142,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="flot-chart">
-                            <risk-diversification identifier="risk-diversification-donut" data="vm.riskDiversificationPromise"></risk-diversification>
+                            <risk-diversification identifier="risk-diversification-donut" data="vm.portfolioMetricsPromise"></risk-diversification>
                         </div>
                     </div>
                   </div>

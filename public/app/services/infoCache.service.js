@@ -20,7 +20,7 @@
                 this.platforms = response.data.platforms.length;
             });
 
-            this.dashboardDataPromise = dashboardDataService.expectedReturns(response => this.expectedReturns = response.data.expectedReturns);
+            this.dashboardDataPromise = dashboardDataService.portfolioMetrics(response => this.expectedReturns = response.data.expectedReturns);
         }
 
         getUsername(callback) {
@@ -49,6 +49,7 @@
                 this.dashboardDataPromise.then(response => callback(response.data.expectedReturns));
             }
         }
+
 
         setNumberOfPlatforms(nbPlatforms) {
             this.nbPlatforms = nbPlatforms;

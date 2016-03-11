@@ -21,19 +21,15 @@
             initData();
 
             function initData() {
-                dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
-                dashboardDataService.allocatedCapital(response => vm.allocatedCapital = response.data.allocatedCapital);
-                vm.lastUpdate = new Date();
-                infosCacheService.getExpectedReturns(expectedReturns => scope.expectedReturns = expectedReturns);
-                dashboardDataService.averageIntRate(response => vm.averageIntRate = response.data.averageIntRate);
-                dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
-                dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
-                vm.loansMaturityPromise = dashboardDataService.currentLoansPromise();
-                vm.loansAcquiredPerDayPromise = dashboardDataService.loansAcquiredPerDayLastWeek(response => {
-                    vm.loansAcquiredLastWeek = response.data.reduce((last, loans) => loans + last, 0);
+                  vm.portfolioMetricsPromise = dashboardDataService.portfolioMetrics(response => {
+                  vm.availableCapital = response.data.availableCapital;
+                  vm.allocatedCapital = response.data.allocatedCapital;
+                  vm.lastUpdate = new Date();
+                  vm.averageIntRate = response.data.averageIntRate;
+                  vm.currentRoiRate = response.data.currentRoiRate;
+                  vm.expectedRoiRate = response.data.expectedRoiRate;
+                  vm.loansAcquiredLastWeek = response.data.loansAcquiredPerDayLastWeek.reduce((last, loans) => loans + last, 0);
                 });
-                vm.platformAllocationPromise = dashboardDataService.platformAllocationPromise();
-                vm.riskDiversificationPromise = dashboardDataService.riskDiversificationPromise();
             }
 
             if ($cookies.get('guidedTour')) {

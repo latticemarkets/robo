@@ -34,7 +34,7 @@
                 const parentDir = elem.parent();
 
                 scope.data.then(response => {
-                    const data = response.data;
+                    const data = response.data.loansAcquiredPerDayLastWeek;
 
                     $timeout(() => {
                         generateBarChart(data, scope.identifier, parentDir[0].clientWidth, parentDir[0].clientHeight);
