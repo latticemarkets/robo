@@ -12,6 +12,7 @@ import java.io.File
 import java.util.UUID
 
 import scala.io.Source
+import scala.util.Random
 
 /**
   * @author : julienderay
@@ -22,12 +23,15 @@ object Simulations {
   val indexToGrade = Seq("A", "B", "C", "D", "E", "F", "G")
   val defaultStates = Set("Charged Off", "Default", "In Grace Period", "Late (16-30 days)", "Late (16-30 days)", "Late (31-120 days)")
 
-  def linesToLCL(loansStr: Seq[String]): Seq[LCL] = {
+  def linesToLCL(loansStr: Seq[String], iteratedDatesStr: Seq[String]): Seq[LCL] = {
     loansStr
       .filter(l => {
-        val outstandingPrincipal = try { BigDecimal(l.split(",")(59)) > -1 } catch { case _: Throwable => false }
+        val fields: Array[String] = l.split(",")
 
-        l.split(",").size == 78 && outstandingPrincipal
+        val outstandingPrincipal = try { BigDecimal(fields(59)) > -1 } catch { case _: Throwable => false }
+        val isPartOfTheWindowFrame: Boolean = iteratedDatesStr.indexOf(fields(22)) > -1
+
+        outstandingPrincipal && isPartOfTheWindowFrame
       })
       .map (line => {
         val fields = line.split(",")
@@ -73,8 +77,9 @@ object Simulations {
     val filtered = initialLoans.filter(loan => {
       loan.term == term && dateAfter(startingDate, loan.issuedMonth)
     })
-    val grades = filtered groupBy (_.grade) map { case (g, l) => g -> util.Random.shuffle(util.Random.shuffle(util.Random.shuffle(l))) }
-    grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }.toArray
+    val grades = filtered groupBy (_.grade)
+    val weightedLoans = grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }
+    Random.shuffle(Random.shuffle(Random.shuffle(weightedLoans))).toArray
   }
 
   def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int, noteSize: BigDecimal): Unit = {
@@ -89,24 +94,40 @@ object Simulations {
       s"$monthStr-${if (year.toString.length > 1) year else s"0$year"}"
     })
 
-    val initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1))
-    val firstLoansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
+    val initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1).reverse, iteratedDatesStr)
+    var loansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
 
-    val portfolioActualWeights = Seq(0, 0, 0 ,0, 0, 0, 0)
+    val portfolioActualWeights = Seq(0, 0, 0, 0, 0, 0, 0)
     var portfolioBalance: BigDecimal = 0
-    val defaultationCalendar = firstLoansInPortfolio
-      .filter(l => defaultStates.contains(l.state))
+    val defaultationCalendar = loansInPortfolio
+      .filter(l => defaultStates.contains(l.state) && iteratedDatesStr.indexOf(l.lastPayment) > -1)
       .groupBy(_.lastPayment)
-      .map{ case (dateStr, loan) => dateStr -> loan }
+      .map{ case (dateStr, loan) => iteratedDatesStr.indexOf(dateStr) -> loan }
+
+    var resultsByMonth: Seq[MonthlyResult] = Seq()
 
     (0 until term) foreach (month => {
-      firstLoansInPortfolio.foreach(l => {
-        val interests = (l.fundedAmount * l.intRate / 36) * noteSize / l.fundedAmount
-        portfolioBalance = portfolioBalance + interests
-      })
+      val defaultsThisMonth: Option[Array[LCL]] = if (defaultationCalendar.contains(month)) Some(defaultationCalendar(month)) else None
+
+      // compute the defaults of this month
+      val defaults = defaultsThisMonth match {
+        case Some(d) => d.map(l => noteSize - ((l.fundedAmount * (l.intRate / 100) / 36) * noteSize / l.fundedAmount) * month).sum
+        case None => BigDecimal(0)
+      }
+
+      // remove the defaults from the list of loans
+      val defaultsId = defaultsThisMonth.getOrElse(Array()).map(_.id)
+      loansInPortfolio = loansInPortfolio.filter(l => !defaultsId.contains(l.id))
+
+      // compute the interests for this month
+      val interests = loansInPortfolio.map(l => (l.fundedAmount * (l.intRate /100) / 36) * noteSize / l.fundedAmount).sum
+
+      portfolioBalance = portfolioBalance + interests
+      resultsByMonth = resultsByMonth :+ MonthlyResult(interests, defaults)
     })
 
     println(portfolioBalance)
+    println(resultsByMonth)
   }
 
   def main(args: Array[String]): Unit = {
@@ -150,3 +171,5 @@ case class LCL(
                 recoveries: BigDecimal,
                 recoveryFees: BigDecimal,
                 lastPayment: String)
+
+case class MonthlyResult(interests: BigDecimal, defaults: BigDecimal)
