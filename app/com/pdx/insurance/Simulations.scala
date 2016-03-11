@@ -25,14 +25,7 @@ object Simulations {
 
   def linesToLCL(loansStr: Seq[String], iteratedDatesStr: Seq[String]): Seq[LCL] = {
     loansStr
-      .filter(l => {
-        val fields: Array[String] = l.split(",")
-
-        val outstandingPrincipal = try { BigDecimal(fields(59)) > -1 } catch { case _: Throwable => false }
-        val isPartOfTheWindowFrame: Boolean = iteratedDatesStr.indexOf(fields(22)) > -1
-
-        outstandingPrincipal && isPartOfTheWindowFrame
-      })
+      .filter(l => iteratedDatesStr.indexOf(l.split(",")(22)) > -1)
       .map (line => {
         val fields = line.split(",")
 
@@ -82,17 +75,8 @@ object Simulations {
     Random.shuffle(Random.shuffle(Random.shuffle(weightedLoans))).toArray
   }
 
-  def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int, noteSize: BigDecimal): Unit = {
-    val iteratedDatesStr = (0 until term) map (month => {
-      val parsedStartingDate: MonthDate = MonthDate(startingDate)
-
-      val monthNb: Int = (parsedStartingDate.month - 1 + month) % 12
-      val monthStr = MonthDate.monthsList(monthNb)
-
-      val year = ((parsedStartingDate.month - 1 + month) / 12) + parsedStartingDate.year
-
-      s"$monthStr-${if (year.toString.length > 1) year else s"0$year"}"
-    })
+  def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int, noteSize: BigDecimal): ExperimentResult = {
+    val iteratedDatesStr = intListToStrMonths(startingDate, 0 until term)
 
     val initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1).reverse, iteratedDatesStr)
     var loansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
@@ -111,7 +95,7 @@ object Simulations {
 
       // compute the defaults of this month
       val defaults = defaultsThisMonth match {
-        case Some(d) => d.map(l => noteSize - ((l.fundedAmount * (l.intRate / 100) / 36) * noteSize / l.fundedAmount) * month).sum
+        case Some(d) => d.map(l => noteSize - monthlyInterest(l, term, noteSize) * month).sum
         case None => BigDecimal(0)
       }
 
@@ -120,17 +104,39 @@ object Simulations {
       loansInPortfolio = loansInPortfolio.filter(l => !defaultsId.contains(l.id))
 
       // compute the interests for this month
-      val interests = loansInPortfolio.map(l => (l.fundedAmount * (l.intRate /100) / 36) * noteSize / l.fundedAmount).sum
+      val interests = loansInPortfolio.map(l => monthlyInterest(l, term, noteSize)).sum
 
       portfolioBalance = portfolioBalance + interests
       resultsByMonth = resultsByMonth :+ MonthlyResult(interests, defaults)
     })
 
-    println(portfolioBalance)
-    println(resultsByMonth)
+    ExperimentResult(
+      interestPaid = resultsByMonth map (_.interests) sum,
+      capitalLost = resultsByMonth map (_.defaults) sum,
+      ratioLost = (resultsByMonth map (_.defaults) sum) / (resultsByMonth map (_.interests) sum),
+      outstandingInterest = {
+        val doubledTimeWindow = intListToStrMonths(startingDate, 0 until term * 2)
+        loansInPortfolio map (l => monthlyInterest(l, term, noteSize) * (doubledTimeWindow.indexOf(l.issuedMonth) + l.term - term)) sum
+      }
+    )
   }
 
-  def main(args: Array[String]): Unit = {
+  def monthlyInterest(loan: LCL, term: Int, noteSize: BigDecimal): BigDecimal = (loan.fundedAmount * (loan.intRate / 100) / term) * noteSize / loan.fundedAmount
+
+  def intListToStrMonths(startingDate: String, intList: Seq[Int]): Seq[String] = {
+    intList map (month => {
+      val parsedStartingDate: MonthDate = MonthDate(startingDate)
+
+      val monthNb: Int = (parsedStartingDate.month - 1 + month) % 12
+      val monthStr = MonthDate.monthsList(monthNb)
+
+      val year = ((parsedStartingDate.month - 1 + month) / 12) + parsedStartingDate.year
+
+      s"$monthStr-${if (year.toString.length > 1) year else s"0$year"}"
+    })
+  }
+
+def main(args: Array[String]): Unit = {
     val inputFile =  "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
 
     val nbInstances = 1000
@@ -140,7 +146,11 @@ object Simulations {
     val portfolioSize = 1000
     val noteSize = 25
 
-    experiment(nbInstances, inputFile, weights, term, startingDate, portfolioSize, noteSize)
+    val res = experiment(nbInstances, inputFile, weights, term, startingDate, portfolioSize, noteSize)
+    println(res.interestPaid)
+    println(res.capitalLost)
+    println(res.ratioLost)
+    println(res.outstandingInterest)
   }
 }
 
@@ -173,3 +183,5 @@ case class LCL(
                 lastPayment: String)
 
 case class MonthlyResult(interests: BigDecimal, defaults: BigDecimal)
+
+case class ExperimentResult(interestPaid: BigDecimal, capitalLost: BigDecimal, ratioLost: BigDecimal, outstandingInterest: BigDecimal)
