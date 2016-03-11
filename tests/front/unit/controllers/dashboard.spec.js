@@ -13,24 +13,16 @@
 
 describe('DashboardController', () => {
     let dashboardController,
-        authenticationService,
-        $location,
-        dashboardDataService,
-        userService,
-        loansAcquiredService,
         $scope,
         $cookies,
         $timeout,
+        infosCacheService,
         dashboardGuidedTourService;
 
     beforeEach(() => {
         module('app');
 
-        $location = jasmine.createSpyObj('$location', ['path']);
-        authenticationService = jasmine.createSpyObj('authenticationService', ['logout', 'getCurrentUsersEmail']);
-        dashboardDataService = jasmine.createSpyObj('dashboardDataService', ['availableCapital', 'allocatedCapital', 'averageIntRate', 'expectedReturns', 'lastLoanMaturity', 'currentRoiRate', 'expectedRoiRate', 'currentLoansPromise', 'loansAcquiredPerDayLastWeek', 'loansAcquiredLastWeek', 'loansAcquiredToday', 'platformAllocationPromise', 'riskDiversificationPromise']);
-        userService = jasmine.createSpyObj('userService', ['userData']);
-        loansAcquiredService = jasmine.createSpyObj('loansAcquiredService', ['prepare', 'barChartOptions']);
+        infosCacheService = jasmine.createSpyObj('infosCacheService', ['getAvailableCapital', 'getAllocatedCapital', 'getAverageIntRate', 'getCurrentRoiRate', 'getExpectedRoiRate', 'getLoansAcquiredPerDayLastWeek']);
         $scope = jasmine.createSpyObj('$scope', ['$on']);
         dashboardGuidedTourService = jasmine.createSpyObj('dashboardGuidedTourService', ['start', 'end', 'init']);
         $cookies = jasmine.createSpyObj('$cookies', ['get', 'remove']);
@@ -39,53 +31,38 @@ describe('DashboardController', () => {
     let availableCapital;
     beforeEach(() => {
         availableCapital = 1000;
-        dashboardDataService.availableCapital.and.callFake(callback => callback({data: { availableCapital: availableCapital } }));
+        infosCacheService.getAvailableCapital.and.callFake(callback => callback(availableCapital));
     });
 
     let allocatedCapital;
     beforeEach(() => {
         allocatedCapital = 2000;
-        dashboardDataService.allocatedCapital.and.callFake(callback => callback({data: { allocatedCapital: allocatedCapital } }));
+        infosCacheService.getAllocatedCapital.and.callFake(callback => callback(allocatedCapital));
     });
 
     let averageIntRate;
     beforeEach(() => {
         averageIntRate = 0.12;
-        dashboardDataService.averageIntRate.and.callFake(callback => callback({data: { averageIntRate: averageIntRate } }));
-    });
-
-    let expectedReturns;
-    beforeEach(() => {
-        expectedReturns = 200000;
-        dashboardDataService.expectedReturns.and.callFake(callback => callback({data: { expectedReturns: expectedReturns } }));
-    });
-
-    let lastLoanMaturity;
-    beforeEach(() => {
-        jasmine.clock().mockDate(new Date("2016-08-01"));
-        lastLoanMaturity = "2016-12-01";
-        dashboardDataService.lastLoanMaturity.and.callFake(callback => callback({data: { lastLoanMaturity: lastLoanMaturity } }));
+        infosCacheService.getAverageIntRate.and.callFake(callback => callback(averageIntRate));
     });
 
     let currentRoiRate;
     beforeEach(() => {
         currentRoiRate = 0.2;
-        dashboardDataService.currentRoiRate.and.callFake(callback => callback({data: { currentRoiRate: currentRoiRate } }));
+        infosCacheService.getCurrentRoiRate.and.callFake(callback => callback(currentRoiRate));
     });
 
     let expectedRoiRate;
     beforeEach(() => {
         expectedRoiRate = 0.3;
-        dashboardDataService.expectedRoiRate.and.callFake(callback => callback({data: { expectedRoiRate: expectedRoiRate } }));
+        infosCacheService.getExpectedRoiRate.and.callFake(callback => callback(expectedRoiRate));
     });
 
-    let firstName, lastName;
+    let loansAcquiredPerDayLastWeek;
     beforeEach(() => {
-        firstName = "Arthur";
-        lastName = "Guinness";
-        userService.userData.and.callFake((currentUserEmail, callback) => callback({data: { firstName: firstName, lastName: lastName } }));
+        loansAcquiredPerDayLastWeek = 222;
+        infosCacheService.getLoansAcquiredPerDayLastWeek.and.callFake(callback => callback(loansAcquiredPerDayLastWeek));
     });
-
 
     describe('no guided tour', () => {
         beforeEach(() => {
@@ -94,15 +71,11 @@ describe('DashboardController', () => {
 
         beforeEach(inject(($controller, _$timeout_) => {
             dashboardController = $controller('DashboardController', {
-                $location : $location,
-                authenticationService: authenticationService,
-                dashboardDataService: dashboardDataService,
-                userService: userService,
-                loansAcquiredService: loansAcquiredService,
                 $scope: $scope,
                 dashboardGuidedTourService: dashboardGuidedTourService,
                 $timeout: _$timeout_,
-                $cookies: $cookies
+                $cookies: $cookies,
+                infosCacheService: infosCacheService
             });
 
             $timeout = _$timeout_;
@@ -110,44 +83,33 @@ describe('DashboardController', () => {
 
         describe('data initialisation', () => {
             it('should load available capital from API', () => {
-                expect(dashboardDataService.availableCapital).toHaveBeenCalled();
+                expect(infosCacheService.getAvailableCapital).toHaveBeenCalled();
                 expect(dashboardController.availableCapital).toBe(availableCapital);
             });
 
             it('should load allocated capital from API', () => {
-                expect(dashboardDataService.allocatedCapital).toHaveBeenCalled();
+                expect(infosCacheService.getAllocatedCapital).toHaveBeenCalled();
                 expect(dashboardController.allocatedCapital).toBe(allocatedCapital);
             });
 
-            it('should set the current date', () => {
-                expect(dashboardController.lastUpdate).not.toBeUndefined();
-            });
-
             it('should load average interest rate from API', () => {
-                expect(dashboardDataService.averageIntRate).toHaveBeenCalled();
+                expect(infosCacheService.getAverageIntRate).toHaveBeenCalled();
                 expect(dashboardController.averageIntRate).toBe(averageIntRate);
             });
 
             it('should load current roi rate from API', () => {
-                expect(dashboardDataService.currentRoiRate).toHaveBeenCalled();
+                expect(infosCacheService.getCurrentRoiRate).toHaveBeenCalled();
                 expect(dashboardController.currentRoiRate).toBe(currentRoiRate);
             });
 
             it('should load expected roi rate from API', () => {
-                expect(dashboardDataService.expectedRoiRate).toHaveBeenCalled();
+                expect(infosCacheService.getExpectedRoiRate).toHaveBeenCalled();
                 expect(dashboardController.expectedRoiRate).toBe(expectedRoiRate);
             });
 
-            it('should get a promise containing the current loans', () => {
-                expect(dashboardDataService.currentLoansPromise).toHaveBeenCalled();
-            });
-
-            it('should get a promise containing the portfolio allocation', () => {
-                expect(dashboardDataService.platformAllocationPromise).toHaveBeenCalled();
-            });
-
-            it('should get a promise containing the risk diversification', () => {
-                expect(dashboardDataService.riskDiversificationPromise).toHaveBeenCalled();
+            it('should load loans acquired per day last week from API', () => {
+                expect(infosCacheService.getLoansAcquiredPerDayLastWeek).toHaveBeenCalled();
+                expect(dashboardController.loansAcquiredPerDayLastWeek).toBe(loansAcquiredPerDayLastWeek);
             });
         });
 
@@ -184,11 +146,7 @@ describe('DashboardController', () => {
 
         beforeEach(inject(($controller, _$timeout_) => {
             dashboardController = $controller('DashboardController', {
-                $location : $location,
-                authenticationService: authenticationService,
-                dashboardDataService: dashboardDataService,
-                userService: userService,
-                loansAcquiredService: loansAcquiredService,
+                infosCacheService: infosCacheService,
                 $scope: $scope,
                 dashboardGuidedTourService: dashboardGuidedTourService,
                 $timeout: _$timeout_,

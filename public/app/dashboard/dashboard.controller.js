@@ -15,7 +15,7 @@
     'use strict';
 
     class DashboardController {
-        constructor(dashboardDataService, $scope, $timeout, dashboardGuidedTourService, $cookies, infosCacheService) {
+        constructor($scope, $timeout, dashboardGuidedTourService, $cookies, infosCacheService) {
             var vm = this;
 
             initData();
