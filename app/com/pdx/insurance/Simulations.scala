@@ -25,10 +25,9 @@ object Simulations {
 
   def linesToLCL(loansStr: Seq[String], iteratedDatesStr: Seq[String]): Seq[LCL] = {
     loansStr
-      .filter(l => iteratedDatesStr.indexOf(l.split(",")(22)) > -1)
+      .filter(_.split(",")(0).length != 0)
       .map (line => {
         val fields = line.split(",")
-
         LCL(
           id = UUID.randomUUID().toString,
           fundedAmount = BigDecimal(fields(0)),
@@ -45,7 +44,8 @@ object Simulations {
           lateFees = BigDecimal(fields(63)),
           recoveries = BigDecimal(fields(64)),
           recoveryFees = BigDecimal(fields(65)),
-          lastPayment = fields(66))
+          lastPayment = fields(66)
+        )
       })
   }
 
@@ -67,9 +67,7 @@ object Simulations {
   }
 
   def select(initialLoans: Seq[LCL], weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int): Array[LCL] = {
-    val filtered = initialLoans.filter(loan => {
-      loan.term == term && dateAfter(startingDate, loan.issuedMonth)
-    })
+    val filtered = initialLoans.filter(loan => loan.term == term && !dateAfter(startingDate, loan.issuedMonth))
     val grades = filtered groupBy (_.grade)
     val weightedLoans = grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }
     Random.shuffle(Random.shuffle(Random.shuffle(weightedLoans))).toArray
@@ -113,7 +111,7 @@ object Simulations {
     ExperimentResult(
       interestPaid = resultsByMonth map (_.interests) sum,
       capitalLost = resultsByMonth map (_.defaults) sum,
-      ratioLost = (resultsByMonth map (_.defaults) sum) / (resultsByMonth map (_.interests) sum),
+//      ratioLost = (resultsByMonth map (_.defaults) sum) / (resultsByMonth map (_.interests) sum),
       outstandingInterest = {
         val doubledTimeWindow = intListToStrMonths(startingDate, 0 until term * 2)
         loansInPortfolio map (l => monthlyInterest(l, term, noteSize) * (doubledTimeWindow.indexOf(l.issuedMonth) + l.term - term)) sum
@@ -142,14 +140,14 @@ def main(args: Array[String]): Unit = {
     val nbInstances = 1000
     val weights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
     val term = 36
-    val startingDate = "Jun-07"
+    val startingDate = "Jan-10"
     val portfolioSize = 1000
     val noteSize = 25
 
     val res = experiment(nbInstances, inputFile, weights, term, startingDate, portfolioSize, noteSize)
     println(res.interestPaid)
     println(res.capitalLost)
-    println(res.ratioLost)
+//    println(res.ratioLost)
     println(res.outstandingInterest)
   }
 }
@@ -184,4 +182,8 @@ case class LCL(
 
 case class MonthlyResult(interests: BigDecimal, defaults: BigDecimal)
 
-case class ExperimentResult(interestPaid: BigDecimal, capitalLost: BigDecimal, ratioLost: BigDecimal, outstandingInterest: BigDecimal)
+case class ExperimentResult(
+                             interestPaid: BigDecimal,
+                             capitalLost: BigDecimal,
+//                             ratioLost: BigDecimal,
+                             outstandingInterest: BigDecimal)
