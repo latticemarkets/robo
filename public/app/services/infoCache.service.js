@@ -20,7 +20,15 @@
                 this.platforms = response.data.platforms.length;
             });
 
-            this.dashboardDataPromise = dashboardDataService.portfolioMetrics(response => this.expectedReturns = response.data.expectedReturns);
+            this.dashboardDataPromise = dashboardDataService.portfolioMetrics(response => {
+                this.expectedReturns = response.data.expectedReturns;
+                this.availableCapital = response.data.availableCapital;
+                this.allocatedCapital = response.data.allocatedCapital;
+                this.averageIntRate = response.data.averageIntRate;
+                this.currentRoiRate = response.data.currentRoiRate;
+                this.expectedRoiRate = response.data.expectedRoiRate;
+                this.loansAcquiredLastWeek = response.data.loansAcquiredLastWeek;
+            });
         }
 
         getUsername(callback) {
@@ -50,6 +58,50 @@
             }
         }
 
+        getAvailableCapital(callback) {
+            if (this.availableCapital) {
+                return callback(this.availableCapital);
+            }
+            else {
+                this.dashboardDataPromise.then(response => callback(response.data.availableCapital));
+            }
+        }
+
+        getAllocatedCapital(callback) {
+            if (this.allocatedCapital) {
+                return callback(this.allocatedCapital);
+            }
+            else {
+                this.dashboardDataPromise.then(response => callback(response.data.allocatedCapital));
+            }
+        }
+
+        getAverageIntRate(callback) {
+            if (this.averageIntRate) {
+                return callback(this.averageIntRate);
+            }
+            else {
+                this.dashboardDataPromise.then(response => callback(response.data.averageIntRate));
+            }
+        }
+
+        getCurrentRoiRate(callback) {
+            if (this.currentRoiRate) {
+                return callback(this.currentRoiRate);
+            }
+            else {
+                this.dashboardDataPromise.then(response => callback(response.data.currentRoiRate));
+            }
+        }
+
+        getExpectedRoiRate(callback) {
+            if (this.expectedRoiRate) {
+                return callback(this.expectedRoiRate);
+            }
+            else {
+                this.dashboardDataPromise.then(response => callback(response.data.expectedRoiRate));
+            }
+        }
 
         setNumberOfPlatforms(nbPlatforms) {
             this.nbPlatforms = nbPlatforms;

@@ -22,14 +22,14 @@
 
             function initData() {
                   vm.portfolioMetricsPromise = dashboardDataService.portfolioMetrics(response => {
-                  vm.availableCapital = response.data.availableCapital;
-                  vm.allocatedCapital = response.data.allocatedCapital;
-                  vm.lastUpdate = new Date();
-                  vm.averageIntRate = response.data.averageIntRate;
-                  vm.currentRoiRate = response.data.currentRoiRate;
-                  vm.expectedRoiRate = response.data.expectedRoiRate;
                   vm.loansAcquiredLastWeek = response.data.loansAcquiredPerDayLastWeek.reduce((last, loans) => loans + last, 0);
                 });
+
+                infosCacheService.getAvailableCapital(availableCapital => vm.availableCapital = availableCapital);
+                infosCacheService.getAllocatedCapital(allocatedCapital => vm.allocatedCapital = allocatedCapital);
+                infosCacheService.getAverageIntRate(averageIntRate => vm.averageIntRate = averageIntRate);
+                infosCacheService.getCurrentRoiRate(currentRoiRate => vm.currentRoiRate = currentRoiRate);
+                infosCacheService.getExpectedRoiRate(expectedRoiRate => vm.expectedRoiRate = expectedRoiRate);
             }
 
             if ($cookies.get('guidedTour')) {
