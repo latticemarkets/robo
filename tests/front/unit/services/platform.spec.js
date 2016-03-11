@@ -15,11 +15,24 @@ describe('platformService', () => {
     beforeEach(module('app'));
 
     let platformService,
-        $httpBackend;
+        $httpBackend,
+        infosCacheService;
 
-    beforeEach(inject((_platformService_, _$httpBackend_) => {
+    beforeEach(() => {
+        module($provide => {
+            $provide.service('infosCacheService', () => {
+                return {
+                    getNumberOfPlatforms: jasmine.createSpy('getNumberOfPlatforms'),
+                    setNumberOfPlatforms: jasmine.createSpy('setNumberOfPlatforms')
+                };
+            });
+        });
+    });
+
+    beforeEach(inject((_platformService_, _$httpBackend_, _infosCacheService_) => {
         platformService = _platformService_;
         $httpBackend = _$httpBackend_;
+        infosCacheService = _infosCacheService_;
     }));
 
     describe('updatePlatforms', () => {
@@ -36,11 +49,13 @@ describe('platformService', () => {
         it('should call the API', () => {
             $httpBackend.expectPUT('/api/user/p2pPlatforms', { platforms: platforms });
             expect($httpBackend.flush).not.toThrow();
-        });
 
-        afterEach(() => {
             $httpBackend.verifyNoOutstandingExpectation();
             $httpBackend.verifyNoOutstandingRequest();
+        });
+
+        it('should update cached number of platforms', () => {
+            expect(infosCacheService.setNumberOfPlatforms).toHaveBeenCalledWith(platforms.length);
         });
     });
 
@@ -72,6 +87,8 @@ describe('platformService', () => {
             accountId = 'accountId1';
             apiKey = 'apiKey1';
 
+            infosCacheService.getNumberOfPlatforms.and.callFake(callback => callback(0));
+
             $httpBackend.when('POST', '/api/user/platform').respond();
 
             platformService.addPlatform(originator, accountId, apiKey);
@@ -80,11 +97,14 @@ describe('platformService', () => {
         it('should call the API', () => {
             $httpBackend.expectPOST('/api/user/platform', { platform: { originator: originator, accountId: accountId, apiKey: apiKey } });
             expect($httpBackend.flush).not.toThrow();
-        });
 
-        afterEach(() => {
             $httpBackend.verifyNoOutstandingExpectation();
             $httpBackend.verifyNoOutstandingRequest();
+        });
+
+        it('should update the cache number of platforms', () => {
+            expect(infosCacheService.getNumberOfPlatforms).toHaveBeenCalled();
+            expect(infosCacheService.setNumberOfPlatforms).toHaveBeenCalledWith(1);
         });
     });
 

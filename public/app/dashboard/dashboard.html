@@ -38,7 +38,7 @@
                                 <div class="text-center small">
                                     <i class="fa fa-suitcase"></i> Portfolio Diversification
                                 </div>
-                                <loans-maturity data="vm.loansMaturityPromise" identifier="loansMaturity"></loans-maturity>
+                                <loans-maturity data="vm.dashboardDataPromise" identifier="loansMaturity"></loans-maturity>
                               </div>
                             </div>
                             <div class="col-md-3 text-center">
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="expectedReturns">
                                     <h1 class="font-extra-bold m-t-xl m-b-xs fat-font">
-                                        {{ vm.expectedReturns | currency }}
+                                        {{ expectedReturns | currency }}
                                     </h1>
                                     <small>Net Capital Gains</small>
                                 </div>
@@ -97,14 +97,14 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="flot-chart">
-                            <loans-acquired-per-day data="vm.loansAcquiredPerDayPromise" identifier="loansAcquiredPerDay"></loans-acquired-per-day>
+                            <loans-acquired-per-day data="vm.dashboardDataPromise" identifier="loansAcquiredPerDay"></loans-acquired-per-day>
                         </div>
                         <div class="loans-metrics">
                             <div class="row">
                               <div class="investmentWeek">
                                 <div class="text-center">
                                     <small class="stat-label">This week</small>
-                                    <h4>{{ vm.loansAcquiredLastWeek | currency }}</h4>
+                                    <h4>{{ vm.loansAcquiredPerDayLastWeek | currency }}</h4>
                                 </div>
                               </div>
                             </div>
@@ -124,7 +124,7 @@
                             <i class="pe-7s-cash fa-3x"></i>
                         </div>
                         <div class="flot-chart">
-                            <platform-allocation identifier="allocation-pie" data="vm.platformAllocationPromise"></platform-allocation>
+                            <platform-allocation identifier="allocation-pie" data="vm.dashboardDataPromise"></platform-allocation>
                         </div>
                     </div>
                   </div>
@@ -142,7 +142,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="flot-chart">
-                            <risk-diversification identifier="risk-diversification-donut" data="vm.riskDiversificationPromise"></risk-diversification>
+                            <risk-diversification identifier="risk-diversification-donut" data="vm.dashboardDataPromise"></risk-diversification>
                         </div>
                     </div>
                   </div>

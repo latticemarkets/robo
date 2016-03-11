@@ -15,25 +15,18 @@
     'use strict';
 
     class DashboardController {
-        constructor(dashboardDataService, $scope, $timeout, dashboardGuidedTourService, $cookies) {
+        constructor($scope, $timeout, dashboardGuidedTourService, $cookies, infosCacheService) {
             var vm = this;
 
             initData();
 
             function initData() {
-                dashboardDataService.availableCapital(response => vm.availableCapital = response.data.availableCapital);
-                dashboardDataService.allocatedCapital(response => vm.allocatedCapital = response.data.allocatedCapital);
-                vm.lastUpdate = new Date();
-                dashboardDataService.expectedReturns(response => vm.expectedReturns = response.data.expectedReturns);
-                dashboardDataService.averageIntRate(response => vm.averageIntRate = response.data.averageIntRate);
-                dashboardDataService.currentRoiRate(response => vm.currentRoiRate = response.data.currentRoiRate);
-                dashboardDataService.expectedRoiRate(response => vm.expectedRoiRate = response.data.expectedRoiRate);
-                vm.loansMaturityPromise = dashboardDataService.currentLoansPromise();
-                vm.loansAcquiredPerDayPromise = dashboardDataService.loansAcquiredPerDayLastWeek(response => {
-                    vm.loansAcquiredLastWeek = response.data.reduce((last, loans) => loans + last, 0);
-                });
-                vm.platformAllocationPromise = dashboardDataService.platformAllocationPromise();
-                vm.riskDiversificationPromise = dashboardDataService.riskDiversificationPromise();
+                infosCacheService.getAvailableCapital(availableCapital => vm.availableCapital = availableCapital);
+                infosCacheService.getAllocatedCapital(allocatedCapital => vm.allocatedCapital = allocatedCapital);
+                infosCacheService.getAverageIntRate(averageIntRate => vm.averageIntRate = averageIntRate);
+                infosCacheService.getCurrentRoiRate(currentRoiRate => vm.currentRoiRate = currentRoiRate);
+                infosCacheService.getExpectedRoiRate(expectedRoiRate => vm.expectedRoiRate = expectedRoiRate);
+                infosCacheService.getLoansAcquiredPerDayLastWeek(loansAcquiredPerDayLastWeek => vm.loansAcquiredPerDayLastWeek = loansAcquiredPerDayLastWeek);
             }
 
             if ($cookies.get('guidedTour')) {

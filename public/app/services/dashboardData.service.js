@@ -20,50 +20,10 @@
             this.notificationService = notificationService;
         }
 
-        availableCapital(callback) {
-            return this.$http.get('/api/dashboard/capital/available').then(callback, this.notificationService.apiError());
-        }
-
-        allocatedCapital(callback) {
-            return this.$http.get('/api/dashboard/capital/allocated').then(callback, this.notificationService.apiError());
-        }
-
-        averageIntRate(callback) {
-            return this.$http.get('/api/dashboard/averageIntRate').then(callback, this.notificationService.apiError());
-        }
-
-        expectedReturns(callback) {
-            return this.$http.get('/api/dashboard/expectedReturns').then(callback, this.notificationService.apiError());
-        }
-
-        lastLoanMaturity(callback) {
-            return this.$http.get('/api/dashboard/lastLoanMaturity').then(callback, this.notificationService.apiError());
-        }
-
-        currentRoiRate(callback) {
-            return this.$http.get('/api/dashboard/currentRoiRate').then(callback, this.notificationService.apiError());
-        }
-
-        expectedRoiRate(callback) {
-            return this.$http.get('/api/dashboard/expectedRoiRate').then(callback, this.notificationService.apiError());
-        }
-
-        loansAcquiredPerDayLastWeek(callback) {
-            const promise = this.$http.get('/api/dashboard/loansAcquiredPerDayLastWeek');
-            promise.then(callback, this.notificationService.apiError());
-            return promise;
-        }
-
-        riskDiversificationPromise() {
-            return this.$http.get('/api/dashboard/riskDiversification');
-        }
-
-        currentLoansPromise() {
-            return this.$http.get('/api/dashboard/currentLoans');
-        }
-
-        platformAllocationPromise() {
-            return this.$http.get('/api/dashboard/platformAllocation');
+        portfolioMetrics(callback){
+          const promise = this.$http.get('/api/dashboard/portfolioMetrics');
+          promise.then(callback, this.notificationService.apiError());
+          return promise;
         }
     }
 

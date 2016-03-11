@@ -18,9 +18,9 @@
         .module('app')
         .directive('sidebar', sidebar);
 
-    sidebar.$inject = ['authenticationService', '$window', 'userService', 'dashboardDataService','$location'];
+    sidebar.$inject = ['authenticationService', '$window','$location', 'infosCacheService'];
 
-    function sidebar(authenticationService, $window, userService, dashboardDataService, $location) {
+    function sidebar(authenticationService, $window, $location, infosCacheService) {
         return {
             replace: true,
             restrict: 'E',
@@ -34,11 +34,9 @@
                 scope.isActive = url => $location.path() === url;
 
                 // todo : cache these results
-                userService.userData(response => {
-                    scope.username = `${response.data.firstName} ${response.data.lastName}`;
-                    scope.platforms = response.data.platforms.length;
-                });
-                dashboardDataService.expectedReturns(response => scope.expectedReturns = response.data.expectedReturns);
+                infosCacheService.getUsername(username => scope.username = username);
+                infosCacheService.getNumberOfPlatforms(nbPlatforms => scope.platforms = nbPlatforms);
+                infosCacheService.getExpectedReturns(expectedReturns => scope.expectedReturns = expectedReturns);
             }
         };
     }

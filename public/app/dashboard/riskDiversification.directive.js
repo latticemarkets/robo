@@ -18,9 +18,9 @@
         .module('app')
         .directive('riskDiversification', riskDiversification);
 
-    riskDiversification.$inject = ['$timeout', 'responsiveService', 'chartService'];
+    riskDiversification.$inject = ['$timeout', 'responsiveService', 'chartService', 'infosCacheService'];
 
-    function riskDiversification($timeout, responsiveService, chartService) {
+    function riskDiversification($timeout, responsiveService, chartService, infosCacheService) {
         return {
             replace: true,
             restrict: 'E',
@@ -33,8 +33,8 @@
                 const onResizeCallbackId = 'riskDiversification';
                 const parentDir = elem.parent();
 
-                scope.data.then(response => {
-                    const data = response.data.map(platform => [platform.grade, platform.value]);
+                infosCacheService.dashboardDataPromise.then(response => {
+                    const data = response.data.riskDiversification.map(platform => [platform.grade, platform.value]);
                     const colors = data.reduce((prev, column, index) => {
                         prev[column[0]] = chartService.blueDegraded[index];
                         return prev;

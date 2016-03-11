@@ -18,9 +18,9 @@
         .module('app')
         .directive('loansAcquiredPerDay', loansAcquiredPerDay);
 
-    loansAcquiredPerDay.$inject = ['$timeout', 'responsiveService', 'notificationService', '$filter'];
+    loansAcquiredPerDay.$inject = ['$timeout', 'responsiveService', 'notificationService', '$filter', 'infosCacheService'];
 
-    function loansAcquiredPerDay($timeout, responsiveService, notificationService, $filter) {
+    function loansAcquiredPerDay($timeout, responsiveService, notificationService, $filter, infosCacheService) {
         return {
             replace: true,
             restrict: 'E',
@@ -33,8 +33,8 @@
                 const onResizeCallbackId = 'loansAcquiredPerDay';
                 const parentDir = elem.parent();
 
-                scope.data.then(response => {
-                    const data = response.data;
+                infosCacheService.dashboardDataPromise.then(response => {
+                    const data = response.data.loansAcquiredPerDayLastWeek;
 
                     $timeout(() => {
                         generateBarChart(data, scope.identifier, parentDir[0].clientWidth, parentDir[0].clientHeight);

@@ -28,6 +28,7 @@ describe('PlatformsController', () => {
     beforeEach(() => {
         platformService = jasmine.createSpyObj('platformService', ['getPlatforms', 'updatePlatforms']);
         platformService.getPlatforms.and.callFake(callback => callback({ data: [{ mode: 'automated' }] }));
+        platformService.updatePlatforms.and.callFake((platforms, callback) => callback());
     });
 
     beforeEach(() => {
@@ -78,7 +79,7 @@ describe('PlatformsController', () => {
                 tmpPlatforms = _tmpPlatforms_;
                 updatePlatformCallback = callback;
             });
-            watcher();
+            watcher(1,2);
         });
 
         it('should set up the spinner', () => {
