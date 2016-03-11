@@ -18,9 +18,9 @@
         .module('app')
         .directive('platformAllocation', platformAllocation);
 
-    platformAllocation.$inject = ['$timeout', 'responsiveService', 'chartService', '$filter'];
+    platformAllocation.$inject = ['$timeout', 'responsiveService', 'chartService', '$filter', 'infosCacheService'];
 
-    function platformAllocation($timeout, responsiveService, chartService, $filter) {
+    function platformAllocation($timeout, responsiveService, chartService, $filter, infosCacheService) {
         return {
             replace: true,
             restrict: 'E',
@@ -33,7 +33,7 @@
                 const onResizeCallbackId = 'platformAllocation';
                 const parentDir = elem.parent();
 
-                scope.data.then(response => {
+                infosCacheService.portfolioMetricsPromise.then(response => {
                     const data = response.data.platformAllocation.map(platform => [camelCaseToTitle(platform.originator), platform.loansAcquired]);
                     const colors = data.reduce((prev, column, index) => {
                         prev[column[0]] = chartService.blueDegraded[index];

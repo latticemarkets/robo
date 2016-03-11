@@ -18,9 +18,9 @@
         .module('app')
         .directive('loansMaturity', loansMaturity);
 
-    loansMaturity.$inject = ['loansMaturityUtilsService', 'notificationService', '$timeout', 'responsiveService'];
+    loansMaturity.$inject = ['loansMaturityUtilsService', 'notificationService', '$timeout', 'responsiveService', 'infosCacheService'];
 
-    function loansMaturity(loansMaturityUtilsService, notificationService, $timeout, responsiveService) {
+    function loansMaturity(loansMaturityUtilsService, notificationService, $timeout, responsiveService, infosCacheService) {
         return {
             replace: true,
             restrict: 'E',
@@ -33,7 +33,7 @@
                 const onResizeCallbackId = "loansMaturity";
                 const parentDir = elem.parent();
 
-                scope.data.then(response => {
+                infosCacheService.portfolioMetricsPromise.then(response => {
                     const preparedData = loansMaturityUtilsService.extractDataForScatterChart(response.data.currentLoans);
                     const xs = loansMaturityUtilsService.extractXs(preparedData);
 
