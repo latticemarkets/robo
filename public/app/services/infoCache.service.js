@@ -111,11 +111,12 @@
         }
 
         getLoansAcquiredPerDayLastWeek(callback) {
+            const computeTotalAcquired = (last, loans) => loans + last;
             if (this.loansAcquiredPerDayLastWeek) {
-                return callback(this.loansAcquiredPerDayLastWeek.reduce((last, loans) => loans + last, 0));
+                return callback(this.loansAcquiredPerDayLastWeek.reduce(computeTotalAcquired, 0));
             }
             else {
-                this.dashboardDataPromise.then(response => callback(response.data.loansAcquiredPerDayLastWeek.reduce((last, loans) => loans + last, 0)));
+                this.dashboardDataPromise.then(response => callback(response.data.loansAcquiredPerDayLastWeek.reduce(computeTotalAcquired, 0)));
             }
         }
 
