@@ -119,7 +119,7 @@ object Simulations {
     )
   }
 
-  def monthlyInterest(loan: LCL, term: Int, noteSize: BigDecimal): BigDecimal = (loan.fundedAmount * (loan.intRate / 100) / term) * noteSize / loan.fundedAmount
+  def monthlyInterest(loan: LCL, term: Int, noteSize: BigDecimal): BigDecimal = loan.installment * noteSize / loan.fundedAmount
 
   def intListToStrMonths(startingDate: String, intList: Seq[Int]): Seq[String] = {
     intList map (month => {
