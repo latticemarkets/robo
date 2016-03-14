@@ -45,7 +45,8 @@ object Simulations  {
           lateFees = BigDecimal(fields(63)),
           recoveries = BigDecimal(fields(64)),
           recoveryFees = BigDecimal(fields(65)),
-          lastPayment = fields(66)
+          lastPaymentMonth = fields(66),
+          lastPaymentAmount = BigDecimal(fields(67))
         )
       })
   }
@@ -68,7 +69,7 @@ object Simulations  {
   }
 
   def select(initialLoans: Seq[LCL], weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int): Array[LCL] = {
-    val filtered = initialLoans.filter(loan => loan.term == term && !dateAfter(startingDate, loan.issuedMonth) && dateAfter(startingDate, loan.lastPayment))
+    val filtered = initialLoans.filter(loan => loan.term == term && !dateAfter(startingDate, loan.issuedMonth) && dateAfter(startingDate, loan.lastPaymentMonth))
     val grades = filtered groupBy (_.grade)
     val weightedLoans = grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }
     Random.shuffle(Random.shuffle(Random.shuffle(weightedLoans))).toArray
@@ -86,7 +87,11 @@ object Simulations  {
 
     def simulateOneMonth(currentMonth: Int): MonthlyResult = {
       def endsThisMonth: (LCL) => Boolean = {
-        l => iteratedDatesStr.indexOf(l.lastPayment) - term == currentMonth
+        l => iteratedDatesStr.indexOf(l.lastPaymentMonth) - term == currentMonth
+      }
+
+      def prepaid(l: LCL): Boolean = {
+        endsThisMonth(l) && iteratedDatesStr.indexOf(l.lastPaymentMonth) - iteratedDatesStr.indexOf(l.issuedMonth) != term
       }
 
       val endedThisMonth: Array[LCL] = loansInPortfolio.filter(endsThisMonth)
@@ -94,11 +99,14 @@ object Simulations  {
 
       // compute the defaults of this currentMonth
       val defaults = defaultedThisMonth.map(l => noteSize - monthlyInterest(l, term, noteSize) * (currentMonth + 1)).sum
-
       // compute the interests for this currentMonth
       val interests = loansInPortfolio.map(l => {
-        // todo: if last payment && not 'naturaly matured' -> add lastPayment
-        monthlyInterest(l, term, noteSize)
+        if (prepaid(l)) {
+          l.lastPaymentAmount * noteSize / l.fundedAmount
+        }
+        else {
+          monthlyInterest(l, term, noteSize)
+        }
       }).sum
 
       // remove matured and defaulted from the list of loans
@@ -188,7 +196,8 @@ case class LCL(
                 lateFees: BigDecimal,
                 recoveries: BigDecimal,
                 recoveryFees: BigDecimal,
-                lastPayment: String)
+                lastPaymentMonth: String,
+                lastPaymentAmount: BigDecimal)
 
 case class MonthlyResult(
                           interests: BigDecimal,
