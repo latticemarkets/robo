@@ -9,7 +9,6 @@
 package com.pdx.insurance
 
 import java.io.File
-import java.util.UUID
 
 import scala.io.Source
 import scala.util.Random
@@ -18,18 +17,20 @@ import scala.util.Random
   * @author : julienderay
   * Created on 09/03/2016
   */
-object Simulations {
+object Simulations  {
 
   val indexToGrade = Seq("A", "B", "C", "D", "E", "F", "G")
   val defaultStates = Set("Charged Off", "Default", "In Grace Period", "Late (16-30 days)", "Late (16-30 days)", "Late (31-120 days)")
 
-  def linesToLCL(loansStr: Seq[String], iteratedDatesStr: Seq[String]): Seq[LCL] = {
+  def linesToLCL(loansStr: Seq[String]): Seq[LCL] = {
     loansStr
-      .filter(_.split(",")(0).length != 0)
+      .filter(line => {
+        val split: Array[String] = line.split(",")
+        split(0).length != 0 && split(66).length != 0
+      })
       .map (line => {
         val fields = line.split(",")
         LCL(
-          id = UUID.randomUUID().toString,
           fundedAmount = BigDecimal(fields(0)),
           term = Integer.parseInt(fields(1).trim.split(" ").head),
           intRate = fields(2).dropRight(1).toDouble,
@@ -67,69 +68,78 @@ object Simulations {
   }
 
   def select(initialLoans: Seq[LCL], weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int): Array[LCL] = {
-    val filtered = initialLoans.filter(loan => loan.term == term && !dateAfter(startingDate, loan.issuedMonth))
+    val filtered = initialLoans.filter(loan => loan.term == term && !dateAfter(startingDate, loan.issuedMonth) && dateAfter(startingDate, loan.lastPayment))
     val grades = filtered groupBy (_.grade)
     val weightedLoans = grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }
     Random.shuffle(Random.shuffle(Random.shuffle(weightedLoans))).toArray
   }
 
   def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int, noteSize: BigDecimal): ExperimentResult = {
-    val iteratedDatesStr = intListToStrMonths(startingDate, 0 until term)
+    val iteratedDatesStr = intListToStrMonths(MonthDate(startingDate), (- term) until term * 2)
 
-    val initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1).reverse, iteratedDatesStr)
+    val initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1).reverse)
     var loansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
 
     val portfolioActualWeights = Seq(0, 0, 0, 0, 0, 0, 0)
     var portfolioBalance: BigDecimal = 0
-    val maturedLoansCalendar = loansInPortfolio
-      .filter(l => iteratedDatesStr.indexOf(l.lastPayment) > -1)
-      .groupBy(_.lastPayment)
-      .map{ case (dateStr, loan) => iteratedDatesStr.indexOf(dateStr) -> loan }
 
-    var resultsByMonth: Seq[MonthlyResult] = Seq()
 
-    (0 until term) foreach (month => {
-      val maturedThisMonth: Option[Array[LCL]] = if (maturedLoansCalendar.contains(month)) Some(maturedLoansCalendar(month)) else None
-      val defaultedThisMonth: Option[Array[LCL]] = maturedThisMonth.map(_.filter(l => defaultStates.contains(l.state)))
-
-      // compute the defaults of this month
-      val defaults = defaultedThisMonth match {
-        case Some(d) => d.map(l => noteSize - monthlyInterest(l, term, noteSize) * month).sum
-        case None => BigDecimal(0)
+    def simulateOneMonth(currentMonth: Int): MonthlyResult = {
+      def endsThisMonth: (LCL) => Boolean = {
+        l => iteratedDatesStr.indexOf(l.lastPayment) - term == currentMonth
       }
 
-      // remove matured and defaulted from the list of loans
-      val maturedId = maturedThisMonth.getOrElse(Array()).map(_.id)
-      loansInPortfolio = loansInPortfolio.filter(l => !maturedId.contains(l.id))
+      val endedThisMonth: Array[LCL] = loansInPortfolio.filter(endsThisMonth)
+      val defaultedThisMonth: Array[LCL] = endedThisMonth.filter(l => defaultStates.contains(l.state))
 
-      // compute the interests for this month
-      val interests = loansInPortfolio.map(l => monthlyInterest(l, term, noteSize)).sum
+      // compute the defaults of this currentMonth
+      val defaults = defaultedThisMonth.map(l => noteSize - monthlyInterest(l, term, noteSize) * (currentMonth + 1)).sum
+
+      // compute the interests for this currentMonth
+      val interests = loansInPortfolio.map(l => {
+        // todo: if last payment && not 'naturaly matured' -> add lastPayment
+        monthlyInterest(l, term, noteSize)
+      }).sum
+
+      // remove matured and defaulted from the list of loans
+      loansInPortfolio = loansInPortfolio.filter(!endsThisMonth(_))
 
       portfolioBalance = portfolioBalance + interests
-      resultsByMonth = resultsByMonth :+ MonthlyResult(interests, defaults, loansInPortfolio.length)
-    })
+      MonthlyResult(interests, defaults, loansInPortfolio.length)
+    }
 
+
+    // run the simulation on ${term} months
+    val resultsByMonth: Seq[MonthlyResult] = (0 until term) map (currentMonth => simulateOneMonth(currentMonth))
+
+    // continue the simulation without reinvesting to get the outstanding interests
+    var outstandingInterest: BigDecimal = 0
+    var currentMonth = term
+
+    while (loansInPortfolio.length > 0) {
+      val month: MonthlyResult = simulateOneMonth(currentMonth)
+      outstandingInterest = outstandingInterest + month.interests - month.defaults
+      currentMonth = currentMonth + 1
+    }
+
+    // output
     ExperimentResult(
       interestPaid = resultsByMonth map (_.interests) sum,
       capitalLost = resultsByMonth map (_.defaults) sum,
       ratioLost = (resultsByMonth map (_.defaults) sum) / (resultsByMonth map (_.interests) sum),
-      outstandingInterest = {
-        val doubledTimeWindow = intListToStrMonths(startingDate, 0 until term * 2)
-        loansInPortfolio map (l => monthlyInterest(l, term, noteSize) * (doubledTimeWindow.indexOf(l.issuedMonth) + l.term - term)) sum
-      }
+      outstandingInterest = outstandingInterest
     )
   }
 
   def monthlyInterest(loan: LCL, term: Int, noteSize: BigDecimal): BigDecimal = loan.installment * noteSize / loan.fundedAmount
 
-  def intListToStrMonths(startingDate: String, intList: Seq[Int]): Seq[String] = {
+  def intListToStrMonths(parsedStartingDate: MonthDate, intList: Seq[Int]): Seq[String] = {
     intList map (month => {
-      val parsedStartingDate: MonthDate = MonthDate(startingDate)
-
       val monthNb: Int = (parsedStartingDate.month - 1 + month) % 12
-      val monthStr = MonthDate.monthsList(monthNb)
+      val monthStr = if (monthNb >= 0) MonthDate.monthsList(monthNb) else MonthDate.monthsList(monthNb + 12)
 
-      val year = ((parsedStartingDate.month - 1 + month) / 12) + parsedStartingDate.year
+      val year = if (monthNb >= 0) ((parsedStartingDate.month - 1 + month) / 12) + parsedStartingDate.year
+                 else ((parsedStartingDate.month + month) / 12) + parsedStartingDate.year - 1
 
       s"$monthStr-${if (year.toString.length > 1) year else s"0$year"}"
     })
@@ -146,10 +156,10 @@ def main(args: Array[String]): Unit = {
     val noteSize = 25
 
     val res = experiment(nbInstances, inputFile, weights, term, startingDate, portfolioSize, noteSize)
-    println(res.interestPaid)
-    println(res.capitalLost)
-    println(res.ratioLost)
-    println(res.outstandingInterest)
+    println("interestPaid", res.interestPaid)
+    println("capitalLost", res.capitalLost)
+    println("ratioLost", res.ratioLost)
+    println("outstandingInterest", res.outstandingInterest)
   }
 }
 
@@ -164,7 +174,6 @@ object MonthDate {
 }
 
 case class LCL(
-                id: String,
                 fundedAmount: BigDecimal,
                 issuedMonth: String,
                 term: Int,
