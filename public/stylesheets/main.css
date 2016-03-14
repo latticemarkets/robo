@@ -33,11 +33,6 @@ KeySoft - Software Landing Page
 1. GLOBAL STYLES
 -----------------------------------------*/
 
-body {
-    overflow-x: hidden;
-    font-weight: normal;
-    padding: 0;
-}
 .body-content{
   height: 100%;
 }
