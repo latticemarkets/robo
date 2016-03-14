@@ -71,19 +71,17 @@ object Simulations  {
   def select(initialLoans: Seq[LCL], weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int): Array[LCL] = {
     val filtered = initialLoans.filter(loan => loan.term == term && !dateAfter(startingDate, loan.issuedMonth) && dateAfter(startingDate, loan.lastPaymentMonth))
     val grades = filtered groupBy (_.grade)
-    val weightedLoans = grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }
-    Random.shuffle(Random.shuffle(Random.shuffle(weightedLoans))).toArray
+    grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }.toArray
   }
 
   def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int, noteSize: BigDecimal): ExperimentResult = {
     val iteratedDatesStr = intListToStrMonths(MonthDate(startingDate), (- term) until term * 2)
 
-    val initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1).reverse)
+    val initialLoans = Random.shuffle(Random.shuffle(Random.shuffle(linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1).reverse)))).toArray
     var loansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
 
-    val portfolioActualWeights = Seq(0, 0, 0, 0, 0, 0, 0)
+    var portfolioActualWeights = weights.map(_ * portfolioSize).zipWithIndex
     var portfolioBalance: BigDecimal = 0
-
 
     def simulateOneMonth(currentMonth: Int): MonthlyResult = {
       def endsThisMonth: (LCL) => Boolean = {
@@ -112,10 +110,17 @@ object Simulations  {
       // remove matured and defaulted from the list of loans
       loansInPortfolio = loansInPortfolio.filter(!endsThisMonth(_))
 
+      // update portfolio balance
       portfolioBalance = portfolioBalance + interests
+
+      // update actual weights
+      portfolioActualWeights = portfolioActualWeights.map{ case (weight, index) => (weight - endedThisMonth.count(l => indexToGrade.indexOf(l.grade) == index), index) }
+
+      // replay the interests earned
+      invest(initialLoans, noteSize, portfolioActualWeights, portfolioBalance)
+
       MonthlyResult(interests, defaults, loansInPortfolio.length)
     }
-
 
     // run the simulation on ${term} months
     val resultsByMonth: Seq[MonthlyResult] = (0 until term) map (currentMonth => simulateOneMonth(currentMonth))
@@ -137,6 +142,13 @@ object Simulations  {
       ratioLost = (resultsByMonth map (_.defaults) sum) / (resultsByMonth map (_.interests) sum),
       outstandingInterest = outstandingInterest
     )
+  }
+
+  def invest(initialLoans: Array[LCL], noteSize: BigDecimal, portfolioActualWeights: Seq[(Double, Int)], portfolioBalance: BigDecimal) = {
+    if (portfolioBalance > noteSize) {
+      val howManyLoans = portfolioBalance / noteSize
+//      initialLoans.find()
+    }
   }
 
   def monthlyInterest(loan: LCL, term: Int, noteSize: BigDecimal): BigDecimal = loan.installment * noteSize / loan.fundedAmount
