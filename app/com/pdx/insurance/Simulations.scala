@@ -81,37 +81,38 @@ object Simulations {
 
     val portfolioActualWeights = Seq(0, 0, 0, 0, 0, 0, 0)
     var portfolioBalance: BigDecimal = 0
-    val defaultationCalendar = loansInPortfolio
-      .filter(l => defaultStates.contains(l.state) && iteratedDatesStr.indexOf(l.lastPayment) > -1)
+    val maturedLoansCalendar = loansInPortfolio
+      .filter(l => iteratedDatesStr.indexOf(l.lastPayment) > -1)
       .groupBy(_.lastPayment)
       .map{ case (dateStr, loan) => iteratedDatesStr.indexOf(dateStr) -> loan }
 
     var resultsByMonth: Seq[MonthlyResult] = Seq()
 
     (0 until term) foreach (month => {
-      val defaultsThisMonth: Option[Array[LCL]] = if (defaultationCalendar.contains(month)) Some(defaultationCalendar(month)) else None
+      val maturedThisMonth: Option[Array[LCL]] = if (maturedLoansCalendar.contains(month)) Some(maturedLoansCalendar(month)) else None
+      val defaultedThisMonth: Option[Array[LCL]] = maturedThisMonth.map(_.filter(l => defaultStates.contains(l.state)))
 
       // compute the defaults of this month
-      val defaults = defaultsThisMonth match {
+      val defaults = defaultedThisMonth match {
         case Some(d) => d.map(l => noteSize - monthlyInterest(l, term, noteSize) * month).sum
         case None => BigDecimal(0)
       }
 
-      // remove the defaults from the list of loans
-      val defaultsId = defaultsThisMonth.getOrElse(Array()).map(_.id)
-      loansInPortfolio = loansInPortfolio.filter(l => !defaultsId.contains(l.id))
+      // remove matured and defaulted from the list of loans
+      val maturedId = maturedThisMonth.getOrElse(Array()).map(_.id)
+      loansInPortfolio = loansInPortfolio.filter(l => !maturedId.contains(l.id))
 
       // compute the interests for this month
       val interests = loansInPortfolio.map(l => monthlyInterest(l, term, noteSize)).sum
 
       portfolioBalance = portfolioBalance + interests
-      resultsByMonth = resultsByMonth :+ MonthlyResult(interests, defaults)
+      resultsByMonth = resultsByMonth :+ MonthlyResult(interests, defaults, loansInPortfolio.length)
     })
 
     ExperimentResult(
       interestPaid = resultsByMonth map (_.interests) sum,
       capitalLost = resultsByMonth map (_.defaults) sum,
-//      ratioLost = (resultsByMonth map (_.defaults) sum) / (resultsByMonth map (_.interests) sum),
+      ratioLost = (resultsByMonth map (_.defaults) sum) / (resultsByMonth map (_.interests) sum),
       outstandingInterest = {
         val doubledTimeWindow = intListToStrMonths(startingDate, 0 until term * 2)
         loansInPortfolio map (l => monthlyInterest(l, term, noteSize) * (doubledTimeWindow.indexOf(l.issuedMonth) + l.term - term)) sum
@@ -147,7 +148,7 @@ def main(args: Array[String]): Unit = {
     val res = experiment(nbInstances, inputFile, weights, term, startingDate, portfolioSize, noteSize)
     println(res.interestPaid)
     println(res.capitalLost)
-//    println(res.ratioLost)
+    println(res.ratioLost)
     println(res.outstandingInterest)
   }
 }
@@ -180,10 +181,13 @@ case class LCL(
                 recoveryFees: BigDecimal,
                 lastPayment: String)
 
-case class MonthlyResult(interests: BigDecimal, defaults: BigDecimal)
+case class MonthlyResult(
+                          interests: BigDecimal,
+                          defaults: BigDecimal,
+                          portfolioSize: Int)
 
 case class ExperimentResult(
                              interestPaid: BigDecimal,
                              capitalLost: BigDecimal,
-//                             ratioLost: BigDecimal,
+                             ratioLost: BigDecimal,
                              outstandingInterest: BigDecimal)
