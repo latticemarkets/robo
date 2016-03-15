@@ -40,7 +40,8 @@ object Simulations  {
   def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int, noteSize: BigDecimal): ExperimentResult = {
     val iteratedDatesStr = intListToStrMonths(MonthDate(startingDate), (- term) until term * 2)
 
-    var initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1).reverse)
+    val lines: Seq[String] = Source.fromFile(new File(inputFile)).getLines.toSeq
+    var initialLoans = linesToLCL(lines.drop(1).reverse, lines.head)
     val loansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
     initialLoans = Random.shuffle(Random.shuffle(Random.shuffle(
       initialLoans.filterNot(loansInPortfolio.toSet)
@@ -210,31 +211,41 @@ object Simulations  {
     })
   }
 
-  def linesToLCL(loansStr: Seq[String]): Seq[LCL] = {
+  def linesToLCL(loansStr: Seq[String], columns: String): Seq[LCL] = {
+    val splitColumns: Map[String, Int] = columns.split(",").zipWithIndex.map{ case (col, index) => col -> index }.toMap
+
     loansStr
       .filter(line => {
         val split: Array[String] = line.split(",")
-        split(0).length != 0 && split(66).length != 0
+        split(splitColumns("funded_amnt")).length != 0 && split(splitColumns("last_pymnt_d")).length != 0
       })
       .map(line => {
         val fields = line.split(",")
         LCL(
-          fundedAmount = BigDecimal(fields(0)),
-          term = Integer.parseInt(fields(1).trim.split(" ").head),
-          intRate = fields(2).dropRight(1).toDouble,
-          installment = BigDecimal(fields(3)),
-          grade = indexToGrade(Seq(fields(4), fields(5), fields(6), fields(7), fields(8), fields(9), fields(10)).indexOf("1")),
-          issuedMonth = fields(22),
-          state = fields(23),
-          outstandingPrincipal = BigDecimal(fields(59)),
-          totalPaid = BigDecimal(fields(60)),
-          paidPrincipal = BigDecimal(fields(61)),
-          paidInterest = BigDecimal(fields(62)),
-          lateFees = BigDecimal(fields(63)),
-          recoveries = BigDecimal(fields(64)),
-          recoveryFees = BigDecimal(fields(65)),
-          lastPaymentMonth = fields(66),
-          lastPaymentAmount = BigDecimal(fields(67))
+          fundedAmount = BigDecimal(fields(splitColumns("funded_amnt"))),
+          term = Integer.parseInt(fields(splitColumns("term")).trim.split(" ").head),
+          intRate = fields(splitColumns("int_rate")).dropRight(1).toDouble,
+          installment = BigDecimal(fields(splitColumns("installment"))),
+          grade = indexToGrade(Seq(
+            fields(splitColumns("grade_A")),
+            fields(splitColumns("grade_B")),
+            fields(splitColumns("grade_C")),
+            fields(splitColumns("grade_D")),
+            fields(splitColumns("grade_E")),
+            fields(splitColumns("grade_F")),
+            fields(splitColumns("grade_G"))
+          ).indexOf("1")),
+          issuedMonth = fields(splitColumns("issue_d")),
+          state = fields(splitColumns("loan_status")),
+          outstandingPrincipal = BigDecimal(fields(splitColumns("out_prncp_inv"))),
+          totalPaid = BigDecimal(fields(splitColumns("total_pymnt_inv"))),
+          paidPrincipal = BigDecimal(fields(splitColumns("total_rec_prncp"))),
+          paidInterest = BigDecimal(fields(splitColumns("total_rec_int"))),
+          lateFees = BigDecimal(fields(splitColumns("total_rec_late_fee"))),
+          recoveries = BigDecimal(fields(splitColumns("recoveries"))),
+          recoveryFees = BigDecimal(fields(splitColumns("collection_recovery_fee"))),
+          lastPaymentMonth = fields(splitColumns("last_pymnt_d")),
+          lastPaymentAmount = BigDecimal(fields(splitColumns("last_pymnt_amnt")))
         )
       })
   }
