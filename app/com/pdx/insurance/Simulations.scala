@@ -78,15 +78,7 @@ object Simulations  {
                                   loansInPortfolio: Seq[LCL],
                                   outstandingInterest: BigDecimal): BigDecimal = {
 
-    def endsThisMonth: (LCL) => Boolean = {
-      l => iteratedDatesStr.indexOf(l.lastPaymentMonth) - term == currentMonth
-    }
-
-    def prepaid(l: LCL): Boolean = {
-      endsThisMonth(l) && iteratedDatesStr.indexOf(l.lastPaymentMonth) - iteratedDatesStr.indexOf(l.issuedMonth) != term
-    }
-
-    val endedThisMonth: Seq[LCL] = loansInPortfolio.filter(endsThisMonth)
+    val endedThisMonth: Seq[LCL] = loansInPortfolio.filter(l => endsThisMonth(iteratedDatesStr, term, currentMonth, l))
     val defaultedThisMonth: Seq[LCL] = endedThisMonth.filter(l => defaultStates.contains(l.state))
 
     // compute the defaults of this currentMonth
@@ -94,7 +86,7 @@ object Simulations  {
 
     // compute the interests for this currentMonth
     val interests = loansInPortfolio.map(l => {
-      if (prepaid(l)) {
+      if (prepaid(iteratedDatesStr, term, currentMonth, l)) {
         l.lastPaymentAmount * noteSize / l.fundedAmount
       }
       else {
@@ -103,7 +95,7 @@ object Simulations  {
     }).sum
 
     // remove matured and defaulted from the list of loans
-    val newLoansInPortfolio = loansInPortfolio.filter(!endsThisMonth(_))
+    val newLoansInPortfolio = loansInPortfolio.filter(l => !endsThisMonth(iteratedDatesStr, term, currentMonth, l))
 
     val thisMonthOutstandingInterest = outstandingInterest + interests - defaults
     if (loansInPortfolio.nonEmpty) {
@@ -127,15 +119,7 @@ object Simulations  {
 
     println(s"Simulating month : $currentMonth")
 
-    def endsThisMonth: (LCL) => Boolean = {
-      l => iteratedDatesStr.indexOf(l.lastPaymentMonth) - term == currentMonth
-    }
-
-    def prepaid(l: LCL): Boolean = {
-      endsThisMonth(l) && iteratedDatesStr.indexOf(l.lastPaymentMonth) - iteratedDatesStr.indexOf(l.issuedMonth) != term
-    }
-
-    val endedThisMonth: Seq[LCL] = loansInPortfolio.filter(endsThisMonth)
+    val endedThisMonth: Seq[LCL] = loansInPortfolio.filter(l => endsThisMonth(iteratedDatesStr, term, currentMonth, l))
     val defaultedThisMonth: Seq[LCL] = endedThisMonth.filter(l => defaultStates.contains(l.state))
 
     // compute the defaults of this currentMonth
@@ -143,7 +127,7 @@ object Simulations  {
 
     // compute the interests for this currentMonth
     val interests = loansInPortfolio.map(l => {
-      if (prepaid(l)) {
+      if (prepaid(iteratedDatesStr, term, currentMonth, l)) {
         l.lastPaymentAmount * noteSize / l.fundedAmount
       }
       else {
@@ -152,7 +136,7 @@ object Simulations  {
     }).sum
 
     // remove matured and defaulted from the list of loans
-    var newLoansInPortfolio = loansInPortfolio.filter(!endsThisMonth(_))
+    var newLoansInPortfolio = loansInPortfolio.filter(l => !endsThisMonth(iteratedDatesStr, term, currentMonth, l))
 
     // update portfolio balance
     var newPortfolioBalance = portfolioBalance + interests
@@ -178,6 +162,14 @@ object Simulations  {
     else {
       monthlyResults :+ thisMonthResult
     }
+  }
+
+  def prepaid(iteratedDatesStr: Seq[String], term: Int, currentMonth: Int, l: LCL): Boolean = {
+    endsThisMonth(iteratedDatesStr, term, currentMonth, l) && iteratedDatesStr.indexOf(l.lastPaymentMonth) - iteratedDatesStr.indexOf(l.issuedMonth) != term
+  }
+
+  def endsThisMonth(iteratedDatesStr: Seq[String], term: Int, currentMonth: Int, loan: LCL): Boolean = {
+    iteratedDatesStr.indexOf(loan.lastPaymentMonth) - term == currentMonth
   }
 
   def updateWeights(portfolioActualWeights: Seq[(Double, Int)], loanList: Seq[LCL]): Seq[(Double, Int)] = {
