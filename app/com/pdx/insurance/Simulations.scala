@@ -41,74 +41,19 @@ object Simulations  {
     val iteratedDatesStr = intListToStrMonths(MonthDate(startingDate), (- term) until term * 2)
 
     var initialLoans = linesToLCL(Source.fromFile(new File(inputFile)).getLines.toSeq.drop(1).reverse)
-    var loansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
+    val loansInPortfolio = select(initialLoans, weights, term, startingDate, portfolioSize)
     initialLoans = Random.shuffle(Random.shuffle(Random.shuffle(
       initialLoans.filterNot(loansInPortfolio.toSet)
     )))
 
-    var portfolioActualWeights = weights.map(_ * portfolioSize).zipWithIndex
-    var portfolioBalance: BigDecimal = 0
-
-    def simulateOneMonth(currentMonth: Int, reinvests: Boolean): MonthlyResult = {
-      def endsThisMonth: (LCL) => Boolean = {
-        l => iteratedDatesStr.indexOf(l.lastPaymentMonth) - term == currentMonth
-      }
-
-      def prepaid(l: LCL): Boolean = {
-        endsThisMonth(l) && iteratedDatesStr.indexOf(l.lastPaymentMonth) - iteratedDatesStr.indexOf(l.issuedMonth) != term
-      }
-
-      val endedThisMonth: Array[LCL] = loansInPortfolio.filter(endsThisMonth)
-      val defaultedThisMonth: Array[LCL] = endedThisMonth.filter(l => defaultStates.contains(l.state))
-
-      // compute the defaults of this currentMonth
-      val defaults = defaultedThisMonth.map(l => noteSize - monthlyInterest(l, term, noteSize) * (currentMonth + 1)).sum
-      // compute the interests for this currentMonth
-      val interests = loansInPortfolio.map(l => {
-        if (prepaid(l)) {
-          l.lastPaymentAmount * noteSize / l.fundedAmount
-        }
-        else {
-          monthlyInterest(l, term, noteSize)
-        }
-      }).sum
-
-      // remove matured and defaulted from the list of loans
-      loansInPortfolio = loansInPortfolio.filter(!endsThisMonth(_))
-
-      // update portfolio balance
-      portfolioBalance = portfolioBalance + interests
-
-      // update actual weights
-      portfolioActualWeights = updateWeights(portfolioActualWeights, endedThisMonth)
-
-      // replay the interests earned
-      if (portfolioBalance > noteSize && reinvests) {
-        val loansToInvestOn = getLoansToInvestOn(initialLoans, noteSize, weights, portfolioActualWeights, portfolioBalance, iteratedDatesStr(currentMonth + term + 1))
-        loansInPortfolio = loansInPortfolio ++ loansToInvestOn
-        portfolioActualWeights = updateWeights(portfolioActualWeights, loansToInvestOn)
-        portfolioBalance = portfolioBalance - loansToInvestOn.size * noteSize
-        initialLoans = initialLoans.filterNot(loansToInvestOn.toSet)
-      }
-
-      println(s"Simulating month : $currentMonth")
-      MonthlyResult(interests, defaults, loansInPortfolio.length)
-    }
+    val portfolioActualWeights = weights.map(_ * portfolioSize).zipWithIndex
+    val portfolioBalance: BigDecimal = 0
 
     // run the simulation on ${term} months
-    val doReinvest = true
-    val resultsByMonth: Seq[MonthlyResult] = (0 until term) map (currentMonth => simulateOneMonth(currentMonth, doReinvest))
+    val resultsByMonth: Seq[MonthlyResult] = simulateThePeriod(0, iteratedDatesStr, term, noteSize, initialLoans, loansInPortfolio, portfolioBalance, portfolioActualWeights, weights, Seq[MonthlyResult]())
 
     // continue the simulation without reinvesting to get the outstanding interests
-    var outstandingInterest: BigDecimal = 0
-    var currentMonth = term
-
-    val doNotReinvest = false
-    while (loansInPortfolio.length > 0) {
-      val month: MonthlyResult = simulateOneMonth(currentMonth, doNotReinvest)
-      outstandingInterest = outstandingInterest + month.interests - month.defaults
-      currentMonth = currentMonth + 1
-    }
+    val outstandingInterest = computeOutstandingInterests(0, iteratedDatesStr, term, noteSize, loansInPortfolio, BigDecimal(0))
 
     // output
     ExperimentResult(
@@ -124,6 +69,115 @@ object Simulations  {
     val filtered = initialLoans.filter(loan => loan.term == term && !dateAfter(startingDate, loan.issuedMonth) && dateAfter(startingDate, loan.lastPaymentMonth))
     val grades = filtered groupBy (_.grade)
     grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }.toArray
+  }
+
+  def computeOutstandingInterests(currentMonth: Int,
+                                  iteratedDatesStr: Seq[String],
+                                  term: Int,
+                                  noteSize: BigDecimal,
+                                  loansInPortfolio: Seq[LCL],
+                                  outstandingInterest: BigDecimal): BigDecimal = {
+
+    def endsThisMonth: (LCL) => Boolean = {
+      l => iteratedDatesStr.indexOf(l.lastPaymentMonth) - term == currentMonth
+    }
+
+    def prepaid(l: LCL): Boolean = {
+      endsThisMonth(l) && iteratedDatesStr.indexOf(l.lastPaymentMonth) - iteratedDatesStr.indexOf(l.issuedMonth) != term
+    }
+
+    val endedThisMonth: Seq[LCL] = loansInPortfolio.filter(endsThisMonth)
+    val defaultedThisMonth: Seq[LCL] = endedThisMonth.filter(l => defaultStates.contains(l.state))
+
+    // compute the defaults of this currentMonth
+    val defaults = defaultedThisMonth.map(l => noteSize - monthlyInterest(l, term, noteSize) * (currentMonth + 1)).sum
+
+    // compute the interests for this currentMonth
+    val interests = loansInPortfolio.map(l => {
+      if (prepaid(l)) {
+        l.lastPaymentAmount * noteSize / l.fundedAmount
+      }
+      else {
+        monthlyInterest(l, term, noteSize)
+      }
+    }).sum
+
+    // remove matured and defaulted from the list of loans
+    val newLoansInPortfolio = loansInPortfolio.filter(!endsThisMonth(_))
+
+    val thisMonthOutstandingInterest = outstandingInterest + interests - defaults
+    if (loansInPortfolio.nonEmpty) {
+      computeOutstandingInterests(currentMonth + 1, iteratedDatesStr, term, noteSize, newLoansInPortfolio, thisMonthOutstandingInterest)
+    }
+    else {
+      thisMonthOutstandingInterest
+    }
+  }
+
+  def simulateThePeriod(currentMonth: Int,
+               iteratedDatesStr: Seq[String],
+               term: Int,
+               noteSize: BigDecimal,
+               loansList: Seq[LCL],
+               loansInPortfolio: Seq[LCL],
+               portfolioBalance: BigDecimal,
+               portfolioActualWeights: Seq[(Double, Int)],
+               goalWeights: Seq[Double],
+               monthlyResults: Seq[MonthlyResult]): Seq[MonthlyResult] = {
+
+    println(s"Simulating month : $currentMonth")
+
+    def endsThisMonth: (LCL) => Boolean = {
+      l => iteratedDatesStr.indexOf(l.lastPaymentMonth) - term == currentMonth
+    }
+
+    def prepaid(l: LCL): Boolean = {
+      endsThisMonth(l) && iteratedDatesStr.indexOf(l.lastPaymentMonth) - iteratedDatesStr.indexOf(l.issuedMonth) != term
+    }
+
+    val endedThisMonth: Seq[LCL] = loansInPortfolio.filter(endsThisMonth)
+    val defaultedThisMonth: Seq[LCL] = endedThisMonth.filter(l => defaultStates.contains(l.state))
+
+    // compute the defaults of this currentMonth
+    val defaults = defaultedThisMonth.map(l => noteSize - monthlyInterest(l, term, noteSize) * (currentMonth + 1)).sum
+
+    // compute the interests for this currentMonth
+    val interests = loansInPortfolio.map(l => {
+      if (prepaid(l)) {
+        l.lastPaymentAmount * noteSize / l.fundedAmount
+      }
+      else {
+        monthlyInterest(l, term, noteSize)
+      }
+    }).sum
+
+    // remove matured and defaulted from the list of loans
+    var newLoansInPortfolio = loansInPortfolio.filter(!endsThisMonth(_))
+
+    // update portfolio balance
+    var newPortfolioBalance = portfolioBalance + interests
+
+    // update actual weights
+    var newPortfolioActualWeights = updateWeights(portfolioActualWeights, endedThisMonth)
+
+    var newLoansList = loansList
+
+    // replay the interests earned
+    if (portfolioBalance > noteSize) {
+      val loansToInvestOn = getLoansToInvestOn(loansList, noteSize, goalWeights, portfolioActualWeights, portfolioBalance, iteratedDatesStr(currentMonth + term + 1))
+      newLoansInPortfolio = loansInPortfolio ++ loansToInvestOn
+      newPortfolioActualWeights = updateWeights(portfolioActualWeights, loansToInvestOn)
+      newPortfolioBalance = portfolioBalance - loansToInvestOn.size * noteSize
+      newLoansList = loansList.filterNot(loansToInvestOn.toSet)
+    }
+
+    val thisMonthResult = MonthlyResult(interests, defaults, loansInPortfolio.length)
+    if (currentMonth < term) {
+      simulateThePeriod(currentMonth + 1, iteratedDatesStr, term, noteSize, newLoansList, newLoansInPortfolio, newPortfolioBalance, newPortfolioActualWeights, goalWeights, monthlyResults :+ thisMonthResult)
+    }
+    else {
+      monthlyResults :+ thisMonthResult
+    }
   }
 
   def updateWeights(portfolioActualWeights: Seq[(Double, Int)], loanList: Seq[LCL]): Seq[(Double, Int)] = {
