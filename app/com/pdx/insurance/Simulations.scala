@@ -48,6 +48,7 @@ object Simulations  {
 
     val portfolioActualWeights = weights.map(_ * portfolioSize).zipWithIndex
     val portfolioBalance: BigDecimal = 0
+    val firstInvestment: BigDecimal = portfolioSize * noteSize
 
     // run the simulation on ${term} months
     val resultsByMonth: Seq[MonthlyResult] = simulateThePeriod(0, iteratedDatesStr, term, noteSize, initialLoans, loansInPortfolio, portfolioBalance, portfolioActualWeights, weights, Seq[MonthlyResult]())
@@ -61,7 +62,8 @@ object Simulations  {
       capitalLost = resultsByMonth map (_.defaults) sum,
       ratioLost = (resultsByMonth map (_.defaults) sum) / (resultsByMonth map (_.interests) sum),
       outstandingInterest = outstandingInterest,
-      details = resultsByMonth
+      details = resultsByMonth,
+      investment = (resultsByMonth map (_.investment) sum) + firstInvestment
     )
   }
 
@@ -122,17 +124,19 @@ object Simulations  {
     var newPortfolioActualWeights = updateWeights(portfolioActualWeights, endedThisMonth)
 
     var newLoansList = loansList
+    var newInvestments: BigDecimal = 0
 
     // replay the interests earned
     if (portfolioBalance > noteSize) {
       val loansToInvestOn = getLoansToInvestOn(loansList, noteSize, goalWeights, portfolioActualWeights, portfolioBalance, iteratedDatesStr(currentMonth + term + 1))
+      newInvestments = noteSize * loansToInvestOn.size
       newLoansInPortfolio = loansInPortfolio ++ loansToInvestOn
       newPortfolioActualWeights = updateWeights(portfolioActualWeights, loansToInvestOn)
       newPortfolioBalance = portfolioBalance - loansToInvestOn.size * noteSize
       newLoansList = loansList.filterNot(loansToInvestOn.toSet)
     }
 
-    val thisMonthResult = MonthlyResult(interests, defaults, loansInPortfolio.length)
+    val thisMonthResult = MonthlyResult(interests, defaults, loansInPortfolio.length, newInvestments)
     if (currentMonth < term) {
       simulateThePeriod(currentMonth + 1, iteratedDatesStr, term, noteSize, newLoansList, newLoansInPortfolio, newPortfolioBalance, newPortfolioActualWeights, goalWeights, monthlyResults :+ thisMonthResult)
     }
@@ -258,7 +262,8 @@ object Simulations  {
       println(s"Month #$index")
       println(s"Interests : ${monthlyResult.interests}")
       println(s"Defaults : ${monthlyResult.defaults}")
-      println(s"PortfolioSize : ${monthlyResult.portfolioSize}")
+      println(s"Portfolio Size : ${monthlyResult.portfolioSize}")
+      println(s"Investment : ${monthlyResult.investment}")
     }
 
     println("=============\nGlobal results:")
@@ -266,6 +271,8 @@ object Simulations  {
     println(s"Capital Lost : ${res.capitalLost}")
     println(s"Capital / Interest : ${res.ratioLost}")
     println(s"Outstanding Interest : ${res.outstandingInterest}")
+    println(s"Investment : ${res.investment}")
+    println(s"Interests - Capital Lost - Investment : ${res.interestPaid - res.capitalLost - res.investment}")
   }
 }
 
@@ -300,11 +307,13 @@ case class LCL(
 case class MonthlyResult(
                           interests: BigDecimal,
                           defaults: BigDecimal,
-                          portfolioSize: Int)
+                          portfolioSize: Int,
+                          investment: BigDecimal)
 
 case class ExperimentResult(
                              interestPaid: BigDecimal,
                              capitalLost: BigDecimal,
                              ratioLost: BigDecimal,
                              outstandingInterest: BigDecimal,
-                             details: Seq[MonthlyResult])
+                             details: Seq[MonthlyResult],
+                             investment: BigDecimal)
