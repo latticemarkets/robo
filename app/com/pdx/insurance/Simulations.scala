@@ -22,56 +22,19 @@ object Simulations  {
   val indexToGrade = Seq("A", "B", "C", "D", "E", "F", "G")
   val defaultStates = Set("Charged Off", "Default", "In Grace Period", "Late (16-30 days)", "Late (16-30 days)", "Late (31-120 days)")
 
-  def linesToLCL(loansStr: Seq[String]): Seq[LCL] = {
-    loansStr
-      .filter(line => {
-        val split: Array[String] = line.split(",")
-        split(0).length != 0 && split(66).length != 0
-      })
-      .map (line => {
-        val fields = line.split(",")
-        LCL(
-          fundedAmount = BigDecimal(fields(0)),
-          term = Integer.parseInt(fields(1).trim.split(" ").head),
-          intRate = fields(2).dropRight(1).toDouble,
-          installment = BigDecimal(fields(3)),
-          grade = indexToGrade(Seq(fields(4), fields(5), fields(6), fields(7), fields(8), fields(9), fields(10)).indexOf("1")),
-          issuedMonth = fields(22),
-          state = fields(23),
-          outstandingPrincipal = BigDecimal(fields(59)),
-          totalPaid = BigDecimal(fields(60)),
-          paidPrincipal = BigDecimal(fields(61)),
-          paidInterest = BigDecimal(fields(62)),
-          lateFees = BigDecimal(fields(63)),
-          recoveries = BigDecimal(fields(64)),
-          recoveryFees = BigDecimal(fields(65)),
-          lastPaymentMonth = fields(66),
-          lastPaymentAmount = BigDecimal(fields(67))
-        )
-      })
-  }
+  def main(args: Array[String]): Unit = {
+    val inputFile =  "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
 
-  def dateAfter(startingDate: String, issuedMonth: String): Boolean = {
-    val parsedStartingDate = MonthDate(startingDate)
-    val parsedLoanDate = MonthDate(issuedMonth)
+    val nbInstances = 1000
+    val weights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
+    val term = 36
+    val startingDate = "Jan-10"
+    val portfolioSize = 1000
+    val noteSize = 25
 
-    if (parsedLoanDate.year > parsedStartingDate.year) {
-      true
-    }
-    else {
-      if (parsedLoanDate.year == parsedStartingDate.year) {
-        parsedLoanDate.month >= parsedStartingDate.month
-      }
-      else {
-        false
-      }
-    }
-  }
+    val res: ExperimentResult = experiment(nbInstances, inputFile, weights, term, startingDate, portfolioSize, noteSize)
 
-  def select(initialLoans: Seq[LCL], weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int): Array[LCL] = {
-    val filtered = initialLoans.filter(loan => loan.term == term && !dateAfter(startingDate, loan.issuedMonth) && dateAfter(startingDate, loan.lastPaymentMonth))
-    val grades = filtered groupBy (_.grade)
-    grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }.toArray
+    printResult(res)
   }
 
   def experiment(nbInstances: Int, inputFile: String, weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int, noteSize: BigDecimal): ExperimentResult = {
@@ -152,8 +115,15 @@ object Simulations  {
       interestPaid = resultsByMonth map (_.interests) sum,
       capitalLost = resultsByMonth map (_.defaults) sum,
       ratioLost = (resultsByMonth map (_.defaults) sum) / (resultsByMonth map (_.interests) sum),
-      outstandingInterest = outstandingInterest
+      outstandingInterest = outstandingInterest,
+      details = resultsByMonth
     )
+  }
+
+  def select(initialLoans: Seq[LCL], weights: Seq[Double], term: Int, startingDate: String, portfolioSize: Int): Array[LCL] = {
+    val filtered = initialLoans.filter(loan => loan.term == term && !dateAfter(startingDate, loan.issuedMonth) && dateAfter(startingDate, loan.lastPaymentMonth))
+    val grades = filtered groupBy (_.grade)
+    grades.flatMap { case (g, l) => l.take((weights(indexToGrade.indexOf(g)) * portfolioSize.toDouble).toInt) }.toArray
   }
 
   def updateWeights(portfolioActualWeights: Seq[(Double, Int)], loanList: Seq[LCL]): Seq[(Double, Int)] = {
@@ -185,17 +155,63 @@ object Simulations  {
     })
   }
 
-def main(args: Array[String]): Unit = {
-    val inputFile =  "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
+  def linesToLCL(loansStr: Seq[String]): Seq[LCL] = {
+    loansStr
+      .filter(line => {
+        val split: Array[String] = line.split(",")
+        split(0).length != 0 && split(66).length != 0
+      })
+      .map(line => {
+        val fields = line.split(",")
+        LCL(
+          fundedAmount = BigDecimal(fields(0)),
+          term = Integer.parseInt(fields(1).trim.split(" ").head),
+          intRate = fields(2).dropRight(1).toDouble,
+          installment = BigDecimal(fields(3)),
+          grade = indexToGrade(Seq(fields(4), fields(5), fields(6), fields(7), fields(8), fields(9), fields(10)).indexOf("1")),
+          issuedMonth = fields(22),
+          state = fields(23),
+          outstandingPrincipal = BigDecimal(fields(59)),
+          totalPaid = BigDecimal(fields(60)),
+          paidPrincipal = BigDecimal(fields(61)),
+          paidInterest = BigDecimal(fields(62)),
+          lateFees = BigDecimal(fields(63)),
+          recoveries = BigDecimal(fields(64)),
+          recoveryFees = BigDecimal(fields(65)),
+          lastPaymentMonth = fields(66),
+          lastPaymentAmount = BigDecimal(fields(67))
+        )
+      })
+  }
 
-    val nbInstances = 1000
-    val weights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
-    val term = 36
-    val startingDate = "Jan-10"
-    val portfolioSize = 1000
-    val noteSize = 25
+  def dateAfter(startingDate: String, issuedMonth: String): Boolean = {
+    val parsedStartingDate = MonthDate(startingDate)
+    val parsedLoanDate = MonthDate(issuedMonth)
 
-    val res = experiment(nbInstances, inputFile, weights, term, startingDate, portfolioSize, noteSize)
+    if (parsedLoanDate.year > parsedStartingDate.year) {
+      true
+    }
+    else {
+      if (parsedLoanDate.year == parsedStartingDate.year) {
+        parsedLoanDate.month >= parsedStartingDate.month
+      }
+      else {
+        false
+      }
+    }
+  }
+
+  def printResult(res: ExperimentResult): Unit = {
+    println("=============\nDetails per month :")
+    res.details.zipWithIndex.foreach { case (monthlyResult, index) =>
+      println("==============")
+      println(s"Month #$index")
+      println(s"Interests : ${monthlyResult.interests}")
+      println(s"Defaults : ${monthlyResult.defaults}")
+      println(s"PortfolioSize : ${monthlyResult.portfolioSize}")
+    }
+
+    println("=============\nGlobal results:")
     println(s"Interest Paid : ${res.interestPaid}")
     println(s"Capital Lost : ${res.capitalLost}")
     println(s"Capital / Interest : ${res.ratioLost}")
@@ -240,4 +256,5 @@ case class ExperimentResult(
                              interestPaid: BigDecimal,
                              capitalLost: BigDecimal,
                              ratioLost: BigDecimal,
-                             outstandingInterest: BigDecimal)
+                             outstandingInterest: BigDecimal,
+                             details: Seq[MonthlyResult])
