@@ -124,12 +124,12 @@ object Simulations  {
     var newPortfolioActualWeights = updateWeights(portfolioActualWeights, endedThisMonth)
 
     var newLoansList = loansList
-    var newInvestments = 0
+    var newInvestments: BigDecimal = 0
 
     // replay the interests earned
     if (portfolioBalance > noteSize) {
       val loansToInvestOn = getLoansToInvestOn(loansList, noteSize, goalWeights, portfolioActualWeights, portfolioBalance, iteratedDatesStr(currentMonth + term + 1))
-      newInvestments = term * loansToInvestOn.size
+      newInvestments = noteSize * loansToInvestOn.size
       newLoansInPortfolio = loansInPortfolio ++ loansToInvestOn
       newPortfolioActualWeights = updateWeights(portfolioActualWeights, loansToInvestOn)
       newPortfolioBalance = portfolioBalance - loansToInvestOn.size * noteSize
