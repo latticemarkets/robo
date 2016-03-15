@@ -81,7 +81,7 @@ object Simulations  {
     val endedThisMonth: Seq[LCL] = filterLoansEndedThisMonth(currentMonth, iteratedDatesStr, term, loansInPortfolio)
     val defaultedThisMonth: Seq[LCL] = filterLoansDefaultedThisMonth(endedThisMonth)
 
-    val defaults = computeDefaults(currentMonth, term, noteSize, defaultedThisMonth)
+    val defaults = computeDefaults(currentMonth, noteSize, defaultedThisMonth)
     val interests = computeInterests(currentMonth, iteratedDatesStr, term, noteSize, loansInPortfolio)
     val newLoansInPortfolio = filterMaturedAndDefaultedLoans(currentMonth, iteratedDatesStr, term, loansInPortfolio)
 
@@ -111,7 +111,7 @@ object Simulations  {
     val endedThisMonth: Seq[LCL] = filterLoansEndedThisMonth(currentMonth, iteratedDatesStr, term, loansInPortfolio)
     val defaultedThisMonth: Seq[LCL] = filterLoansDefaultedThisMonth(endedThisMonth)
 
-    val defaults = computeDefaults(currentMonth, term, noteSize, defaultedThisMonth)
+    val defaults = computeDefaults(currentMonth, noteSize, defaultedThisMonth)
     val interests = computeInterests(currentMonth, iteratedDatesStr, term, noteSize, loansInPortfolio)
     var newLoansInPortfolio = filterMaturedAndDefaultedLoans(currentMonth, iteratedDatesStr, term, loansInPortfolio)
 
@@ -151,13 +151,13 @@ object Simulations  {
         l.lastPaymentAmount * noteSize / l.fundedAmount
       }
       else {
-        monthlyInterest(l, term, noteSize)
+        monthlyInterest(l, noteSize)
       }
     }).sum
   }
 
-  def computeDefaults(currentMonth: Int, term: Int, noteSize: BigDecimal, defaultedThisMonth: Seq[LCL]): BigDecimal = {
-    defaultedThisMonth.map(l => noteSize - monthlyInterest(l, term, noteSize) * (currentMonth + 1)).sum
+  def computeDefaults(currentMonth: Int, noteSize: BigDecimal, defaultedThisMonth: Seq[LCL]): BigDecimal = {
+    defaultedThisMonth.map(l => noteSize - monthlyInterest(l, noteSize) * (currentMonth + 1)).sum
   }
 
   def filterLoansDefaultedThisMonth(endedThisMonth: Seq[LCL]): Seq[LCL] = {
@@ -191,7 +191,7 @@ object Simulations  {
     })
   }
 
-  def monthlyInterest(loan: LCL, term: Int, noteSize: BigDecimal): BigDecimal = loan.installment * noteSize / loan.fundedAmount
+  def monthlyInterest(loan: LCL, noteSize: BigDecimal): BigDecimal = loan.installment * noteSize / loan.fundedAmount
 
   def intListToStrMonths(parsedStartingDate: MonthDate, intList: Seq[Int]): Seq[String] = {
     intList map (month => {
