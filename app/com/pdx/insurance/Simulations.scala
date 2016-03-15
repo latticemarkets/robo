@@ -273,7 +273,8 @@ object Simulations  {
     println(s"Capital / Interest : ${res.ratioLost}")
     println(s"Outstanding Interest : ${res.outstandingInterest}")
     println(s"Investment : ${res.investment}")
-    println(s"Interests - Capital Lost - Investment : ${res.interestPaid - res.capitalLost - res.investment}")
+    println(s"Total : Interests + Outstanding Interest - Capital Lost - Investment : ${res.interestPaid + res.outstandingInterest - res.capitalLost - res.investment}")
+    println(s"Total / Investment : ${(res.interestPaid + res.outstandingInterest - res.capitalLost - res.investment) / res.investment}")
   }
 }
 
