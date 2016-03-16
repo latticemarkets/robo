@@ -15,9 +15,9 @@
         .run(run);
 
 
-    run.$inject = ['$rootScope', '$location', '$window', '$cookies', '$http', 'editableOptions', '$injector', 'responsiveService', '$timeout'];
-    function run($rootScope, $location, $window, $cookies, $http, editableOptions, $injector, responsiveService, $timeout) {
-      editableOptions.theme = 'bs3';
+    run.$inject = ['$rootScope', '$location', '$window', '$cookies', '$http', '$injector' ];
+    function run($rootScope, $location, $window, $cookies, $http, $injector) {
+
       $rootScope.globals = $cookies.getObject('globals') || {};
 
       if ($rootScope.globals.currentUser) {
@@ -47,11 +47,22 @@
               }]);
           }
       });
-      $rootScope.$on('$locationChangeSuccess', () => {
-          $timeout(() => {
-              responsiveService.adaptWrapperHeight();
-              responsiveService.adaptSidebar();
-          }, 300);
-      });
-    }
+
+        function authorizedPage() {
+            return $.inArray($location.path(),
+                ['',
+                    '/404',
+                    '/signup',
+                    '/signup/termsAndConditions',
+                    '/signup/reasonInvestment',
+                    '/signup/yearlyIncome',
+                    '/signup/timeline',
+                    '/signup/birthday',
+                    '/signup/p2pPlatform',
+                    '/signup/p2pCredentials',
+                    '/signup/personalInfos',
+                    '/signup/registered',
+                    '/signin']
+            ) > -1; }
+      }
 })();
