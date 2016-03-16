@@ -33,4 +33,9 @@ object Constraints {
         Invalid(errors)
       }
   })
+
+  val isTrue: Constraint[String] = Constraint("constraints.terms")({
+    case plainText if plainText == "true" => Valid
+    case _ => Invalid(ValidationError("Terms have not been accepted"))
+  })
 }

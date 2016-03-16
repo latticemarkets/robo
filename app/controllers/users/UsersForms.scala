@@ -54,7 +54,7 @@ object UsersForms {
     mapping (
       "email" -> email,
       "password" -> nonEmptyText.verifying(Constraints.passwordCheckConstraint),
-      "terms" -> nonEmptyText,
+      "terms" -> nonEmptyText.verifying(Constraints.isTrue),
       "reason" -> nonEmptyText,
       "income" -> nonEmptyText,
       "timeline" -> nonEmptyText,
