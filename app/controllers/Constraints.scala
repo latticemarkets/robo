@@ -79,4 +79,8 @@ object Constraints {
   val ruleNameCheck: Constraint[String] = Constraint("constraints.ruleName")({
     ruleName => if (RuleName.isRuleNameType(ruleName)) Valid else Invalid(ValidationError("Invalid rule name"))
   })
+
+  val platformModeCheck: Constraint[String] = Constraint("constraints.platformMode")({
+    platformMode => if (PlatformModeEnum.isPlatformModeType(platformMode)) Valid else Invalid(ValidationError("Invalid platform mode"))
+  })
 }

@@ -8,8 +8,6 @@
 
 package models
 
-import models.YearlyIncomeEnum._
-
 /**
   * @author : julienderay
   * Created on 22/02/2016
@@ -52,4 +50,6 @@ object OriginatorEnum extends Enumeration {
 object PlatformModeEnum extends Enumeration {
   type PlatformModeEnum = Value
   val manual, automated = Value
+
+  def isPlatformModeType(s: String) = values.exists(_.toString == s)
 }

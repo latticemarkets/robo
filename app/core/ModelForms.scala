@@ -53,7 +53,7 @@ object ModelForms {
     "primary" -> ModelForms.primaryMarketMapping,
     "secondary" -> ModelForms.secondaryMarketMapping,
     "automatedStrategy" -> ModelForms.automatedStrategyMapping,
-    "mode" -> nonEmptyText,
+    "mode" -> nonEmptyText.verifying(Constraints.platformModeCheck),
     "maximumDailyInvestment" -> bigDecimal
   )(Platform.apply)(Platform.unapply)
 
