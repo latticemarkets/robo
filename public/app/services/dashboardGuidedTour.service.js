@@ -26,12 +26,12 @@
             {
               element: ".stats-label.text-color.menu",
               title: "Account",
-              content: "This is your account and balance."
+              content: "This is your profil: your parameters and your account value."
             },
             {
               element: ".info",
               title: "Infos",
-              content: "This is your high level info.",
+              content: "This is your high level info with your capital, portfolio diversification and your return on investment.",
               placement: "bottom"
             },
             {
@@ -42,17 +42,17 @@
             {
               element: ".availableInvestment",
               title: "Available for investment",
-              content: "This is your available for investment."
+              content: "This is your money available for investment."
             },
             {
               element: ".allocatedInvestments",
               title: "Allocated on investments",
-              content: "This is your allocated for investments."
+              content: "This is your money allocated for investments."
             },
             {
               element: ".portfolioDiversification",
               title: "Portfolio diversification",
-              content: "This is your portfolio diversification."
+              content: "This is your current actions."
             },
             {
               element: ".returnInvestment",
@@ -69,28 +69,28 @@
             {
               element: ".averageIntRate",
               title: "Average int rate",
-              content: "This is your average int rate.",
+              content: "With this average int rate.",
               placement: "bottom"
             },
             {
               element: ".currentStategy",
               title: "Current strategy",
-              content: "This is your current strategy."
+              content: "This is your current strategy with your current roi rate and your expected roi rate."
             },
             {
               element: ".investmentsWeek",
               title: "Investments this week",
-              content: "This is your investments this week."
+              content: "This is your investments this week by day."
             },
             {
               element: ".investmentWeek",
               title: "Investment week",
-              content: "This is your investment this week."
+              content: "This is your total investment this week."
             },
             {
               element: ".platformAllocation",
               title: "Platform allocation",
-              content: "This is your platform allocation."
+              content: "This is your allocated money by platform in percent."
             },
             {
               element: ".riskDiversification",
