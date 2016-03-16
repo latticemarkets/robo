@@ -55,4 +55,14 @@ object Constraints {
   val originatorCheck: Constraint[String] = Constraint("constraints.originator")({
     originator => if (OriginatorEnum.isOriginatorType(originator)) Valid else Invalid(ValidationError("Invalid originator"))
   })
+
+  val bigDecimalPositiveCheck: Constraint[BigDecimal] = Constraint("constraints.bigDecimalPositive")({
+    case number if number >= 0 => Valid
+    case _ => Invalid(ValidationError("Negative number given"))
+  })
+
+  val aggressivityCheck: Constraint[BigDecimal] = Constraint("constraints.aggressivity")({
+    case aggressivity if aggressivity >= 0 && aggressivity <= 1 => Valid
+    case _ => Invalid(ValidationError("Wrong aggressivity level"))
+  })
 }

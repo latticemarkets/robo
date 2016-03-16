@@ -32,16 +32,16 @@ object ModelForms {
     "name" -> nonEmptyText,
     "originator" -> nonEmptyText.verifying(Constraints.originatorCheck),
     "expectedReturn" -> expectedReturnMapping,
-    "loansAvailablePerWeek" -> bigDecimal,
-    "moneyAvailablePerWeek" -> bigDecimal,
+    "loansAvailablePerWeek" -> bigDecimal.verifying(Constraints.bigDecimalPositiveCheck),
+    "moneyAvailablePerWeek" -> bigDecimal.verifying(Constraints.bigDecimalPositiveCheck),
     "rules" -> seq(ruleMapping),
     "isEnabled" -> boolean,
-    "minNoteAmount" -> bigDecimal,
-    "maxNoteAmount" -> bigDecimal
+    "minNoteAmount" -> bigDecimal.verifying(Constraints.bigDecimalPositiveCheck),
+    "maxNoteAmount" -> bigDecimal.verifying(Constraints.bigDecimalPositiveCheck)
   )(ManualStrategy.apply)(ManualStrategy.unapply)
 
   def automatedStrategyMapping = mapping(
-    "aggressivity" -> bigDecimal,
+    "aggressivity" -> bigDecimal.verifying(Constraints.aggressivityCheck),
     "primaryMarketEnabled" -> boolean,
     "secondaryMarketEnabled" -> boolean
   )(AutomatedStrategy.apply)(AutomatedStrategy.unapply)

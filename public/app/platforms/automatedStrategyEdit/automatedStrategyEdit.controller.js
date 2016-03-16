@@ -25,7 +25,7 @@
 
             strategiesService.getAutomatedStrategy(platform, strategyResponse =>
                 automatedStrategyEditService.getStrategySimulations(platform, simulationResponse => {
-                    vm.strategyValue = strategyResponse.data.aggressivity * 10;
+                    vm.strategyValue = strategyResponse.data.aggressivity * 100;
                     vm.primaryMarketEnabled = strategyResponse.data.primaryMarketEnabled;
                     vm.secondaryMarketEnabled = strategyResponse.data.secondaryMarketEnabled;
 
@@ -80,7 +80,7 @@
 
             vm.save = () => {
                 spinnerService.on();
-                strategiesService.updateAutomatedStrategy(platform, vm.strategyValue / 10, vm.primaryMarketEnabled, vm.secondaryMarketEnabled,
+                strategiesService.updateAutomatedStrategy(platform, vm.strategyValue / 100, vm.primaryMarketEnabled, vm.secondaryMarketEnabled,
                     () => {
                         spinnerService.off();
                         $location.path('/platforms');
