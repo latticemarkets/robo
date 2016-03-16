@@ -105,3 +105,15 @@ object Reason extends Enumeration {
 
   def isReasonType(s: String) = values.exists(_.toString == s)
 }
+
+
+object YearlyIncome extends Enumeration {
+  type YearlyIncomeType = Value
+  val lessThan25 = Value("-25")
+  val from25To50 = Value("25-50")
+  val from50To100 = Value("50-100")
+  val from100To250 = Value("100-250")
+  val moreThan250 = Value("+250")
+
+  def isYearlyIncomeType(s: String) = values.exists(_.toString == s)
+}

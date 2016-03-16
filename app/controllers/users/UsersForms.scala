@@ -56,7 +56,7 @@ object UsersForms {
       "password" -> nonEmptyText.verifying(Constraints.passwordCheckConstraint),
       "terms" -> nonEmptyText.verifying(Constraints.isTrue),
       "reason" -> nonEmptyText.verifying(Constraints.reasonCheck),
-      "income" -> nonEmptyText,
+      "income" -> nonEmptyText.verifying(Constraints.yearlyIncomeCheck),
       "timeline" -> nonEmptyText,
       "birthday" -> date("MM/dd/yyyy"),
       "firstName" -> nonEmptyText,

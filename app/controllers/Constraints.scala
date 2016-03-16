@@ -8,9 +8,8 @@
 
 package controllers
 
-import models.Reason
-import models.Reason.Reason
-import play.api.data.validation.{Constraint, ValidationError, Valid, Invalid}
+import models.{Reason, YearlyIncome}
+import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 
 /**
   * @author : julienderay
@@ -42,6 +41,10 @@ object Constraints {
   })
 
   val reasonCheck: Constraint[String] = Constraint("constraints.reason")({
-    reason => if (Reason.isReasonType(reason)) Valid else Invalid(ValidationError("Reason not valid"))
+    reason => if (Reason.isReasonType(reason)) Valid else Invalid(ValidationError("Invalid reason"))
+  })
+
+  val yearlyIncomeCheck: Constraint[String] = Constraint("constraints.yearlyIncome")({
+    yearlyIncome => if (YearlyIncome.isYearlyIncomeType(yearlyIncome)) Valid else Invalid(ValidationError("Invalid yearly income"))
   })
 }
