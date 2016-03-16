@@ -8,7 +8,7 @@
 
 package controllers
 
-import models.{Timeline, Reason, YearlyIncome}
+import models.{TimelineEnum, ReasonEnum, YearlyIncomeEnum}
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 
 /**
@@ -41,14 +41,14 @@ object Constraints {
   })
 
   val reasonCheck: Constraint[String] = Constraint("constraints.reason")({
-    reason => if (Reason.isReasonType(reason)) Valid else Invalid(ValidationError("Invalid reason"))
+    reason => if (ReasonEnum.isReasonType(reason)) Valid else Invalid(ValidationError("Invalid reason"))
   })
 
   val yearlyIncomeCheck: Constraint[String] = Constraint("constraints.yearlyIncome")({
-    yearlyIncome => if (YearlyIncome.isYearlyIncomeType(yearlyIncome)) Valid else Invalid(ValidationError("Invalid yearly income"))
+    yearlyIncome => if (YearlyIncomeEnum.isYearlyIncomeType(yearlyIncome)) Valid else Invalid(ValidationError("Invalid yearly income"))
   })
 
   val timelineCheck: Constraint[String] = Constraint("constraints.timeline")({
-    timeline => if (Timeline.isTimelineType(timeline)) Valid else Invalid(ValidationError("Invalid timeline"))
+    timeline => if (TimelineEnum.isTimelineType(timeline)) Valid else Invalid(ValidationError("Invalid timeline"))
   })
 }

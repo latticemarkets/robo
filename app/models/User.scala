@@ -99,14 +99,14 @@ object User {
   )
 }
 
-object Reason extends Enumeration {
+object ReasonEnum extends Enumeration {
   type Reason = Value
   val longterm, shortterm, majorpurchase, children, general = Value
 
   def isReasonType(s: String) = values.exists(_.toString == s)
 }
 
-object YearlyIncome extends Enumeration {
+object YearlyIncomeEnum extends Enumeration {
   type YearlyIncomeType = Value
   val lessThan25 = Value("-25")
   val from25To50 = Value("25-50")
@@ -117,7 +117,7 @@ object YearlyIncome extends Enumeration {
   def isYearlyIncomeType(s: String) = values.exists(_.toString == s)
 }
 
-object Timeline extends Enumeration {
+object TimelineEnum extends Enumeration {
   type TimelineType = Value
   val lessThan5 = Value("-5")
   val from5To10 = Value("5-10")
