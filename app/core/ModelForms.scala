@@ -54,7 +54,7 @@ object ModelForms {
     "secondary" -> ModelForms.secondaryMarketMapping,
     "automatedStrategy" -> ModelForms.automatedStrategyMapping,
     "mode" -> nonEmptyText.verifying(Constraints.platformModeCheck),
-    "maximumDailyInvestment" -> bigDecimal
+    "maximumDailyInvestment" -> bigDecimal.verifying(Constraints.bigDecimalPositiveCheck)
   )(Platform.apply)(Platform.unapply)
 
   def expectedReturnMapping = mapping(
