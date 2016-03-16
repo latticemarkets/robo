@@ -10,6 +10,7 @@ package controllers.users
 
 import java.util.Date
 
+import controllers.Constraints
 import controllers.platforms.{NewPlatform, PlatformsForms}
 import models._
 import play.api.data.Form
@@ -52,7 +53,7 @@ object UsersForms {
   def registerForm = Form(
     mapping (
       "email" -> email,
-      "password" -> nonEmptyText,
+      "password" -> nonEmptyText.verifying(Constraints.passwordCheckConstraint),
       "terms" -> nonEmptyText,
       "reason" -> nonEmptyText,
       "income" -> nonEmptyText,
