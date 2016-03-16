@@ -64,7 +64,7 @@ object ModelForms {
   )(ExpectedReturn.apply)(ExpectedReturn.unapply)
 
   def ruleMapping = mapping(
-    "attribute" -> nonEmptyText,
+    "attribute" -> nonEmptyText.verifying(Constraints.ruleNameCheck),
     "ruleType" -> nonEmptyText.verifying(Constraints.ruleTypeCheck), // InSet, InRange
     "ruleParams" -> nonEmptyText.verifying(Constraints.ruleParamsCheck) // format: for InSet: coma separated values, for InRange: lower bound, upperbound
   )(Rule.apply)(Rule.unapply)

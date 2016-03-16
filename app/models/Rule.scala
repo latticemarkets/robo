@@ -68,39 +68,33 @@ object Rule {
 }
 
 object RuleName extends Enumeration {
-  val newAccounts = Value("newAccounts")
-  val totalCreditLines = Value("totalCreditLines")
-  val creditScore = Value("creditScore")
-  val maxDelinquencies = Value("maxDelinquencies")
-  val earliestCreditLine = Value("earliestCreditLine")
-  val employmentLength = Value("employmentLength")
-  val jobTitle = Value("jobTitle")
-  val homeOwnership = Value("homeOwnership")
-  val inquiries = Value("inquiries")
-  val loanPaymentIncome = Value("loanPaymentIncome")
-  val verifiedIncome = Value("verifiedIncome")
-  val loanAmount = Value("loanAmount")
-  val maxDebtIncome = Value("maxDebtIncome")
-  val maxDebtIncomeWithLoan = Value("maxDebtIncomeWithLoan")
-  val monthlyIncome = Value("monthlyIncome")
-  val lastDelinquency = Value("lastDelinquency")
-  val lastRecord = Value("lastRecord")
-  val openCreditLine = Value("openCreditLine")
-  val publicRecords = Value("publicRecords")
-  val loanPurpose = Value("loanPurpose")
-  val revolvingItilization = Value("revolvingItilization")
-  val expectedReturn = Value("expectedReturn")
-  val highestExpectedReturn = Value("highestExpectedReturn")
-  val state = Value("state")
-  val subGrade = Value("subGrade")
-  val term = Value("term")
-  val loanPopularity = Value("loanPopularity")
-}
+  val newAccounts,
+      totalCreditLines,
+      creditScore,
+      maxDelinquencies,
+      earliestCreditLine,
+      employmentLength,
+      jobTitle,
+      homeOwnership,
+      inquiries,
+      loanPaymentIncome,
+      verifiedIncome,
+      loanAmount,
+      maxDebtIncome,
+      maxDebtIncomeWithLoan,
+      monthlyIncome,
+      lastDelinquency,
+      lastRecord,
+      openCreditLine,
+      publicRecords,
+      loanPurpose,
+      revolvingUtilization,
+      expectedReturn,
+      highestExpectedReturn,
+      state,
+      subGrade,
+      term,
+      loanPopularity = Value
 
-object RuleRepresentation extends Enumeration {
-  val slider = Value("slider")
-  val rangeSlider = Value("rangeSlider")
-  val multiSelect = Value("multiSelect")
-  val estimation = Value("estimation")
-  val text = Value("text")
+  def isRuleNameType(s: String) = values.exists(_.toString == s)
 }

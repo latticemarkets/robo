@@ -75,4 +75,8 @@ object Constraints {
   val ruleParamsCheck: Constraint[String] = Constraint("constraints.ruleParams")({
     ruleParams => if (ruleParams.matches(ruleParamsRegex.regex)) Valid else Invalid(ValidationError("Invalid rule parameter"))
   })
+
+  val ruleNameCheck: Constraint[String] = Constraint("constraints.ruleName")({
+    ruleName => if (RuleName.isRuleNameType(ruleName)) Valid else Invalid(ValidationError("Invalid rule name"))
+  })
 }
