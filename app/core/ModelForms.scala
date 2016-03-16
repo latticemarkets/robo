@@ -30,31 +30,31 @@ object ModelForms {
   def manualStrategyMapping = mapping(
     "id" -> nonEmptyText,
     "name" -> nonEmptyText,
-    "originator" -> nonEmptyText.verifying(Constraints.originatorCheck),
+    "originator" -> nonEmptyText.verifying(Constraints.isPartOf("originator", OriginatorEnum)),
     "expectedReturn" -> expectedReturnMapping,
-    "loansAvailablePerWeek" -> bigDecimal.verifying(Constraints.bigDecimalPositiveCheck),
-    "moneyAvailablePerWeek" -> bigDecimal.verifying(Constraints.bigDecimalPositiveCheck),
+    "loansAvailablePerWeek" -> bigDecimal.verifying(Constraints.bigDecimalPositive),
+    "moneyAvailablePerWeek" -> bigDecimal.verifying(Constraints.bigDecimalPositive),
     "rules" -> seq(ruleMapping),
     "isEnabled" -> boolean,
-    "minNoteAmount" -> bigDecimal.verifying(Constraints.bigDecimalPositiveCheck),
-    "maxNoteAmount" -> bigDecimal.verifying(Constraints.bigDecimalPositiveCheck)
+    "minNoteAmount" -> bigDecimal.verifying(Constraints.bigDecimalPositive),
+    "maxNoteAmount" -> bigDecimal.verifying(Constraints.bigDecimalPositive)
   )(ManualStrategy.apply)(ManualStrategy.unapply)
 
   def automatedStrategyMapping = mapping(
-    "aggressivity" -> bigDecimal.verifying(Constraints.aggressivityCheck),
+    "aggressivity" -> bigDecimal.verifying(Constraints.aggressivityBetween0and1),
     "primaryMarketEnabled" -> boolean,
     "secondaryMarketEnabled" -> boolean
   )(AutomatedStrategy.apply)(AutomatedStrategy.unapply)
 
   def platformMapping = mapping(
-    "originator" -> nonEmptyText.verifying(Constraints.originatorCheck),
+    "originator" -> nonEmptyText.verifying(Constraints.isPartOf("originator", OriginatorEnum)),
     "accountId" -> nonEmptyText,
     "apiKey" -> nonEmptyText,
     "primary" -> ModelForms.primaryMarketMapping,
     "secondary" -> ModelForms.secondaryMarketMapping,
     "automatedStrategy" -> ModelForms.automatedStrategyMapping,
-    "mode" -> nonEmptyText.verifying(Constraints.platformModeCheck),
-    "maximumDailyInvestment" -> bigDecimal.verifying(Constraints.bigDecimalPositiveCheck)
+    "mode" -> nonEmptyText.verifying(Constraints.isPartOf("mode", PlatformModeEnum)),
+    "maximumDailyInvestment" -> bigDecimal.verifying(Constraints.bigDecimalPositive)
   )(Platform.apply)(Platform.unapply)
 
   def expectedReturnMapping = mapping(
@@ -64,8 +64,8 @@ object ModelForms {
   )(ExpectedReturn.apply)(ExpectedReturn.unapply)
 
   def ruleMapping = mapping(
-    "attribute" -> nonEmptyText.verifying(Constraints.ruleNameCheck),
-    "ruleType" -> nonEmptyText.verifying(Constraints.ruleTypeCheck), // InSet, InRange
-    "ruleParams" -> nonEmptyText.verifying(Constraints.ruleParamsCheck) // format: for InSet: coma separated values, for InRange: lower bound, upperbound
+    "attribute" -> nonEmptyText.verifying(Constraints.isPartOf("attribute", RuleName)),
+    "ruleType" -> nonEmptyText.verifying(Constraints.isPartOf("ruleType", RuleType)), // InSet, InRange
+    "ruleParams" -> nonEmptyText.verifying(Constraints.ruleParamsWellFormed) // format: for InSet: coma separated values, for InRange: lower bound, upperbound
   )(Rule.apply)(Rule.unapply)
 }

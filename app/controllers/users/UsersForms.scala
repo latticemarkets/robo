@@ -32,7 +32,7 @@ object UsersForms {
   def updatePasswordForm = Form(
     mapping(
       "oldPassword" -> nonEmptyText,
-      "newPassword" -> nonEmptyText.verifying(Constraints.passwordCheckConstraint)
+      "newPassword" -> nonEmptyText.verifying(Constraints.strongPassword)
     )(UpdatePassword.apply)(UpdatePassword.unapply)
   )
 
@@ -53,11 +53,11 @@ object UsersForms {
   def registerForm = Form(
     mapping (
       "email" -> email,
-      "password" -> nonEmptyText.verifying(Constraints.passwordCheckConstraint),
+      "password" -> nonEmptyText.verifying(Constraints.strongPassword),
       "terms" -> nonEmptyText.verifying(Constraints.isTrue),
-      "reason" -> nonEmptyText.verifying(Constraints.reasonCheck),
-      "income" -> nonEmptyText.verifying(Constraints.yearlyIncomeCheck),
-      "timeline" -> nonEmptyText.verifying(Constraints.timelineCheck),
+      "reason" -> nonEmptyText.verifying(Constraints.isPartOf("reason", ReasonEnum)),
+      "income" -> nonEmptyText.verifying(Constraints.isPartOf("income", YearlyIncomeEnum)),
+      "timeline" -> nonEmptyText.verifying(Constraints.isPartOf("timeline", TimelineEnum)),
       "birthday" -> date("MM/dd/yyyy"),
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,

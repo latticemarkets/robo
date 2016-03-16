@@ -8,7 +8,7 @@
 
 package controllers
 
-import models._
+import core.EnumerationPlus
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 
 /**
@@ -25,7 +25,7 @@ object Constraints {
 
   val ruleParamsRegex = """^(,?(-?[A-Za-z.0-9])+)+$""".r
 
-  val passwordCheckConstraint: Constraint[String] = Constraint("constraints.passwordCheck")({
+  val strongPassword: Constraint[String] = Constraint("constraints.passwordCheck")({
     plainText =>
       val errors = Seq(containsLowerCase, containsUpperCase, containsSpecialChar, containsAtLeast8Chars).filter{ case (check, error) => !check(plainText)}.map(_._2)
 
@@ -42,45 +42,21 @@ object Constraints {
     case _ => Invalid(ValidationError("Terms have not been accepted"))
   })
 
-  val reasonCheck: Constraint[String] = Constraint("constraints.reason")({
-    reason => if (ReasonEnum.isReasonType(reason)) Valid else Invalid(ValidationError("Invalid reason"))
+  def isPartOf[A <: EnumerationPlus](attributeName: String, clasS: A): Constraint[String] = Constraint(s"constraints.$attributeName")({
+    attr => if (clasS.isThisType(attr)) Valid else Invalid(ValidationError(s"Invalid $attributeName"))
   })
 
-  val yearlyIncomeCheck: Constraint[String] = Constraint("constraints.yearlyIncome")({
-    yearlyIncome => if (YearlyIncomeEnum.isYearlyIncomeType(yearlyIncome)) Valid else Invalid(ValidationError("Invalid yearly income"))
-  })
-
-  val timelineCheck: Constraint[String] = Constraint("constraints.timeline")({
-    timeline => if (TimelineEnum.isTimelineType(timeline)) Valid else Invalid(ValidationError("Invalid timeline"))
-  })
-
-  val originatorCheck: Constraint[String] = Constraint("constraints.originator")({
-    originator => if (OriginatorEnum.isOriginatorType(originator)) Valid else Invalid(ValidationError("Invalid originator"))
-  })
-
-  val bigDecimalPositiveCheck: Constraint[BigDecimal] = Constraint("constraints.bigDecimalPositive")({
+  val bigDecimalPositive: Constraint[BigDecimal] = Constraint("constraints.bigDecimalPositive")({
     case number if number >= 0 => Valid
     case _ => Invalid(ValidationError("Negative number given"))
   })
 
-  val aggressivityCheck: Constraint[BigDecimal] = Constraint("constraints.aggressivity")({
+  val aggressivityBetween0and1: Constraint[BigDecimal] = Constraint("constraints.aggressivity")({
     case aggressivity if aggressivity >= 0 && aggressivity <= 1 => Valid
     case _ => Invalid(ValidationError("Wrong aggressivity level"))
   })
 
-  val ruleTypeCheck: Constraint[String] = Constraint("constraints.ruleType")({
-    ruleType => if (RuleType.isRuleTypeType(ruleType)) Valid else Invalid(ValidationError("Invalid rule type"))
-  })
-
-  val ruleParamsCheck: Constraint[String] = Constraint("constraints.ruleParams")({
+  val ruleParamsWellFormed: Constraint[String] = Constraint("constraints.ruleParams")({
     ruleParams => if (ruleParams.matches(ruleParamsRegex.regex)) Valid else Invalid(ValidationError("Invalid rule parameter"))
-  })
-
-  val ruleNameCheck: Constraint[String] = Constraint("constraints.ruleName")({
-    ruleName => if (RuleName.isRuleNameType(ruleName)) Valid else Invalid(ValidationError("Invalid rule name"))
-  })
-
-  val platformModeCheck: Constraint[String] = Constraint("constraints.platformMode")({
-    platformMode => if (PlatformModeEnum.isPlatformModeType(platformMode)) Valid else Invalid(ValidationError("Invalid platform mode"))
   })
 }

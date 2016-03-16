@@ -8,6 +8,7 @@
 
 package models
 
+import core.EnumerationPlus
 import de.sciss.play.json.AutoFormat
 
 /**
@@ -19,15 +20,13 @@ sealed trait RuleParams
 case class InSetParams(set: Set[String]) extends RuleParams
 case class InRangeParams(from: BigDecimal, to: BigDecimal) extends RuleParams
 
-object RuleParams {
+object RuleParams extends EnumerationPlus {
   implicit val paramsFormat = AutoFormat[RuleParams]
 }
 
-object RuleType extends Enumeration {
+object RuleType extends EnumerationPlus {
   type RuleType = Value
   val InSet, InRange = Value
-
-  def isRuleTypeType(s: String) = values.exists(_.toString == s)
 }
 
 object Rule {
@@ -67,7 +66,7 @@ object Rule {
 
 }
 
-object RuleName extends Enumeration {
+object RuleName extends EnumerationPlus {
   val newAccounts,
       totalCreditLines,
       creditScore,
@@ -95,6 +94,4 @@ object RuleName extends Enumeration {
       subGrade,
       term,
       loanPopularity = Value
-
-  def isRuleNameType(s: String) = values.exists(_.toString == s)
 }

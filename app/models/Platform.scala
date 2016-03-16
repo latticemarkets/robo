@@ -8,6 +8,8 @@
 
 package models
 
+import core.EnumerationPlus
+
 /**
   * @author : julienderay
   * Created on 22/02/2016
@@ -40,16 +42,12 @@ object Platform {
     )
 }
 
-object OriginatorEnum extends Enumeration {
+object OriginatorEnum extends EnumerationPlus {
   type OriginatorEnum = Value
   val lendingClub, prosper, bondora, ratesetter, fundingCircle = Value
-
-  def isOriginatorType(s: String) = values.exists(_.toString == s)
 }
 
-object PlatformModeEnum extends Enumeration {
+object PlatformModeEnum extends EnumerationPlus {
   type PlatformModeEnum = Value
   val manual, automated = Value
-
-  def isPlatformModeType(s: String) = values.exists(_.toString == s)
 }

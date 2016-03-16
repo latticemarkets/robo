@@ -19,6 +19,7 @@ import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import core.EnumerationPlus
 
 /**
  * @author : julienderay
@@ -99,31 +100,25 @@ object User {
   )
 }
 
-object ReasonEnum extends Enumeration {
+object ReasonEnum extends EnumerationPlus {
   type Reason = Value
   val longterm, shortterm, majorpurchase, children, general = Value
-
-  def isReasonType(s: String) = values.exists(_.toString == s)
 }
 
-object YearlyIncomeEnum extends Enumeration {
+object YearlyIncomeEnum extends EnumerationPlus {
   type YearlyIncomeType = Value
   val lessThan25 = Value("-25")
   val from25To50 = Value("25-50")
   val from50To100 = Value("50-100")
   val from100To250 = Value("100-250")
   val moreThan250 = Value("+250")
-
-  def isYearlyIncomeType(s: String) = values.exists(_.toString == s)
 }
 
-object TimelineEnum extends Enumeration {
+object TimelineEnum extends EnumerationPlus {
   type TimelineType = Value
   val lessThan5 = Value("-5")
   val from5To10 = Value("5-10")
   val from10To15 = Value("10-15")
   val from15To25 = Value("15-25")
   val moreThan25 = Value("+25")
-
-  def isTimelineType(s: String) = values.exists(_.toString == s)
 }
