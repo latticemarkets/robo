@@ -8,6 +8,7 @@
 
 package core
 
+import controllers.Constraints
 import models._
 import play.api.data.Forms._
 
@@ -29,7 +30,7 @@ object ModelForms {
   def manualStrategyMapping = mapping(
     "id" -> nonEmptyText,
     "name" -> nonEmptyText,
-    "originator" -> nonEmptyText,
+    "originator" -> nonEmptyText.verifying(Constraints.originatorCheck),
     "expectedReturn" -> expectedReturnMapping,
     "loansAvailablePerWeek" -> bigDecimal,
     "moneyAvailablePerWeek" -> bigDecimal,
@@ -46,7 +47,7 @@ object ModelForms {
   )(AutomatedStrategy.apply)(AutomatedStrategy.unapply)
 
   def platformMapping = mapping(
-    "originator" -> nonEmptyText,
+    "originator" -> nonEmptyText.verifying(Constraints.originatorCheck),
     "accountId" -> nonEmptyText,
     "apiKey" -> nonEmptyText,
     "primary" -> ModelForms.primaryMarketMapping,

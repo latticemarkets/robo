@@ -8,6 +8,7 @@
 
 package controllers.platforms
 
+import controllers.Constraints
 import core.ModelForms
 import models.Platform
 import play.api.data.Form
@@ -28,7 +29,7 @@ object PlatformsForms {
 
   def newPlatformForm =
     mapping(
-      "originator" -> nonEmptyText,
+      "originator" -> nonEmptyText.verifying(Constraints.originatorCheck),
       "accountId" -> nonEmptyText,
       "apiKey" -> nonEmptyText
     )(NewPlatform.apply)(NewPlatform.unapply)

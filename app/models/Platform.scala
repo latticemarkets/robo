@@ -8,6 +8,8 @@
 
 package models
 
+import models.YearlyIncomeEnum._
+
 /**
   * @author : julienderay
   * Created on 22/02/2016
@@ -43,6 +45,8 @@ object Platform {
 object OriginatorEnum extends Enumeration {
   type OriginatorEnum = Value
   val lendingClub, prosper, bondora, ratesetter, fundingCircle = Value
+
+  def isOriginatorType(s: String) = values.exists(_.toString == s)
 }
 
 object PlatformModeEnum extends Enumeration {

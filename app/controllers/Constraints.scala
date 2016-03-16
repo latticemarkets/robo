@@ -8,7 +8,7 @@
 
 package controllers
 
-import models.{TimelineEnum, ReasonEnum, YearlyIncomeEnum}
+import models.{OriginatorEnum, TimelineEnum, ReasonEnum, YearlyIncomeEnum}
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 
 /**
@@ -50,5 +50,9 @@ object Constraints {
 
   val timelineCheck: Constraint[String] = Constraint("constraints.timeline")({
     timeline => if (TimelineEnum.isTimelineType(timeline)) Valid else Invalid(ValidationError("Invalid timeline"))
+  })
+
+  val originatorCheck: Constraint[String] = Constraint("constraints.originator")({
+    originator => if (OriginatorEnum.isOriginatorType(originator)) Valid else Invalid(ValidationError("Invalid originator"))
   })
 }
