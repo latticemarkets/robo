@@ -8,6 +8,7 @@
 
 package controllers.strategies
 
+import controllers.Constraints
 import core.ModelForms
 import models.{AutomatedStrategy, ManualStrategy}
 import play.api.data.Form
@@ -21,13 +22,13 @@ import play.api.data.Forms._
 object StrategiesForms {
   def updateStrategiesForm = Form(
     mapping(
-      "platform" -> nonEmptyText,
+      "platform" -> nonEmptyText.verifying(Constraints.originatorCheck),
       "strategies" -> seq(ModelForms.manualStrategyMapping)
   )(UpdateStrategies.apply)(UpdateStrategies.unapply))
 
   def updateAutomatedStrategy = Form(
     mapping(
-      "platform" -> nonEmptyText,
+      "platform" -> nonEmptyText.verifying(Constraints.originatorCheck),
       "autoStrategy" -> ModelForms.automatedStrategyMapping
     )(UpdateAutomatedStrategy.apply)(UpdateAutomatedStrategy.unapply)
   )
