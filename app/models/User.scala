@@ -98,3 +98,10 @@ object User {
     Hash.createToken
   )
 }
+
+object Reason extends Enumeration {
+  type Reason = Value
+  val longterm, shortterm, majorpurchase, children, general = Value
+
+  def isReasonType(s: String) = values.exists(_.toString == s)
+}

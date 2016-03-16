@@ -8,6 +8,8 @@
 
 package controllers
 
+import models.Reason
+import models.Reason.Reason
 import play.api.data.validation.{Constraint, ValidationError, Valid, Invalid}
 
 /**
@@ -37,5 +39,9 @@ object Constraints {
   val isTrue: Constraint[String] = Constraint("constraints.terms")({
     case plainText if plainText == "true" => Valid
     case _ => Invalid(ValidationError("Terms have not been accepted"))
+  })
+
+  val reasonCheck: Constraint[String] = Constraint("constraints.reason")({
+    reason => if (Reason.isReasonType(reason)) Valid else Invalid(ValidationError("Reason not valid"))
   })
 }
