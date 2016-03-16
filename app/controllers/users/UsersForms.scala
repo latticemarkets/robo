@@ -57,7 +57,7 @@ object UsersForms {
       "terms" -> nonEmptyText.verifying(Constraints.isTrue),
       "reason" -> nonEmptyText.verifying(Constraints.reasonCheck),
       "income" -> nonEmptyText.verifying(Constraints.yearlyIncomeCheck),
-      "timeline" -> nonEmptyText,
+      "timeline" -> nonEmptyText.verifying(Constraints.timelineCheck),
       "birthday" -> date("MM/dd/yyyy"),
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,

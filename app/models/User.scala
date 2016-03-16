@@ -11,12 +11,12 @@ package models
 import java.util.Date
 
 import controllers.users.RegisterForm
+import core.Formatters._
 import core.{DbUtil, Hash}
 import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.json._
 import reactivemongo.play.json.collection.JSONCollection
 
-import core.Formatters._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -106,7 +106,6 @@ object Reason extends Enumeration {
   def isReasonType(s: String) = values.exists(_.toString == s)
 }
 
-
 object YearlyIncome extends Enumeration {
   type YearlyIncomeType = Value
   val lessThan25 = Value("-25")
@@ -116,4 +115,15 @@ object YearlyIncome extends Enumeration {
   val moreThan250 = Value("+250")
 
   def isYearlyIncomeType(s: String) = values.exists(_.toString == s)
+}
+
+object Timeline extends Enumeration {
+  type TimelineType = Value
+  val lessThan5 = Value("-5")
+  val from5To10 = Value("5-10")
+  val from10To15 = Value("10-15")
+  val from15To25 = Value("15-25")
+  val moreThan25 = Value("+25")
+
+  def isTimelineType(s: String) = values.exists(_.toString == s)
 }

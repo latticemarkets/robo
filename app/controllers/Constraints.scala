@@ -8,7 +8,7 @@
 
 package controllers
 
-import models.{Reason, YearlyIncome}
+import models.{Timeline, Reason, YearlyIncome}
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 
 /**
@@ -46,5 +46,9 @@ object Constraints {
 
   val yearlyIncomeCheck: Constraint[String] = Constraint("constraints.yearlyIncome")({
     yearlyIncome => if (YearlyIncome.isYearlyIncomeType(yearlyIncome)) Valid else Invalid(ValidationError("Invalid yearly income"))
+  })
+
+  val timelineCheck: Constraint[String] = Constraint("constraints.timeline")({
+    timeline => if (Timeline.isTimelineType(timeline)) Valid else Invalid(ValidationError("Invalid timeline"))
   })
 }
