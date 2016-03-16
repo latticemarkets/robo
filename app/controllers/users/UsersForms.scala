@@ -32,7 +32,7 @@ object UsersForms {
   def updatePasswordForm = Form(
     mapping(
       "oldPassword" -> nonEmptyText,
-      "newPassword" -> nonEmptyText
+      "newPassword" -> nonEmptyText.verifying(Constraints.passwordCheckConstraint)
     )(UpdatePassword.apply)(UpdatePassword.unapply)
   )
 
