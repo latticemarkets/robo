@@ -65,7 +65,7 @@ object ModelForms {
 
   def ruleMapping = mapping(
     "attribute" -> nonEmptyText,
-    "ruleType" -> nonEmptyText, // InSet, InRange
-    "ruleParams" -> nonEmptyText // format: for InSet: coma separated values, for InRange: lower bound, upperbound 
+    "ruleType" -> nonEmptyText.verifying(Constraints.ruleTypeCheck), // InSet, InRange
+    "ruleParams" -> nonEmptyText.verifying(Constraints.ruleParamsCheck) // format: for InSet: coma separated values, for InRange: lower bound, upperbound
   )(Rule.apply)(Rule.unapply)
 }

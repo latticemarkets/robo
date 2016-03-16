@@ -26,6 +26,8 @@ object RuleParams {
 object RuleType extends Enumeration {
   type RuleType = Value
   val InSet, InRange = Value
+
+  def isRuleTypeType(s: String) = values.exists(_.toString == s)
 }
 
 object Rule {

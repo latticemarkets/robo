@@ -8,7 +8,7 @@
 
 package controllers
 
-import models.{OriginatorEnum, TimelineEnum, ReasonEnum, YearlyIncomeEnum}
+import models._
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 
 /**
@@ -22,6 +22,8 @@ object Constraints {
   val containsUpperCase: (String => Boolean, ValidationError) = (password => password.matches("""^(?=.*[A-Z]).+$""".r.regex), ValidationError("Password does not contain any upper case"))
   val containsSpecialChar: (String => Boolean, ValidationError) = (password => password.matches("""^(?=.*[0-9_\W]).+$""".r.regex), ValidationError("Password does not contain any special character"))
   val containsAtLeast8Chars: (String => Boolean, ValidationError) = (password => password.length >= 8, ValidationError("Password contains less than 8 characters"))
+
+  val ruleParamsRegex = """^(,?(-?[A-Za-z.0-9])+)+$""".r
 
   val passwordCheckConstraint: Constraint[String] = Constraint("constraints.passwordCheck")({
     plainText =>
@@ -64,5 +66,13 @@ object Constraints {
   val aggressivityCheck: Constraint[BigDecimal] = Constraint("constraints.aggressivity")({
     case aggressivity if aggressivity >= 0 && aggressivity <= 1 => Valid
     case _ => Invalid(ValidationError("Wrong aggressivity level"))
+  })
+
+  val ruleTypeCheck: Constraint[String] = Constraint("constraints.ruleType")({
+    ruleType => if (RuleType.isRuleTypeType(ruleType)) Valid else Invalid(ValidationError("Invalid rule type"))
+  })
+
+  val ruleParamsCheck: Constraint[String] = Constraint("constraints.ruleParams")({
+    ruleParams => if (ruleParams.matches(ruleParamsRegex.regex)) Valid else Invalid(ValidationError("Invalid rule parameter"))
   })
 }
