@@ -8,13 +8,15 @@
 
 package controllers.users
 
-import controllers.Security.HasToken
-import controllers.Utils
+import javax.inject.Inject
+
+import controllers.{Security, Utils}
 import core.Formatters._
 import core.Hash
 import models.User
 import play.api.libs.json.Json
 import play.api.mvc._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -23,14 +25,14 @@ import scala.concurrent.Future
   * Created on 27/01/2016
   */
 
-class Users extends Controller {
+class Users @Inject() (dbUser: User, security: Security) extends Controller {
 
   def register = Action.async { implicit request =>
     UsersForms.registerForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       providedInfos => {
-        User.store(
-          User.factory(providedInfos)
+        dbUser.store(
+          dbUser.factory(providedInfos)
         ) map (optUser =>
           optUser.map(user =>
             Ok(Json.obj("token" -> user.token))
@@ -44,9 +46,9 @@ class Users extends Controller {
     UsersForms.loginForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       login => {
-        User.findByEmail(login.email) flatMap (optUser => optUser map (user =>
+        dbUser.findByEmail(login.email) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(login.password, user.password)) {
-            User.generateAndStoreNewToken(user) map (user => Ok(Json.obj("token" -> user.token)))
+            dbUser.generateAndStoreNewToken(user) map (user => Ok(Json.obj("token" -> user.token)))
           }
           else {
             Future.successful( BadRequest("Wrong password") )
@@ -58,23 +60,23 @@ class Users extends Controller {
   }
 
   def isUsed(email: String) = Action.async {
-    User.findByEmail(email) map {
+    dbUser.findByEmail(email) map {
       case None => Ok(Json.obj("ok" -> true))
       case Some(user) => Ok(Json.obj("ok" -> false))
     }
   }
 
-  def userData = HasToken.async { implicit request =>
-    User.findByEmail(request.headers.get("USER").getOrElse("")) map ( _.map (user => Ok(Json.toJson(user))) getOrElse Utils.responseOnWrongDataSent)
+  def userData = security.HasToken.async { implicit request =>
+    dbUser.findByEmail(request.headers.get("USER").getOrElse("")) map ( _.map (user => Ok(Json.toJson(user))) getOrElse Utils.responseOnWrongDataSent)
   }
 
-  def updatePassword = HasToken.async { implicit request =>
+  def updatePassword = security.HasToken.async { implicit request =>
     UsersForms.updatePasswordForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       infos => {
-        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (optUser => optUser map (user =>
+        dbUser.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(infos.oldPassword, user.password)) {
-            User.update(user.copy(password = Hash.createPassword(infos.newPassword)))
+            dbUser.update(user.copy(password = Hash.createPassword(infos.newPassword)))
               .map (user => Ok(""))
           }
           else {
@@ -86,25 +88,25 @@ class Users extends Controller {
     )
   }
 
-  def updatePersonalData() = HasToken.async { implicit request =>
+  def updatePersonalData() = security.HasToken.async { implicit request =>
     UsersForms.updatePersonalData.bindFromRequest.fold(
       Utils.badRequestOnError,
       data => {
-        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
-          User.update(user.copy(firstName = data.firstName, lastName = data.lastName, birthday = data.birthday)) map (user => Ok(""))
+        dbUser.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
+          dbUser.update(user.copy(firstName = data.firstName, lastName = data.lastName, birthday = data.birthday)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
       }
     )
   }
 
-  def destroyAccount() = HasToken.async { implicit request =>
+  def destroyAccount() = security.HasToken.async { implicit request =>
     UsersForms.destroyAccountForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       data => {
         val email = request.headers.get("USER").getOrElse("")
-        User.findByEmail(email) flatMap (optUser => optUser map (user =>
+        dbUser.findByEmail(email) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(data.password, user.password)) {
-            User.delete(email) map (deleted => if (deleted) Ok("") else BadGateway(""))
+            dbUser.delete(email) map (deleted => if (deleted) Ok("") else BadGateway(""))
           }
           else {
             Future.successful( BadRequest("Incorrect password") )
@@ -115,7 +117,7 @@ class Users extends Controller {
     )
   }
 
-  def checkToken() = HasToken {
+  def checkToken() = security.HasToken {
     Ok("")
   }
 }

@@ -8,6 +8,9 @@
 
 package models
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
 import core.DbUtil
 import models.OriginatorEnum.OriginatorEnum
 import play.api.libs.json.{JsObject, Json}
@@ -22,7 +25,7 @@ import core.Formatters._
   * Created on 25/02/2016
   */
 
-case class AutomatedStrategySimulation(
+case class AutomatedStrategySimulationModel(
                                         _id: String,
                                         originator: String,
                                         steps: Seq[SimulationStep]
@@ -53,18 +56,18 @@ case class StrategyReturns(
                           quantity: BigDecimal
                           )
 
-object AutomatedStrategySimulation {
+@Singleton class AutomatedStrategySimulation @Inject() (dbUtil: DbUtil) {
   val collectionName = "automatedStrategySimulation"
 
-  val automatedStrategySimulationTable: JSONCollection = DbUtil.db.collection(collectionName)
+  val automatedStrategySimulationTable: JSONCollection = dbUtil.db.collection(collectionName)
 
-  def store(automatedStrategySimulation: AutomatedStrategySimulation) = {
+  def store(automatedStrategySimulation: AutomatedStrategySimulationModel) = {
     for {
       result <- automatedStrategySimulationTable.insert(Json.toJson(automatedStrategySimulation).as[JsObject])
       newAutomatedStrategySimulation <- findByEmail(automatedStrategySimulation._id) if result.ok
     } yield newAutomatedStrategySimulation
   }
 
-  def findByEmail(email: String) = automatedStrategySimulationTable.find(Json.obj("_id" -> email)).one[AutomatedStrategySimulation]
+  def findByEmail(email: String) = automatedStrategySimulationTable.find(Json.obj("_id" -> email)).one[AutomatedStrategySimulationModel]
 }
 

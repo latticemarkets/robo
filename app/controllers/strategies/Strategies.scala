@@ -8,8 +8,9 @@
 
 package controllers.strategies
 
-import controllers.Security.HasToken
-import controllers.Utils
+import javax.inject.Inject
+
+import controllers.{Security, Utils}
 import models._
 import play.api.libs.json.Json
 import play.api.mvc.{Controller, Result}
@@ -21,7 +22,7 @@ import scala.concurrent.Future
   * Created on 22/02/2016
   */
 
-class Strategies extends Controller {
+class Strategies @Inject() (dbUser: User, security: Security) extends Controller {
   implicit val inSetParamsFormat = Json.format[InSetParams]
   implicit val inRangeParamsIntFormat = Json.format[InRangeParams]
   implicit val expectedReturnFormat = Json.format[ExpectedReturn]
@@ -32,7 +33,7 @@ class Strategies extends Controller {
   implicit val secondaryMarketFormat = Json.format[SecondaryMarket]
   implicit val platformFormat = Json.format[Platform]
 
-  def updatePrimaryMarketBuyStrategies() = HasToken.async { implicit request =>
+  def updatePrimaryMarketBuyStrategies() = security.HasToken.async { implicit request =>
     StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdateStrategies],
       data => updateStrategies[UpdateStrategies](
@@ -43,7 +44,7 @@ class Strategies extends Controller {
     )
   }
 
-  def updateSecondaryMarketBuyStrategies() = HasToken.async { implicit request =>
+  def updateSecondaryMarketBuyStrategies() = security.HasToken.async { implicit request =>
     StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdateStrategies],
       data => updateStrategies[UpdateStrategies](
@@ -54,7 +55,7 @@ class Strategies extends Controller {
     )
   }
 
-  def updateSecondaryMarketSellStrategies() = HasToken.async { implicit request =>
+  def updateSecondaryMarketSellStrategies() = security.HasToken.async { implicit request =>
     StrategiesForms.updateStrategiesForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdateStrategies],
       data => updateStrategies[UpdateStrategies](
@@ -65,7 +66,7 @@ class Strategies extends Controller {
     )
   }
 
-  def updateAutomatedStrategy() = HasToken.async { implicit request =>
+  def updateAutomatedStrategy() = security.HasToken.async { implicit request =>
     StrategiesForms.updateAutomatedStrategy.bindFromRequest.fold(
       Utils.badRequestOnError[UpdateAutomatedStrategy],
       data => updateStrategies[UpdateAutomatedStrategy](
@@ -76,8 +77,8 @@ class Strategies extends Controller {
     )
   }
 
-  def getAutomatedStrategy(originator: String) = HasToken.async { implicit request =>
-    User.findByEmail(request.headers.get("USER").getOrElse("")) map (_.map(user => {
+  def getAutomatedStrategy(originator: String) = security.HasToken.async { implicit request =>
+    dbUser.findByEmail(request.headers.get("USER").getOrElse("")) map (_.map(user => {
       val autoStrategy = user.platforms
         .filter(p => p.originatorEnum == OriginatorEnum.withName(originator))
         .head
@@ -87,14 +88,14 @@ class Strategies extends Controller {
   }
 
   def updateStrategies[T <: UpdatePlatform](data: T, email: String, platformUpdater: (T, Platform) => Platform): Future[Result] = {
-    User.findByEmail(email) flatMap (_.map(user => {
+    dbUser.findByEmail(email) flatMap (_.map(user => {
       user.platforms.find(_.originator == data.platform) map (platform => {
         val updatedPlatform = platformUpdater(data, platform)
         val platforms = user.platforms.map {
           case p if p.originator == data.platform => updatedPlatform
           case p => p
         }
-        User.update(user.copy(platforms = platforms)) map (user => Ok(""))
+        dbUser.update(user.copy(platforms = platforms)) map (user => Ok(""))
       }) getOrElse Future.successful(BadGateway(""))
     }) getOrElse Future.successful(BadGateway("")))
   }

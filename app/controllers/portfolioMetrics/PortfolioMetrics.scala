@@ -9,8 +9,9 @@
 package controllers.portfolioMetrics
 
 import java.time.LocalDate
+import javax.inject.Inject
 
-import controllers.Security._
+import controllers.Security
 import play.api.libs.json.Json
 import play.api.mvc.Controller
 
@@ -19,8 +20,8 @@ import play.api.mvc.Controller
   * Created on 22/02/2016
   */
 
-class PortfolioMetrics extends Controller {
-  def portfolioMetrics() = HasToken {
+class PortfolioMetrics @Inject() (security: Security) extends Controller {
+  def portfolioMetrics() = security.HasToken {
     val loans = Json.arr(
       Json.obj("originator" -> "lendingClub", "maturityDate" -> "2016-02-02", "intRate" -> 0.12),
       Json.obj("originator" -> "lendingClub", "maturityDate" -> "2016-02-02", "intRate" -> 0.12),
