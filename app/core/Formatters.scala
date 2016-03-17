@@ -9,7 +9,7 @@
 package core
 
 import models._
-import play.api.libs.json.Json
+import play.api.libs.json.{Format, Json}
 
 /**
   * @author : julienderay

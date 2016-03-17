@@ -8,7 +8,7 @@
 
 package models
 
-import de.sciss.play.json.AutoFormat
+import play.api.libs.json.Format
 
 /**
  * @author : julienderay
@@ -18,10 +18,6 @@ import de.sciss.play.json.AutoFormat
 sealed trait RuleParams
 case class InSetParams(set: Set[String]) extends RuleParams
 case class InRangeParams(from: BigDecimal, to: BigDecimal) extends RuleParams
-
-object RuleParams {
-  implicit val paramsFormat = AutoFormat[RuleParams]
-}
 
 object RuleType extends Enumeration {
   type RuleType = Value

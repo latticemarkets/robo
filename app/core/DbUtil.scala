@@ -12,7 +12,6 @@ package core
 import javax.inject.Inject
 import javax.inject.Singleton
 
-import play.api.Play.current
 import play.api.inject.ApplicationLifecycle
 import play.modules.reactivemongo.ReactiveMongoApi
 
@@ -24,9 +23,7 @@ import scala.language.postfixOps
   * @author : julienderay
   * Created on 27/01/2016
   */
-@Singleton class DbUtil @Inject() (applicationLifecycle: ApplicationLifecycle)  {
-  lazy val reactiveMongoApi = current.injector.instanceOf[ReactiveMongoApi]
-
+@Singleton class DbUtil @Inject() (applicationLifecycle: ApplicationLifecycle, reactiveMongoApi: ReactiveMongoApi)  {
   val timeout = 5 seconds
   val timeoutMillis = timeout.toMillis.toInt
 
