@@ -8,21 +8,22 @@
 
 package controllers.automatedStrategySimulation
 
-import controllers.Security.HasToken
-import models.{PortfolioComposition, SimulationStep, StrategyReturns, AutomatedStrategySimulation}
+import javax.inject.Inject
+
+import controllers.Security
+import core.Formatters._
+import models.{AutomatedStrategySimulationModel, PortfolioComposition, SimulationStep, StrategyReturns}
 import play.api.libs.json.Json
 import play.api.mvc.Controller
-
-import core.Formatters._
 
 /**
   * @author : julienderay
   * Created on 25/02/2016
   */
 
-class AutomatedStrategySimulations extends Controller {
+class AutomatedStrategySimulations @Inject() (security: Security) extends Controller {
 
-  def getSimulation(originator: String) = HasToken { implicit request =>
+  def getSimulation(originator: String) = security.HasToken { implicit request =>
     val r = scala.util.Random
     val strategyReturns = Seq[StrategyReturns](
       StrategyReturns(-7, 0),
@@ -47,7 +48,7 @@ class AutomatedStrategySimulations extends Controller {
       PortfolioComposition(grades(0), grades(1), grades(2), grades(3), grades(4), grades(5), grades(6))
     }
 
-    Ok(Json.toJson(AutomatedStrategySimulation(
+    Ok(Json.toJson(AutomatedStrategySimulationModel(
       request.headers.get("USER").getOrElse(""),
       originator,
       for (i <- 1 to 101) yield SimulationStep(

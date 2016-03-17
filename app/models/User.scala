@@ -9,24 +9,25 @@
 package models
 
 import java.util.Date
+import javax.inject.Inject
+import javax.inject.Singleton
 
 import controllers.users.RegisterForm
 import core.Formatters._
-import core.{DbUtil, Hash}
+import core.{DbUtil, EmailUtil, EnumerationPlus, Hash}
 import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.json._
 import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import core.EnumerationPlus
 
 /**
  * @author : julienderay
  * Created on 27/01/2016
  */
 
-case class User(
+case class UserModel(
     _id: String,
     terms: String,
     reason: String,
@@ -48,36 +49,36 @@ case class DestroyAccount(password: String)
 
 case class SendEmail(email: String)
 
-object User {
+@Singleton class User @Inject() (dbUtil: DbUtil, userSecurity: UserSecurity) {
 
   val collectionName = "user"
 
-  val usersTable: JSONCollection = DbUtil.db.collection(collectionName)
+  val usersTable: JSONCollection = dbUtil.db.collection(collectionName)
 
-  def findByEmail(email: String) = usersTable.find(Json.obj("_id" -> email)).one[User]
+  def findByEmail(email: String) = usersTable.find(Json.obj("_id" -> email)).one[UserModel]
 
-  def store(userForm: RegisterForm) = {
+  def store(user: RegisterForm): Future[Option[UserModel]] = { // Todo : handle the case where primary key is violated
     for {
-      passwordCreated <- UserSecurity.store(UserSecurity.factory(userForm.email, userForm.password))
+      passwordCreated <- userSecurity.store(userSecurity.factory(user.email, user.password))
 
-      newUser: User = User.factory(userForm)
+      newUser: UserModel = factory(user)
       result <- usersTable.insert(Json.toJson(newUser).as[JsObject])
 
       newUser <- findByEmail(newUser._id) if result.ok
     } yield newUser
   }
 
-  def getByToken(token: String): Future[Option[User]] = {
+  def getByToken(token: String): Future[Option[UserModel]] = {
     val query = Json.obj("token" -> token)
-    usersTable.find(query).one[User]
+    usersTable.find(query).one[UserModel]
   }
 
-  def generateAndStoreNewToken(user: User): Future[User] = {
-    val updatedUser: User = user.copy(token = Hash.createToken)
+  def generateAndStoreNewToken(user: UserModel): Future[UserModel] = {
+    val updatedUser: UserModel = user.copy(token = Hash.createToken)
     update(updatedUser)
   }
 
-  def update(user: User): Future[User] = {
+  def update(user: UserModel): Future[UserModel] = {
     val selector = Json.obj("_id" -> user._id)
     val modifier = Json.toJson(user).as[JsObject]
 
@@ -86,7 +87,7 @@ object User {
 
   def delete(email: String): Future[Boolean] = usersTable.remove(Json.obj("_id" -> email)) map (_.ok)
 
-  def factory(form: RegisterForm): User = User(
+  def factory(form: RegisterForm): UserModel = UserModel(
     form.email,
     form.terms,
     form.reason,

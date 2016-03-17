@@ -8,8 +8,9 @@
 
 package controllers.platforms
 
-import controllers.Security.HasToken
-import controllers.Utils
+import javax.inject.Inject
+
+import controllers.{Security, Utils}
 import models._
 import core.Formatters._
 import play.api.libs.json.Json
@@ -23,40 +24,40 @@ import scala.concurrent.Future
   * Created on 22/02/2016
   */
 
-class Platforms extends Controller {
-  def updatePlatforms() = HasToken.async { implicit request =>
+class Platforms @Inject() (dbUser: User, security: Security) extends Controller {
+  def updatePlatforms() = security.HasToken.async { implicit request =>
     PlatformsForms.updatePlatformsForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdatePlatforms],
       data => {
-        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
-          User.update(user.copy(platforms = data.platforms)) map (user => Ok(""))
+        dbUser.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
+          dbUser.update(user.copy(platforms = data.platforms)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
       }
     )
   }
 
-  def addPlatform() = HasToken.async { implicit request =>
+  def addPlatform() = security.HasToken.async { implicit request =>
     PlatformsForms.addPlatformForm.bindFromRequest.fold(
       Utils.badRequestOnError[AddPlatform],
       data => {
-        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
+        dbUser.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
           val newPlatform = Platform.factory(data.platform.originator, data.platform.accountId, data.platform.apiKey)
-          User.update(user.copy(platforms = user.platforms :+ newPlatform)) map (user => Ok(""))
+          dbUser.update(user.copy(platforms = user.platforms :+ newPlatform)) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
       }
     )
   }
 
-  def getPlatforms = HasToken.async { implicit request =>
-    User.findByEmail(request.headers.get("USER").getOrElse("")) map (_.map(user => Ok(Json.toJson(user.platforms))) getOrElse Utils.responseOnWrongDataSent)
+  def getPlatforms = security.HasToken.async { implicit request =>
+    dbUser.findByEmail(request.headers.get("USER").getOrElse("")) map (_.map(user => Ok(Json.toJson(user.platforms))) getOrElse Utils.responseOnWrongDataSent)
   }
 
-  def updatePlatform() = HasToken.async { implicit request =>
+  def updatePlatform() = security.HasToken.async { implicit request =>
     PlatformsForms.updatePlatformForm.bindFromRequest.fold(
       Utils.badRequestOnError[UpdatePlatform],
       data => {
-        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
-          User.update(user.copy(platforms = user.platforms.map(p =>
+        dbUser.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (_.map (user => {
+          dbUser.update(user.copy(platforms = user.platforms.map(p =>
             if (p.originator == data.platform.originator) data.platform else p)
           )) map (user => Ok(""))
         }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))

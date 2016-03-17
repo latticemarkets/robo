@@ -9,18 +9,21 @@
 package controllers
 
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
 import models.User
 import play.api.mvc._
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 /**
   * @author : julienderay
   * Created on 01/02/2016
   */
 
-object Security {
+@Singleton class Security @Inject() (dbUser: User) {
   case class TokenRequest[A](token: String, request: Request[A]) extends WrappedRequest[A](request)
 
   private[controllers] object HasToken extends ActionBuilder[TokenRequest] {
@@ -28,7 +31,7 @@ object Security {
       val email = request.headers.get("USER").getOrElse("")
 
       request.headers.get("X-TOKEN") map { token =>
-        User.getByToken( token ).flatMap {
+        dbUser.getByToken( token ).flatMap {
           case Some(user) if user._id == email => block(TokenRequest(user.token, request))
           case _                               => Future.successful( Results.Unauthorized("401 Unauthorized\n") )
         }

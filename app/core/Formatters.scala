@@ -26,12 +26,12 @@ object Formatters {
   implicit val primaryMarketFormat = Json.format[PrimaryMarket]
   implicit val secondaryMarketFormat = Json.format[SecondaryMarket]
   implicit val platformFormat = Json.format[Platform]
-  implicit val userFormat = Json.format[User]
+  implicit val userFormat = Json.format[UserModel]
 
   implicit val portfolioCompositionFormat = Json.format[PortfolioComposition]
   implicit val strategyReturnsFormat = Json.format[StrategyReturns]
   implicit val simulationStepFormat = Json.format[SimulationStep]
-  implicit val automatedStrategySimulationFormat = Json.format[AutomatedStrategySimulation]
+  implicit val automatedStrategySimulationFormat = Json.format[AutomatedStrategySimulationModel]
 
-  implicit val userSecurityFormat = Json.format[UserSecurity]
+  implicit val userSecurityFormat = Json.format[UserSecurityModel]
 }

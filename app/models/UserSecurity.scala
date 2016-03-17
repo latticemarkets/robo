@@ -8,6 +8,8 @@
 
 package models
 
+import com.google.inject.Inject
+import com.google.inject.Singleton
 import core.Formatters.userSecurityFormat
 import core.{DbUtil, Hash}
 import play.api.libs.json.{JsObject, Json}
@@ -22,47 +24,47 @@ import scala.concurrent.Future
   * Created on 22/03/2016
   */
 
-case class UserSecurity(
+case class UserSecurityModel(
                          _id: String,
                          password: String,
                          tokenForgotPassword: Option[String]
                        ) {
-  def withEncryptedPassword: UserSecurity = this.copy(password = Hash.createPassword(this.password))
+  def withEncryptedPassword: UserSecurityModel = this.copy(password = Hash.createPassword(this.password))
 }
 
 case class UpdatePassword(oldPassword: String, newPassword: String)
 
 case class ReinitializePassword(tokenForgotPassword: String, newPassword: String)
 
-object UserSecurity {
+@Singleton class UserSecurity @Inject() (dbUser: DbUtil) {
   val collectionName = "usersecurity"
 
-  val userSecurityTable: JSONCollection = DbUtil.db.collection(collectionName)
+  val userSecurityTable: JSONCollection = dbUser.db.collection(collectionName)
 
-  def findByEmail(email: String) = userSecurityTable.find(Json.obj("_id" -> email)).one[UserSecurity]
+  def findByEmail(email: String) = userSecurityTable.find(Json.obj("_id" -> email)).one[UserSecurityModel]
 
-  def store(userSecurity: UserSecurity) = {
+  def store(userSecurity: UserSecurityModel) = {
     for {
       result <- userSecurityTable.insert(Json.toJson(userSecurity).as[JsObject])
       newUser <- findByEmail(userSecurity._id) if result.ok
     } yield newUser
   }
 
-  def update(userSecurity: UserSecurity): Future[UserSecurity] = {
+  def update(userSecurity: UserSecurityModel): Future[UserSecurityModel] = {
     val selector = Json.obj("_id" -> userSecurity._id)
     val modifier = Json.toJson(userSecurity).as[JsObject]
 
     userSecurityTable.update(selector, modifier) map (_ => userSecurity)
   }
 
-  def factory(email: String, password: String): UserSecurity = UserSecurity(email, password, None).withEncryptedPassword
+  def factory(email: String, password: String): UserSecurityModel = UserSecurityModel(email, password, None).withEncryptedPassword
 
   def delete(email: String): Future[Boolean] = userSecurityTable.remove(Json.obj("_id" -> email)) map (_.ok)
 
-  def findTokenForgotPassword(tokenForgotPassword: String) = userSecurityTable.find(Json.obj("tokenForgotPassword" -> tokenForgotPassword)).one[UserSecurity]
+  def findTokenForgotPassword(tokenForgotPassword: String) = userSecurityTable.find(Json.obj("tokenForgotPassword" -> tokenForgotPassword)).one[UserSecurityModel]
 
-  def generateAndStoreNewTokenForgotPassword(userSecurity: UserSecurity): Future[UserSecurity] = {
-    val updatedUserSecurity: UserSecurity = userSecurity.copy(tokenForgotPassword = Option(Hash.createToken))
+  def generateAndStoreNewTokenForgotPassword(userSecurity: UserSecurityModel): Future[UserSecurityModel] = {
+    val updatedUserSecurity: UserSecurityModel = userSecurity.copy(tokenForgotPassword = Option(Hash.createToken))
     update(updatedUserSecurity)
   }
 }
