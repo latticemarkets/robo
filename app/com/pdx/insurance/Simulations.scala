@@ -23,9 +23,10 @@ import java.io.PrintWriter
 object Simulations {
   val IndexToGrade = Seq("A", "B", "C", "D", "E", "F", "G")
   val DefaultStates = Set("Charged Off", "Default", "In Grace Period", "Late (16-30 days)", "Late (16-30 days)", "Late (31-120 days)")
-  val InputFile = "/Users/ze97286/Downloads/preprocessed.csv"
+//  val InputFile = "/Users/ze97286/Downloads/preprocessed.csv"
+  val InputFile = "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
   val AllAWeights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
-  val ConservativeWeights = Seq(0.981d, 0.019d, 0, 0, 0, 0, 0)
+  val ConservativeWeights = Seq(0.981d, 0.019d, 0d, 0d, 0d, 0d, 0d)
   val ModerateWeights = Seq(0.01d, 0.52d, 0.08d, 0.238d, 0.118d, 0.031d, 0d)
   val AggressiveWeights = Seq(0d, 0d, 0.17d, 0.507d, 0.251d, 0.066d, 0d)
   val Iterations = 10000
@@ -80,13 +81,13 @@ object Simulations {
   def main(args: Array[String]): Unit = {
     val startingDate = LocalDate.of(2012, 1, 1)
     val simulateFor = 36 //months
-    val balnace = BigDecimal(2000)
+    val balance = BigDecimal(2000)
     val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
     val loans = linesToLCL(lines.drop(1).reverse, lines.head).toArray
-    simulation("lowRiskPortfolio", Iterations, startingDate, simulateFor, balnace, NoteSize, AllAWeights, loans, LowInsuranceFactor)
-    simulation("conservativePortfolio", Iterations, startingDate, simulateFor, balnace, NoteSize, ConservativeWeights, loans, LowInsuranceFactor)
-    simulation("moderatePortfolio", Iterations, startingDate, simulateFor, balnace, NoteSize, ModerateWeights, loans, MedInsuranceFactor)
-    simulation("aggressivePortfolio", Iterations, startingDate, simulateFor, balnace, NoteSize, AggressiveWeights, loans, HighInsuranceFactor)
+    simulation("lowRiskPortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, AllAWeights, loans, LowInsuranceFactor)
+    simulation("conservativePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, ConservativeWeights, loans, LowInsuranceFactor)
+    simulation("moderatePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, ModerateWeights, loans, MedInsuranceFactor)
+    simulation("aggressivePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, AggressiveWeights, loans, HighInsuranceFactor)
   }
 
   // runs n iteration of the experiment and returns converged averaged results
