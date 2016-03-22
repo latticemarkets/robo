@@ -90,6 +90,8 @@
                 }
             };
 
+            vm.allCriteriaSelected = () => vm.baseCriteria.length <= 0;
+
             /**
              * Functions
              */
