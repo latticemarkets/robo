@@ -32,4 +32,6 @@ object Formatters {
   implicit val strategyReturnsFormat = Json.format[StrategyReturns]
   implicit val simulationStepFormat = Json.format[SimulationStep]
   implicit val automatedStrategySimulationFormat = Json.format[AutomatedStrategySimulation]
+
+  implicit val userSecurityFormat = Json.format[UserSecurity]
 }

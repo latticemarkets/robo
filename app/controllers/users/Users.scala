@@ -12,7 +12,7 @@ import controllers.Security.HasToken
 import controllers.Utils
 import core.Formatters._
 import core.Hash
-import models.User
+import models.{UserSecurity, User}
 import play.api.libs.json.Json
 import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -29,9 +29,7 @@ class Users extends Controller {
     UsersForms.registerForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       providedInfos => {
-        User.store(
-          User.factory(providedInfos)
-        ) map (optUser =>
+        User.store(providedInfos) map (optUser =>
           optUser.map(user =>
             Ok(Json.obj("token" -> user.token))
           )
@@ -44,9 +42,10 @@ class Users extends Controller {
     UsersForms.loginForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       login => {
-        User.findByEmail(login.email) flatMap (optUser => optUser map (user =>
-          if (Hash.checkPassword(login.password, user.password)) {
-            User.generateAndStoreNewToken(user) map (user => Ok(Json.obj("token" -> user.token)))
+        UserSecurity.findByEmail(login.email) flatMap (_ map (userPassword =>
+          if (Hash.checkPassword(login.password, userPassword.password)) {
+            User.findByEmail(login.email) flatMap (_ map (user => User.generateAndStoreNewToken(user) map (user => Ok(Json.obj("token" -> user.token))))
+              getOrElse Future.successful(BadRequest("Unknown Error")))
           }
           else {
             Future.successful( BadRequest("Wrong password") )
@@ -72,9 +71,9 @@ class Users extends Controller {
     UsersForms.updatePasswordForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       infos => {
-        User.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (optUser => optUser map (user =>
+        UserSecurity.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (optUser => optUser map (user =>
           if (Hash.checkPassword(infos.oldPassword, user.password)) {
-            User.update(user.copy(password = Hash.createPassword(infos.newPassword)))
+            UserSecurity.update(user.copy(password = Hash.createPassword(infos.newPassword)))
               .map (user => Ok(""))
           }
           else {
@@ -102,9 +101,15 @@ class Users extends Controller {
       Utils.badRequestOnError,
       data => {
         val email = request.headers.get("USER").getOrElse("")
-        User.findByEmail(email) flatMap (optUser => optUser map (user =>
+        UserSecurity.findByEmail(email) flatMap (_ map (user =>
           if (Hash.checkPassword(data.password, user.password)) {
-            User.delete(email) map (deleted => if (deleted) Ok("") else BadGateway(""))
+            for {
+              passwordDeleted <- UserSecurity.delete(email)
+              userDeleted <- User.delete(email) if passwordDeleted
+            }
+            yield {
+              if (userDeleted) Ok("") else BadGateway("")
+            }
           }
           else {
             Future.successful( BadRequest("Incorrect password") )
