@@ -42,16 +42,10 @@ class Users extends Controller {
     UsersForms.loginForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       login => {
-        UserSecurity.findByEmail(login.email) flatMap (_ map (userPassword =>
-          if (Hash.checkPassword(login.password, userPassword.password)) {
+        withCheckedPassword(login.email, login.email) {
             User.findByEmail(login.email) flatMap (_ map (user => User.generateAndStoreNewToken(user) map (user => Ok(Json.obj("token" -> user.token))))
               getOrElse Future.successful(BadRequest("Unknown Error")))
-          }
-          else {
-            Future.successful( BadRequest("Wrong password") )
-          }
-        ) getOrElse Future.successful( BadRequest("Wrong email") )
-        )
+        }
       }
     )
   }
@@ -71,16 +65,12 @@ class Users extends Controller {
     UsersForms.updatePasswordForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       infos => {
-        UserSecurity.findByEmail(request.headers.get("USER").getOrElse("")) flatMap (optUser => optUser map (user =>
-          if (Hash.checkPassword(infos.oldPassword, user.password)) {
-            UserSecurity.update(user.copy(password = Hash.createPassword(infos.newPassword)))
+        val email: String = request.headers.get("USER").getOrElse("")
+        withCheckedPassword(email, infos.oldPassword) {
+            UserSecurity
+              .update(UserSecurity.factory(email, infos.newPassword))
               .map (user => Ok(""))
-          }
-          else {
-            Future.successful( BadRequest("Old password incorrect") )
-          }
-          ) getOrElse Future.successful( BadRequest("Wrong email") )
-          )
+        }
       }
     )
   }
@@ -100,9 +90,8 @@ class Users extends Controller {
     UsersForms.destroyAccountForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       data => {
-        val email = request.headers.get("USER").getOrElse("")
-        UserSecurity.findByEmail(email) flatMap (_ map (user =>
-          if (Hash.checkPassword(data.password, user.password)) {
+        val email: String = request.headers.get("USER").getOrElse("")
+        withCheckedPassword(email, data.password) {
             for {
               passwordDeleted <- UserSecurity.delete(email)
               userDeleted <- User.delete(email) if passwordDeleted
@@ -110,14 +99,21 @@ class Users extends Controller {
             yield {
               if (userDeleted) Ok("") else BadGateway("")
             }
-          }
-          else {
-            Future.successful( BadRequest("Incorrect password") )
-          }
-          ) getOrElse Future.successful( BadGateway("") )
-          )
+        }
       }
     )
+  }
+
+  def withCheckedPassword(email: String, password: String)(safeCallback: => Future[Result]) = {
+    UserSecurity.findByEmail(email) flatMap (_ map (userPassword =>
+      if (Hash.checkPassword(password, userPassword.password)) {
+        safeCallback
+      }
+      else {
+        Future.successful( BadRequest("Wrong password") )
+      }
+      ) getOrElse Future.successful( BadRequest("Wrong email") )
+      )
   }
 
   def checkToken() = HasToken {
