@@ -38,7 +38,7 @@ object UserSecurity {
 
   def findByEmail(email: String) = userSecurityTable.find(Json.obj("_id" -> email)).one[UserSecurity]
 
-  def store(userSecurity: UserSecurity) = { // Todo : handle the case where primary key is violated
+  def store(userSecurity: UserSecurity) = {
     for {
       result <- userSecurityTable.insert(Json.toJson(userSecurity).as[JsObject])
       newUser <- findByEmail(userSecurity._id) if result.ok

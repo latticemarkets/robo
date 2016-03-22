@@ -54,7 +54,7 @@ object User {
 
   def findByEmail(email: String) = usersTable.find(Json.obj("_id" -> email)).one[User]
 
-  def store(userForm: RegisterForm) = { // Todo : handle the case where primary key is violated
+  def store(userForm: RegisterForm) = {
     for {
       passwordCreated <- UserSecurity.store(UserSecurity.factory(userForm.email, userForm.password))
 
