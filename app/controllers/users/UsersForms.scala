@@ -10,6 +10,7 @@ package controllers.users
 
 import java.util.Date
 
+import controllers.Constraints
 import controllers.platforms.{NewPlatform, PlatformsForms}
 import models._
 import play.api.data.Form
@@ -31,7 +32,7 @@ object UsersForms {
   def updatePasswordForm = Form(
     mapping(
       "oldPassword" -> nonEmptyText,
-      "newPassword" -> nonEmptyText
+      "newPassword" -> nonEmptyText.verifying(Constraints.strongPassword)
     )(UpdatePassword.apply)(UpdatePassword.unapply)
   )
 
@@ -52,11 +53,11 @@ object UsersForms {
   def registerForm = Form(
     mapping (
       "email" -> email,
-      "password" -> nonEmptyText,
-      "terms" -> nonEmptyText,
-      "reason" -> nonEmptyText,
-      "income" -> nonEmptyText,
-      "timeline" -> nonEmptyText,
+      "password" -> nonEmptyText.verifying(Constraints.strongPassword),
+      "terms" -> nonEmptyText.verifying(Constraints.isTrue),
+      "reason" -> nonEmptyText.verifying(Constraints.isPartOf("reason", ReasonEnum)),
+      "income" -> nonEmptyText.verifying(Constraints.isPartOf("income", YearlyIncomeEnum)),
+      "timeline" -> nonEmptyText.verifying(Constraints.isPartOf("timeline", TimelineEnum)),
       "birthday" -> date("MM/dd/yyyy"),
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
