@@ -28,7 +28,6 @@ import core.EnumerationPlus
 
 case class User(
     _id: String,
-    password: String,
     terms: String,
     reason: String,
     income: String,
@@ -37,15 +36,11 @@ case class User(
     platforms: Seq[Platform],
     firstName: String,
     lastName: String,
-    token: String) {
-  def withEncryptedPassword: User = this.copy(password = Hash.createPassword(this.password))
-}
+    token: String)
 
 case class Login(
   email: String,
   password: String)
-
-case class UpdatePassword(oldPassword: String, newPassword: String)
 
 case class UpdatePersonalData(firstName: String, lastName: String, birthday: Date)
 
@@ -59,10 +54,14 @@ object User {
 
   def findByEmail(email: String) = usersTable.find(Json.obj("_id" -> email)).one[User]
 
-  def store(user: User) = { // Todo : handle the case where primary key is violated
+  def store(userForm: RegisterForm) = {
     for {
-      result <- usersTable.insert(Json.toJson(user.withEncryptedPassword).as[JsObject])
-      newUser <- findByEmail(user._id) if result.ok
+      passwordCreated <- UserSecurity.store(UserSecurity.factory(userForm.email, userForm.password))
+
+      newUser: User = User.factory(userForm)
+      result <- usersTable.insert(Json.toJson(newUser).as[JsObject])
+
+      newUser <- findByEmail(newUser._id) if result.ok
     } yield newUser
   }
 
@@ -87,7 +86,6 @@ object User {
 
   def factory(form: RegisterForm): User = User(
     form.email,
-    form.password,
     form.terms,
     form.reason,
     form.income,
