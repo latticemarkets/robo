@@ -53,7 +53,7 @@ object Simulations {
   }
 
   // select loans based on the given balance and weights that were issued on the given month
-  def select(initialLoans: Seq[LCL], startingDate: String, balance: BigDecimal, weights: Seq[Double], noteSize: BigDecimal): Array[LCL] = {
+  def select(initialLoans: Seq[Loan], startingDate: String, balance: BigDecimal, weights: Seq[Double], noteSize: BigDecimal): Array[Loan] = {
     val numLoans = balance / noteSize
     val filtered = initialLoans.filter(loan => loan.issuedMonth.equalsIgnoreCase(startingDate) && loan.term == 36)
     val grades = filtered groupBy (_.grade)
@@ -61,7 +61,7 @@ object Simulations {
   }
 
   // select loans based on the required number, grade and month
-  def select(loans: Seq[LCL], numLoans: Int, grade: String, month: String): Seq[LCL] = {
+  def select(loans: Seq[Loan], numLoans: Int, grade: String, month: String): Seq[Loan] = {
     val filtered = loans.filter(loan => loan.issuedMonth.equalsIgnoreCase(month) && loan.grade == grade)
     Random.shuffle(Random.shuffle(Random.shuffle(filtered))).take(numLoans)
   }
@@ -74,14 +74,14 @@ object Simulations {
     val strategyWeights = Seq(0.4d, 0.3d, 0.3d)
     val nbOfPortfolios = 10000
     val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
-    val loans = linesToLCL(lines.drop(1).reverse, lines.head).toArray
+    val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
 
     val res = simulation(nbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)
     writeToFile("simulation1", res)
   }
 
   // runs an experiment on n portfolios given fixed starting date and duration, and variable initial balance, note size and required weights
-  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSizeWeight: Seq[Double], strategyWeights: Seq[Double], loans: Array[LCL]) = {
+  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSizeWeight: Seq[Double], strategyWeights: Seq[Double], loans: Array[Loan]) = {
     val initialBalances = weighted(portfolioSizeWeights, nbOfPortfolios, PortfolioSizes)
     val noteSizes = weighted(noteSizeWeight, nbOfPortfolios, NoteSizes)
     val strategies = weighted(strategyWeights, nbOfPortfolios, Strategies)
@@ -99,14 +99,14 @@ object Simulations {
     })
   }
 
-  def simulateThePeriod(loans: Array[LCL],
+  def simulateThePeriod(loans: Array[Loan],
                         startingDate: LocalDate,
                         duration: Int,
                         initialBalance: BigDecimal,
                         noteSize: BigDecimal,
                         weights: Seq[Double],
                         insuranceFactor: Double,
-                        portfolio: Seq[LCL]): Seq[MonthlyResult] = {
+                        portfolio: Seq[Loan]): Seq[MonthlyResult] = {
 
     var portfolioVar = portfolio
     var balance = initialBalance - noteSize * BigDecimal(portfolio.size)
@@ -148,7 +148,7 @@ object Simulations {
     pw.close()
   }
 
-  def linesToLCL(loansStr: Seq[String], columns: String): Seq[LCL] = {
+  def linesToLoan(loansStr: Seq[String], columns: String): Seq[Loan] = {
     val splitColumns = columns.split(",").zipWithIndex.toMap
     loansStr.map(line => {
       val fields = line.split(",")
@@ -171,7 +171,7 @@ object Simulations {
       val recoveries = Try(BigDecimal(fields(splitColumns("recoveries")))).getOrElse(BigDecimal(0))
       val lastPaymentMonth = Try(if (fields(splitColumns("last_pymnt_d")) != "") fields(splitColumns("last_pymnt_d")) else fields(splitColumns("issue_d"))).getOrElse("")
       val lastPaymentAmount = Try(BigDecimal(fields(splitColumns("last_pymnt_amnt")))).getOrElse(BigDecimal(0))
-      LCL(fundedAmount,
+      Loan(fundedAmount,
         issuedMonth,
         term,
         intRate,
@@ -191,24 +191,8 @@ object Simulations {
   }
 }
 
-case class LCL(
-    fundedAmount: BigDecimal,
-    issuedMonth: String,
-    term: Int,
-    intRate: Double,
-    installment: BigDecimal,
-    grade: String,
-    state: String,
-    paidPrincipal: BigDecimal,
-    paidInterest: BigDecimal,
-    recoveries: BigDecimal,
-    lastPaymentMonth: String,
-    lastPaymentAmount: BigDecimal) {
-  val totalPaid = paidPrincipal + paidInterest
-}
-
 case class MonthlyResult(date: LocalDate,
-                         portfolio: Seq[LCL],
+                         portfolio: Seq[Loan],
                          totalMonthlyPaid: BigDecimal,
                          totalDefaultRepayments: BigDecimal,
                          totalBalance: BigDecimal,
