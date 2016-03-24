@@ -67,14 +67,6 @@ object MultiPortfolioSimulation {
     SimulationResult(simulation)
   }
 
-  // select loans based on the given balance and weights that were issued on the given month
-  def select(initialLoans: Seq[Loan], startingDate: String, balance: BigDecimal, weights: Seq[Double], noteSize: BigDecimal): Array[Loan] = {
-    val numLoans = balance / noteSize
-    val filtered = initialLoans.filter(loan => loan.issuedMonth.equalsIgnoreCase(startingDate) && loan.term == 36)
-    val grades = filtered groupBy (_.grade)
-    grades.flatMap { case (g, l) => Random.shuffle(Random.shuffle(Random.shuffle(l))).take((weights(IndexToGrade.indexOf(g)) * numLoans).setScale(0, BigDecimal.RoundingMode.HALF_UP).toIntExact) }.toArray
-  }
-
   def writeToFile(name: String, simulationResults: Seq[SimulationResult]) {
     val pw = new PrintWriter(s"$name.csv")
     pw.println(SimulationResult.headings mkString ",")

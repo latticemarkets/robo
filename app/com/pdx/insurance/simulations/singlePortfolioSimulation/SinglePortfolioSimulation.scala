@@ -45,17 +45,9 @@ object SinglePortfolioSimulation {
     writeToFile(name, results)
   }
 
-  // select loans based on the given balance and weights that were issued on the given month
-  def select(initialLoans: Seq[Loan], startingDate: String, balance: BigDecimal, weights: Seq[Double]): Array[Loan] = {
-    val numLoans = balance / NoteSize
-    val filtered = initialLoans.filter(loan => loan.issuedMonth.equalsIgnoreCase(startingDate) && loan.term == 36)
-    val grades = filtered groupBy (_.grade)
-    grades.flatMap { case (g, l) => Random.shuffle(Random.shuffle(Random.shuffle(l))).take((weights(IndexToGrade.indexOf(g)) * numLoans).setScale(0, BigDecimal.RoundingMode.HALF_UP).toIntExact) }.toArray
-  }
-
   // runs an experiment on one portfolio given a starting date, duration, initial balance, note size, and required weights
   def experiment(loans: Array[Loan], startingDate: LocalDate, duration: Int, balance: BigDecimal, noteSize: BigDecimal, weights: Seq[Double], insuranceFactor: Double): ExperimentResult = {
-    val portfolio = select(loans, startingDate, balance, weights)
+    val portfolio = select(loans, startingDate, balance, weights, NoteSize)
     val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, weights, insuranceFactor, portfolio))
     printResult(er)
     er
