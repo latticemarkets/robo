@@ -24,7 +24,7 @@ describe('SignupLoginController', () => {
         module('app');
 
         userService = jasmine.createSpyObj('userService', ['isEmailUsed']);
-        $cookies = jasmine.createSpyObj('$cookies', ['put']);
+        $cookies = jasmine.createSpyObj('$cookies', ['put', 'remove']);
         $location = jasmine.createSpyObj('$location', ['path']);
         patternCheckerService = jasmine.createSpyObj('patternCheckerService', ['isEmail', 'charLengthGreaterThan8', 'hasLowercase', 'hasUppercase', 'hasSpecialChar']);
 
@@ -51,6 +51,21 @@ describe('SignupLoginController', () => {
         });
     });
 
+    describe('wipe all cookies of an hypothetical previous sign up', () => {
+        it('should wipe all sign up cookies', () => {
+            expect($cookies.remove).toHaveBeenCalledWith('signup.email');
+            expect($cookies.remove).toHaveBeenCalledWith('signup.password');
+            expect($cookies.remove).toHaveBeenCalledWith('signup.terms');
+            expect($cookies.remove).toHaveBeenCalledWith('signup.reason');
+            expect($cookies.remove).toHaveBeenCalledWith('signup.income');
+            expect($cookies.remove).toHaveBeenCalledWith('signup.timeline');
+            expect($cookies.remove).toHaveBeenCalledWith('signup.birthday');
+            expect($cookies.remove).toHaveBeenCalledWith('signup.originator');
+            expect($cookies.remove).toHaveBeenCalledWith('signup.platforms');
+            expect($cookies.remove).toHaveBeenCalledWith('signup.extension');
+        });
+    });
+    
     describe('submit with good parameters', () => {
         let emailUsedError;
 
