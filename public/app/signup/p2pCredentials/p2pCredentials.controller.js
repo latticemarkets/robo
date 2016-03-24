@@ -15,7 +15,7 @@
     'use strict';
 
     class SignupP2pCredentialsController {
-        constructor($cookies, $location, $timeout) {
+        constructor($cookies, $location, $timeout, constantsService) {
             const vm = this;
 
             vm.pageClass = 'signup-login blue';
@@ -64,6 +64,16 @@
 
             vm.add = () => {
                 submit('/signup/p2pPlatform');
+            };
+
+            vm.canAddMore = () => {
+                const platforms = $cookies.getObject('signup.platforms');
+                if (platforms) {
+                    return platforms.length < constantsService.platforms().length - 1;
+                }
+                else {
+                    return true;
+                }
             };
 
             function submit(uri) {
