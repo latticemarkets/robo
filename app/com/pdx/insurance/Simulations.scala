@@ -42,6 +42,8 @@ object Simulations {
   val MedInsuranceFactor = 0.08d
   val HighInsuranceFactor = 0.12d
 
+  val Strategies = Seq(Strategy(ConservativeWeights, LowInsuranceFactor), Strategy(ModerateWeights, MedInsuranceFactor), Strategy(AggressiveWeights, HighInsuranceFactor))
+
   // translate month to LC format
   implicit def localDateToLoanMonthFormat(ld: LocalDate): String = ld.getMonth.toString.take(3) + "-" + ld.getYear.toString.drop(2)
 
@@ -87,23 +89,26 @@ object Simulations {
     val simulateFor = 36 //months
     val portfolioSizeWeights = Seq(0.2d, 0.3d, 0.2d, 0.2d, 0.05d, 0.05d)
     val noteSizeWeights = Seq(0.2d, 0.4d, 0.2d, 0.2d)
+    val strategyWeights = Seq(0.4d, 0.3d, 0.3d)
     val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
     val loans = linesToLCL(lines.drop(1).reverse, lines.head).toArray
-    simulation(NbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, AllAWeights, loans, LowInsuranceFactor)
+    simulation(NbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)
   }
 
   // runs an experiment on n portfolios given fixed starting date and duration, and variable initial balance, note size and required weights
-  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSizeWeight: Seq[Double], weights: Seq[Double], loans: Array[LCL], insuranceFactor: Double) {
+  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSizeWeight: Seq[Double], strategyWeights: Seq[Double], loans: Array[LCL]) {
     val initialBalances = portfolioSizeWeights.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(PortfolioSizes(i)) }
     val noteSizes = noteSizeWeight.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(NoteSizes(i)) }
+    val strategies = strategyWeights.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(Strategies(i))}
 
     (0 until nbOfPortfolios) foreach (i => {
       val balance = initialBalances(i)
       val noteSize = noteSizes(i)
+      val strategy = strategies(i)
 
       // make initial selection of loans for the portfolio
-      val portfolio = select(loans, startingDate, balance, weights, noteSize)
-      val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, weights, insuranceFactor, portfolio))
+      val portfolio = select(loans, startingDate, balance, strategy.gradeWeights, noteSize)
+      val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, strategy.gradeWeights, strategy.insuranceFactor, portfolio))
       printResult(er)
     })
   }
@@ -272,5 +277,6 @@ case class ExperimentResult(startingDate: String, initialBalance: BigDecimal, by
   override def toString: String = {
     s"$irrWithoutInsurance, $irrWithInsurance, $totalInsurancePayments, $totalDefaultRepayments, $insurancePnL, $totalDecreaseInIrrWithInsurance, $profitRate, $endBalance"
   }
-
 }
+
+case class Strategy(gradeWeights: Seq[Double], insuranceFactor: Double)
