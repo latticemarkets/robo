@@ -23,7 +23,7 @@ import scala.util.Random
  * Created on 09/03/2016
  */
 
-object GlobalInsuranceSimulations {
+object MultiPortfolioSimulation {
   val PortfolioSizes = Seq(1000, 5000, 15000, 25000, 30000, 100000)
   val NoteSizes = Seq(25, 50, 100, 300)
   val Strategies = Seq(Strategy(LCConservativeWeights, LowInsuranceFactor), Strategy(LCModerateWeights, MedInsuranceFactor), Strategy(LCAggressiveWeights, HighInsuranceFactor))
