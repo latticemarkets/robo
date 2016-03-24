@@ -30,7 +30,7 @@ object SinglePortfolioSimulation {
     val startingDate = LocalDate.of(2012, 1, 1)
     val simulateFor = 36 //months
     val balnace = BigDecimal(2000)
-    val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
+    val lines: Seq[String] = Source.fromFile(new File(LCInputFile)).getLines.toSeq
     val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
     simulation("lowRiskPortfolio", Iterations, startingDate, simulateFor, balnace, NoteSize, LCAllAWeights, loans, LowInsuranceFactor)
     simulation("conservativePortfolio", Iterations, startingDate, simulateFor, balnace, NoteSize, LCConservativeWeights, loans, LowInsuranceFactor)

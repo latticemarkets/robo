@@ -36,7 +36,7 @@ object GlobalInsuranceSimulations {
     val strategyWeights = Seq(0.4d, 0.3d, 0.3d)
     val nbOfPortfolios = 10000
     val iterations = 1000
-    val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
+    val lines: Seq[String] = Source.fromFile(new File(LCInputFile)).getLines.toSeq
     val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
 
     val res: Seq[SimulationResult] = (0 until iterations) map (_ => {
