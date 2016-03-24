@@ -8,13 +8,11 @@
 
 package com.pdx.insurance.simulations.singlePortfolioSimulation
 
-import java.io.{File, PrintWriter}
+import java.io.PrintWriter
 import java.time.LocalDate
 
 import com.pdx.insurance.simulations.SimulationUtils._
 import com.pdx.insurance.simulations.{Loan, MonthlyResult}
-
-import scala.io.Source
 
 /**
   * @author : julienderay
@@ -30,8 +28,8 @@ object SinglePortfolioSimulation {
     val simulateFor = 36 //months
     val balance = BigDecimal(2000)
 
-    val lines: Seq[String] = Source.fromFile(new File(LCInputFile)).getLines.toSeq
-    val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
+    val loans: Array[Loan] = parseLoans
+
     simulation("lowRiskPortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, LCAllAWeights, loans, LowInsuranceFactor)
     simulation("conservativePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, LCConservativeWeights, loans, LowInsuranceFactor)
     simulation("moderatePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, LCModerateWeights, loans, MedInsuranceFactor)

@@ -8,15 +8,13 @@
 
 package com.pdx.insurance.simulations.globalInsuranceSimulation
 
-import java.io.{File, PrintWriter}
+import java.io.PrintWriter
 import java.time.LocalDate
 
 import com.pdx.insurance.simulations.SimulationUtils._
 import com.pdx.insurance.simulations._
 
 import scala.collection.immutable.IndexedSeq
-import scala.io.Source
-import scala.util.Random
 
 /**
  * @author : julienderay
@@ -36,8 +34,8 @@ object MultiPortfolioSimulation {
     val strategyWeights = Seq(0.4d, 0.3d, 0.3d)
     val nbOfPortfolios = 10000
     val iterations = 1000
-    val lines: Seq[String] = Source.fromFile(new File(LCInputFile)).getLines.toSeq
-    val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
+
+    val loans: Array[Loan] = parseLoans
 
     val res: Seq[SimulationResult] = (0 until iterations) map (_ => {
       val simulationResult = simulation(nbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)

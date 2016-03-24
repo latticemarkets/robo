@@ -8,8 +8,10 @@
 
 package com.pdx.insurance.simulations
 
+import java.io.File
 import java.time.LocalDate
 
+import scala.io.Source
 import scala.util.{Random, Try}
 
 /**
@@ -148,5 +150,11 @@ object SimulationUtils {
         lastPaymentMonth,
         lastPaymentAmount)
     })
+  }
+
+  def parseLoans: Array[Loan] = {
+    val lines: Seq[String] = Source.fromFile(new File(LCInputFile)).getLines.toSeq
+    val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
+    loans
   }
 }
