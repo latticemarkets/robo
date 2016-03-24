@@ -99,9 +99,9 @@ object Simulations {
 
   // runs an experiment on n portfolios given fixed starting date and duration, and variable initial balance, note size and required weights
   def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSizeWeight: Seq[Double], strategyWeights: Seq[Double], loans: Array[LCL]) = {
-    val initialBalances = portfolioSizeWeights.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(PortfolioSizes(i)) }
-    val noteSizes = noteSizeWeight.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(NoteSizes(i)) }
-    val strategies = strategyWeights.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(Strategies(i))}
+    val initialBalances = weighted(portfolioSizeWeights, nbOfPortfolios, PortfolioSizes)
+    val noteSizes = weighted(noteSizeWeight, nbOfPortfolios, NoteSizes)
+    val strategies = weighted(strategyWeights, nbOfPortfolios, Strategies)
 
     (0 until nbOfPortfolios) map (i => {
       val balance = initialBalances(i)
@@ -155,6 +155,8 @@ object Simulations {
       mr
     })
   }
+
+  def weighted[T](weights:Seq[Double], noPortfolios:Int, seq:Seq[T]) = weights.zipWithIndex flatMap { case (weight, i) => Seq.fill((noPortfolios * weight).toInt)(seq(i)) }
 
   def writeToFile(name: String, arr: Seq[ExperimentResult]) {
     val pw = new PrintWriter(s"$name.csv")
