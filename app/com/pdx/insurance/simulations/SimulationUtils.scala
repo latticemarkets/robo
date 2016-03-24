@@ -8,8 +8,10 @@
 
 package com.pdx.insurance.simulations
 
-import java.io.File
+import java.io.{PrintWriter, File}
 import java.time.LocalDate
+
+import com.pdx.insurance.Analyser.Result
 
 import scala.io.Source
 import scala.util.{Random, Try}
@@ -72,6 +74,13 @@ object SimulationUtils {
     val filtered = initialLoans.filter(loan => loan.issuedMonth.equalsIgnoreCase(startingDate) && loan.term == 36)
     val grades = filtered groupBy (_.grade)
     grades.flatMap { case (g, l) => Random.shuffle(Random.shuffle(Random.shuffle(l))).take((weights(IndexToGrade.indexOf(g)) * numLoans).setScale(0, BigDecimal.RoundingMode.HALF_UP).toIntExact) }.toArray
+  }
+
+  def writeToFile[T](name: String, results: Seq[T], headings: Seq[String]) {
+    val pw = new PrintWriter(s"$name.csv")
+    pw.println(headings mkString ",")
+    results foreach ( res => pw.println(res.toString))
+    pw.close()
   }
 
   def simulateThePeriod(loans: Array[Loan],

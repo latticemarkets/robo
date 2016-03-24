@@ -8,7 +8,6 @@
 
 package com.pdx.insurance.simulations.globalInsuranceSimulation
 
-import java.io.PrintWriter
 import java.time.LocalDate
 
 import com.pdx.insurance.simulations.SimulationUtils._
@@ -42,7 +41,7 @@ object MultiPortfolioSimulation {
       printSimulationResult(simulationResult)
       simulationResult
     })
-    writeToFile("simulation", res)
+    writeToFile("simulation", res, SimulationResult.headings)
   }
 
   // runs an experiment on n portfolios given fixed starting date and duration, and variable initial balance, note size and required weights
@@ -63,13 +62,6 @@ object MultiPortfolioSimulation {
     })
 
     SimulationResult(simulation)
-  }
-
-  def writeToFile(name: String, simulationResults: Seq[SimulationResult]) {
-    val pw = new PrintWriter(s"$name.csv")
-    pw.println(SimulationResult.headings mkString ",")
-    simulationResults foreach ( res => pw.println(res.toString))
-    pw.close()
   }
 
   def printSimulationResult(res: SimulationResult) {

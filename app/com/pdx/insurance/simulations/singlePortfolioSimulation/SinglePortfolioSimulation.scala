@@ -40,7 +40,7 @@ object SinglePortfolioSimulation {
   def simulation(name: String, iterations: Int, startingDate: LocalDate, duration: Int, balance: BigDecimal, noteSize: BigDecimal, weights: Seq[Double], loans: Array[Loan], insuranceFactor: Double) = {
     println(ExperimentResult.headings mkString ",")
     val results = (0 until iterations) map (i => experiment(loans, startingDate, duration, balance, noteSize, weights, insuranceFactor))
-    writeToFile(name, results)
+    writeToFile(name, results, ExperimentResult.headings)
   }
 
   // runs an experiment on one portfolio given a starting date, duration, initial balance, note size, and required weights
@@ -49,13 +49,6 @@ object SinglePortfolioSimulation {
     val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, weights, insuranceFactor, portfolio))
     printResult(er)
     er
-  }
-
-  def writeToFile(name: String, arr: Seq[ExperimentResult]) {
-    val pw = new PrintWriter(s"${name}.csv")
-    pw.println(ExperimentResult.headings mkString ",")
-    arr foreach (x => pw.println(x.toString))
-    pw.close()
   }
 
   def printResult(res: ExperimentResult): Unit = {
