@@ -15,7 +15,6 @@ import com.pdx.insurance.simulations.SimulationUtils._
 import com.pdx.insurance.simulations.{Loan, MonthlyResult}
 
 import scala.io.Source
-import scala.util.Random
 
 /**
   * @author : julienderay
@@ -29,13 +28,14 @@ object SinglePortfolioSimulation {
   def main(args: Array[String]): Unit = {
     val startingDate = LocalDate.of(2012, 1, 1)
     val simulateFor = 36 //months
-    val balnace = BigDecimal(2000)
+    val balance = BigDecimal(2000)
+
     val lines: Seq[String] = Source.fromFile(new File(LCInputFile)).getLines.toSeq
     val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
-    simulation("lowRiskPortfolio", Iterations, startingDate, simulateFor, balnace, NoteSize, LCAllAWeights, loans, LowInsuranceFactor)
-    simulation("conservativePortfolio", Iterations, startingDate, simulateFor, balnace, NoteSize, LCConservativeWeights, loans, LowInsuranceFactor)
-    simulation("moderatePortfolio", Iterations, startingDate, simulateFor, balnace, NoteSize, LCModerateWeights, loans, MedInsuranceFactor)
-    simulation("aggressivePortfolio", Iterations, startingDate, simulateFor, balnace, NoteSize, LCAggressiveWeights, loans, HighInsuranceFactor)
+    simulation("lowRiskPortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, LCAllAWeights, loans, LowInsuranceFactor)
+    simulation("conservativePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, LCConservativeWeights, loans, LowInsuranceFactor)
+    simulation("moderatePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, LCModerateWeights, loans, MedInsuranceFactor)
+    simulation("aggressivePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, LCAggressiveWeights, loans, HighInsuranceFactor)
   }
 
   // runs n iteration of the experiment and returns converged averaged results
