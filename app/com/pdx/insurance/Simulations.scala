@@ -25,23 +25,25 @@ object Simulations {
   val DefaultStates = Set("Charged Off", "Default", "In Grace Period", "Late (16-30 days)", "Late (16-30 days)", "Late (31-120 days)")
 //  val InputFile = "/Users/ze97286/Downloads/preprocessed.csv"
   val InputFile = "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
+
   val AllAWeights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
   val ConservativeWeights = Seq(0.981d, 0.019d, 0d, 0d, 0d, 0d, 0d)
   val ModerateWeights = Seq(0.01d, 0.52d, 0.08d, 0.238d, 0.118d, 0.031d, 0d)
   val AggressiveWeights = Seq(0d, 0d, 0.17d, 0.507d, 0.251d, 0.066d, 0d)
+
   val NbOfPortfolios = 10000
-  val NoteSize = BigDecimal(25)
   val Accuracy = 0.000001d
   val LossRate = 1d
 
   val PortfolioSizes = Seq(1000, 5000, 15000, 25000, 30000, 100000)
+  val NoteSizes = Seq(25, 50, 100, 300)
 
   val LowInsuranceFactor = 0.05d
   val MedInsuranceFactor = 0.08d
   val HighInsuranceFactor = 0.12d
 
   // translate month to LC format
-  implicit def localDateToLoanMonthFormat(ld: LocalDate): String = ld.getMonth.toString.take(3) + "-" + (ld.getYear.toString.drop(2))
+  implicit def localDateToLoanMonthFormat(ld: LocalDate): String = ld.getMonth.toString.take(3) + "-" + ld.getYear.toString.drop(2)
 
   private def calculateIrrFor(guess: Double, values: Seq[Double]): Double = {
     var fValue = 0.0
@@ -67,8 +69,8 @@ object Simulations {
   }
 
   // select loans based on the given balance and weights that were issued on the given month
-  def select(initialLoans: Seq[LCL], startingDate: String, balance: BigDecimal, weights: Seq[Double]): Array[LCL] = {
-    val numLoans = balance / NoteSize
+  def select(initialLoans: Seq[LCL], startingDate: String, balance: BigDecimal, weights: Seq[Double], noteSize: BigDecimal): Array[LCL] = {
+    val numLoans = balance / noteSize
     val filtered = initialLoans.filter(loan => loan.issuedMonth.equalsIgnoreCase(startingDate) && loan.term == 36)
     val grades = filtered groupBy (_.grade)
     grades.flatMap { case (g, l) => Random.shuffle(Random.shuffle(Random.shuffle(l))).take((weights(IndexToGrade.indexOf(g)) * numLoans).setScale(0, BigDecimal.RoundingMode.HALF_UP).toIntExact) }.toArray
@@ -84,19 +86,23 @@ object Simulations {
     val startingDate = LocalDate.of(2012, 1, 1)
     val simulateFor = 36 //months
     val portfolioSizeWeights = Seq(0.2d, 0.3d, 0.2d, 0.2d, 0.05d, 0.05d)
+    val noteSizeWeights = Seq(0.2d, 0.4d, 0.2d, 0.2d)
     val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
     val loans = linesToLCL(lines.drop(1).reverse, lines.head).toArray
-    simulation(NbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, NoteSize, AllAWeights, loans, LowInsuranceFactor)
+    simulation(NbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, AllAWeights, loans, LowInsuranceFactor)
   }
 
   // runs an experiment on n portfolios given fixed starting date and duration, and variable initial balance, note size and required weights
-  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSize: BigDecimal, weights: Seq[Double], loans: Array[LCL], insuranceFactor: Double) {
+  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSizeWeight: Seq[Double], weights: Seq[Double], loans: Array[LCL], insuranceFactor: Double) {
     val initialBalances = portfolioSizeWeights.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(PortfolioSizes(i)) }
+    val noteSizes = noteSizeWeight.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(NoteSizes(i)) }
 
     (0 until nbOfPortfolios) foreach (i => {
       val balance = initialBalances(i)
+      val noteSize = noteSizes(i)
+
       // make initial selection of loans for the portfolio
-      val portfolio = select(loans, startingDate, balance, weights)
+      val portfolio = select(loans, startingDate, balance, weights, noteSize)
       val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, weights, insuranceFactor, portfolio))
       printResult(er)
     })
