@@ -14,6 +14,7 @@ import scala.util.Random
 import java.time.LocalDate
 import scala.util.Try
 import java.io.PrintWriter
+import SimulationUtils._
 
 /**
  * @author : julienderay
@@ -42,19 +43,6 @@ object Simulations {
   val HighInsuranceFactor = 0.12d
 
   val Strategies = Seq(Strategy(ConservativeWeights, LowInsuranceFactor), Strategy(ModerateWeights, MedInsuranceFactor), Strategy(AggressiveWeights, HighInsuranceFactor))
-
-  // translate month to LC format
-  implicit def localDateToLoanMonthFormat(ld: LocalDate): String = ld.getMonth.toString.take(3) + "-" + ld.getYear.toString.drop(2)
-
-  private def calculateIrrFor(guess: Double, values: Seq[Double]): Double = {
-    var fValue = 0.0
-    var fDerivative = 0.0
-    for (i <- values.indices) {
-      fValue += values(i) / Math.pow(1.0 + guess, i)
-      fDerivative += -i * values(i) / Math.pow(1.0 + guess, i + 1)
-    }
-    fValue / fDerivative
-  }
 
   def irr(absoluteAccuracy: Double, values: Seq[Double]): Double = {
     val maxIterationCount = 100000
