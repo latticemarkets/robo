@@ -9,6 +9,7 @@
 package com.pdx.insurance
 
 import java.io.File
+import scala.collection.immutable.IndexedSeq
 import scala.io.Source
 import scala.util.Random
 import java.time.LocalDate
@@ -76,7 +77,8 @@ object Simulations {
     val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
     val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
 
-    val res = simulation(nbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)
+    val res = SimulationResult(simulation(nbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans))
+    printSimulationResult(res)
     writeToFile("simulation1", res)
   }
 
@@ -94,7 +96,6 @@ object Simulations {
       // make initial selection of loans for the portfolio
       val portfolio = select(loans, startingDate, balance, strategy.gradeWeights, noteSize)
       val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, strategy.gradeWeights, strategy.insuranceFactor, portfolio))
-      printResult(er)
       er
     })
   }
@@ -141,10 +142,10 @@ object Simulations {
 
   def weighted[T](weights:Seq[Double], noPortfolios:Int, seq:Seq[T]) = weights.zipWithIndex flatMap { case (weight, i) => Seq.fill((noPortfolios * weight).toInt)(seq(i)) }
 
-  def writeToFile(name: String, arr: Seq[ExperimentResult]) {
+  def writeToFile(name: String, simulationResult: SimulationResult) {
     val pw = new PrintWriter(s"$name.csv")
-    pw.println(ExperimentResult.headings mkString ",")
-    arr foreach (x => pw.println(x.toString))
+    pw.println(SimulationResult.headings mkString ",")
+    pw.println(simulationResult.toString)
     pw.close()
   }
 
@@ -186,7 +187,8 @@ object Simulations {
     })
   }
 
-  def printResult(res: ExperimentResult): Unit = {
+  def printSimulationResult(res: SimulationResult) {
+    println(SimulationResult.headings mkString "")
     println(res.toString)
   }
 }
@@ -217,3 +219,15 @@ case class ExperimentResult(startingDate: String, initialBalance: BigDecimal, by
 }
 
 case class Strategy(gradeWeights: Seq[Double], insuranceFactor: Double)
+
+case class SimulationResult(results: IndexedSeq[ExperimentResult]) {
+  val totalPremiumPayments: BigDecimal = results.map(_.totalInsurancePayments).sum
+  val totalDefaultPayments: BigDecimal = results.map(_.totalDefaultRepayments).sum
+  val insurancePnL: BigDecimal = totalPremiumPayments - totalDefaultPayments
+  val profitRate: BigDecimal = (insurancePnL / results.map(_.initialBalance).sum) * 100
+
+  override def toString: String = s"$totalPremiumPayments, $totalDefaultPayments, $insurancePnL, $profitRate"
+}
+object SimulationResult {
+  val headings: Seq[String] = Seq("total premium payments", "total default payments", "insurance PnL", "profit rate")
+}
