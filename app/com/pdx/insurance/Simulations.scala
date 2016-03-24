@@ -29,7 +29,7 @@ object Simulations {
   val ConservativeWeights = Seq(0.981d, 0.019d, 0d, 0d, 0d, 0d, 0d)
   val ModerateWeights = Seq(0.01d, 0.52d, 0.08d, 0.238d, 0.118d, 0.031d, 0d)
   val AggressiveWeights = Seq(0d, 0d, 0.17d, 0.507d, 0.251d, 0.066d, 0d)
-  val Iterations = 10000
+  val NbOfPortfolios = 10000
   val NoteSize = BigDecimal(25)
   val Accuracy = 0.000001d
   val LossRate = 1d
@@ -84,22 +84,14 @@ object Simulations {
     val balance = BigDecimal(2000)
     val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
     val loans = linesToLCL(lines.drop(1).reverse, lines.head).toArray
-    simulation("lowRiskPortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, AllAWeights, loans, LowInsuranceFactor)
-    simulation("conservativePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, ConservativeWeights, loans, LowInsuranceFactor)
-    simulation("moderatePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, ModerateWeights, loans, MedInsuranceFactor)
-    simulation("aggressivePortfolio", Iterations, startingDate, simulateFor, balance, NoteSize, AggressiveWeights, loans, HighInsuranceFactor)
+    simulation(NbOfPortfolios, startingDate, simulateFor, balance, NoteSize, AllAWeights, loans, LowInsuranceFactor)
   }
 
-  // runs n iteration of the experiment and returns converged averaged results
-  def simulation(name: String, iterations: Int, startingDate: LocalDate, duration: Int, balance: BigDecimal, noteSize: BigDecimal, weights: Seq[Double], loans: Array[LCL], insuranceFactor: Double) = {
-    println(ExperimentResult.headings mkString ",")
-    val results = (0 until iterations) map (i => experiment(loans, startingDate, duration, balance, noteSize, weights, insuranceFactor))
-    writeToFile(name, results)
-  }
-
-  // runs an experiment on one portfolio given a starting date, duration, initial balance, note size, and required weights
-  def experiment(loans: Array[LCL], startingDate: LocalDate, duration: Int, balance: BigDecimal, noteSize: BigDecimal, weights: Seq[Double], insuranceFactor: Double): ExperimentResult = {
-    val er=ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, weights, insuranceFactor))
+  // runs an experiment on n portfolios given fixed starting date and duration, and variable initial balance, note size and required weights
+  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, balance: BigDecimal, noteSize: BigDecimal, weights: Seq[Double], loans: Array[LCL], insuranceFactor: Double) = {
+    // make initial selection of loans for the portfolio
+    val portfolio = select(loans, startingDate, balance, weights)
+    val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, weights, insuranceFactor, portfolio))
     printResult(er)
     er
   }
@@ -117,11 +109,11 @@ object Simulations {
                         initialBalance: BigDecimal,
                         noteSize: BigDecimal,
                         weights: Seq[Double],
-                        insuranceFactor: Double): Seq[MonthlyResult] = {
+                        insuranceFactor: Double,
+                        portfolio: Seq[LCL]): Seq[MonthlyResult] = {
 
-    // make initial selection of loans for the portfolio
-    var portfolio = select(loans, startingDate, initialBalance, weights)
-    var balance = initialBalance - (noteSize) * BigDecimal(portfolio.size)
+    var portfolioVar = portfolio
+    var balance = initialBalance - noteSize * BigDecimal(portfolio.size)
 
     // advance the simulation one month at a time
     1 to duration + 1 map (i => {
@@ -143,7 +135,7 @@ object Simulations {
       val defaultedThisMonth = loansEndedThisMonth filter (x => DefaultStates.contains(x.state))
 
       // calculate losses from defaults
-      val lossFromDefaultsThisMonth = defaultedThisMonth.map(x => LossRate * (Math.max(0, (x.fundedAmount - x.totalPaid - x.recoveries).doubleValue)) * noteSize / x.fundedAmount).sum
+      val lossFromDefaultsThisMonth = defaultedThisMonth.map(x => LossRate * Math.max(0, (x.fundedAmount - x.totalPaid - x.recoveries).doubleValue) * noteSize / x.fundedAmount).sum
 
       //      // calculate how many new loans we can buy
       //      val newPortfolioSize = (balance / noteSize).toInt + continuingLoans.size
@@ -155,8 +147,8 @@ object Simulations {
       //      val needToBuy = weights.map(x => (x * newPortfolioSize).toInt).zipWithIndex.map { case (w, i) => IndexToGrade(i) -> (w - (portfolioComposition.get(IndexToGrade(i)).map(_.size).getOrElse(0))) }
       //      val newLoans = needToBuy.collect { case (k, v) if v > 0 => select(loans, v, k, currentMonth.plusMonths(1)) }.toSeq.flatten
       //      balance -= newLoans.size * NoteSize
-      val mr = MonthlyResult(currentMonth, portfolio.clone(), incomeFromLoansEndedThisMonth + incomeFromLoansContinuing, lossFromDefaultsThisMonth, balance, insuranceFactor)
-      portfolio = continuingLoans //++ newLoans
+      val mr = MonthlyResult(currentMonth, portfolioVar, incomeFromLoansEndedThisMonth + incomeFromLoansContinuing, lossFromDefaultsThisMonth, balance, insuranceFactor)
+      portfolioVar = continuingLoans //++ newLoans
       mr
     })
   }
