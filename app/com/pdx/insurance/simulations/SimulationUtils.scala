@@ -62,6 +62,8 @@ object SimulationUtils {
     Double.NaN
   }
 
+  def weighted[T](weights:Seq[Double], noPortfolios:Int, seq:Seq[T]) = weights.zipWithIndex flatMap { case (weight, i) => Seq.fill((noPortfolios * weight).toInt)(seq(i)) }
+
   def simulateThePeriod(loans: Array[Loan],
                         startingDate: LocalDate,
                         duration: Int,

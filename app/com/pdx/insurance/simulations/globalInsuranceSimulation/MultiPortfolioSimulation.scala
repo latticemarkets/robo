@@ -75,8 +75,6 @@ object MultiPortfolioSimulation {
     grades.flatMap { case (g, l) => Random.shuffle(Random.shuffle(Random.shuffle(l))).take((weights(IndexToGrade.indexOf(g)) * numLoans).setScale(0, BigDecimal.RoundingMode.HALF_UP).toIntExact) }.toArray
   }
 
-  def weighted[T](weights:Seq[Double], noPortfolios:Int, seq:Seq[T]) = weights.zipWithIndex flatMap { case (weight, i) => Seq.fill((noPortfolios * weight).toInt)(seq(i)) }
-
   def writeToFile(name: String, simulationResults: Seq[SimulationResult]) {
     val pw = new PrintWriter(s"$name.csv")
     pw.println(SimulationResult.headings mkString ",")
