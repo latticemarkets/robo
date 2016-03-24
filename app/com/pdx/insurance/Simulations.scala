@@ -34,6 +34,8 @@ object Simulations {
   val Accuracy = 0.000001d
   val LossRate = 1d
 
+  val PortfolioSizes = Seq(1000, 5000, 15000, 25000, 30000, 100000)
+
   val LowInsuranceFactor = 0.05d
   val MedInsuranceFactor = 0.08d
   val HighInsuranceFactor = 0.12d
@@ -74,33 +76,30 @@ object Simulations {
 
   // select loans based on the required number, grade and month
   def select(loans: Seq[LCL], numLoans: Int, grade: String, month: String): Seq[LCL] = {
-    val filtered = loans.filter(loan => (loan.issuedMonth.equalsIgnoreCase(month)) && loan.grade == grade)
+    val filtered = loans.filter(loan => loan.issuedMonth.equalsIgnoreCase(month) && loan.grade == grade)
     Random.shuffle(Random.shuffle(Random.shuffle(filtered))).take(numLoans)
   }
 
   def main(args: Array[String]): Unit = {
     val startingDate = LocalDate.of(2012, 1, 1)
     val simulateFor = 36 //months
-    val balance = BigDecimal(2000)
+    val portfolioSizeWeights = Seq(0.2d, 0.3d, 0.2d, 0.2d, 0.05d, 0.05d)
     val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
     val loans = linesToLCL(lines.drop(1).reverse, lines.head).toArray
-    simulation(NbOfPortfolios, startingDate, simulateFor, balance, NoteSize, AllAWeights, loans, LowInsuranceFactor)
+    simulation(NbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, NoteSize, AllAWeights, loans, LowInsuranceFactor)
   }
 
   // runs an experiment on n portfolios given fixed starting date and duration, and variable initial balance, note size and required weights
-  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, balance: BigDecimal, noteSize: BigDecimal, weights: Seq[Double], loans: Array[LCL], insuranceFactor: Double) = {
-    // make initial selection of loans for the portfolio
-    val portfolio = select(loans, startingDate, balance, weights)
-    val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, weights, insuranceFactor, portfolio))
-    printResult(er)
-    er
-  }
+  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSize: BigDecimal, weights: Seq[Double], loans: Array[LCL], insuranceFactor: Double) {
+    val initialBalances = portfolioSizeWeights.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(PortfolioSizes(i)) }
 
-  def writeToFile(name: String, arr: Seq[ExperimentResult]) {
-    val pw = new PrintWriter(s"${name}.csv")
-    pw.println(ExperimentResult.headings mkString ",")
-    arr foreach (x => pw.println(x.toString))
-    pw.close()
+    (0 until nbOfPortfolios) foreach (i => {
+      val balance = initialBalances(i)
+      // make initial selection of loans for the portfolio
+      val portfolio = select(loans, startingDate, balance, weights)
+      val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, weights, insuranceFactor, portfolio))
+      printResult(er)
+    })
   }
 
   def simulateThePeriod(loans: Array[LCL],
@@ -151,6 +150,13 @@ object Simulations {
       portfolioVar = continuingLoans //++ newLoans
       mr
     })
+  }
+
+  def writeToFile(name: String, arr: Seq[ExperimentResult]) {
+    val pw = new PrintWriter(s"${name}.csv")
+    pw.println(ExperimentResult.headings mkString ",")
+    arr foreach (x => pw.println(x.toString))
+    pw.close()
   }
 
   def linesToLCL(loansStr: Seq[String], columns: String): Seq[LCL] = {
