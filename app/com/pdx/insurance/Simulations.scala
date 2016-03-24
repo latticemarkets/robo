@@ -209,28 +209,10 @@ object Simulations {
   }
 
   def printResult(res: ExperimentResult): Unit = {
-    //    println(s"=============\nResults for portfolio - start date: ${res.startingDate} with USD${res.initialBalance}:\n")
-    //    println(s"initial portfolio:")
-    //    println(res.byMonth.head.portfolio mkString "\n")
-    //
-    //    res.byMonth foreach (m => {
-    //      println(s"month: ${localDateToLoanMonthFormat(m.date)}")
-    //      //      println("portfolio:")
-    //      //      println(m.portfolio mkString "\n")
-    //      println(s"total balance: ${m.totalBalance}")
-    //      println(s"total repaid this month: ${m.totalMonthlyPaid}")
-    //      println(s"loss to defaults this month: ${m.totalDefaultRepayments}")
-    //    })
-    //
-    //    println(s"capital loss due to defaults: ${res.totalDefaultRepayments}")
-    print(s"${res.irrWithoutInsurance}, ") //irr without insurance
-    print(s"${res.irrWithInsurance}, ") //irr with insurance
-    print(s"${res.totalInsurancePayments}, ") //total insurance payments
-    print(s"${res.totalDefaultRepayments}, ") //total repaid by insurance
     print(s"${res.insurancePnL}, ") //insurnace pnl
-    print(s"${res.totalDecreaseInIrrWithInsurance},") //total decrease in IRR due to insurance
-    print(s"${res.profitRate * 100d},") // profit proportion of initial balance
-    println(s"${res.endBalance}") // balance at the end of the period
+    print(s"${res.profitRate * 100d}, ") // profit proportion of initial balance
+    print(s"${res.totalDefaultRepayments}, ") //total repaid by insurance
+    println(s"${res.totalInsurancePayments}, ") //total insurance payments
   }
 }
 
@@ -262,7 +244,7 @@ case class MonthlyResult(date: LocalDate,
 }
 
 object ExperimentResult {
-  val headings: Seq[String] = Seq("irr without insurance", "irr with insurance", "total premia", "total repaid by insurance", "insurnace pnl", "irr decrease", "profit rate", "end balance")
+  val headings: Seq[String] = Seq("insurnace pnl", "profit rate", "total repaid by insurance", "total premia")
 }
 case class ExperimentResult(startingDate: String, initialBalance: BigDecimal, byMonth: Seq[MonthlyResult]) {
   val irrWithoutInsurance: Double = Simulations.irr(Simulations.Accuracy, -initialBalance.doubleValue +: byMonth.map(_.totalMonthlyPaid.doubleValue))
