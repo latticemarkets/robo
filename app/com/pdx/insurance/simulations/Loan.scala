@@ -6,7 +6,7 @@
  * PDX Technology, except with written permission of PDX Technology.
  */
 
-package com.pdx.insurance
+package com.pdx.insurance.simulations
 
 /**
   * @author : julienderay
