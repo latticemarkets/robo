@@ -17,8 +17,8 @@ import scala.util.Try
   *         Created on 24/03/2016
   */
 object SimulationUtils {
-  val InputFile = "/Users/ze97286/Downloads/preprocessed.csv"
-  //  val InputFile = "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
+//  val InputFile = "/Users/ze97286/Downloads/preprocessed.csv"
+    val InputFile = "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
 
   val LCAllAWeights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
   val LCConservativeWeights = Seq(0.981d, 0.019d, 0d, 0d, 0d, 0d, 0d)

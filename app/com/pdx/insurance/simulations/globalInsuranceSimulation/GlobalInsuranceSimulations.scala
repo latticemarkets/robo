@@ -35,21 +35,25 @@ object GlobalInsuranceSimulations {
     val noteSizeWeights = Seq(0.2d, 0.4d, 0.2d, 0.2d)
     val strategyWeights = Seq(0.4d, 0.3d, 0.3d)
     val nbOfPortfolios = 10000
+    val iterations = 1000
     val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
     val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
 
-    val res = SimulationResult(simulation(nbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans))
-    printSimulationResult(res)
-    writeToFile("simulation1", res)
+    val res: Seq[SimulationResult] = (0 until iterations) map (_ => {
+      val simulationResult = simulation(nbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)
+      printSimulationResult(simulationResult)
+      simulationResult
+    })
+    writeToFile("simulation", res)
   }
 
   // runs an experiment on n portfolios given fixed starting date and duration, and variable initial balance, note size and required weights
-  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSizeWeight: Seq[Double], strategyWeights: Seq[Double], loans: Array[Loan]) = {
+  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSizeWeight: Seq[Double], strategyWeights: Seq[Double], loans: Array[Loan]): SimulationResult = {
     val initialBalances = weighted(portfolioSizeWeights, nbOfPortfolios, PortfolioSizes)
     val noteSizes = weighted(noteSizeWeight, nbOfPortfolios, NoteSizes)
     val strategies = weighted(strategyWeights, nbOfPortfolios, Strategies)
 
-    (0 until nbOfPortfolios) map (i => {
+    val simulation = (0 until nbOfPortfolios) map (i => {
       val balance = initialBalances(i)
       val noteSize = noteSizes(i)
       val strategy = strategies(i)
@@ -59,6 +63,8 @@ object GlobalInsuranceSimulations {
       val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, strategy.gradeWeights, strategy.insuranceFactor, portfolio))
       er
     })
+
+    SimulationResult(simulation)
   }
 
   // select loans based on the given balance and weights that were issued on the given month
@@ -71,10 +77,10 @@ object GlobalInsuranceSimulations {
 
   def weighted[T](weights:Seq[Double], noPortfolios:Int, seq:Seq[T]) = weights.zipWithIndex flatMap { case (weight, i) => Seq.fill((noPortfolios * weight).toInt)(seq(i)) }
 
-  def writeToFile(name: String, simulationResult: SimulationResult) {
+  def writeToFile(name: String, simulationResults: Seq[SimulationResult]) {
     val pw = new PrintWriter(s"$name.csv")
     pw.println(SimulationResult.headings mkString ",")
-    pw.println(simulationResult.toString)
+    simulationResults foreach ( res => pw.println(res.toString))
     pw.close()
   }
 
