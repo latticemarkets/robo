@@ -92,16 +92,18 @@ object Simulations {
     val strategyWeights = Seq(0.4d, 0.3d, 0.3d)
     val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
     val loans = linesToLCL(lines.drop(1).reverse, lines.head).toArray
-    simulation(NbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)
+
+    val res = simulation(NbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)
+    writeToFile("simulation1", res)
   }
 
   // runs an experiment on n portfolios given fixed starting date and duration, and variable initial balance, note size and required weights
-  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSizeWeight: Seq[Double], strategyWeights: Seq[Double], loans: Array[LCL]) {
+  def simulation(nbOfPortfolios: Int, startingDate: LocalDate, duration: Int, portfolioSizeWeights: Seq[Double], noteSizeWeight: Seq[Double], strategyWeights: Seq[Double], loans: Array[LCL]) = {
     val initialBalances = portfolioSizeWeights.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(PortfolioSizes(i)) }
     val noteSizes = noteSizeWeight.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(NoteSizes(i)) }
     val strategies = strategyWeights.zipWithIndex flatMap { case (weight, i) => Seq.fill((nbOfPortfolios * weight).toInt)(Strategies(i))}
 
-    (0 until nbOfPortfolios) foreach (i => {
+    (0 until nbOfPortfolios) map (i => {
       val balance = initialBalances(i)
       val noteSize = noteSizes(i)
       val strategy = strategies(i)
@@ -110,6 +112,7 @@ object Simulations {
       val portfolio = select(loans, startingDate, balance, strategy.gradeWeights, noteSize)
       val er = ExperimentResult(startingDate, balance, simulateThePeriod(loans, startingDate, duration, balance, noteSize, strategy.gradeWeights, strategy.insuranceFactor, portfolio))
       printResult(er)
+      er
     })
   }
 
@@ -147,16 +150,6 @@ object Simulations {
       // calculate losses from defaults
       val lossFromDefaultsThisMonth = defaultedThisMonth.map(x => LossRate * Math.max(0, (x.fundedAmount - x.totalPaid - x.recoveries).doubleValue) * noteSize / x.fundedAmount).sum
 
-      //      // calculate how many new loans we can buy
-      //      val newPortfolioSize = (balance / noteSize).toInt + continuingLoans.size
-      //
-      //      // calculate how many loans of each grade we need to buy
-      //      val portfolioComposition = continuingLoans.groupBy(_.grade)
-      //
-      //      // calculate what should be the ratio of each grade in the new portfolio
-      //      val needToBuy = weights.map(x => (x * newPortfolioSize).toInt).zipWithIndex.map { case (w, i) => IndexToGrade(i) -> (w - (portfolioComposition.get(IndexToGrade(i)).map(_.size).getOrElse(0))) }
-      //      val newLoans = needToBuy.collect { case (k, v) if v > 0 => select(loans, v, k, currentMonth.plusMonths(1)) }.toSeq.flatten
-      //      balance -= newLoans.size * NoteSize
       val mr = MonthlyResult(currentMonth, portfolioVar, incomeFromLoansEndedThisMonth + incomeFromLoansContinuing, lossFromDefaultsThisMonth, balance, insuranceFactor)
       portfolioVar = continuingLoans //++ newLoans
       mr
@@ -164,7 +157,7 @@ object Simulations {
   }
 
   def writeToFile(name: String, arr: Seq[ExperimentResult]) {
-    val pw = new PrintWriter(s"${name}.csv")
+    val pw = new PrintWriter(s"$name.csv")
     pw.println(ExperimentResult.headings mkString ",")
     arr foreach (x => pw.println(x.toString))
     pw.close()
@@ -209,10 +202,7 @@ object Simulations {
   }
 
   def printResult(res: ExperimentResult): Unit = {
-    print(s"${res.insurancePnL}, ") //insurnace pnl
-    print(s"${res.profitRate * 100d}, ") // profit proportion of initial balance
-    print(s"${res.totalDefaultRepayments}, ") //total repaid by insurance
-    println(s"${res.totalInsurancePayments}, ") //total insurance payments
+    println(res.toString)
   }
 }
 
@@ -247,17 +237,13 @@ object ExperimentResult {
   val headings: Seq[String] = Seq("insurnace pnl", "profit rate", "total repaid by insurance", "total premia")
 }
 case class ExperimentResult(startingDate: String, initialBalance: BigDecimal, byMonth: Seq[MonthlyResult]) {
-  val irrWithoutInsurance: Double = Simulations.irr(Simulations.Accuracy, -initialBalance.doubleValue +: byMonth.map(_.totalMonthlyPaid.doubleValue))
-  val irrWithInsurance: Double = Simulations.irr(Simulations.Accuracy, -initialBalance.doubleValue +: byMonth.map(_.cashFlow.doubleValue))
   val totalInsurancePayments: BigDecimal = byMonth.map(_.totalInsuranceCost.doubleValue).sum
   val totalDefaultRepayments: BigDecimal = byMonth.map(_.totalDefaultRepayments).sum
   val insurancePnL = totalInsurancePayments - totalDefaultRepayments
-  val totalDecreaseInIrrWithInsurance = irrWithoutInsurance - irrWithInsurance
   val profitRate = (insurancePnL / initialBalance)*100d
-  val endBalance = byMonth.map(_.cashFlow).sum
 
   override def toString: String = {
-    s"$irrWithoutInsurance, $irrWithInsurance, $totalInsurancePayments, $totalDefaultRepayments, $insurancePnL, $totalDecreaseInIrrWithInsurance, $profitRate, $endBalance"
+    s"$insurancePnL, $profitRate, $totalDefaultRepayments, $totalInsurancePayments"
   }
 }
 
