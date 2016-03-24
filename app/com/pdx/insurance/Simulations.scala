@@ -31,7 +31,6 @@ object Simulations {
   val ModerateWeights = Seq(0.01d, 0.52d, 0.08d, 0.238d, 0.118d, 0.031d, 0d)
   val AggressiveWeights = Seq(0d, 0d, 0.17d, 0.507d, 0.251d, 0.066d, 0d)
 
-  val NbOfPortfolios = 10000
   val Accuracy = 0.000001d
   val LossRate = 1d
 
@@ -90,10 +89,11 @@ object Simulations {
     val portfolioSizeWeights = Seq(0.2d, 0.3d, 0.2d, 0.2d, 0.05d, 0.05d)
     val noteSizeWeights = Seq(0.2d, 0.4d, 0.2d, 0.2d)
     val strategyWeights = Seq(0.4d, 0.3d, 0.3d)
+    val nbOfPortfolios = 10000
     val lines: Seq[String] = Source.fromFile(new File(InputFile)).getLines.toSeq
     val loans = linesToLCL(lines.drop(1).reverse, lines.head).toArray
 
-    val res = simulation(NbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)
+    val res = simulation(nbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)
     writeToFile("simulation1", res)
   }
 
