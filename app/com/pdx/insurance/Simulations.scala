@@ -27,11 +27,6 @@ object Simulations {
 //  val InputFile = "/Users/ze97286/Downloads/preprocessed.csv"
   val InputFile = "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
 
-  val AllAWeights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
-  val ConservativeWeights = Seq(0.981d, 0.019d, 0d, 0d, 0d, 0d, 0d)
-  val ModerateWeights = Seq(0.01d, 0.52d, 0.08d, 0.238d, 0.118d, 0.031d, 0d)
-  val AggressiveWeights = Seq(0d, 0d, 0.17d, 0.507d, 0.251d, 0.066d, 0d)
-
   val Accuracy = 0.000001d
   val LossRate = 1d
 
@@ -42,7 +37,7 @@ object Simulations {
   val MedInsuranceFactor = 0.08d
   val HighInsuranceFactor = 0.12d
 
-  val Strategies = Seq(Strategy(ConservativeWeights, LowInsuranceFactor), Strategy(ModerateWeights, MedInsuranceFactor), Strategy(AggressiveWeights, HighInsuranceFactor))
+  val Strategies = Seq(Strategy(LCConservativeWeights, LowInsuranceFactor), Strategy(LCModerateWeights, MedInsuranceFactor), Strategy(LCAggressiveWeights, HighInsuranceFactor))
 
   def irr(absoluteAccuracy: Double, values: Seq[Double]): Double = {
     val maxIterationCount = 100000

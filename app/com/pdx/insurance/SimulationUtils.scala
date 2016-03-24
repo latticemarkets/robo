@@ -15,6 +15,11 @@ import java.time.LocalDate
   *         Created on 24/03/2016
   */
 object SimulationUtils {
+  val LCAllAWeights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
+  val LCConservativeWeights = Seq(0.981d, 0.019d, 0d, 0d, 0d, 0d, 0d)
+  val LCModerateWeights = Seq(0.01d, 0.52d, 0.08d, 0.238d, 0.118d, 0.031d, 0d)
+  val LCAggressiveWeights = Seq(0d, 0d, 0.17d, 0.507d, 0.251d, 0.066d, 0d)
+
   // translate month to LC format
   implicit def localDateToLoanMonthFormat(ld: LocalDate): String = ld.getMonth.toString.take(3) + "-" + ld.getYear.toString.drop(2)
 
