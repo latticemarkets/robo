@@ -22,19 +22,15 @@ describe('module: app', function () {
     beforeEach(() => {
         module('app');
         module($provide => {
-            $provide.service('$cookies', () => {
-                return {
+            $provide.service('$cookies', () => ({
                     putObject: jasmine.createSpy('putObject'),
                     get: jasmine.createSpy('get'),
                     remove: jasmine.createSpy('remove'),
                     getObject: jasmine.createSpy('getObject')
-                };
-            });
-            $provide.service('$window', () => {
-                return {
+            }));
+            $provide.service('$window', () => ({
                     location: { href: '' }
-                };
-            });
+            }));
         });
     });
 
