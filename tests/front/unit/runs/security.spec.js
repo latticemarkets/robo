@@ -11,7 +11,7 @@
  * Created on 17/03/2016
  */
 
-describe('module: app', function () {
+describe('run : security', function () {
     let $rootScope,
         $location,
         $window,
