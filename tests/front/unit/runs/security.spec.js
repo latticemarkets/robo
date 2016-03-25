@@ -50,7 +50,7 @@ describe('module: app', function () {
         beforeEach(() => {
             token = 'token';
             email = 'email';
-            $rootScope.globals = {currentUser: {email: email, token: token}};
+            $cookies.getObject.and.returnValue({currentUser: {email: email, token: token}});
         });
 
         it('should store the email and token into the root scope', () => {
