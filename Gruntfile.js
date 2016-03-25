@@ -25,7 +25,7 @@ module.exports = function(grunt) {
                     'tests/front/unit/directives.jsx': ['tests/front/unit/directives/*.js'],
                     'tests/front/unit/filters.jsx': ['tests/front/unit/filters/*.js'],
                     'tests/front/unit/services.jsx': ['tests/front/unit/services/*.js'],
-                    'tests/front/unit/run.jsx': ['tests/front/unit/run/*.js']
+                    'tests/front/unit/runs.jsx': ['tests/front/unit/runs/*.js']
                 }
             },
             'test-controllers': {
@@ -48,9 +48,9 @@ module.exports = function(grunt) {
                     'tests/front/unit/filters.jsx': ['tests/front/unit/filters/*.js']
                 }
             },
-            'test-run': {
+            'test-runs': {
                 files: {
-                    'tests/front/unit/run.jsx': ['tests/front/unit/run/*.js']
+                    'tests/front/unit/runs.jsx': ['tests/front/unit/runs/*.js']
                 }
             }
         },
@@ -157,9 +157,9 @@ module.exports = function(grunt) {
                     atBegin: true
                 }
             },
-            'test-run': {
-                files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'tests/front/unit/run/*.spec.js' ],
-                tasks: [ 'test-run' ],
+            'test-runs': {
+                files: [ 'Gruntfile.js', 'public/app/**/*.js', 'public/**/*.html', 'tests/front/unit/runs/*.spec.js' ],
+                tasks: [ 'test-runs' ],
                 options: {
                     atBegin: true
                 }
@@ -212,7 +212,7 @@ module.exports = function(grunt) {
                     'tests/front/unit/directives.js' : 'tests/front/unit/directives.jsx',
                     'tests/front/unit/filters.js' : 'tests/front/unit/filters.jsx',
                     'tests/front/unit/services.js' : 'tests/front/unit/services.jsx',
-                    'tests/front/unit/run.js' : 'tests/front/unit/run.jsx'
+                    'tests/front/unit/runs.js' : 'tests/front/unit/runs.jsx'
                 }
             },
             'test-controllers': {
@@ -235,9 +235,9 @@ module.exports = function(grunt) {
                     'tests/front/unit/filters.js' : 'tests/front/unit/filters.jsx'
                 }
             },
-            'test-run': {
+            'test-runs': {
                 files: {
-                    'tests/front/unit/run.js' : 'tests/front/unit/run.jsx'
+                    'tests/front/unit/runs.js' : 'tests/front/unit/runs.jsx'
                 }
             }
         },
@@ -280,10 +280,10 @@ module.exports = function(grunt) {
                     summary: true
                 }
             },
-            run: {
+            runs: {
                 src : ['public/dist/bower.js', 'public/dist/app.js'],
                 options: {
-                    specs : 'tests/front/unit/run.js',
+                    specs : 'tests/front/unit/runs.js',
                     summary: true
                 }
             }
@@ -326,8 +326,8 @@ module.exports = function(grunt) {
             testFilters: {
                 tasks: ['build-bower', 'build-app', 'jshint', 'build-tests-filters']
             },
-            testRun: {
-                tasks: ['build-bower', 'build-app', 'jshint', 'build-tests-run']
+            testRuns: {
+                tasks: ['build-bower', 'build-app', 'jshint', 'build-tests-runs']
             }
         },
         clean: ["public/dist"]
@@ -365,21 +365,21 @@ module.exports = function(grunt) {
     grunt.registerTask('build-tests-services', ['build-dev', 'concat:test-services', 'babel:test-services']);
     grunt.registerTask('build-tests-directives', ['build-dev', 'concat:test-directives', 'babel:test-directives']);
     grunt.registerTask('build-tests-filters', ['build-dev', 'concat:test-filters', 'babel:test-filters']);
-    grunt.registerTask('build-tests-run', ['build-dev', 'concat:test-run', 'babel:test-run']);
+    grunt.registerTask('build-tests-runs', ['build-dev', 'concat:test-runs', 'babel:test-runs']);
 
     grunt.registerTask('test', ['concurrent:tests', 'jasmine:test']);
     grunt.registerTask('test-controllers', ['concurrent:testControllers', 'jasmine:controllers']);
     grunt.registerTask('test-services', ['concurrent:testServices', 'jasmine:services']);
     grunt.registerTask('test-directives', ['concurrent:testDirectives', 'jasmine:directives']);
     grunt.registerTask('test-filters', ['concurrent:testFilters', 'jasmine:filters']);
-    grunt.registerTask('test-run', ['concurrent:testRun', 'jasmine:run']);
+    grunt.registerTask('test-runs', ['concurrent:testRuns', 'jasmine:runs']);
 
     grunt.registerTask('dev-test', ['watch:test']);
     grunt.registerTask('dev-test-controllers', ['watch:test-controllers']);
     grunt.registerTask('dev-test-services', ['watch:test-services']);
     grunt.registerTask('dev-test-directives', ['watch:test-directives']);
     grunt.registerTask('dev-test-filters', ['watch:test-filters']);
-    grunt.registerTask('dev-test-run', ['watch:test-run']);
+    grunt.registerTask('dev-test-runs', ['watch:test-runs']);
 
     grunt.registerTask('dev', ['build-dev', 'watch:dev']);
 };

@@ -20,6 +20,8 @@ public/fonts/fontawesome-webfont.woff2
 /tests/front/unit/filters.js
 /tests/front/unit/directives.js
 /tests/front/unit/controllers.jsx
+/tests/front/unit/runs.js
+/tests/front/unit/runs.jsx
 
 ### OSX ###
 .DS_Store
