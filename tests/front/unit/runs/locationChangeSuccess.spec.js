@@ -7,37 +7,37 @@
  */
 
 /**
-* @author : bastienguerineau
-* Created on 17/03/2016
-*/
+ * @author : bastienguerineau
+ * Created on 17/03/2016
+ */
 
-describe('module: app', function() {
+describe('run : location change success', function () {
     let $rootScope,
         responsiveService,
         $timeout;
 
-        beforeEach(function () {
-            module('app', function ($provide) {
-                $provide.value('responsiveService', {
-                    adaptWrapperHeight: jasmine.createSpy('adaptWrapperHeight'),
-                    adaptSidebar: jasmine.createSpy('adaptSidebar')
-                });
+    beforeEach(function () {
+        module('app', function ($provide) {
+            $provide.value('responsiveService', {
+                adaptWrapperHeight: jasmine.createSpy('adaptWrapperHeight'),
+                adaptSidebar: jasmine.createSpy('adaptSidebar')
             });
-        beforeEach(inject(function (_$rootScope_,_responsiveService_, _$timeout_) {
+        });
+        beforeEach(inject(function (_$rootScope_, _responsiveService_, _$timeout_) {
             $rootScope = _$rootScope_;
             responsiveService = _responsiveService_;
             $timeout = _$timeout_;
         }));
     });
 
-        beforeEach(() => {
-          $rootScope.$broadcast('$locationChangeSuccess');
-          $timeout.flush();
-        });
+    beforeEach(() => {
+        $rootScope.$broadcast('$locationChangeSuccess');
+        $timeout.flush();
+    });
 
-        it('should call adaptWrapperHeight and adaptSidebar', () => {
-            expect(responsiveService.adaptWrapperHeight).toHaveBeenCalled();
-            expect(responsiveService.adaptSidebar).toHaveBeenCalled();
-        });
+    it('should call adaptWrapperHeight and adaptSidebar', () => {
+        expect(responsiveService.adaptWrapperHeight).toHaveBeenCalled();
+        expect(responsiveService.adaptSidebar).toHaveBeenCalled();
+    });
 
 });
