@@ -65,7 +65,7 @@ describe('module: app', function () {
         });
 
         it('should store the user\'s credentials in a cookie', () => {
-            expect(_$cookies.putObject).toHaveBeenCalledWith('globals', {currentUser: {email: email, token: token}});
+            expect($cookies.putObject).toHaveBeenCalledWith('globals', {currentUser: {email: email, token: token}});
         });
     });
 
@@ -81,7 +81,7 @@ describe('module: app', function () {
         });
 
         it('should remove the "connected" cookie', () => {
-            expect(_$cookies.remove).toHaveBeenCalledWith('connected');
+            expect($cookies.remove).toHaveBeenCalledWith('connected');
         });
 
         it('should change locacation href', () => {
