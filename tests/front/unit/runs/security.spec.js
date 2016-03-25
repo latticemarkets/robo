@@ -23,27 +23,44 @@ describe('run : security', function () {
         module('app');
         module($provide => {
             $provide.service('$cookies', () => ({
-                    putObject: jasmine.createSpy('putObject'),
-                    get: jasmine.createSpy('get'),
-                    remove: jasmine.createSpy('remove'),
-                    getObject: jasmine.createSpy('getObject')
+                putObject: jasmine.createSpy('putObject'),
+                get: jasmine.createSpy('get'),
+                remove: jasmine.createSpy('remove'),
+                getObject: jasmine.createSpy('getObject')
             }));
+
             $provide.service('$window', () => ({
-                    location: { href: '' }
+                location: { href: '' }
+            }));
+
+            $provide.service('$injector', () => ({
+                invoke: jasmine.createSpy('invoke')
+            }));
+
+            $provide.service('$http', () => ({
+                defaults: { headers: { common : {} } }
+            }));
+
+            $provide.service('$rootScope', () => ({
+                globals: '',
+                $on: jasmine.createSpy('$on')
             }));
         });
     });
 
-    beforeEach(inject(($injector) => {
-        $rootScope = $injector.get('$rootScope');
-        $http = $injector.get('$http');
-    }));
-
-    beforeEach(inject(function (_$location_, _$window_, _$cookies_) {
+    beforeEach(inject(function (_$location_, _$window_, _$cookies_, _$injector_, _$http_, _$rootScope_) {
         $cookies = _$cookies_;
         $window = _$window_;
         $location = _$location_;
+        $injector = _$injector_;
+        $http = _$http_;
+        $rootScope = _$rootScope_;
     }));
+
+    let onLocationChangeStartCallback;
+    beforeEach(() => {
+        $rootScope.$on.and.callFake((str, callback) => onLocationChangeStartCallback = callback);
+    });
 
     describe('run security', () => {
         let token, email;
@@ -75,10 +92,7 @@ describe('run : security', function () {
         beforeEach(() => {
             token = undefined;
             email = undefined;
-            $rootScope.$broadcast('$locationChangeStart');
-            $rootScope.globals = {currentUser: {email: email, token: token}};
-            // $location.path() = '/signin';
-            // $cookies.get() = 'connected';
+            onLocationChangeStartCallback();
         });
 
         it('should remove the "connected" cookie', () => {
@@ -95,10 +109,6 @@ describe('run : security', function () {
         beforeEach(() => {
             token = undefined;
             email = undefined;
-            $rootScope.$broadcast('$locationChangeStart');
-            $rootScope.globals = {currentUser: {email: email, token: token}};
-            // $location.path() = '/signin';
-            // $cookies.get() = 'notconnected';
         });
 
         it('should change locacation href', () => {
