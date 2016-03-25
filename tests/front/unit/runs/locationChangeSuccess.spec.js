@@ -17,18 +17,20 @@ describe('run : location change success', function () {
         $timeout;
 
     beforeEach(function () {
-        module('app', function ($provide) {
-            $provide.value('responsiveService', {
+        module('app');
+        module($provide => {
+            $provide.service('responsiveService', () => ({
                 adaptWrapperHeight: jasmine.createSpy('adaptWrapperHeight'),
                 adaptSidebar: jasmine.createSpy('adaptSidebar')
-            });
+            }));
         });
-        beforeEach(inject(function (_$rootScope_, _responsiveService_, _$timeout_) {
-            $rootScope = _$rootScope_;
-            responsiveService = _responsiveService_;
-            $timeout = _$timeout_;
-        }));
     });
+
+    beforeEach(inject(function (_$rootScope_, _responsiveService_, _$timeout_) {
+        $rootScope = _$rootScope_;
+        responsiveService = _responsiveService_;
+        $timeout = _$timeout_;
+    }));
 
     beforeEach(() => {
         $rootScope.$broadcast('$locationChangeSuccess');
@@ -39,5 +41,4 @@ describe('run : location change success', function () {
         expect(responsiveService.adaptWrapperHeight).toHaveBeenCalled();
         expect(responsiveService.adaptSidebar).toHaveBeenCalled();
     });
-
 });
