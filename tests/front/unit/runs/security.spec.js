@@ -30,6 +30,11 @@ describe('module: app', function () {
                     getObject: jasmine.createSpy('getObject')
                 };
             });
+            $provide.service('$window', () => {
+                return {
+                    location: { href: '' }
+                };
+            });
         });
     });
 
@@ -85,7 +90,7 @@ describe('module: app', function () {
         });
 
         it('should change locacation href', () => {
-            expect($window.location.href).toHaveBeenCalledWith('/?flag=expired');
+            expect($window.location.href).toBe('/?flag=expired');
         });
     });
 
@@ -101,7 +106,7 @@ describe('module: app', function () {
         });
 
         it('should change locacation href', () => {
-            expect($window.location.href).toHaveBeenCalledWith('/?flag=unauthorized');
+            expect($window.location.href).toBe('/?flag=unauthorized');
         });
     });
 
