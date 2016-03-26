@@ -19,15 +19,23 @@ describe('run : security', function () {
         $injector,
         $rootScope;
 
+    let token, email, $cookiesObj;
+    beforeEach(() => {
+        token = 'token';
+        email = 'email';
+        $cookiesObj = {
+            putObject: jasmine.createSpy('putObject'),
+            get: jasmine.createSpy('get'),
+            remove: jasmine.createSpy('remove'),
+            getObject: jasmine.createSpy('getObject')
+        };
+        $cookiesObj.getObject.and.returnValue({currentUser: {email: email, token: token}});
+    });
+
     beforeEach(() => {
         module('app');
         module($provide => {
-            $provide.service('$cookies', () => ({
-                putObject: jasmine.createSpy('putObject'),
-                get: jasmine.createSpy('get'),
-                remove: jasmine.createSpy('remove'),
-                getObject: jasmine.createSpy('getObject')
-            }));
+            $provide.service('$cookies', () => $cookiesObj);
 
             $provide.service('$window', () => ({
                 location: { href: '' }
@@ -52,14 +60,7 @@ describe('run : security', function () {
         $rootScope = _$rootScope_;
     }));
 
-    describe('run security', () => {
-        let token, email;
-        beforeEach(() => {
-            token = 'token';
-            email = 'email';
-            $cookies.getObject.and.returnValue({currentUser: {email: email, token: token}});
-        });
-
+    describe('get user credentials', () => {
         it('should store the email and token into the root scope', () => {
             expect($rootScope.globals.currentUser).toEqual({email: email, token: token});
         });
@@ -73,7 +74,7 @@ describe('run : security', function () {
         });
 
         it('should store the user\'s credentials in a cookie', () => {
-            expect($cookies.putObject).toHaveBeenCalledWith('globals', {currentUser: {email: email, token: token}});
+            expect($cookies.putObject).toHaveBeenCalledWith('globals', { currentUser: {email: email, token: token}}, jasmine.any(Object));
         });
     });
 
