@@ -11,14 +11,15 @@ package models
 import java.util.Date
 
 import controllers.users.RegisterForm
+import core.Formatters._
 import core.{DbUtil, Hash}
 import play.api.libs.json.{JsObject, Json}
 import play.modules.reactivemongo.json._
 import reactivemongo.play.json.collection.JSONCollection
 
-import core.Formatters._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import core.EnumerationPlus
 
 /**
  * @author : julienderay
@@ -27,7 +28,6 @@ import scala.concurrent.Future
 
 case class User(
     _id: String,
-    password: String,
     terms: String,
     reason: String,
     income: String,
@@ -36,15 +36,11 @@ case class User(
     platforms: Seq[Platform],
     firstName: String,
     lastName: String,
-    token: String) {
-  def withEncryptedPassword: User = this.copy(password = Hash.createPassword(this.password))
-}
+    token: String)
 
 case class Login(
   email: String,
   password: String)
-
-case class UpdatePassword(oldPassword: String, newPassword: String)
 
 case class UpdatePersonalData(firstName: String, lastName: String, birthday: Date)
 
@@ -58,10 +54,14 @@ object User {
 
   def findByEmail(email: String) = usersTable.find(Json.obj("_id" -> email)).one[User]
 
-  def store(user: User) = { // Todo : handle the case where primary key is violated
+  def store(userForm: RegisterForm) = {
     for {
-      result <- usersTable.insert(Json.toJson(user.withEncryptedPassword).as[JsObject])
-      newUser <- findByEmail(user._id) if result.ok
+      passwordCreated <- UserSecurity.store(UserSecurity.factory(userForm.email, userForm.password))
+
+      newUser: User = User.factory(userForm)
+      result <- usersTable.insert(Json.toJson(newUser).as[JsObject])
+
+      newUser <- findByEmail(newUser._id) if result.ok
     } yield newUser
   }
 
@@ -86,7 +86,6 @@ object User {
 
   def factory(form: RegisterForm): User = User(
     form.email,
-    form.password,
     form.terms,
     form.reason,
     form.income,
@@ -97,4 +96,27 @@ object User {
     form.lastName,
     Hash.createToken
   )
+}
+
+object ReasonEnum extends EnumerationPlus {
+  type Reason = Value
+  val longterm, shortterm, majorpurchase, children, general = Value
+}
+
+object YearlyIncomeEnum extends EnumerationPlus {
+  type YearlyIncomeType = Value
+  val lessThan25 = Value("-25")
+  val from25To50 = Value("25-50")
+  val from50To100 = Value("50-100")
+  val from100To250 = Value("100-250")
+  val moreThan250 = Value("+250")
+}
+
+object TimelineEnum extends EnumerationPlus {
+  type TimelineType = Value
+  val lessThan5 = Value("-5")
+  val from5To10 = Value("5-10")
+  val from10To15 = Value("10-15")
+  val from15To25 = Value("15-25")
+  val moreThan25 = Value("+25")
 }

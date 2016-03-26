@@ -127,7 +127,7 @@ describe('AutomatedStrategyEditController', () => {
                 });
 
                 it('should populate strategyValue with 10 times it original value', () => {
-                    expect(automatedStrategyEditController.strategyValue).toBe(aggressivity * 10);
+                    expect(automatedStrategyEditController.strategyValue).toBe(aggressivity * 100);
                 });
 
                 it('should populate primaryMarketEnabled', () => {

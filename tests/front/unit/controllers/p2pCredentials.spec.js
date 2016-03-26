@@ -14,13 +14,15 @@
 describe('SignupP2pCredentialsController', () => {
     let p2pCredentialsController,
         $cookies,
-        $location;
+        $location,
+        constantsService;
 
     beforeEach(() => {
         module('app');
 
         $cookies = jasmine.createSpyObj('$cookies', ['get', 'put', 'getObject', 'putObject']);
         $location = jasmine.createSpyObj('$location', ['path']);
+        constantsService = jasmine.createSpyObj('constantsService', ['platforms']);
     });
 
     beforeEach(inject(($controller) => {
@@ -219,6 +221,49 @@ describe('SignupP2pCredentialsController', () => {
                 it('should stay on the current page', () => {
                     expect($location.path).not.toHaveBeenCalledWith('/signup/personalInfos');
                 });
+            });
+        });
+
+    });
+
+    describe('canAddMore', () => {
+        beforeEach(() => {
+            constantsService.platforms.and.returnValue(5);
+        });
+
+        describe('first platform', () => {
+            beforeEach(() => {
+                $cookies.getObject.and.returnValue(undefined);
+            });
+
+            it('should return true if no other platforms have been added', () => {
+                expect(p2pCredentialsController.canAddMore()).toBeTruthy();
+            });
+        });
+
+        describe('not first but not last platform', () => {
+            beforeEach(() => {
+                const addedPlatform = jasmine.any(Object);
+                $cookies.getObject.and.returnValue([addedPlatform]);
+            });
+
+            it('should return true as all the platforms have not been added', () => {
+                expect(p2pCredentialsController.canAddMore()).toBeTruthy();
+            });
+        });
+
+        describe('last platform', () => {
+            beforeEach(() => {
+                $cookies.getObject.and.returnValue([
+                    jasmine.any(Object),
+                    jasmine.any(Object),
+                    jasmine.any(Object),
+                    jasmine.any(Object)
+                ]);
+            });
+
+            it('should return false as all the platforms have been added', () => {
+                expect(p2pCredentialsController.canAddMore()).toBeFalsy();
             });
         });
     });

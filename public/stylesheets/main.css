@@ -33,11 +33,6 @@ KeySoft - Software Landing Page
 1. GLOBAL STYLES
 -----------------------------------------*/
 
-body {
-    overflow-x: hidden;
-    font-weight: normal;
-    padding: 0;
-}
 .body-content{
   height: 100%;
 }
@@ -2420,7 +2415,7 @@ button.btn.primary-button.button-inverse.border-button {
 img.ticked {
     -webkit-filter: grayscale(1);
 }
-img.platform:hover {
+.signup img.platform:hover {
     -webkit-filter: grayscale(0.8);
 }
 .btn.primary-button.button-inverse.p2pCredentials {
