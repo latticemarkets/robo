@@ -18,6 +18,7 @@
     run.$inject = ['$rootScope', '$location', '$window', '$cookies', '$http', '$injector'];
     function run($rootScope, $location, $window, $cookies, $http, $injector) {
 
+        console.log("hey hey");
         $rootScope.globals = $cookies.getObject('globals') || {};
 
         if ($rootScope.globals.currentUser) {

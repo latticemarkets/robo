@@ -12,12 +12,12 @@
  */
 
 describe('run : security', function () {
-    let $rootScope,
-        $location,
+    let $location,
         $window,
         $cookies,
         $http,
-        $injector;
+        $injector,
+        $rootScope;
 
     beforeEach(() => {
         module('app');
@@ -40,15 +40,10 @@ describe('run : security', function () {
             $provide.service('$http', () => ({
                 defaults: { headers: { common : {} } }
             }));
-
-            $provide.service('$rootScope', () => ({
-                globals: '',
-                $on: jasmine.createSpy('$on')
-            }));
         });
     });
 
-    beforeEach(inject(function (_$location_, _$window_, _$cookies_, _$injector_, _$http_, _$rootScope_) {
+    beforeEach(inject(( _$rootScope_, _$location_, _$window_, _$cookies_, _$http_, _$injector_) => {
         $cookies = _$cookies_;
         $window = _$window_;
         $location = _$location_;
@@ -56,11 +51,6 @@ describe('run : security', function () {
         $http = _$http_;
         $rootScope = _$rootScope_;
     }));
-
-    let onLocationChangeStartCallback;
-    beforeEach(() => {
-        $rootScope.$on.and.callFake((str, callback) => onLocationChangeStartCallback = callback);
-    });
 
     describe('run security', () => {
         let token, email;
@@ -92,7 +82,7 @@ describe('run : security', function () {
         beforeEach(() => {
             token = undefined;
             email = undefined;
-            onLocationChangeStartCallback();
+            $rootScope.$broadcast('$locationChangeStart');
         });
 
         it('should remove the "connected" cookie', () => {
