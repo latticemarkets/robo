@@ -41,21 +41,20 @@ describe('run : security', function () {
                 location: { href: '' }
             }));
 
-            $provide.service('$injector', () => ({
-                invoke: jasmine.createSpy('invoke')
-            }));
-
             $provide.service('$http', () => ({
                 defaults: { headers: { common : {} } }
+            }));
+
+            $provide.service('$location', () => ({
+                path: jasmine.createSpy('path')
             }));
         });
     });
 
-    beforeEach(inject(( _$rootScope_, _$location_, _$window_, _$cookies_, _$http_, _$injector_) => {
+    beforeEach(inject(( _$rootScope_, _$location_, _$window_, _$cookies_, _$http_) => {
         $cookies = _$cookies_;
         $window = _$window_;
         $location = _$location_;
-        $injector = _$injector_;
         $http = _$http_;
         $rootScope = _$rootScope_;
     }));
@@ -78,33 +77,95 @@ describe('run : security', function () {
         });
     });
 
-    describe('run location change start', () => {
-        let token, email;
-        beforeEach(() => {
-            token = undefined;
-            email = undefined;
-            $rootScope.$broadcast('$locationChangeStart');
+    describe('on location change start', () => {
+        describe('on authorized page and not logged in', () => {
+            beforeEach(() => {
+                $location.path.and.returnValue('/signin');
+                $rootScope.globals.currentUser = '';
+                $rootScope.$broadcast('$locationChangeStart');
+            });
+
+            nothingCalled();
         });
 
-        it('should remove the "connected" cookie', () => {
-            expect($cookies.remove).toHaveBeenCalledWith('connected');
+        describe('on authorized page and logged in', () => {
+            beforeEach(() => {
+                $location.path.and.returnValue('/signin');
+                $rootScope.globals.currentUser = {email: email, token: token};
+                $rootScope.$broadcast('$locationChangeStart');
+            });
+
+            nothingCalled();
         });
 
-        it('should change locacation href', () => {
-            expect($window.location.href).toBe('/?flag=expired');
+        describe('on unauthorized page and logged in', () => {
+            beforeEach(() => {
+                $location.path.and.returnValue('/dashboard');
+                $rootScope.globals.currentUser = {email: email, token: token};
+                $rootScope.$broadcast('$locationChangeStart');
+            });
+
+            nothingCalled();
         });
+
+        describe('on unauthorized page and not logged in', () => {
+            describe('and the route exists', () => {
+                describe('and the user\'s session expired', () => {
+                    beforeEach(() => {
+                        $location.path.and.returnValue('/dashboard');
+                        $rootScope.globals.currentUser = undefined;
+                        $cookies.get.and.returnValue(true);
+                        $rootScope.$broadcast('$locationChangeStart');
+                    });
+
+                    it('should remove the session flag', () => {
+                        expect($cookies.remove).toHaveBeenCalledWith('connected');
+                    });
+
+                    it('should redirect the user to the landpage with the "expired" flag', () => {
+                        expect($window.location.href).toBe("/?flag=expired");
+                    });
+                });
+
+                describe('and the user\'s session did not expired', () => {
+                    beforeEach(() => {
+                        $location.path.and.returnValue('/dashboard');
+                        $rootScope.globals.currentUser = undefined;
+                        $cookies.get.and.returnValue(false);
+                        $rootScope.$broadcast('$locationChangeStart');
+                    });
+
+                    it('should redirect the user to the landpage with the "unauthorized" flag', () => {
+                        expect($window.location.href).toBe("/?flag=unauthorized");
+                    });
+                });
+            });
+
+            describe('and the route does not exist', () => {
+                beforeEach(() => {
+                    $location.path.and.returnValue('/dashb0ard');
+                    $rootScope.globals.currentUser = undefined;
+                    $rootScope.$broadcast('$locationChangeStart');
+                });
+
+                it('should redirect the user to 404 page', () => {
+                    expect($location.path).toHaveBeenCalledWith('/404');
+                });
+            });
+        });
+
+        function nothingCalled() {
+            it('should not remove the "connected" cookie', () => {
+                expect($cookies.remove).not.toHaveBeenCalled();
+            });
+
+            it('should not change the url', () => {
+                expect($window.location.href).toBe('');
+            });
+
+            it('should not redirect the user', () => {
+                expect($location.path).not.toHaveBeenCalledTimes(2);
+            });
+        }
     });
-
-    describe('run location change start', () => {
-        let token, email;
-        beforeEach(() => {
-            token = undefined;
-            email = undefined;
-        });
-
-        it('should change locacation href', () => {
-            expect($window.location.href).toBe('/?flag=unauthorized');
-        });
-    });
-
 });
