@@ -62,7 +62,8 @@
                         '/signup/p2pCredentials',
                         '/signup/personalInfos',
                         '/signup/registered',
-                        '/signin']
+                        '/signin',
+                        '/signin/forgotPassword']
                 ) > -1;
         }
     }
