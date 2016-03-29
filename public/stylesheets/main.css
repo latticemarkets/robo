@@ -2416,7 +2416,7 @@ img.ticked {
     -webkit-filter: grayscale(1);
 }
 .signup img.platform:hover {
-    -webkit-filter: grayscale(0.8);
+    -webkit-filter: grayscale(1);
 }
 .btn.primary-button.button-inverse.p2pCredentials {
     border-radius: 4px;
