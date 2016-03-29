@@ -36,9 +36,11 @@ object MultiPortfolioSimulation {
 
     val loans: Array[Loan] = parseLoans
 
+    println(SimulationResult.headings mkString "")
+
     val res: Seq[SimulationResult] = (0 until iterations) map (_ => {
       val simulationResult = simulation(nbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)
-      printSimulationResult(simulationResult)
+      println(simulationResult)
       simulationResult
     })
     writeToFile("simulation", res, SimulationResult.headings)
@@ -62,11 +64,6 @@ object MultiPortfolioSimulation {
     })
 
     SimulationResult(simulation)
-  }
-
-  def printSimulationResult(res: SimulationResult) {
-    println(SimulationResult.headings mkString "")
-    println(res.toString)
   }
 }
 

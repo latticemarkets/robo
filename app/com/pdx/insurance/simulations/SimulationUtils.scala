@@ -8,8 +8,10 @@
 
 package com.pdx.insurance.simulations
 
-import java.io.{PrintWriter, File}
+import java.io._
+import java.net.URL
 import java.time.LocalDate
+import java.util.zip.{GZIPInputStream, ZipEntry, ZipInputStream}
 
 import com.pdx.insurance.Analyser.Result
 
@@ -21,8 +23,7 @@ import scala.util.{Random, Try}
   *         Created on 24/03/2016
   */
 object SimulationUtils {
-//  val LCInputFile = "/Users/ze97286/Downloads/preprocessed.csv"
-  val LCInputFile = "/Users/julienderay/Lattice/csvPreprocessor/main/preprocessedCSV.csv"
+  val LCInputZippedFile = "app/com/pdx/insurance/simulations/inputs/LCpreprocessed.csv.gzip"
 
   val LCAllAWeights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
   val LCConservativeWeights = Seq(0.981d, 0.019d, 0d, 0d, 0d, 0d, 0d)
@@ -162,7 +163,9 @@ object SimulationUtils {
   }
 
   def parseLoans: Array[Loan] = {
-    val lines: Seq[String] = Source.fromFile(new File(LCInputFile)).getLines.toSeq
+    import scala.collection.JavaConverters._
+    val encoding: String = "UTF-8"
+    val lines: Seq[String] = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(LCInputZippedFile)), encoding)).lines().iterator().asScala.toSeq
     val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
     loans
   }
