@@ -163,18 +163,10 @@ object SimulationUtils {
   }
 
   def parseLoans: Array[Loan] = {
-    val lines: Seq[String] = zipEntrySource(LCInputZippedFile).toSeq
+    import scala.collection.JavaConverters._
+    val encoding: String = "UTF-8"
+    val lines: Seq[String] = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(LCInputZippedFile)), encoding)).lines().iterator().asScala.toSeq
     val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
     loans
-  }
-
-  private def zipEntrySource(zipFileSource: String, encoding: String = "UTF-8"): Iterator[String] = {
-    import scala.collection.JavaConverters._
-
-    val fileStream = new FileInputStream(zipFileSource)
-    val gzipStream = new GZIPInputStream(fileStream)
-    val decoder = new InputStreamReader(gzipStream, encoding)
-    val buffered = new BufferedReader(decoder)
-    buffered.lines().iterator().asScala
   }
 }
