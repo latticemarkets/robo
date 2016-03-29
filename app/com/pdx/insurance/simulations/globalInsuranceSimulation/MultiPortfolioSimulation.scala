@@ -36,7 +36,7 @@ object MultiPortfolioSimulation {
 
     val loans: Array[Loan] = parseLoans
 
-    println(SimulationResult.headings mkString "")
+    println(SimulationResult.headings mkString ", ")
 
     val res: Seq[SimulationResult] = (0 until iterations) map (_ => {
       val simulationResult = simulation(nbOfPortfolios, startingDate, simulateFor, portfolioSizeWeights, noteSizeWeights, strategyWeights, loans)
