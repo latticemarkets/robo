@@ -14,6 +14,7 @@ libraryDependencies ++= Seq(
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
+resolvers += "Kaliber Repository" at "https://jars.kaliber.io/artifactory/libs-release-local"
 
 routesGenerator := InjectedRoutesGenerator
 
@@ -24,5 +25,6 @@ libraryDependencies ++= Seq(
   "org.scalanlp" %% "breeze" % "0.12",
   "org.scalanlp" %% "breeze-natives" % "0.12",
   "org.scalanlp" %% "breeze-viz" % "0.12",
-  "de.sciss" %% "play-json-sealed" % "0.2.0"
+  "de.sciss" %% "play-json-sealed" % "0.2.0",
+  "com.typesafe.play" %% "play-mailer" % "4.0.0"
 )

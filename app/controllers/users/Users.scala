@@ -8,11 +8,13 @@
 
 package controllers.users
 
+import javax.inject.Inject
+
 import controllers.Security.HasToken
 import controllers.Utils
 import core.Formatters._
-import core.Hash
-import models.{UserSecurity, User}
+import core.{EmailUtil, Hash}
+import models.{User, UserSecurity}
 import play.api.libs.json.Json
 import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -23,7 +25,7 @@ import scala.concurrent.Future
   * Created on 27/01/2016
   */
 
-class Users extends Controller {
+class Users @Inject() (emailUtil: EmailUtil) extends Controller {
 
   def register = Action.async { implicit request =>
     UsersForms.registerForm.bindFromRequest.fold(
@@ -52,8 +54,8 @@ class Users extends Controller {
 
   def isUsed(email: String) = Action.async {
     User.findByEmail(email) map {
-      case None => Ok(Json.obj("ok" -> true))
-      case Some(user) => Ok(Json.obj("ok" -> false))
+      case None => Ok(Json.obj("ok" -> false))
+      case Some(user) => Ok(Json.obj("ok" -> true))
     }
   }
 
@@ -71,6 +73,33 @@ class Users extends Controller {
               .update(UserSecurity.factory(email, infos.newPassword))
               .map (user => Ok(""))
         }
+      }
+    )
+  }
+
+  def sendEmail = Action.async { implicit request =>
+    UsersForms.sendEmailForm.bindFromRequest.fold(
+      Utils.badRequestOnError,
+      sendEmail =>
+      User.findByEmail(sendEmail.email) flatMap (_.map (user => {
+          UserSecurity.findByEmail(sendEmail.email) flatMap (_ map (userSecurity => UserSecurity.generateAndStoreNewTokenForgotPassword(userSecurity) map (userSecurity => {
+            emailUtil.sendEmailForgotPassword(userSecurity._id, userSecurity.tokenForgotPassword.get, user.firstName, user.lastName)
+            Ok("")
+          }))
+            getOrElse Future.successful(Ok("")))
+          })
+            getOrElse Future.successful(Ok("")))
+    )
+  }
+
+  def reinitializePassword = Action.async { implicit request =>
+    UsersForms.reinitializePasswordForm.bindFromRequest.fold(
+      Utils.badRequestOnError,
+      infos => {
+          UserSecurity.findTokenForgotPassword(infos.tokenForgotPassword) flatMap (_.map (userSecurity => {
+            UserSecurity.update(userSecurity.copy(password = Hash.createPassword(infos.newPassword), tokenForgotPassword = None)) map (user => Ok(""))
+          }) getOrElse Future.successful( BadRequest("Wrong token. You will be redirected.") ))
+
       }
     )
   }
