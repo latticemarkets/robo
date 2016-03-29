@@ -20,6 +20,17 @@
 
             vm.pageClass = 'signup-login blue';
 
+            // make sure all the fields are clean
+            $cookies.remove('signup.email');
+            $cookies.remove('signup.password');
+            $cookies.remove('signup.terms');
+            $cookies.remove('signup.reason');
+            $cookies.remove('signup.income');
+            $cookies.remove('signup.timeline');
+            $cookies.remove('signup.birthday');
+            $cookies.remove('signup.originator');
+            $cookies.remove('signup.platforms');
+            $cookies.remove('signup.extension');
 
             vm.tickBox = function(condition) {
                 return condition() ? 'glyphicon-ok' : 'glyphicon-remove';
