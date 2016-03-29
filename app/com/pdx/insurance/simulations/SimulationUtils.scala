@@ -11,7 +11,7 @@ package com.pdx.insurance.simulations
 import java.io._
 import java.net.URL
 import java.time.LocalDate
-import java.util.zip.{ZipEntry, ZipInputStream}
+import java.util.zip.{GZIPInputStream, ZipEntry, ZipInputStream}
 
 import com.pdx.insurance.Analyser.Result
 
@@ -23,7 +23,7 @@ import scala.util.{Random, Try}
   *         Created on 24/03/2016
   */
 object SimulationUtils {
-  val LCInputZippedFile = "app/com/pdx/insurance/simulations/inputs/LCpreprocessed.csv.zip"
+  val LCInputZippedFile = "app/com/pdx/insurance/simulations/inputs/LCpreprocessed.csv.gzip"
 
   val LCAllAWeights = Seq(1d, 0d, 0d, 0d, 0d, 0d, 0d)
   val LCConservativeWeights = Seq(0.981d, 0.019d, 0d, 0d, 0d, 0d, 0d)
@@ -163,23 +163,18 @@ object SimulationUtils {
   }
 
   def parseLoans: Array[Loan] = {
-    val lines: Seq[String] = zipEntrySource(LCInputZippedFile).getLines.toSeq
+    val lines: Seq[String] = zipEntrySource(LCInputZippedFile).toSeq
     val loans = linesToLoan(lines.drop(1).reverse, lines.head).toArray
     loans
   }
 
-  private def zipEntrySource(zipFileSource: String, encoding: String = "UTF-8"): Source = {
-    val zipFileSource = new File(LCInputZippedFile).toURI.toURL
-    val zipIS = new ZipInputStream(zipFileSource.openStream())
+  private def zipEntrySource(zipFileSource: String, encoding: String = "UTF-8"): Iterator[String] = {
+    import scala.collection.JavaConverters._
 
-    while (true) {
-      zipIS.getNextEntry match {
-        case z: ZipEntry =>
-          return Source.fromInputStream(zipIS, encoding)
-        case _ =>
-          throw new FileNotFoundException(s"CSV file not found in $zipFileSource")
-      }
-    }
-    throw new FileNotFoundException(s"CSV file not found in $zipFileSource")
+    val fileStream = new FileInputStream(zipFileSource)
+    val gzipStream = new GZIPInputStream(fileStream)
+    val decoder = new InputStreamReader(gzipStream, encoding)
+    val buffered = new BufferedReader(decoder)
+    buffered.lines().iterator().asScala
   }
 }
