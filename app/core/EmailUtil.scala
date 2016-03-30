@@ -8,21 +8,24 @@
 
 package core
 
-import net.kaliber.mailer._
+import javax.inject.{Singleton, Inject}
+import play.api.libs.mailer._
 
 /**
   * @author : julienderay
   * Created on 30/03/2016
   */
 
-object EmailUtil {
+@Singleton class EmailUtil @Inject() (mailerClient: MailerClient) {
 
   def sendEmailAddressConfirmation(email: String, firstName: String, lastName: String): Unit = {
     val emailObj = Email(
-      subject = "Please confirm your email address to PDX Technology",
-      from = EmailAddress("Confirm - PDX Technology", "confirm@pdx.technology"),
-      text = "text",
-      htmlText = "htmlText")
-      .to(s"$firstName $lastName", email)
+      "Please confirm your email address to PDX Technology",
+      "PDX Technology <noanswer@pdx.technology>",
+      Seq(s"$firstName $lastName <$email>"),
+      bodyText = Some("A text message"),
+      bodyHtml = Some(s"""<html><body><p>An <b>html</b> message</p></body></html>""")
+    )
+    mailerClient.send(emailObj)
   }
 }

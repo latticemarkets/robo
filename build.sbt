@@ -26,5 +26,5 @@ libraryDependencies ++= Seq(
   "org.scalanlp" %% "breeze-natives" % "0.12",
   "org.scalanlp" %% "breeze-viz" % "0.12",
   "de.sciss" %% "play-json-sealed" % "0.2.0",
-  "net.kaliber" %% "play-mailer" % "4.0.0"
+  "com.typesafe.play" %% "play-mailer" % "4.0.0"
 )

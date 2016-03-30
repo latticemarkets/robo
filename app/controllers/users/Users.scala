@@ -8,6 +8,8 @@
 
 package controllers.users
 
+import javax.inject.Inject
+
 import controllers.Security.HasToken
 import controllers.Utils
 import core.Formatters._
@@ -24,7 +26,7 @@ import scala.concurrent.Future
   * Created on 27/01/2016
   */
 
-class Users extends Controller {
+class Users @Inject() (emailUtil: EmailUtil) extends Controller {
 
   def register = Action.async { implicit request =>
     UsersForms.registerForm.bindFromRequest.fold(
@@ -32,7 +34,7 @@ class Users extends Controller {
       providedInfos => {
         User.store(providedInfos) map (optUser =>
           optUser.map(user => {
-            EmailUtil.sendEmailAddressConfirmation(user._id, user.firstName, user.lastName)
+            emailUtil.sendEmailAddressConfirmation(user._id, user.firstName, user.lastName)
             Ok(Json.obj("token" -> user.token))
           })
             getOrElse BadRequest("An error occurred when inserting data"))
