@@ -11,10 +11,11 @@ package controllers.users
 import controllers.Security.HasToken
 import controllers.Utils
 import core.Formatters._
-import core.Hash
-import models.{UserSecurity, User}
+import core.{EmailUtil, Hash}
+import models.{User, UserSecurity}
 import play.api.libs.json.Json
 import play.api.mvc._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -30,9 +31,10 @@ class Users extends Controller {
       Utils.badRequestOnError,
       providedInfos => {
         User.store(providedInfos) map (optUser =>
-          optUser.map(user =>
+          optUser.map(user => {
+            EmailUtil.sendEmailAddressConfirmation(user._id, user.firstName, user.lastName)
             Ok(Json.obj("token" -> user.token))
-          )
+          })
             getOrElse BadRequest("An error occurred when inserting data"))
       }
     )
