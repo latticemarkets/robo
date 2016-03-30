@@ -15,7 +15,7 @@
     'use strict';
 
     class ForgotPasswordController {
-        constructor($location) {
+        constructor($location, userService, notificationService) {
             const vm = this;
 
             function allConditionsSatisfied() {
@@ -31,8 +31,19 @@
 
             vm.submit = () => {
                 if (allConditionsSatisfied()) {
-                    $location.path('/signin');
-                    console.log(vm.email);
+                    userService.isEmailUsed(
+                        vm.email,
+                        response => {
+                        if (response.data.ok) {
+                        // email does not exist
+                        $location.path('/signin');
+                    }
+                else {
+                        // email is good
+                        $location.path('/signin');
+                        console.log(vm.email);
+                    }
+                });
                 }
             };
 
