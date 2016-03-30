@@ -31,7 +31,8 @@
 
             vm.submit = () => {
                 if (allConditionsSatisfied()) {
-                        $location.path('/signin');
+                    $location.path('/signin');
+                    console.log(vm.email);
                 }
             };
 

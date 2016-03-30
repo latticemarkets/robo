@@ -2280,6 +2280,9 @@ div .signup .outro-text .outro-heading-large {
     color: white;
     margin-bottom: 30px;
 }
+div .text-forgot-password {
+    color: white;
+}
 /* slide in from the right */
 @keyframes slideInRight {
     from {
