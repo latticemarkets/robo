@@ -28,6 +28,11 @@
                     controller: "ForgotPasswordController",
                     controllerAs: 'vm'
                 })
+                .when('/reinitializePassword', {
+                    templateUrl: "assets/app/reinitializePassword/reinitializePassword.html",
+                    controller: "ReinitializePasswordController",
+                    controllerAs: 'vm'
+                })
                 .when('/signup', {
                     templateUrl: "assets/app/signup/login/signupLogin.html",
                     controller: "SignupLoginController",

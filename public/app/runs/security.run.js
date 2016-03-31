@@ -63,7 +63,8 @@
                         '/signup/personalInfos',
                         '/signup/registered',
                         '/signin',
-                        '/signin/forgotPassword']
+                        '/signin/forgotPassword',
+                        '/reinitializePassword']
                 ) > -1;
         }
     }

@@ -15,7 +15,7 @@
     'use strict';
 
     class ForgotPasswordController {
-        constructor($location, userService, notificationService) {
+        constructor($location, userService, authenticationService) {
             const vm = this;
 
             function allConditionsSatisfied() {
