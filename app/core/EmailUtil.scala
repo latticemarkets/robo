@@ -18,13 +18,15 @@ import play.api.libs.mailer._
 
 @Singleton class EmailUtil @Inject() (mailerClient: MailerClient) {
 
-  def sendEmailAddressConfirmation(email: String, firstName: String, lastName: String): Unit = {
+  def sendEmailAddressConfirmation(email: String, firstName: String, lastName: String, token: String): Unit = {
+    val message = s"Please follow this link in order to confirm your email address : https://pdx-robo.herokuapp.com/api/user/confirm/$token"
+
     val emailObj = Email(
       "Please confirm your email address to PDX Technology",
       "PDX Technology <noanswer@pdx.technology>",
       Seq(s"$firstName $lastName <$email>"),
-      bodyText = Some("A text message"),
-      bodyHtml = Some(s"""<html><body><p>An <b>html</b> message</p></body></html>""")
+      bodyText = Some(message),
+      bodyHtml = Some(s"""<html><body><p>$message</p></body></html>""")
     )
     mailerClient.send(emailObj)
   }

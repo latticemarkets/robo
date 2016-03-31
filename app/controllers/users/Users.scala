@@ -34,7 +34,7 @@ class Users @Inject() (emailUtil: EmailUtil) extends Controller {
       providedInfos => {
         User.store(providedInfos) map (optUser =>
           optUser.map(user => {
-            emailUtil.sendEmailAddressConfirmation(user._id, user.firstName, user.lastName)
+            emailUtil.sendEmailAddressConfirmation(user)
             Ok(Json.obj("token" -> user.token))
           })
             getOrElse BadRequest("An error occurred when inserting data"))

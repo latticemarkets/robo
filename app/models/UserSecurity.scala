@@ -8,6 +8,8 @@
 
 package models
 
+import java.util.UUID
+
 import core.Formatters.userSecurityFormat
 import core.{DbUtil, Hash}
 import play.api.libs.json.{JsObject, Json}
@@ -24,7 +26,9 @@ import scala.concurrent.Future
 
 case class UserSecurity(
                          _id: String,
-                         password: String
+                         password: String,
+                         confirmed: Boolean,
+                         confirmationToken: String
                        ) {
   def withEncryptedPassword: UserSecurity = this.copy(password = Hash.createPassword(this.password))
 }
@@ -52,7 +56,7 @@ object UserSecurity {
     userSecurityTable.update(selector, modifier) map (_ => userSecurity)
   }
 
-  def factory(email: String, password: String): UserSecurity = UserSecurity(email, password).withEncryptedPassword
+  def factory(email: String, password: String): UserSecurity = UserSecurity(email, password, confirmed = false, UUID.randomUUID.toString).withEncryptedPassword
 
   def delete(email: String): Future[Boolean] = userSecurityTable.remove(Json.obj("_id" -> email)) map (_.ok)
 }
