@@ -42,7 +42,7 @@ class Users extends Controller {
     UsersForms.loginForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       login => {
-        withCheckedPassword(login.email, login.email) {
+        withCheckedPassword(login.email, login.password) {
             User.findByEmail(login.email) flatMap (_ map (user => User.generateAndStoreNewToken(user) map (user => Ok(Json.obj("token" -> user.token))))
               getOrElse Future.successful(BadRequest("Unknown Error")))
         }
