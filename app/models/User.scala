@@ -36,7 +36,8 @@ case class User(
     platforms: Seq[Platform],
     firstName: String,
     lastName: String,
-    token: String)
+    token: String,
+    tokenForgotPassword: Option[String])
 
 case class Login(
   email: String,
@@ -46,6 +47,8 @@ case class UpdatePersonalData(firstName: String, lastName: String, birthday: Dat
 
 case class DestroyAccount(password: String)
 
+case class SendEmail(email: String)
+
 object User {
 
   val collectionName = "user"
@@ -53,6 +56,8 @@ object User {
   val usersTable: JSONCollection = DbUtil.db.collection(collectionName)
 
   def findByEmail(email: String) = usersTable.find(Json.obj("_id" -> email)).one[User]
+
+  def findTokenForgotPassword(tokenForgotPassword: String) = usersTable.find(Json.obj("tokenForgotPassword" -> tokenForgotPassword)).one[User]
 
   def store(userForm: RegisterForm) = {
     for {
@@ -75,6 +80,16 @@ object User {
     update(updatedUser)
   }
 
+  def generateAndStoreNewTokenForgotPassword(user: User): Future[User] = {
+    val updatedUser: User = user.copy(tokenForgotPassword = Option(Hash.createToken))
+    update(updatedUser)
+  }
+
+  def destroyTokenForgotPassword(user: User): Future[User] = {
+    val updatedUser: User = user.copy(tokenForgotPassword = None)
+    update(updatedUser)
+  }
+
   def update(user: User): Future[User] = {
     val selector = Json.obj("_id" -> user._id)
     val modifier = Json.toJson(user).as[JsObject]
@@ -94,7 +109,8 @@ object User {
     form.platforms.map(p => Platform.factory(p.originator, p.accountId, p.apiKey)),
     form.firstName,
     form.lastName,
-    Hash.createToken
+    Hash.createToken,
+    None
   )
 }
 

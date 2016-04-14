@@ -15,17 +15,17 @@
     'use strict';
 
     class ReinitializePasswordController {
-        constructor(patternCheckerService) {
+        constructor(patternCheckerService, userService) {
             const vm = this;
 
             vm.tickBox = function(condition) {
                 return condition() ? 'glyphicon-ok' : 'glyphicon-remove';
             };
 
-            vm.charLengthGreaterThan8 = () => patternCheckerService.charLengthGreaterThan8(vm.password);
-            vm.hasLowercase = () => patternCheckerService.hasLowercase(vm.password);
-            vm.hasUppercase = () => patternCheckerService.hasUppercase(vm.password);
-            vm.hasSpecialChar = () => patternCheckerService.hasSpecialChar(vm.password);
+            vm.charLengthGreaterThan8 = () => patternCheckerService.charLengthGreaterThan8(vm.newPassword);
+            vm.hasLowercase = () => patternCheckerService.hasLowercase(vm.newPassword);
+            vm.hasUppercase = () => patternCheckerService.hasUppercase(vm.newPassword);
+            vm.hasSpecialChar = () => patternCheckerService.hasSpecialChar(vm.newPassword);
 
             function allConditionsSatisfied() {
                 return vm.charLengthGreaterThan8() && vm.hasLowercase() && vm.hasUppercase() && vm.hasSpecialChar();
@@ -37,9 +37,11 @@
 
             vm.submit = function() {
                 if (allConditionsSatisfied()) {
-                    if(vm.password == vm.confirmPassword) {
+                    if(vm.newPassword == vm.confirmPassword) {
                         console.log("good");
-                    }
+                        const tokenForgotPassword = "89dc32c4-aeab-459c-82c5-a7d5661ec149";
+                        userService.reinitializePassword(tokenForgotPassword, vm.newPassword);
+                   }
                     else{
                         console.log("not good");
                     }

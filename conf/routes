@@ -8,7 +8,9 @@ GET     /dashboard                                                  controllers.
 
 POST    /api/register                                               controllers.users.Users.register
 POST    /api/login                                                  controllers.users.Users.login
+POST    /api/sendEmail                                              controllers.users.Users.sendEmail
 PUT     /api/user/password                                          controllers.users.Users.updatePassword
+PUT     /api/user/reinitializePassword                              controllers.users.Users.reinitializePassword
 PUT     /api/user/personalData                                      controllers.users.Users.updatePersonalData
 GET     /api/user/check/:email                                      controllers.users.Users.isUsed(email)
 GET     /api/user/infos                                             controllers.users.Users.userData

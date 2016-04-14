@@ -36,6 +36,18 @@ object UsersForms {
     )(UpdatePassword.apply)(UpdatePassword.unapply)
   )
 
+  def sendEmailForm = Form(
+    mapping(
+      "email" -> nonEmptyText
+    )(SendEmail.apply)(SendEmail.unapply)
+  )
+
+  def reinitializePasswordForm = Form(
+    mapping(
+      "newPassword" -> nonEmptyText.verifying(Constraints.strongPassword)
+    )(ReinitializePassword.apply)(ReinitializePassword.unapply)
+  )
+
   def updatePersonalData = Form(
     mapping(
       "firstName" -> nonEmptyText,

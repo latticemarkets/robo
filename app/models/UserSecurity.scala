@@ -31,6 +31,8 @@ case class UserSecurity(
 
 case class UpdatePassword(oldPassword: String, newPassword: String)
 
+case class ReinitializePassword(newPassword: String)
+
 object UserSecurity {
   val collectionName = "usersecurity"
 

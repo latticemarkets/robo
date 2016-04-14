@@ -75,6 +75,30 @@ class Users extends Controller {
     )
   }
 
+  def sendEmail = Action.async { implicit request =>
+    UsersForms.sendEmailForm.bindFromRequest.fold(
+      Utils.badRequestOnError,
+      sendEmail => {
+            User.findByEmail(sendEmail.email) flatMap (_ map (user => User.generateAndStoreNewTokenForgotPassword(user) map (user => Ok(Json.obj("tokenForgotPassword" -> user.tokenForgotPassword))))
+              getOrElse Future.successful(BadRequest("Unknown Error")))
+      }
+    )
+  }
+
+  def reinitializePassword = Action.async { implicit request =>
+    UsersForms.reinitializePasswordForm.bindFromRequest.fold(
+      Utils.badRequestOnError,
+      infos => {
+        val tokenForgotPassword: String = request.headers.get("USER").getOrElse("")
+        User.findTokenForgotPassword(tokenForgotPassword) flatMap (_ map (user => User.destroyTokenForgotPassword(user) map (user => Ok(Json.obj("tokenForgotPassword" -> user.tokenForgotPassword))))
+          getOrElse Future.successful(BadRequest("Unknown Error")))
+            // UserSecurity
+            //   .update(UserSecurity.factory(email, infos.newPassword))
+            //   .map (user => Ok(""))
+      }
+    )
+  }
+
   def updatePersonalData() = HasToken.async { implicit request =>
     UsersForms.updatePersonalData.bindFromRequest.fold(
       Utils.badRequestOnError,

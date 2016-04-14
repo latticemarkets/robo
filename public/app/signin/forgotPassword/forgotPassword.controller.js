@@ -41,6 +41,7 @@
                 else {
                         // email is good
                         $location.path('/signin');
+                        userService.sendEmail(vm.email);
                         console.log(vm.email);
                     }
                 });
