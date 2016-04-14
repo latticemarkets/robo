@@ -65,7 +65,7 @@
         }
 
         reinitializePassword(tokenForgotPassword, newPassword, callback) {
-            this.$http.put('/api/user/reinitializePassword', {tokenForgotPassword: tokenForgotPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
+            this.$http.post('/api/user/reinitializePassword', {tokenForgotPassword: tokenForgotPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
         }
 
         updatePersonalData(firstName, lastName, birthday, callback) {

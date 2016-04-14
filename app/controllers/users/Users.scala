@@ -79,7 +79,7 @@ class Users extends Controller {
     UsersForms.sendEmailForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       sendEmail => {
-            User.findByEmail(sendEmail.email) flatMap (_ map (user => User.generateAndStoreNewTokenForgotPassword(user) map (user => Ok(Json.obj("tokenForgotPassword" -> user.tokenForgotPassword))))
+            UserSecurity.findByEmail(sendEmail.email) flatMap (_ map (userSecurity => UserSecurity.generateAndStoreNewTokenForgotPassword(userSecurity) map (userSecurity => Ok(Json.obj("tokenForgotPassword" -> userSecurity.tokenForgotPassword))))
               getOrElse Future.successful(BadRequest("Unknown Error")))
       }
     )
@@ -90,11 +90,11 @@ class Users extends Controller {
       Utils.badRequestOnError,
       infos => {
         val tokenForgotPassword: String = request.headers.get("USER").getOrElse("")
-        User.findTokenForgotPassword(tokenForgotPassword) flatMap (_ map (user => User.destroyTokenForgotPassword(user) map (user => Ok(Json.obj("tokenForgotPassword" -> user.tokenForgotPassword))))
+        UserSecurity.findTokenForgotPassword(tokenForgotPassword) flatMap (_ map (userSecurity => UserSecurity.destroyTokenForgotPassword(userSecurity) map (userSecurity => Ok(Json.obj("tokenForgotPassword" -> userSecurity.tokenForgotPassword))))
           getOrElse Future.successful(BadRequest("Unknown Error")))
-            // UserSecurity
-            //   .update(UserSecurity.factory(email, infos.newPassword))
-            //   .map (user => Ok(""))
+            UserSecurity
+              .update(UserSecurity.factory(infos.newPassword, tokenForgotPassword))
+              .map (user => Ok(""))
       }
     )
   }
