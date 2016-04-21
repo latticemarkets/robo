@@ -44,6 +44,7 @@ object UsersForms {
 
   def reinitializePasswordForm = Form(
     mapping(
+      "tokenForgotPassword" -> nonEmptyText,
       "newPassword" -> nonEmptyText.verifying(Constraints.strongPassword)
     )(ReinitializePassword.apply)(ReinitializePassword.unapply)
   )

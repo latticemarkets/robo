@@ -32,7 +32,7 @@ case class UserSecurity(
 
 case class UpdatePassword(oldPassword: String, newPassword: String)
 
-case class ReinitializePassword(newPassword: String)
+case class ReinitializePassword(tokenForgotPassword: String, newPassword: String)
 
 object UserSecurity {
   val collectionName = "usersecurity"
@@ -63,11 +63,6 @@ object UserSecurity {
 
   def generateAndStoreNewTokenForgotPassword(userSecurity: UserSecurity): Future[UserSecurity] = {
     val updatedUserSecurity: UserSecurity = userSecurity.copy(tokenForgotPassword = Option(Hash.createToken))
-    update(updatedUserSecurity)
-  }
-
-  def destroyTokenForgotPassword(userSecurity: UserSecurity): Future[UserSecurity] = {
-    val updatedUserSecurity: UserSecurity = userSecurity.copy(tokenForgotPassword = None)
     update(updatedUserSecurity)
   }
 }

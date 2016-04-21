@@ -8,11 +8,13 @@
 
 package controllers.users
 
+import javax.inject.Inject
+
 import controllers.Security.HasToken
 import controllers.Utils
 import core.Formatters._
-import core.Hash
-import models.{UserSecurity, User}
+import core.{EmailUtil, Hash}
+import models.{User, UserSecurity}
 import play.api.libs.json.Json
 import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -23,7 +25,7 @@ import scala.concurrent.Future
   * Created on 27/01/2016
   */
 
-class Users extends Controller {
+class Users @Inject() (emailUtil: EmailUtil) extends Controller {
 
   def register = Action.async { implicit request =>
     UsersForms.registerForm.bindFromRequest.fold(
@@ -81,6 +83,9 @@ class Users extends Controller {
       sendEmail => {
             UserSecurity.findByEmail(sendEmail.email) flatMap (_ map (userSecurity => UserSecurity.generateAndStoreNewTokenForgotPassword(userSecurity) map (userSecurity => Ok(Json.obj("tokenForgotPassword" -> userSecurity.tokenForgotPassword))))
               getOrElse Future.successful(BadRequest("Unknown Error")))
+
+            UserSecurity.findByEmail(sendEmail.email) flatMap (_ map (userSecurity => emailUtil.sendEmailForgotPassword(sendEmail.email, "forgotPassword") Ok("")))
+
       }
     )
   }
@@ -89,12 +94,10 @@ class Users extends Controller {
     UsersForms.reinitializePasswordForm.bindFromRequest.fold(
       Utils.badRequestOnError,
       infos => {
-        val tokenForgotPassword: String = request.headers.get("USER").getOrElse("")
-        UserSecurity.findTokenForgotPassword(tokenForgotPassword) flatMap (_ map (userSecurity => UserSecurity.destroyTokenForgotPassword(userSecurity) map (userSecurity => Ok(Json.obj("tokenForgotPassword" -> userSecurity.tokenForgotPassword))))
-          getOrElse Future.successful(BadRequest("Unknown Error")))
-            UserSecurity
-              .update(UserSecurity.factory(infos.newPassword, tokenForgotPassword))
-              .map (user => Ok(""))
+          UserSecurity.findTokenForgotPassword(infos.tokenForgotPassword) flatMap (_.map (userSecurity => {
+            UserSecurity.update(userSecurity.copy(password = Hash.createPassword(infos.newPassword), tokenForgotPassword = None)) map (user => Ok(""))
+          }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
+
       }
     )
   }

@@ -39,7 +39,7 @@
                 if (allConditionsSatisfied()) {
                     if(vm.newPassword == vm.confirmPassword) {
                         console.log("good");
-                        const tokenForgotPassword = "55c33681-b1ce-4ab3-80b0-873c13044d1c";
+                        const tokenForgotPassword = "cf99caa5-1d00-4f0b-99a4-2638e4adf799";
                         userService.reinitializePassword(tokenForgotPassword, vm.newPassword);
                    }
                     else{
