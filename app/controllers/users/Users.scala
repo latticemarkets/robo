@@ -95,7 +95,7 @@ class Users @Inject() (emailUtil: EmailUtil) extends Controller {
       infos => {
           UserSecurity.findTokenForgotPassword(infos.tokenForgotPassword) flatMap (_.map (userSecurity => {
             UserSecurity.update(userSecurity.copy(password = Hash.createPassword(infos.newPassword), tokenForgotPassword = None)) map (user => Ok(""))
-          }) getOrElse Future.successful( Utils.responseOnWrongDataSent ))
+          }) getOrElse Future.successful( BadRequest("Wrong token. You will be redirected.") ))
 
       }
     )
