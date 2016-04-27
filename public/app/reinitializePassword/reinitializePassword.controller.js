@@ -18,7 +18,7 @@
         constructor(patternCheckerService, userService, $routeParams) {
             const vm = this;
 
-            const token = $routeParams.token;
+            const token = $routeParams.token.split('?')[1];
             // todo :
             // if the token doesn't exist : redirect
             // if the token exist : check it exists in the db
