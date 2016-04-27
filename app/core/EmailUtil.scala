@@ -19,7 +19,7 @@ import play.api.libs.mailer._
 @Singleton class EmailUtil @Inject() (mailerClient: MailerClient) {
 
   def sendEmailForgotPassword(email: String, tokenForgotPassword: String): Unit = {
-    val message = s"Please follow this link in order to reinitialize your password : https://pdx-robo.herokuapp.com/api/user/reinitializePassword$tokenForgotPassword"
+    val message = s"Please follow this link in order to reinitialize your password : https://pdx-robo.herokuapp.com/dashboard#/reinitializePassword/$tokenForgotPassword"
 
     val emailObj = Email(
       "PDX Technology <noanswer@pdx.technology>",

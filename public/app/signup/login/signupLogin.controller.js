@@ -55,7 +55,7 @@
                     userService.isEmailUsed(
                         vm.email,
                         response => {
-                            if (response.data.ok) {
+                            if (!response.data.ok) {
                                 $cookies.put('signup.email', vm.email);
                                 $cookies.put('signup.password', vm.password);
                                 $location.path('/signup/termsAndConditions');

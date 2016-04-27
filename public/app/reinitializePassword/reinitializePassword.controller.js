@@ -15,8 +15,13 @@
     'use strict';
 
     class ReinitializePasswordController {
-        constructor(patternCheckerService, userService) {
+        constructor(patternCheckerService, userService, $routeParams) {
             const vm = this;
+
+            const token = $routeParams.token;
+            // todo :
+            // if the token doesn't exist : redirect
+            // if the token exist : check it exists in the db
 
             vm.tickBox = function(condition) {
                 return condition() ? 'glyphicon-ok' : 'glyphicon-remove';
@@ -39,8 +44,8 @@
                 if (allConditionsSatisfied()) {
                     if(vm.newPassword == vm.confirmPassword) {
                         console.log("good");
-                        const tokenForgotPassword = "cf99caa5-1d00-4f0b-99a4-2638e4adf799";
-                        userService.reinitializePassword(tokenForgotPassword, vm.newPassword);
+                        userService.reinitializePassword(token, vm.newPassword);
+                        // callback if the reinitialization has been correctly done
                    }
                     else{
                         console.log("not good");

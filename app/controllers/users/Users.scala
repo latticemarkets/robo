@@ -54,8 +54,8 @@ class Users @Inject() (emailUtil: EmailUtil) extends Controller {
 
   def isUsed(email: String) = Action.async {
     User.findByEmail(email) map {
-      case None => Ok(Json.obj("ok" -> true))
-      case Some(user) => Ok(Json.obj("ok" -> false))
+      case None => Ok(Json.obj("ok" -> false))
+      case Some(user) => Ok(Json.obj("ok" -> true))
     }
   }
 
@@ -80,13 +80,12 @@ class Users @Inject() (emailUtil: EmailUtil) extends Controller {
   def sendEmail = Action.async { implicit request =>
     UsersForms.sendEmailForm.bindFromRequest.fold(
       Utils.badRequestOnError,
-      sendEmail => {
-            UserSecurity.findByEmail(sendEmail.email) flatMap (_ map (userSecurity => UserSecurity.generateAndStoreNewTokenForgotPassword(userSecurity) map (userSecurity => Ok(Json.obj("tokenForgotPassword" -> userSecurity.tokenForgotPassword))))
-              getOrElse Future.successful(BadRequest("Unknown Error")))
-
-            UserSecurity.findByEmail(sendEmail.email) flatMap (_ map (userSecurity => emailUtil.sendEmailForgotPassword(sendEmail.email, "forgotPassword") Ok("")))
-
-      }
+      sendEmail =>
+          UserSecurity.findByEmail(sendEmail.email) flatMap (_ map (userSecurity => UserSecurity.generateAndStoreNewTokenForgotPassword(userSecurity) map (userSecurity => {
+            emailUtil.sendEmailForgotPassword(userSecurity._id, userSecurity.tokenForgotPassword.get)
+            Ok("")
+          }))
+            getOrElse Future.successful(BadRequest("Unknown Error")))
     )
   }
 
