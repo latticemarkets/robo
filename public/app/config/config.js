@@ -28,7 +28,7 @@
                     controller: "ForgotPasswordController",
                     controllerAs: 'vm'
                 })
-                .when('/reinitializePassword/:token', {
+                .when('/reinitializePassword/?:token', {
                     templateUrl: "assets/app/reinitializePassword/reinitializePassword.html",
                     controller: "ReinitializePasswordController",
                     controllerAs: 'vm'
