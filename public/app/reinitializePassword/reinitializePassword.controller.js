@@ -31,9 +31,10 @@
             vm.hasLowercase = () => patternCheckerService.hasLowercase(vm.newPassword);
             vm.hasUppercase = () => patternCheckerService.hasUppercase(vm.newPassword);
             vm.hasSpecialChar = () => patternCheckerService.hasSpecialChar(vm.newPassword);
+            vm.passwordsMatch = () => vm.newPassword === vm.confirmPassword;
 
             function allConditionsSatisfied() {
-                return vm.charLengthGreaterThan8() && vm.hasLowercase() && vm.hasUppercase() && vm.hasSpecialChar();
+                return vm.charLengthGreaterThan8() && vm.hasLowercase() && vm.hasUppercase() && vm.hasSpecialChar() && vm.passwordsMatch();
             }
 
             vm.disableSubmitButton = () => {
@@ -42,14 +43,7 @@
 
             vm.submit = function() {
                 if (allConditionsSatisfied()) {
-                    if(vm.newPassword == vm.confirmPassword) {
-                        console.log("good");
-                        userService.reinitializePassword(token, vm.newPassword);
-                        // callback if the reinitialization has been correctly done
-                   }
-                    else{
-                        console.log("not good");
-                    }
+                    userService.reinitializePassword(token, vm.newPassword);
                 }
             };
 
