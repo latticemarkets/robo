@@ -88,7 +88,7 @@ describe('SignupLoginController', () => {
 
         describe('email not used', () => {
             beforeEach(() => {
-                userService.isEmailUsed.and.callFake((email, success, error) => success({ data: { ok: true } }));
+                userService.isEmailUsed.and.callFake((email, success, error) => success({ data: { ok: false } }));
                 signUpLoginController.submit();
             });
 
@@ -104,7 +104,7 @@ describe('SignupLoginController', () => {
 
         describe('email used', () => {
             beforeEach(() => {
-                userService.isEmailUsed.and.callFake((email, success, error) => success({ data: { ok: false } }));
+                userService.isEmailUsed.and.callFake((email, success, error) => success({ data: { ok: true } }));
                 signUpLoginController.submit();
             });
 
