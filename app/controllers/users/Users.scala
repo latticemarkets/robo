@@ -85,7 +85,7 @@ class Users @Inject() (emailUtil: EmailUtil) extends Controller {
             emailUtil.sendEmailForgotPassword(userSecurity._id, userSecurity.tokenForgotPassword.get)
             Ok("")
           }))
-            getOrElse Future.successful(BadRequest("Unknown Error")))
+            getOrElse Future.successful(Ok("")))
     )
   }
 

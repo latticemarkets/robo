@@ -28,19 +28,9 @@
 
             vm.submit = () => {
                 if (allConditionsSatisfied()) {
-                    userService.isEmailUsed(
-                        vm.email,
-                        response => {
-                            if (response.data.ok) {
-                                userService.sendEmail(vm.email);
-                                notificationService.success("An email has been sent, containing a link to reinitialize your password.");
-                                $timeout(() => $location.path('/signin'), 5000);
-                            }
-                            else {
-                                $location.path('/signin');
-                            }
-                        }
-                    );
+                    userService.sendEmail(vm.email);
+                    notificationService.success("An email has been sent, containing a link to reinitialize your password.");
+                    $timeout(() => $location.path('/signin'), 5000);
                 }
             };
 

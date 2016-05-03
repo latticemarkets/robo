@@ -63,13 +63,17 @@ describe('ForgotPasswordController', () => {
             expect(forgotPasswordController.disableSubmitButton()).toBeFalsy();
         });
 
-        it('should redirect the user without sending any email', () => {
-            expect($location.path).toHaveBeenCalledWith('/signin');
-            expect(userService.sendEmail).not.toHaveBeenCalled();
+        it('should try to send the email', () => {
+            expect(userService.sendEmail).toHaveBeenCalled();
         });
 
         it('should display any notification', () => {
-            expect(notificationService.success).not.toHaveBeenCalled();
+            expect(notificationService.success).toHaveBeenCalled();
+        });
+
+        it('should redirect the user after a short timeout', () => {
+            $timeout.flush();
+            expect($location.path).toHaveBeenCalledWith('/signin');
         });
     });
 
@@ -84,7 +88,7 @@ describe('ForgotPasswordController', () => {
             expect(forgotPasswordController.disableSubmitButton()).toBeFalsy();
         });
 
-        it('should send the email', () => {
+        it('should try to send the email', () => {
             expect(userService.sendEmail).toHaveBeenCalled();
         });
 
