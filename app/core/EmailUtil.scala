@@ -23,7 +23,7 @@ import play.api.libs.mailer._
 
     val emailObj = Email(
       "PDX Technology <noanswer@pdx.technology>",
-      "<$email>",
+      s"<$email>",
       bodyText = Some(message),
       bodyHtml = Some(s"""<html><body><p>$message</p></body></html>""")
     )
