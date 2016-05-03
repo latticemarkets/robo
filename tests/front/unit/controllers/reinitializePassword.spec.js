@@ -14,158 +14,204 @@
 describe('ReinitializePasswordController', () => {
     beforeEach(module('app'));
 
-    let userService, $routeParams;
-    beforeEach(() => {
-        userService = jasmine.createSpyObj('userService', ['reinitializePassword']);
-        $routeParams = { token: '?foo' };
-    });
-
-    let reinitializePasswordController;
-    beforeEach(inject(($controller, patternCheckerService) => {
-        reinitializePasswordController = $controller('ReinitializePasswordController', {
-            $routeParams: $routeParams,
-            patternCheckerService: patternCheckerService,
-            userService: userService
-        });
-    }));
-
-    describe('both password field are empty', () => {
+    describe('with no token', () => {
+        let $routeParams, $location;
         beforeEach(() => {
-            reinitializePasswordController.newPassword = '';
-            reinitializePasswordController.confirmPassword = '';
+            $routeParams = {token: ''};
+            $location = jasmine.createSpyObj('$location', ['path']);
         });
 
-        it('should keep the submit button disabled', () => {
-            expect(reinitializePasswordController.disableSubmitButton()).toBeTruthy();
-        });
-    });
-    
-    describe('the first field is empty and the second is not', () => {
-        beforeEach(() => {
-            reinitializePasswordController.newPassword = '';
-            reinitializePasswordController.confirmPassword = 'MLFKS+ç6D';
-        });
+        let reinitializePasswordController;
+        beforeEach(inject(($controller) => {
+            reinitializePasswordController = $controller('ReinitializePasswordController', {
+                $routeParams: $routeParams,
+                $location: $location
+            });
+        }));
 
-        it('should keep the submit button disabled', () => {
-            expect(reinitializePasswordController.disableSubmitButton()).toBeTruthy();
+        describe('behavior of initialization', () => {
+            it('should redirect the user to sign in page', () => {
+                expect($location.path).toHaveBeenCalledWith('/signin');
+            });
         });
     });
 
-    describe('the first field is not empty and the second is', () => {
+    describe('with no token but starting with ?', () => {
+        let $routeParams, $location;
         beforeEach(() => {
-            reinitializePasswordController.newPassword = 'MLFKS+ç6D';
-            reinitializePasswordController.confirmPassword = 'MLFKS+ç6D';
+            $routeParams = {token: '?'};
+            $location = jasmine.createSpyObj('$location', ['path']);
         });
 
-        it('should keep the submit button disabled', () => {
-            expect(reinitializePasswordController.disableSubmitButton()).toBeTruthy();
+        let reinitializePasswordController;
+        beforeEach(inject(($controller) => {
+            reinitializePasswordController = $controller('ReinitializePasswordController', {
+                $routeParams: $routeParams,
+                $location: $location
+            });
+        }));
+
+        describe('behavior of initialization', () => {
+            it('should redirect the user to sign in page', () => {
+                expect($location.path).toHaveBeenCalledWith('/signin');
+            });
         });
     });
 
-    describe('the two fields are filled but not complex enough', () => {
+    describe('with valid token', () => {
+        let userService, $routeParams;
         beforeEach(() => {
-            reinitializePasswordController.newPassword = 'foo';
-            reinitializePasswordController.confirmPassword = 'foo';
+            userService = jasmine.createSpyObj('userService', ['reinitializePassword']);
+            $routeParams = { token: '?foo' };
         });
 
-        it('should keep the submit button disabled', () => {
-            expect(reinitializePasswordController.disableSubmitButton()).toBeTruthy();
-        });
-    });
+        let reinitializePasswordController;
+        beforeEach(inject(($controller, patternCheckerService) => {
+            reinitializePasswordController = $controller('ReinitializePasswordController', {
+                $routeParams: $routeParams,
+                patternCheckerService: patternCheckerService,
+                userService: userService
+            });
+        }));
 
-    describe('the two fields are filled and complex enough but do no match', () => {
-        beforeEach(() => {
-            reinitializePasswordController.newPassword = '976DFHv++=';
-            reinitializePasswordController.confirmPassword = 'PZE87RV==';
-        });
+        describe('both password field are empty', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = '';
+                reinitializePasswordController.confirmPassword = '';
+            });
 
-        it('should keep the submit button disabled', () => {
-            expect(reinitializePasswordController.disableSubmitButton()).toBeTruthy();
-        });
-    });
-
-    describe('the two fields are filled, complex enough and match', () => {
-        beforeEach(() => {
-            reinitializePasswordController.newPassword = '976DFHv++=';
-            reinitializePasswordController.confirmPassword = '976DFHv++=';
+            it('should keep the submit button disabled', () => {
+                expect(reinitializePasswordController.disableSubmitButton()).toBeTruthy();
+            });
         });
 
-        it('should enable the submit button', () => {
-            expect(reinitializePasswordController.disableSubmitButton()).toBeFalsy();
-        });
-    });
+        describe('the first field is empty and the second is not', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = '';
+                reinitializePasswordController.confirmPassword = 'MLFKS+ç6D';
+            });
 
-    describe('hit shubmit button when : both password field are empty', () => {
-        beforeEach(() => {
-            reinitializePasswordController.newPassword = '';
-            reinitializePasswordController.confirmPassword = '';
-            reinitializePasswordController.submit();
-        });
-
-        it('should not call the service', () => {
-            expect(userService.reinitializePassword).not.toHaveBeenCalled();
-        });
-    });
-
-    describe('hit shubmit button when : the first field is empty and the second is not', () => {
-        beforeEach(() => {
-            reinitializePasswordController.newPassword = '';
-            reinitializePasswordController.confirmPassword = 'MLFKS+ç6D';
-            reinitializePasswordController.submit();
+            it('should keep the submit button disabled', () => {
+                expect(reinitializePasswordController.disableSubmitButton()).toBeTruthy();
+            });
         });
 
-        it('should not call the service', () => {
-            expect(userService.reinitializePassword).not.toHaveBeenCalled();
-        });
-    });
+        describe('the first field is not empty and the second is', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = 'MLFKS+ç6D';
+                reinitializePasswordController.confirmPassword = 'MLFKS+ç6D';
+            });
 
-    describe('hit shubmit button when : the first field is not empty and the second is', () => {
-        beforeEach(() => {
-            reinitializePasswordController.newPassword = 'MLFKS+ç6D';
-            reinitializePasswordController.confirmPassword = 'MLFKS+ç6D';
-            reinitializePasswordController.submit();
-        });
-
-        it('should not call the service', () => {
-            expect(userService.reinitializePassword).not.toHaveBeenCalled();
-        });
-    });
-
-    describe('hit shubmit button when : the two fields are filled but not complex enough', () => {
-        beforeEach(() => {
-            reinitializePasswordController.newPassword = 'foo';
-            reinitializePasswordController.confirmPassword = 'foo';
-            reinitializePasswordController.submit();
+            it('should keep the submit button disabled', () => {
+                expect(reinitializePasswordController.disableSubmitButton()).toBeTruthy();
+            });
         });
 
-        it('should not call the service', () => {
-            expect(userService.reinitializePassword).not.toHaveBeenCalled();
-        });
-    });
+        describe('the two fields are filled but not complex enough', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = 'foo';
+                reinitializePasswordController.confirmPassword = 'foo';
+            });
 
-    describe('hit shubmit button when : the two fields are filled and complex enough but do no match', () => {
-        beforeEach(() => {
-            reinitializePasswordController.newPassword = '976DFHv++=';
-            reinitializePasswordController.confirmPassword = 'PZE87RV==';
-            reinitializePasswordController.submit();
-        });
-
-        it('should not call the service', () => {
-            expect(userService.reinitializePassword).not.toHaveBeenCalled();
-        });
-    });
-
-    describe('hit shubmit button when : the two fields are filled, complex enough and match', () => {
-        let password;
-        beforeEach(() => {
-            password = '976DFHv++=';
-            reinitializePasswordController.newPassword = password;
-            reinitializePasswordController.confirmPassword = password;
-            reinitializePasswordController.submit();
+            it('should keep the submit button disabled', () => {
+                expect(reinitializePasswordController.disableSubmitButton()).toBeTruthy();
+            });
         });
 
-        it('should not call the service', () => {
-            expect(userService.reinitializePassword).toHaveBeenCalledWith('foo', password);
+        describe('the two fields are filled and complex enough but do no match', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = '976DFHv++=';
+                reinitializePasswordController.confirmPassword = 'PZE87RV==';
+            });
+
+            it('should keep the submit button disabled', () => {
+                expect(reinitializePasswordController.disableSubmitButton()).toBeTruthy();
+            });
+        });
+
+        describe('the two fields are filled, complex enough and match', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = '976DFHv++=';
+                reinitializePasswordController.confirmPassword = '976DFHv++=';
+            });
+
+            it('should enable the submit button', () => {
+                expect(reinitializePasswordController.disableSubmitButton()).toBeFalsy();
+            });
+        });
+
+        describe('hit submit button when : both password field are empty', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = '';
+                reinitializePasswordController.confirmPassword = '';
+                reinitializePasswordController.submit();
+            });
+
+            it('should not call the service', () => {
+                expect(userService.reinitializePassword).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('hit submit button when : the first field is empty and the second is not', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = '';
+                reinitializePasswordController.confirmPassword = 'MLFKS+ç6D';
+                reinitializePasswordController.submit();
+            });
+
+            it('should not call the service', () => {
+                expect(userService.reinitializePassword).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('hit submit button when : the first field is not empty and the second is', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = 'MLFKS+ç6D';
+                reinitializePasswordController.confirmPassword = 'MLFKS+ç6D';
+                reinitializePasswordController.submit();
+            });
+
+            it('should not call the service', () => {
+                expect(userService.reinitializePassword).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('hit submit button when : the two fields are filled but not complex enough', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = 'foo';
+                reinitializePasswordController.confirmPassword = 'foo';
+                reinitializePasswordController.submit();
+            });
+
+            it('should not call the service', () => {
+                expect(userService.reinitializePassword).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('hit submit button when : the two fields are filled and complex enough but do no match', () => {
+            beforeEach(() => {
+                reinitializePasswordController.newPassword = '976DFHv++=';
+                reinitializePasswordController.confirmPassword = 'PZE87RV==';
+                reinitializePasswordController.submit();
+            });
+
+            it('should not call the service', () => {
+                expect(userService.reinitializePassword).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('hit submit button when : the two fields are filled, complex enough and match', () => {
+            let password;
+            beforeEach(() => {
+                password = '976DFHv++=';
+                reinitializePasswordController.newPassword = password;
+                reinitializePasswordController.confirmPassword = password;
+                reinitializePasswordController.submit();
+            });
+
+            it('should not call the service', () => {
+                expect(userService.reinitializePassword).toHaveBeenCalledWith('foo', password);
+            });
         });
     });
 });

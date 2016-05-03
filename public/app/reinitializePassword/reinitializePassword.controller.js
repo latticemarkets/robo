@@ -15,13 +15,16 @@
     'use strict';
 
     class ReinitializePasswordController {
-        constructor(patternCheckerService, userService, $routeParams) {
+        constructor(patternCheckerService, userService, $routeParams, $location) {
             const vm = this;
 
-            const token = $routeParams.token.split('?')[1];
-            // todo :
-            // if the token doesn't exist : redirect
-            // if the token exist : check it exists in the db
+            const token = (() => {
+                const token = $routeParams.token.split('?')[1];
+                if (token === undefined || token.length === 0) {
+                    $location.path('/signin');
+                }
+                return token;
+            })();
 
             vm.tickBox = function(condition) {
                 return condition() ? 'glyphicon-ok' : 'glyphicon-remove';
@@ -46,7 +49,6 @@
                     userService.reinitializePassword(token, vm.newPassword);
                 }
             };
-
         }
     }
 
