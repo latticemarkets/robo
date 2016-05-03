@@ -15,12 +15,11 @@
     'use strict';
 
     class ForgotPasswordController {
-        constructor($location, userService) {
+        constructor($location, userService, patternCheckerService) {
             const vm = this;
 
             function allConditionsSatisfied() {
-                const emailRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-                return vm.email !== undefined && vm.email.length > 0 && emailRegex.test(vm.email);
+                return patternCheckerService.isEmail(vm.email);
             }
 
             vm.disableSubmitButton = () => {
