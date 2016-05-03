@@ -59,19 +59,23 @@ describe('ReinitializePasswordController', () => {
     });
 
     describe('with valid token', () => {
-        let userService, $routeParams;
+        let userService, $routeParams, $location;
         beforeEach(() => {
             userService = jasmine.createSpyObj('userService', ['reinitializePassword']);
             $routeParams = { token: '?foo' };
+            $location = jasmine.createSpyObj('$location', ['path']);
         });
 
-        let reinitializePasswordController;
-        beforeEach(inject(($controller, patternCheckerService) => {
+        let reinitializePasswordController, $timeout;
+        beforeEach(inject(($controller, patternCheckerService, _$timeout_) => {
             reinitializePasswordController = $controller('ReinitializePasswordController', {
                 $routeParams: $routeParams,
                 patternCheckerService: patternCheckerService,
-                userService: userService
+                userService: userService,
+                $timeout: _$timeout_,
+                $location: $location
             });
+            $timeout = _$timeout_;
         }));
 
         describe('both password field are empty', () => {
@@ -150,6 +154,11 @@ describe('ReinitializePasswordController', () => {
             it('should not call the service', () => {
                 expect(userService.reinitializePassword).not.toHaveBeenCalled();
             });
+
+            it('should not redirect the user after 3000 seconds', () => {
+                $timeout.flush();
+                expect($location.path).not.toHaveBeenCalled();
+            });
         });
 
         describe('hit submit button when : the first field is empty and the second is not', () => {
@@ -162,17 +171,27 @@ describe('ReinitializePasswordController', () => {
             it('should not call the service', () => {
                 expect(userService.reinitializePassword).not.toHaveBeenCalled();
             });
+
+            it('should not redirect the user after 3000 seconds', () => {
+                $timeout.flush();
+                expect($location.path).not.toHaveBeenCalled();
+            });
         });
 
         describe('hit submit button when : the first field is not empty and the second is', () => {
             beforeEach(() => {
                 reinitializePasswordController.newPassword = 'MLFKS+ç6D';
-                reinitializePasswordController.confirmPassword = 'MLFKS+ç6D';
+                reinitializePasswordController.confirmPassword = '';
                 reinitializePasswordController.submit();
             });
 
             it('should not call the service', () => {
                 expect(userService.reinitializePassword).not.toHaveBeenCalled();
+            });
+
+            it('should not redirect the user after 3000 seconds', () => {
+                $timeout.flush();
+                expect($location.path).not.toHaveBeenCalled();
             });
         });
 
@@ -186,6 +205,11 @@ describe('ReinitializePasswordController', () => {
             it('should not call the service', () => {
                 expect(userService.reinitializePassword).not.toHaveBeenCalled();
             });
+
+            it('should not redirect the user after 3000 seconds', () => {
+                $timeout.flush();
+                expect($location.path).not.toHaveBeenCalled();
+            });
         });
 
         describe('hit submit button when : the two fields are filled and complex enough but do no match', () => {
@@ -197,6 +221,11 @@ describe('ReinitializePasswordController', () => {
 
             it('should not call the service', () => {
                 expect(userService.reinitializePassword).not.toHaveBeenCalled();
+            });
+
+            it('should not redirect the user after 3000 seconds', () => {
+                $timeout.flush();
+                expect($location.path).not.toHaveBeenCalled();
             });
         });
 
@@ -210,7 +239,12 @@ describe('ReinitializePasswordController', () => {
             });
 
             it('should not call the service', () => {
-                expect(userService.reinitializePassword).toHaveBeenCalledWith('foo', password);
+                expect(userService.reinitializePassword).toHaveBeenCalledWith('foo', password, jasmine.any(Function));
+            });
+
+            it('should redirect the user after 3000 seconds', () => {
+                $timeout.flush();
+                expect($location.path).toHaveBeenCalledWith('/signin');
             });
         });
     });

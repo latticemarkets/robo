@@ -15,7 +15,7 @@
     'use strict';
 
     class ReinitializePasswordController {
-        constructor(patternCheckerService, userService, $routeParams, $location) {
+        constructor(patternCheckerService, userService, $routeParams, $location, notificationService, $timeout) {
             const vm = this;
 
             const token = (() => {
@@ -46,7 +46,8 @@
 
             vm.submit = function() {
                 if (allConditionsSatisfied()) {
-                    userService.reinitializePassword(token, vm.newPassword);
+                    userService.reinitializePassword(token, vm.newPassword, () => notificationService.success("Your password has been updated, you can now log in normally."));
+                    $timeout(() => $location.path('/signin'), 3000);
                 }
             };
         }
