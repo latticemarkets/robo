@@ -14,18 +14,22 @@
 describe('ForgotPasswordController', () => {
     beforeEach(module('app'));
     
-    let $location, userService;
+    let $location, userService, notificationService, $timeout;
     beforeEach(() => {
         $location = jasmine.createSpyObj('$location', ['path']);
         userService = jasmine.createSpyObj('userService', ['isEmailUsed', 'sendEmail']);
+        notificationService = jasmine.createSpyObj('notificationService', ['success']);
     });
     
     let forgotPasswordController;
-    beforeEach(inject($controller => {
+    beforeEach(inject(($controller, _$timeout_) => {
         forgotPasswordController = $controller('ForgotPasswordController', {
             $location: $location,
-            userService: userService
+            userService: userService,
+            notificationService: notificationService,
+            $timeout: _$timeout_
         });
+        $timeout = _$timeout_;
     }));
     
     describe('email field is empty', () => {
@@ -63,6 +67,10 @@ describe('ForgotPasswordController', () => {
             expect($location.path).toHaveBeenCalledWith('/signin');
             expect(userService.sendEmail).not.toHaveBeenCalled();
         });
+
+        it('should display any notification', () => {
+            expect(notificationService.success).not.toHaveBeenCalled();
+        });
     });
 
     describe('email is correct and used', () => {
@@ -78,6 +86,15 @@ describe('ForgotPasswordController', () => {
 
         it('should send the email', () => {
             expect(userService.sendEmail).toHaveBeenCalled();
+        });
+
+        it('should display a notification', () => {
+            expect(notificationService.success).toHaveBeenCalled();
+        });
+
+        it('should redirect the user after a short timeout', () => {
+            $timeout.flush();
+            expect($location.path).toHaveBeenCalledWith('/signin');
         });
     });
 });

@@ -15,7 +15,7 @@
     'use strict';
 
     class ForgotPasswordController {
-        constructor($location, userService, patternCheckerService) {
+        constructor($location, userService, patternCheckerService, notificationService, $timeout) {
             const vm = this;
 
             function allConditionsSatisfied() {
@@ -33,7 +33,8 @@
                         response => {
                             if (response.data.ok) {
                                 userService.sendEmail(vm.email);
-                                // notification 5 sec + redirection
+                                notificationService.success("An email has been sent, containing a link to reinitialize your password.");
+                                $timeout(() => $location.path('/signin'), 5000);
                             }
                             else {
                                 $location.path('/signin');
