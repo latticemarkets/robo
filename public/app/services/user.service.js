@@ -79,6 +79,10 @@
         checkUserToken(email, token, callback) {
             this.$http.post('/api/user/token', { email: email, token: token }).then(callback, () => this.$window.location.href = '/');
         }
+        
+        checkConfirmEmailToken(token, okCallback, errorCallback) {
+            this.$http.post('/api/user/confirmEmail', { token: token }).then(okCallback, errorCallback);
+        }
     }
 
     angular

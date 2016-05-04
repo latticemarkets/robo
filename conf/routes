@@ -16,6 +16,7 @@ GET     /api/user/check/:email                                      controllers.
 GET     /api/user/infos                                             controllers.users.Users.userData
 POST    /api/user/destroy                                           controllers.users.Users.destroyAccount
 POST    /api/user/token                                             controllers.users.Users.checkToken
+POST    /api/user/confirmEmail                                      controllers.users.Users.confirmEmail
 
 GET     /api/user/platforms                                         controllers.platforms.Platforms.getPlatforms
 POST    /api/user/platform                                          controllers.platforms.Platforms.addPlatform

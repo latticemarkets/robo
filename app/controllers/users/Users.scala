@@ -54,8 +54,8 @@ class Users @Inject() (dbUser: User, security: Security, emailUtil: EmailUtil, u
 
   def isUsed(email: String) = Action.async {
     dbUser.findByEmail(email) map {
-      case None => Ok(Json.obj("ok" -> true))
-      case Some(user) => Ok(Json.obj("ok" -> false))
+      case None => Ok(Json.obj("ok" -> false))
+      case Some(user) => Ok(Json.obj("ok" -> true))
     }
   }
 
@@ -144,5 +144,20 @@ class Users @Inject() (dbUser: User, security: Security, emailUtil: EmailUtil, u
 
   def checkToken() = security.HasToken {
     Ok("")
+  }
+
+  def confirmEmail = Action.async { implicit request =>
+    val badRequest = BadRequest("Unknown token")
+
+    UsersForms.confirmEmailToken.bindFromRequest.fold(
+      formWithErrors => Future.successful(badRequest),
+      confirmEmailForm => userSecurity.findTokenConfirmEmail(confirmEmailForm.token) map {
+        case Some(userS) => {
+          userSecurity.update(userS.copy(tokenConfirmEmail = None))
+          Ok("")
+        }
+        case None        => badRequest
+      }
+    )
   }
 }

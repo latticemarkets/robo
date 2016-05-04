@@ -49,7 +49,9 @@ case class DestroyAccount(password: String)
 
 case class SendEmail(email: String)
 
-@Singleton class User @Inject() (dbUtil: DbUtil, userSecurity: UserSecurity) {
+case class ConfirmEmailToken(token: String)
+
+@Singleton class User @Inject() (dbUtil: DbUtil, userSecurity: UserSecurity, emailUtil: EmailUtil) {
 
   val collectionName = "user"
 
@@ -58,12 +60,12 @@ case class SendEmail(email: String)
   def findByEmail(email: String) = usersTable.find(Json.obj("_id" -> email)).one[UserModel]
 
   def store(user: RegisterForm): Future[Option[UserModel]] = { // Todo : handle the case where primary key is violated
+    val userF = userSecurity.store(userSecurity.factory(user.email, user.password))
+    userF.onSuccess { case userS => emailUtil.sendEmailConfirmEmail(user.firstName, user.lastName, user.email, userS.get.tokenConfirmEmail.get) }
+
+    val newUser: UserModel = factory(user)
     for {
-      passwordCreated <- userSecurity.store(userSecurity.factory(user.email, user.password))
-
-      newUser: UserModel = factory(user)
       result <- usersTable.insert(Json.toJson(newUser).as[JsObject])
-
       newUser <- findByEmail(newUser._id) if result.ok
     } yield newUser
   }

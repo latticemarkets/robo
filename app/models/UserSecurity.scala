@@ -27,7 +27,8 @@ import scala.concurrent.Future
 case class UserSecurityModel(
                          _id: String,
                          password: String,
-                         tokenForgotPassword: Option[String]
+                         tokenForgotPassword: Option[String],
+                         tokenConfirmEmail: Option[String]
                        ) {
   def withEncryptedPassword: UserSecurityModel = this.copy(password = Hash.createPassword(this.password))
 }
@@ -57,11 +58,13 @@ case class ReinitializePassword(tokenForgotPassword: String, newPassword: String
     userSecurityTable.update(selector, modifier) map (_ => userSecurity)
   }
 
-  def factory(email: String, password: String): UserSecurityModel = UserSecurityModel(email, password, None).withEncryptedPassword
+  def factory(email: String, password: String): UserSecurityModel = UserSecurityModel(email, password, None, Option(Hash.createToken)).withEncryptedPassword
 
   def delete(email: String): Future[Boolean] = userSecurityTable.remove(Json.obj("_id" -> email)) map (_.ok)
 
   def findTokenForgotPassword(tokenForgotPassword: String) = userSecurityTable.find(Json.obj("tokenForgotPassword" -> tokenForgotPassword)).one[UserSecurityModel]
+
+  def findTokenConfirmEmail(tokenConfirmEmail: String) = userSecurityTable.find(Json.obj("tokenConfirmEmail" -> tokenConfirmEmail)).one[UserSecurityModel]
 
   def generateAndStoreNewTokenForgotPassword(userSecurity: UserSecurityModel): Future[UserSecurityModel] = {
     val updatedUserSecurity: UserSecurityModel = userSecurity.copy(tokenForgotPassword = Option(Hash.createToken))

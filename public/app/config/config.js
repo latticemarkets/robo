@@ -33,6 +33,11 @@
                     controller: "ReinitializePasswordController",
                     controllerAs: 'vm'
                 })
+                .when('/confirmEmail/?:token', {
+                    templateUrl: "assets/app/confirmEmail/confirmEmail.html",
+                    controller: "ConfirmEmailController",
+                    controllerAs: 'vm'
+                })
                 .when('/signup', {
                     templateUrl: "assets/app/signup/login/signupLogin.html",
                     controller: "SignupLoginController",

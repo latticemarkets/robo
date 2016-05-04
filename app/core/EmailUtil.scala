@@ -29,4 +29,17 @@ import play.api.libs.mailer._
     )
     mailerClient.send(emailObj)
   }
+
+  def sendEmailConfirmEmail(firstName: String, lastName: String, email: String, tokenConfirmEmail: String) {
+    val message = s"Please follow this link in order to confirm your email address and finalize the creation of your account : https://pdx-robo.herokuapp.com/dashboard#/confirmEmail/%3F$tokenConfirmEmail"
+
+    val emailObj = Email(
+      "Please confirm email | PDX Technology",
+      "PDX Technology <noanswer@pdx.technology>",
+      Seq(s"$firstName, $lastName <$email>"),
+      bodyText = Some(message),
+      bodyHtml = Some(s"""<html><body><p>$message</p></body></html>""")
+    )
+    mailerClient.send(emailObj)
+  }
 }

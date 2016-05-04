@@ -77,6 +77,12 @@ object UsersForms {
       "platforms" -> seq(PlatformsForms.newPlatformForm)
     )(RegisterForm.apply)(RegisterForm.unapply)
   )
+
+  def confirmEmailToken = Form(
+    mapping(
+      "token" -> nonEmptyText
+    )(ConfirmEmailToken.apply)(ConfirmEmailToken.unapply)
+  )
 }
 
 case class RegisterForm(
