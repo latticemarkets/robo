@@ -15,7 +15,7 @@
     'use strict';
 
     class StrategiesController {
-        constructor($routeParams, constantsService, $location, strategiesService, platformService, notificationService, spinnerService, $cookies, SweetAlert) {
+        constructor($routeParams, constantsService, $location, strategiesService, platformService, notificationService, $cookies, SweetAlert) {
             var vm = this;
 
             const platform = $routeParams.platform;
@@ -32,7 +32,6 @@
                 $cookies.remove('newCriteriaSuccess');
             }
 
-            spinnerService.on();
             platformService.getPlatforms(response => {
                 response.data.some(p => {
                     if (p.originator == platform) {
@@ -40,7 +39,6 @@
                         return true;
                     }
                 });
-                spinnerService.off();
             });
 
             let rulesPriorityMinusOne;
@@ -49,13 +47,9 @@
                     rulesPriorityMinusOne = vm.strategies;
                 },
                 stop() {
-                    spinnerService.on();
                     strategiesService.updateStrategies(vm.strategies, platform, market,
-                        () => spinnerService.off(),
-                        () => {
-                            spinnerService.off();
-                            vm.strategies = rulesPriorityMinusOne;
-                        }
+                        () => {},
+                        () => vm.strategies = rulesPriorityMinusOne
                     );
                 }
             };
@@ -94,7 +88,6 @@
             vm.goToSecondMarket = () => $location.path(`/platforms/strategies/${platform}/secondary`);
 
             function updateOneRule(rule, transformation) {
-                spinnerService.on();
                 const rulesCopy = clone(vm.strategies);
                 let ruleToDeleteIndex;
                 if (rulesCopy.some((aRule, index) => {
@@ -105,11 +98,8 @@
                     })) {
                     const transformedRules = transformation(rulesCopy, ruleToDeleteIndex);
                     strategiesService.updateStrategies(transformedRules, platform, market,
-                        () => {
-                            vm.strategies = rulesCopy;
-                            spinnerService.off();
-                        },
-                        () => spinnerService.off()
+                        () => vm.strategies = rulesCopy,
+                        () => {}
                     );
                 }
                 else {

@@ -17,7 +17,6 @@ describe('AutomatedStrategyEditController', () => {
         $scope,
         autoStrategyChartsService,
         $location,
-        spinnerService,
         strategiesService,
         automatedStrategyEditService,
         c3,
@@ -33,8 +32,6 @@ describe('AutomatedStrategyEditController', () => {
     let onDestroyCallback;
     beforeEach(() => {
         $location = jasmine.createSpyObj('$location', ['path']);
-
-        spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
 
         $scope = jasmine.createSpyObj('$scope', ['$on', '$broadcast']);
         $scope.$on.and.callFake((id, callback) => onDestroyCallback = callback);
@@ -83,7 +80,6 @@ describe('AutomatedStrategyEditController', () => {
             $scope: $scope,
             autoStrategyChartsService: autoStrategyChartsService,
             $location: $location,
-            spinnerService: spinnerService,
             strategiesService: strategiesService,
             automatedStrategyEditService: automatedStrategyEditService,
             c3: c3,
@@ -262,10 +258,6 @@ describe('AutomatedStrategyEditController', () => {
             automatedStrategyEditController.save();
         });
 
-        it('should set the spinner on', () => {
-            expect(spinnerService.on).toHaveBeenCalled();
-        });
-
         it('should persist the strategy', () => {
             expect(strategiesService.updateAutomatedStrategy).toHaveBeenCalledWith(
                 platform,
@@ -277,10 +269,6 @@ describe('AutomatedStrategyEditController', () => {
             describe('updateAutomatedStrategy\'s callback', () => {
                 beforeEach(() => {
                     updateAutomatedStrategy();
-                });
-
-                it('should set the spinner off', () => {
-                    expect(spinnerService.off).toHaveBeenCalled();
                 });
 
                 it('should go back to platforms page', () => {

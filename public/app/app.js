@@ -26,6 +26,7 @@
             'multiStepForm',
             'jkuri.touchspin',
             'xeditable',
-            'uiSwitch']);
+            'uiSwitch',
+            'angular-loading-bar']);
 
 })();

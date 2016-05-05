@@ -14,8 +14,7 @@
 describe('PlatformsController', () => {
     let platformsController,
         $scope,
-        platformService,
-        spinnerService;
+        platformService;
 
     beforeEach(module('app'));
 
@@ -31,14 +30,9 @@ describe('PlatformsController', () => {
         platformService.updatePlatforms.and.callFake((platforms, callback) => callback());
     });
 
-    beforeEach(() => {
-        spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
-    });
-
     beforeEach(inject(($controller) => {
         platformsController = $controller('PlatformsController', {
             $scope: $scope,
-            spinnerService: spinnerService,
             platformService: platformService
         });
     }));
@@ -82,10 +76,6 @@ describe('PlatformsController', () => {
             watcher(1,2);
         });
 
-        it('should set up the spinner', () => {
-            expect(spinnerService.on).toHaveBeenCalled();
-        });
-
         it('should change mode to the good value', () => {
             expect(platformsController.platforms[0].mode).toBe('automated');
         });
@@ -97,10 +87,6 @@ describe('PlatformsController', () => {
         describe('updatePlatforms callback', () => {
             beforeEach(() => {
                 updatePlatformCallback();
-            });
-
-            it('should set the spinner to off', () => {
-                expect(spinnerService.off).toHaveBeenCalled();
             });
         });
     });

@@ -15,7 +15,7 @@
     'use strict';
 
     class PlatformsController {
-        constructor(constantsService, $filter, addPlatformService, $scope, spinnerService, $location, platformService, platformSettingsService) {
+        constructor(constantsService, $filter, addPlatformService, $scope, $location, platformService, platformSettingsService) {
             var vm = this;
 
             getPlatforms();
@@ -51,13 +51,12 @@
 
                         $scope.$watch(() => platform.isAuto, (oldValue, newValue) => {
                           if (oldValue !== null && oldValue != newValue) {
-                              spinnerService.on();
                               platform.mode = platform.isAuto ? 'automated' : 'manual';
                               const tmpPlatforms = JSON.parse(JSON.stringify(vm.platforms)).map(p => {
                                   delete p.isAuto;
                                   return p;
                               });
-                              platformService.updatePlatforms(tmpPlatforms, () => spinnerService.off(), () => {
+                              platformService.updatePlatforms(tmpPlatforms, () => {}, () => {
                                   platform.mode = platform.isAuto ? 'automated' : 'manual';
                                   platform.isAuto = !platform.isAuto;
                               });

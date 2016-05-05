@@ -15,7 +15,7 @@
     'use strict';
 
     class AutomatedStrategyEditController {
-        constructor($timeout, responsiveService, $scope, autoStrategyChartsService, $location, spinnerService, strategiesService, automatedStrategyEditService, c3, SweetAlert) {
+        constructor($timeout, responsiveService, $scope, autoStrategyChartsService, $location, strategiesService, automatedStrategyEditService, c3, SweetAlert) {
             var vm = this;
 
             vm.splineChartId = "expectedReturnDistribution";
@@ -79,12 +79,8 @@
             );
 
             vm.save = () => {
-                spinnerService.on();
                 strategiesService.updateAutomatedStrategy(platform, vm.strategyValue / 100, vm.primaryMarketEnabled, vm.secondaryMarketEnabled,
-                    () => {
-                        spinnerService.off();
-                        $location.path('/platforms');
-                    }
+                    () => $location.path('/platforms')
                 );
             };
 

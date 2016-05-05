@@ -16,7 +16,6 @@ describe('StrategyEditController', () => {
         $routeParams,
         constantsService,
         $location,
-        spinnerService,
         platformService,
         rulesService,
         notificationService,
@@ -39,8 +38,6 @@ describe('StrategyEditController', () => {
     beforeEach(() => {
         $location = jasmine.createSpyObj('$location', ['path']);
         $routeParams = { platform: urlOriginator, market: 'primary' };
-
-        spinnerService = jasmine.createSpyObj('spinnerService', ['on', 'off']);
     });
 
     let getPlatformsCallback;
@@ -122,7 +119,6 @@ describe('StrategyEditController', () => {
                 constantsService: constantsService,
                 $location: $location,
                 rulesService: rulesService,
-                spinnerService: spinnerService,
                 platformService: platformService,
                 $cookies: $cookies,
                 $timeout: _$timeout_,
@@ -156,10 +152,6 @@ describe('StrategyEditController', () => {
 
                 it('should get the right rule', () => {
                     expect(strategyEditController.strategy).toEqual(expendedBaseCriterion);
-                });
-
-                it('should stop the spinner on success', () => {
-                    expect(spinnerService.off).toHaveBeenCalled();
                 });
             });
         });
@@ -205,17 +197,9 @@ describe('StrategyEditController', () => {
                     strategyEditController.saveRule();
                 });
 
-                it('should set the spinner to on', () => {
-                    expect(spinnerService.on).toHaveBeenCalled();
-                });
-
                 it('should add the rule to platform object', () => {
                     expect(strategyEditController.platforms[0].primary.buyStrategies[0].rules.length).toBe(1);
                     expect(strategyEditController.platforms[0].primary.buyStrategies[0].rules[0]).toEqual(unexpendedBaseCriterion);
-                });
-
-                it('should set the spinner to off', () => {
-                    expect(spinnerService.off).toHaveBeenCalled();
                 });
 
                 it('should add a cookie to notif the success to the next page', () => {
@@ -373,7 +357,6 @@ describe('StrategyEditController', () => {
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
-                spinnerService: spinnerService,
                 platformService: platformService,
                 rulesService: rulesService
             });
@@ -408,7 +391,6 @@ describe('StrategyEditController', () => {
                 $routeParams: $routeParams,
                 constantsService: constantsService,
                 $location: $location,
-                spinnerService: spinnerService,
                 platformService: platformService,
                 rulesService: rulesService
             });

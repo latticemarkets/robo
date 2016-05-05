@@ -101,7 +101,8 @@ module.exports = function(grunt) {
                     "public/stylesheets/spinners.css",
                     "public/stylesheets/main.css",
                     "bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css",
-                    "bower_components/angular-ui-switch/angular-ui-switch.css"
+                    "bower_components/angular-ui-switch/angular-ui-switch.css",
+                    "bower_components/angular-loading-bar/build/loading-bar.min.css"
                 ],
                 dest: "public/dist/dist.css"
             }
