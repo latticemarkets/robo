@@ -23,6 +23,16 @@
                     controller: "SignInController",
                     controllerAs: 'vm'
                 })
+                .when('/signin/forgotPassword', {
+                    templateUrl: "assets/app/signin/forgotPassword/forgotPassword.html",
+                    controller: "ForgotPasswordController",
+                    controllerAs: 'vm'
+                })
+                .when('/reinitializePassword/?:token', {
+                    templateUrl: "assets/app/reinitializePassword/reinitializePassword.html",
+                    controller: "ReinitializePasswordController",
+                    controllerAs: 'vm'
+                })
                 .when('/signup', {
                     templateUrl: "assets/app/signup/login/signupLogin.html",
                     controller: "SignupLoginController",

@@ -49,7 +49,10 @@
         });
 
         function authorizedPage() {
-            return $.inArray($location.path(),
+            var noArguri = $location.path().split('?')[0];
+            var noFinalSlashUri = (noArguri[noArguri.length - 1] == '/') ? noArguri.substr(0, noArguri.length - 1) : noArguri;
+
+            return $.inArray(noFinalSlashUri,
                     ['',
                         '/404',
                         '/signup',
@@ -62,7 +65,9 @@
                         '/signup/p2pCredentials',
                         '/signup/personalInfos',
                         '/signup/registered',
-                        '/signin']
+                        '/signin',
+                        '/signin/forgotPassword',
+                        '/reinitializePassword']
                 ) > -1;
         }
     }

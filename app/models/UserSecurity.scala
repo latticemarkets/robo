@@ -24,12 +24,15 @@ import scala.concurrent.Future
 
 case class UserSecurity(
                          _id: String,
-                         password: String
+                         password: String,
+                         tokenForgotPassword: Option[String]
                        ) {
   def withEncryptedPassword: UserSecurity = this.copy(password = Hash.createPassword(this.password))
 }
 
 case class UpdatePassword(oldPassword: String, newPassword: String)
+
+case class ReinitializePassword(tokenForgotPassword: String, newPassword: String)
 
 object UserSecurity {
   val collectionName = "usersecurity"
@@ -52,7 +55,14 @@ object UserSecurity {
     userSecurityTable.update(selector, modifier) map (_ => userSecurity)
   }
 
-  def factory(email: String, password: String): UserSecurity = UserSecurity(email, password).withEncryptedPassword
+  def factory(email: String, password: String): UserSecurity = UserSecurity(email, password, None).withEncryptedPassword
 
   def delete(email: String): Future[Boolean] = userSecurityTable.remove(Json.obj("_id" -> email)) map (_.ok)
+
+  def findTokenForgotPassword(tokenForgotPassword: String) = userSecurityTable.find(Json.obj("tokenForgotPassword" -> tokenForgotPassword)).one[UserSecurity]
+
+  def generateAndStoreNewTokenForgotPassword(userSecurity: UserSecurity): Future[UserSecurity] = {
+    val updatedUserSecurity: UserSecurity = userSecurity.copy(tokenForgotPassword = Option(Hash.createToken))
+    update(updatedUserSecurity)
+  }
 }

@@ -88,6 +88,16 @@ describe('run : security', function () {
             nothingCalled();
         });
 
+        describe('on authorized page with url params and not logged in', () => {
+            beforeEach(() => {
+                $location.path.and.returnValue('/reinitializePassword/?an-awesome-token');
+                $rootScope.globals.currentUser = '';
+                $rootScope.$broadcast('$locationChangeStart');
+            });
+            
+            nothingCalled();
+        });
+        
         describe('on authorized page and logged in', () => {
             beforeEach(() => {
                 $location.path.and.returnValue('/signin');
@@ -164,7 +174,7 @@ describe('run : security', function () {
             });
 
             it('should not redirect the user', () => {
-                expect($location.path).not.toHaveBeenCalledTimes(2);
+                expect($location.path).not.toHaveBeenCalledWith('/404');
             });
         }
     });

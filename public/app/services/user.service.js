@@ -60,6 +60,14 @@
             this.$http.put('/api/user/password', { oldPassword: oldPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
         }
 
+        sendEmail(email, callback){
+            this.$http.post('/api/sendEmail', {email: email}).then(callback, this.notificationService.apiError());
+        }
+
+        reinitializePassword(tokenForgotPassword, newPassword, callback) {
+            this.$http.post('/api/user/reinitializePassword', {tokenForgotPassword: tokenForgotPassword, newPassword: newPassword }).then(callback, this.notificationService.apiError());
+        }
+
         updatePersonalData(firstName, lastName, birthday, callback) {
             this.$http.put('/api/user/personalData', { firstName: firstName.toLowerCase(), lastName: lastName.toLowerCase(), birthday: birthday }).then(callback, this.notificationService.apiError());
         }

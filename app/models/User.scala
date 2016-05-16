@@ -46,6 +46,8 @@ case class UpdatePersonalData(firstName: String, lastName: String, birthday: Dat
 
 case class DestroyAccount(password: String)
 
+case class SendEmail(email: String)
+
 object User {
 
   val collectionName = "user"
